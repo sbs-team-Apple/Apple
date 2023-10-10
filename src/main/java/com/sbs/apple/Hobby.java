@@ -1,6 +1,6 @@
 package com.sbs.apple;
 
-import com.sbs.apple.user.User;
+import com.sbs.apple.user.SiteUser;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,5 +19,5 @@ public class Hobby {
 
     @ManyToOne
     @JoinColumn(name = "person_id")
-    private User user;
+    private SiteUser user;
 }
