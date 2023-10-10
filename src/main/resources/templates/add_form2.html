@@ -6,9 +6,8 @@
 </head>
 <body>
 
-<form th:action="@{/user/add2}" th:object="${userCreateForm}" method="post">
-    <div   name="userId" th:value="${user.id}">유저 id</div>
-
+<form th:action="@{/user/add2}" method="post">
+    <input type="hidden" name="userId" th:value="${user.id}">
     <div class="mb-3">
         <label for="Mbti" class="form-label">Mbti</label>
         <input type="text" name="Mbti" class="form-control">

@@ -51,7 +51,10 @@ public class UserController {
 
 
     @PostMapping("/add2")
-    public String add2(@RequestParam  Integer userId,@RequestParam String mbti ) {
+    public String add2(@RequestParam("userId")  Integer userId, @RequestParam("Mbti") String mbti ) {
+        System.out.println("추가 회원가입 실행됨");
+        System.out.println(userId);
+
         SiteUser user = this.userService.getUser(userId);
         System.out.println(user.getUsername());
         userService.add_profile2(user,mbti);
