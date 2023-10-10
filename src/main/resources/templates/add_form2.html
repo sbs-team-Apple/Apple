@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form th:action="@{/user/signup2}" th:object="${userCreateForm}" method="post">
+    <div  th:value="${user.id}" name="userId">유저 id</div>
+
+    <div class="mb-3">
+        <label for="gender" class="form-label">성별</label>
+        <input type="text" th:field="*{gender}" class="form-control">
+    </div>
+    <input type="submit" value="저장하기" class="btn btn-primary my-2">
+</form>
+
+
+</body>
+</html>
