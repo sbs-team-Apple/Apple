@@ -3,6 +3,7 @@ package com.sbs.apple.user;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,17 +44,16 @@ public class UserController {
     public String login() {
         return "login_form";
     }
-
-
    //기본 프로필 작성
-    @GetMapping("/add/{id}")
-    public String add(UserAddForm userAddForm,@PathVariable("id") Integer id, Principal principal) {
+    @GetMapping("/add")
+    public String add(UserAddForm userAddForm,@PathVariable("id") Integer id, Model model) {
         SiteUser user = this.userService.getUser(id);
         userService.add_profile(user,userAddForm.getAge(),userAddForm.getLiving(),userAddForm.getHobby(),
                 userAddForm.getTall(),userAddForm.getBody_type(),userAddForm.isSmoking(),
                 userAddForm.getDrinking(),userAddForm.getStyle(),userAddForm.getReligion(),
                 userAddForm.getMbti(),userAddForm.getSchool(),userAddForm.getJob());
-        return "main";
+        model.addAttribute("user", user);
+        return "add_form";
     }
 
     @GetMapping("/desired")
