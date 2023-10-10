@@ -39,26 +39,15 @@ public class UserController {
         return "redirect:/";
     }
    //기본 프로필 작성
-    @GetMapping("/add")
-    public String add(UserAddForm userAddForm) {
-        return "add_from";
-    }
-
-
-    @PostMapping("/add")
-    public String add(@Valid UserAddForm userAddForm, BindingResult bindingResult,
-                      Principal principal, @PathVariable("id") Integer id) {
-        if (bindingResult.hasErrors()) {
-            return "add_form";
-        }
-        User user = this.userService.getUser(id);
+    @GetMapping("/add/{id}")
+    public String add(UserAddForm userAddForm,@PathVariable("id") Integer id, Principal principal) {
+        SiteUser user = this.userService.getUser(id);
         userService.add_profile(user,userAddForm.getAge(),userAddForm.getLiving(),userAddForm.getHobby(),
                 userAddForm.getTall(),userAddForm.getBody_type(),userAddForm.isSmoking(),
                 userAddForm.getDrinking(),userAddForm.getStyle(),userAddForm.getReligion(),
                 userAddForm.getMbti(),userAddForm.getSchool(),userAddForm.getJob());
-        return "redirect:/";
+        return "main";
     }
-
 
     @GetMapping("/desired")
     public String desired(UserDesiredForm userDesiredForm) {
@@ -71,7 +60,7 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             return "desired_form";
         }
-        User user = this.userService.getUser(id);
+        SiteUser user = this.userService.getUser(id);
         userService.add_desired(user,userDesiredForm.getDesired_age(),userDesiredForm.getDesired_living(),
                 userDesiredForm.getDesired_hobby(),userDesiredForm.getDesired_tall(),
                 userDesiredForm.getDesired_body_type(),userDesiredForm.isDesired_smoking(),

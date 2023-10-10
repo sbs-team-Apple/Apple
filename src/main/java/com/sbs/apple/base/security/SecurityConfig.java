@@ -24,8 +24,9 @@ public class SecurityConfig {
                         .addHeaderWriter(new XFrameOptionsHeaderWriter(
                                 XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
                 .formLogin((formLogin) -> formLogin
-                        .loginPage("/usr/member/login")
-                )
+                        .loginPage("/user/login")
+                        .defaultSuccessUrl("/"))
+
                 .logout((logout) -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/usr/member/logout"))
                         .logoutSuccessUrl("/")
