@@ -1,7 +1,9 @@
 package com.sbs.apple.user;
 
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,6 +19,8 @@ import java.security.Principal;
 @Controller
 @RequestMapping("/user")
 public class UserController {
+
+
     private final UserService userService;
 
     @GetMapping("/signup")
@@ -25,7 +29,7 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindingResult) {
+    public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindingResult , Model model) {
         if (bindingResult.hasErrors()) {
             return "signup_form";
         }
@@ -35,25 +39,35 @@ public class UserController {
                     "2개의 패스워드가 일치하지 않습니다.");
             return "signup_form";
         }
-        userService.create(userCreateForm.getUsername(), userCreateForm.getPassword1(),
+       SiteUser user= userService.create(userCreateForm.getUsername(), userCreateForm.getPassword1(),
                 userCreateForm.getNickname(), userCreateForm.getGender());
-        return "redirect:/";
+
+        model.addAttribute("user",user);
+
+        return "add_form2";
     }
     //로그인
     @GetMapping("/login")
     public String login() {
         return "login_form";
     }
+
+
+
+
+
    //기본 프로필 작성
-    @GetMapping("/add")
-    public String add(UserAddForm userAddForm,@PathVariable("id") Integer id, Model model) {
+    @GetMapping("/add/{id}")
+    public String add(UserAddForm userAddForm, @PathVariable("id") Integer id, Model model) {
         SiteUser user = this.userService.getUser(id);
+        System.out.println(user.getUsername());
         userService.add_profile(user,userAddForm.getAge(),userAddForm.getLiving(),userAddForm.getHobby(),
                 userAddForm.getTall(),userAddForm.getBody_type(),userAddForm.isSmoking(),
                 userAddForm.getDrinking(),userAddForm.getStyle(),userAddForm.getReligion(),
                 userAddForm.getMbti(),userAddForm.getSchool(),userAddForm.getJob());
-        model.addAttribute("user", user);
-        return "add_form";
+        model.addAttribute("user",user);
+
+        return "main";
     }
 
     @GetMapping("/desired")
