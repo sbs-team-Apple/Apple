@@ -14,7 +14,7 @@ public class SiteUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     //회원가입 할 때 기본 정보
     @Column(unique = true)
     private String username;

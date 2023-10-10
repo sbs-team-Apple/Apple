@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -53,12 +50,23 @@ public class UserController {
     }
 
 
+    @PostMapping("/add2")
+    public String add2(@RequestParam  Integer userId,@RequestParam String mbti ) {
+        SiteUser user = this.userService.getUser(userId);
+        System.out.println(user.getUsername());
+        userService.add_profile2(user,mbti);
 
+
+
+
+
+        return "main";
+    }
 
 
    //기본 프로필 작성
     @GetMapping("/add/{id}")
-    public String add(UserAddForm userAddForm, @PathVariable("id") Integer id, Model  ) {
+    public String add(UserAddForm userAddForm, @PathVariable("id") Integer id  ) {
         SiteUser user = this.userService.getUser(id);
         System.out.println(user.getUsername());
         userService.add_profile(user,userAddForm.getAge(),userAddForm.getLiving(),userAddForm.getHobby(),
@@ -67,7 +75,7 @@ public class UserController {
                 userAddForm.getMbti(),userAddForm.getSchool(),userAddForm.getJob());
 
 
-        model.addAttribute("user",user);
+
 
 
         return "main";

@@ -71,4 +71,11 @@ public class UserService {
         this.userRepository.save(user);
         return user;
     }
+
+    public void add_profile2(SiteUser user,String mbti) {
+
+        user.setMbti(mbti);
+        this.userRepository.save(user);
+
+    }
 }
