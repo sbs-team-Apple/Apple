@@ -3,7 +3,6 @@ package com.sbs.apple.user;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,8 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.security.Principal;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 //회원가입
 @RequiredArgsConstructor
@@ -24,12 +22,12 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/signup")
-    public String signup(UserCreateForm userCreateForm) {
+    public String signup1(UserCreateForm userCreateForm) {
         return "signup_form";
     }
 
     @PostMapping("/signup")
-    public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindingResult , Model model) {
+    public String signup2(@Valid UserCreateForm userCreateForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             return "signup_form";
         }
@@ -39,58 +37,52 @@ public class UserController {
                     "2개의 패스워드가 일치하지 않습니다.");
             return "signup_form";
         }
-       SiteUser user= userService.create(userCreateForm.getUsername(), userCreateForm.getPassword1(),
+        SiteUser user= userService.create(userCreateForm.getUsername(), userCreateForm.getPassword1(),
                 userCreateForm.getNickname(), userCreateForm.getGender());
-
-        model.addAttribute("user",user);
-
-        return "add_form2";
-    }
-    //로그인
-    @GetMapping("/login")
-    public String login() {
-        return "login_form";
+        redirectAttributes.addAttribute("id", user.getId());
+        return "redirect:/user/add/" + user.getId();
     }
 
 
-
-
-
-   //기본 프로필 작성
-    @GetMapping("/add/{id}")
-    public String add(UserAddForm userAddForm, @PathVariable("id") Integer id, Model  ) {
+   @GetMapping("/add/{id}")
+   public String add1(UserAddForm userAddForm,@PathVariable("id") Integer id, Model model){
+       model.addAttribute("userId", id);
+        return "add_form";
+   }
+    @PostMapping("/add/{id}")
+    public String add2(@PathVariable("id") Integer id,UserAddForm userAddForm,RedirectAttributes redirectAttributes) {
         SiteUser user = this.userService.getUser(id);
-        System.out.println(user.getUsername());
         userService.add_profile(user,userAddForm.getAge(),userAddForm.getLiving(),userAddForm.getHobby(),
                 userAddForm.getTall(),userAddForm.getBody_type(),userAddForm.isSmoking(),
                 userAddForm.getDrinking(),userAddForm.getStyle(),userAddForm.getReligion(),
                 userAddForm.getMbti(),userAddForm.getSchool(),userAddForm.getJob());
-
-
-        model.addAttribute("user",user);
-
-
-        return "main";
+        redirectAttributes.addAttribute("id", user.getId());
+        return "redirect:/user/desired/" + user.getId();
     }
-
-    @GetMapping("/desired")
-    public String desired(UserDesiredForm userDesiredForm) {
+    //원하는 이상형 작성
+    @GetMapping("/desired/{id}")
+    public String desired1(UserDesiredForm userDesiredForm,@PathVariable("id") Integer id, Model model) {
+        model.addAttribute("userId",id);
         return "desired_form";
     }
 
-    @PostMapping("/desired")
-    public String desired(@Valid UserDesiredForm userDesiredForm, BindingResult bindingResult,
-                          Principal principal, @PathVariable("id") Integer id) {
+    @PostMapping("/desired/{id}")
+    public String desired2(@PathVariable("id") Integer id,UserDesiredForm userDesiredForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "desired_form";
         }
         SiteUser user = this.userService.getUser(id);
         userService.add_desired(user,userDesiredForm.getDesired_age(),userDesiredForm.getDesired_living(),
                 userDesiredForm.getDesired_hobby(),userDesiredForm.getDesired_tall(),
-                userDesiredForm.getDesired_body_type(),userDesiredForm.isDesired_smoking(),
+                userDesiredForm.getDesired_body_type(),userDesiredForm.getDesired_smoking(),
                 userDesiredForm.getDesired_drinking(),userDesiredForm.getDesired_style(),
                 userDesiredForm.getDesired_religion(),userDesiredForm.getDesired_mbti());
         return "redirect:/";
     }
 
+    //로그인
+    @GetMapping("/login")
+    public String login() {
+        return "login_form";
+    }
 }
