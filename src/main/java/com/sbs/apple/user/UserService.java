@@ -14,8 +14,8 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
 
-    public User getUser(Integer id){
-        Optional<User> user = this.userRepository.findById(id);
+    public SiteUser getUser(Integer id){
+        Optional<SiteUser> user = this.userRepository.findById(id);
         if (user.isPresent()) {
             return user.get();
         } else {
@@ -23,8 +23,8 @@ public class UserService {
         }
     }
 
-    public User create(String username, String password, String nickname, String gender) {
-        User user = new User();
+    public SiteUser create(String username, String password, String nickname, String gender) {
+        SiteUser user = new SiteUser();
         user.setUsername(username);
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         user.setPassword(passwordEncoder.encode(password));
@@ -34,9 +34,9 @@ public class UserService {
         return user;
     }
 
-    public User add_profile(User user, int age, String living, List<Hobby> hobby, int tall, String bodyType,
-                            boolean smoking, String drinking, String style, String religion,
-                            String mbti, String school, String job) {
+    public SiteUser add_profile(SiteUser user, int age, String living, List<Hobby> hobby, int tall, String bodyType,
+                                boolean smoking, String drinking, String style, String religion,
+                                String mbti, String school, String job) {
         user.setAge(age);
         user.setLiving(living);
         user.setHobby(hobby);
@@ -54,10 +54,10 @@ public class UserService {
     }
 
 
-    public User add_desired(User user,int desiredAge, String desiredLiving, List<Hobby> desiredHobby,
-                            int desiredTall, String desiredBodyType, boolean desiredSmoking,
-                            String desiredDrinking, String desiredStyle, String desiredReligion,
-                            String desiredMbti) {
+    public SiteUser add_desired(SiteUser user, int desiredAge, String desiredLiving, List<Hobby> desiredHobby,
+                                int desiredTall, String desiredBodyType, boolean desiredSmoking,
+                                String desiredDrinking, String desiredStyle, String desiredReligion,
+                                String desiredMbti) {
         user.setDesired_age(desiredAge);
         user.setDesired_living(desiredLiving);
         user.setDesired_hobby(desiredHobby);
