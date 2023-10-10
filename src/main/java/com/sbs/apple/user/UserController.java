@@ -38,6 +38,13 @@ public class UserController {
                 userCreateForm.getNickname(), userCreateForm.getGender());
         return "redirect:/";
     }
+    //로그인
+    @GetMapping("/login")
+    public String login() {
+        return "login_form";
+    }
+
+
    //기본 프로필 작성
     @GetMapping("/add/{id}")
     public String add(UserAddForm userAddForm,@PathVariable("id") Integer id, Principal principal) {
