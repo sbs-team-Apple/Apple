@@ -1,12 +1,10 @@
 package com.sbs.apple.user;
 
 import com.sbs.apple.DataNotFoundException;
-import com.sbs.apple.Hobby;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -34,7 +32,7 @@ public class UserService {
         return user;
     }
 
-    public SiteUser add_profile(SiteUser user, int age, String living, List<Hobby> hobby, int tall, String bodyType,
+    public SiteUser add_profile(SiteUser user, int age, String living, String hobby, int tall, String bodyType,
                                 boolean smoking, String drinking, String style, String religion,
                                 String mbti, String school, String job) {
         user.setAge(age);
@@ -54,8 +52,8 @@ public class UserService {
     }
 
 
-    public SiteUser add_desired(SiteUser user, int desiredAge, String desiredLiving, List<Hobby> desiredHobby,
-                                int desiredTall, String desiredBodyType, boolean desiredSmoking,
+    public SiteUser add_desired(SiteUser user, int desiredAge, String desiredLiving, String desiredHobby,
+                                int desiredTall, String desiredBodyType, String desiredSmoking,
                                 String desiredDrinking, String desiredStyle, String desiredReligion,
                                 String desiredMbti) {
         user.setDesired_age(desiredAge);
@@ -64,7 +62,7 @@ public class UserService {
         user.setDesired_tall(desiredTall);
         user.setDesired_body_type(desiredBodyType);
         user.setDesired_smoking(desiredSmoking);
-        user.setDrinking(desiredDrinking);
+        user.setDesired_drinking(desiredDrinking);
         user.setDesired_style(desiredStyle);
         user.setDesired_religion(desiredReligion);
         user.setDesired_mbti(desiredMbti);
