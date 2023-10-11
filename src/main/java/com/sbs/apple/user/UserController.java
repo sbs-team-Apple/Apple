@@ -98,4 +98,26 @@ public class UserController {
         model.addAttribute("user", user);
         return "myPage";
     }
+    @GetMapping("/passwordChange")
+    public String passwordChange(UserPasswordChangeForm userPasswordChangeForm) {
+        return "user/passwordChange";
+    }
+    @PostMapping("/passwordChange")
+    public String passwordChange(@Valid UserPasswordChangeForm userPasswordChangeForm, BindingResult bindingResult,Principal principal) {
+        String username = principal.getName();
+        SiteUser user = userService.getUserbyName(username);
+        if (bindingResult.hasErrors()) {
+            return "user/passwordChange";
+        }
+        if(!userPasswordChangeForm.getPassword().equals(user.getPassword())){
+            return "user/passwordChange";
+        }
+        if (!userPasswordChangeForm.getNewPassword1().equals(userPasswordChangeForm.getNewPassword2())) {
+            bindingResult.rejectValue("newPassword2", "passwordInCorrect",
+                    "2개의 패스워드가 일치하지 않습니다.");
+            return "user/passwordChange";
+        }
+        user.setPassword(userPasswordChangeForm.getNewPassword1());
+        return "myPage";
+    }
 }
