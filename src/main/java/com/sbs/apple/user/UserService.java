@@ -21,6 +21,14 @@ public class UserService {
             throw new DataNotFoundException("user not found");
         }
     }
+    public SiteUser getUserbyName(String name){
+        Optional<SiteUser> user = this.userRepository.findByusername(name);
+        if (user.isPresent()) {
+            return user.get();
+        } else {
+            throw new DataNotFoundException("user not found");
+        }
+    }
 
     public SiteUser create(String username, String password, String nickname, String gender) {
         SiteUser user = new SiteUser();
