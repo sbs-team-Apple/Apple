@@ -23,19 +23,19 @@ public class UserController {
 
     @GetMapping("/signup")
     public String signup1(UserCreateForm userCreateForm) {
-        return "signup_form";
+        return "user/signup_form";
     }
 
     @PostMapping("/signup")
     public String signup2(@Valid UserCreateForm userCreateForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            return "signup_form";
+            return "user/signup_form";
         }
 
         if (!userCreateForm.getPassword1().equals(userCreateForm.getPassword2())) {
             bindingResult.rejectValue("password2", "passwordInCorrect",
                     "2개의 패스워드가 일치하지 않습니다.");
-            return "signup_form";
+            return "user/signup_form";
         }
         SiteUser user= userService.create(userCreateForm.getUsername(), userCreateForm.getPassword1(),
                 userCreateForm.getNickname(), userCreateForm.getGender());
@@ -47,7 +47,7 @@ public class UserController {
    @GetMapping("/add/{id}")
    public String add1(UserAddForm userAddForm,@PathVariable("id") Integer id, Model model){
        model.addAttribute("userId", id);
-        return "add_form";
+        return "user/add_form";
    }
     @PostMapping("/add/{id}")
     public String add2(@PathVariable("id") Integer id,UserAddForm userAddForm,RedirectAttributes redirectAttributes) {
@@ -63,13 +63,13 @@ public class UserController {
     @GetMapping("/desired/{id}")
     public String desired1(UserDesiredForm userDesiredForm,@PathVariable("id") Integer id, Model model) {
         model.addAttribute("userId",id);
-        return "desired_form";
+        return "user/desired_form";
     }
 
     @PostMapping("/desired/{id}")
     public String desired2(@PathVariable("id") Integer id,UserDesiredForm userDesiredForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "desired_form";
+            return "user/desired_form";
         }
         SiteUser user = this.userService.getUser(id);
         userService.add_desired(user,userDesiredForm.getDesired_age(),userDesiredForm.getDesired_living(),
@@ -83,6 +83,6 @@ public class UserController {
     //로그인
     @GetMapping("/login")
     public String login() {
-        return "login_form";
+        return "user/login_form";
     }
 }
