@@ -37,6 +37,7 @@ public class UserController {
                     "2개의 패스워드가 일치하지 않습니다.");
             return "user/signup_form";
         }
+        //adsdfur
         SiteUser user= userService.create(userCreateForm.getUsername(), userCreateForm.getPassword1(),
                 userCreateForm.getNickname(), userCreateForm.getGender());
         redirectAttributes.addAttribute("id", user.getId());
