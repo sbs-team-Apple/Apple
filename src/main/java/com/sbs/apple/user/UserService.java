@@ -52,8 +52,8 @@ public class UserService {
     }
 
 
-    public SiteUser add_desired(SiteUser user, int desiredAge, String desiredLiving, String desiredHobby,
-                                int desiredTall, String desiredBodyType, String desiredSmoking,
+    public SiteUser add_desired(SiteUser user, String desiredAge, String desiredLiving, String desiredHobby,
+                                String desiredTall, String desiredBodyType, String desiredSmoking,
                                 String desiredDrinking, String desiredStyle, String desiredReligion,
                                 String desiredMbti) {
         user.setDesired_age(desiredAge);
