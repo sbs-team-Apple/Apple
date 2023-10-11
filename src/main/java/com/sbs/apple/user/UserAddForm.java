@@ -1,11 +1,8 @@
 package com.sbs.apple.user;
 
-import com.sbs.apple.Hobby;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -17,7 +14,7 @@ public class UserAddForm {
     @NotEmpty(message = "지역는 필수항목입니다.")
     private String living;//사는 지역
 
-    private List<Hobby> hobby;//취미 여려개 추가할 수 있게 변경하기
+    private String hobby;//취미 여려개 추가할 수 있게 변경하기
 
     @NotEmpty(message = "키는 필수항목입니다.")
     private int tall; //키

@@ -5,6 +5,58 @@
     <title>Title</title>
 </head>
 <body>
-성공123 add form
+
+<form th:action="@{'/user/add/' + ${userId}}" th:object="${userAddForm}" method="post">
+    <div class="mb-3">
+        <label for="age" class="form-label">나이</label>
+        <input type="number" th:field="*{age}" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label for="living" class="form-label">지역</label>
+        <input type="text" th:field="*{living}" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label for="hobby" class="form-label">취미</label>
+        <input type="text" th:field="*{hobby}" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label for="tall" class="form-label">키</label>
+        <input type="number" th:field="*{tall}" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label for="body_type" class="form-label">체형</label>
+        <input type="text" th:field="*{body_type}" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label for="smoking" class="form-label">흡연 유무</label>
+        <input type="checkbox" th:field="*{smoking}" class="form-check-input">
+        <span>흡연자라면 체크해 주세요.</span>
+    </div>
+    <div class="mb-3">
+        <label for="drinking" class="form-label">음주 유무</label>
+        <input type="text" th:field="*{drinking}" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label for="style" class="form-label">스타일</label>
+        <input type="text" th:field="*{style}" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label for="religion" class="form-label">종교</label>
+        <input type="text" th:field="*{religion}" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label for="mbti" class="form-label">mbti</label>
+        <input type="text" th:field="*{mbti}" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label for="school" class="form-label">학교</label>
+        <input type="text" th:field="*{school}" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label for="job" class="form-label">직장</label>
+        <input type="text" th:field="*{job}" class="form-control">
+    </div>
+    <input type="submit" value="저장하기" class="btn btn-primary my-2">
+</form>
 </body>
 </html>

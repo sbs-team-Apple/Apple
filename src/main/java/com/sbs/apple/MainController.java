@@ -10,9 +10,4 @@ public class MainController {
     public String root() {
         return "main";
     }
-
-    @GetMapping("login")
-    public String login() {
-        return "login_form";
-    }
 }
