@@ -1,6 +1,7 @@
 package com.sbs.apple.chat;
 
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -12,12 +13,14 @@ import java.util.stream.IntStream;
 @Controller
 @Slf4j
 @RequestMapping("/chat")
+@RequiredArgsConstructor
 public class ChatController {
+    private final SseEmitters sseEmitters;
+
     private List<ChatMessage> chatMessages = new ArrayList<>();
 
     public record WriteMessageRequest(String authorName, String content) {
     }
-
 
     public record WriteMessageResponse(long id) {
     }
@@ -30,9 +33,13 @@ public class ChatController {
     @PostMapping("/writeMessage")
     @ResponseBody
     public RsData<WriteMessageResponse> writeMessage(@RequestBody WriteMessageRequest req) {
+        System.out.println("메시지 작성시작");
+
         ChatMessage message = new ChatMessage(req.authorName(), req.content());
 
         chatMessages.add(message);
+
+        sseEmitters.noti("chat__messageAdded");
 
         return new RsData<>(
                 "S-1",
@@ -47,7 +54,6 @@ public class ChatController {
     public record MessagesResponse(List<ChatMessage> messages, long count) {
     }
 
-
     @GetMapping("/messages")
     @ResponseBody
     public RsData<MessagesResponse> messages(MessagesRequest req) {
@@ -61,6 +67,17 @@ public class ChatController {
                     .filter(i -> chatMessages.get(i).getId() == req.fromId)
                     .findFirst()
                     .orElse(-1);
+
+            /*
+            int foundIndex = -1;
+
+            for ( int i = 0; i < messages.size(); i++ ) {
+                if ( messages.get(i).getId() == req.fromId ) {
+                    foundIndex = i;
+                    break;
+                }
+            }
+            */
 
             if (index != -1) {
                 // 만약에 index가 있다면, 0번 부터 index 번 까지 제거한 리스트를 만든다.
