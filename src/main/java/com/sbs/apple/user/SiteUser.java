@@ -1,11 +1,8 @@
 package com.sbs.apple.user;
 
-import com.sbs.apple.Hobby;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -14,7 +11,7 @@ public class SiteUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     //회원가입 할 때 기본 정보
     @Column(unique = true)
     private String username;
@@ -27,8 +24,7 @@ public class SiteUser {
 
     private String living;//사는 지역
 
-    @OneToMany(mappedBy = "user",  cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Hobby> hobby;//취미 여려개 추가할 수 있게 변경하기
+    private String hobby;//취미 여려개 추가할 수 있게 변경하기
 
     private int tall; //키
 
@@ -46,13 +42,13 @@ public class SiteUser {
 
     private String school; //학력
     private String job; //직장
+
     private int desired_age; //원하는 나이 어떻게 구현할지 다시 고민
     private String desired_living; //원하는 지역
-    @OneToMany(mappedBy = "user",  cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Hobby> desired_hobby;//취미 여려개 추가할 수 있게 변경하기
+    private String desired_hobby; // 여러개 고를 수 있게 하기
     private int desired_tall; // 원하는 키 어떻게 범위 설정할지 다시 고민
     private String desired_body_type; //원하는 체형
-    private boolean desired_smoking; // 원하는 흡연 유무
+    private String desired_smoking; // 원하는 흡연 유무
     private String desired_drinking; // 원하는 음주 유무
     private String desired_style; //원하는 스타일
     private String desired_religion; //원하는 종교
