@@ -43,10 +43,10 @@ public class SiteUser {
     private String school; //학력
     private String job; //직장
 
-    private int desired_age; //원하는 나이 어떻게 구현할지 다시 고민
+    private String desired_age; //원하는 나이 어떻게 구현할지 다시 고민
     private String desired_living; //원하는 지역
     private String desired_hobby; // 여러개 고를 수 있게 하기
-    private int desired_tall; // 원하는 키 어떻게 범위 설정할지 다시 고민
+    private String desired_tall; // 원하는 키 어떻게 범위 설정할지 다시 고민
     private String desired_body_type; //원하는 체형
     private String desired_smoking; // 원하는 흡연 유무
     private String desired_drinking; // 원하는 음주 유무
