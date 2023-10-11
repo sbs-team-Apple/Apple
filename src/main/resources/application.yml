@@ -17,6 +17,11 @@ spring:
   thymeleaf:
     cache: false
     prefix: file:src/main/resources/templates/
+    devtools:
+      livereload:
+        enabled: true
+      restart:
+        enabled: true
   h2:
     console:
       enabled: true
