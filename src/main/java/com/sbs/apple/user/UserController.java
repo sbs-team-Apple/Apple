@@ -3,6 +3,7 @@ package com.sbs.apple.user;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.security.Principal;
 
 //회원가입
 @RequiredArgsConstructor
@@ -85,5 +88,14 @@ public class UserController {
     @GetMapping("/login")
     public String login() {
         return "user/login_form";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/myPage")
+    public String userMyPage(Model model, Principal principal) {
+        String username = principal.getName();
+        SiteUser user = userService.getUserbyName(username);
+        model.addAttribute("user", user);
+        return "myPage";
     }
 }
