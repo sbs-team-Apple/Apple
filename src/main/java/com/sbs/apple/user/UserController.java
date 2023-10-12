@@ -1,16 +1,23 @@
 package com.sbs.apple.user;
 
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.security.Principal;
 
 //회원가입
 @RequiredArgsConstructor
@@ -86,4 +93,75 @@ public class UserController {
     public String login() {
         return "user/login_form";
     }
+    //마이 페이지
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/myPage")
+    public String userMyPage(Model model, Principal principal) {
+        String username = principal.getName();
+        SiteUser user = userService.getUserbyName(username);
+        model.addAttribute("user", user);
+        return "myPage";
+    }
+    //비밀번호 변경
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/passwordChange")
+    public String passwordChange(Model model) {
+        return "user/passwordChange";
+    }
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/passwordChange")
+    public String passwordChange(@RequestParam("password") String currentPassword,
+                                 @RequestParam("newPassword") String newPassword,
+                                 @RequestParam("confirmPassword") String confirmPassword,
+                                 Model model, Principal principal) {
+        String username = principal.getName();
+        if (!newPassword.equals(confirmPassword)) {
+            model.addAttribute("error", "새로운 비밀번호와 확인 비밀번호가 일치하지 않습니다.");
+            return "user/passwordChange";
+        }
+
+        if (!userService.isCorrectPassword(username, currentPassword)) {
+            model.addAttribute("error", "기존 비밀번호가 올바르지 않습니다.");
+            return "user/passwordChange";
+        }
+        userService.updatePassword(username, newPassword);
+        return "redirect:/user/myPage";
+    }
+    // 마이페이지 탈퇴 페이지
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/delete")
+    public String mypage_exit(Principal principal, Model model) {
+        SiteUser siteUser = this.userService.getUserbyName(principal.getName());
+        model.addAttribute("siteUser", siteUser);
+        return "user/delete";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/delete")
+    public String userDelete(HttpServletRequest request, @RequestParam("password") String password,
+                             HttpServletResponse response, Principal principal, RedirectAttributes attributes) {
+        SiteUser siteUser = this.userService.getUserbyName(principal.getName());
+
+        if (BCrypt.checkpw(password, siteUser.getPassword())) {
+            this.userService.delete(siteUser);
+
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if (auth != null) {
+                new SecurityContextLogoutHandler().logout(request, response, auth);
+            }
+
+            HttpSession session = request.getSession(false);
+            if (session != null) {
+                session.invalidate();
+            }
+
+            return "redirect:/"; // 메인 페이지로 리다이렉트
+        } else {
+            // 비밀번호가 일치하지 않을 때 오류 메시지를 전달하고 회원 탈퇴 페이지로 리다이렉트합니다.
+            attributes.addFlashAttribute("error", "비밀번호가 일치하지 않습니다. 다시 시도해주세요.");
+            return "redirect:/user/delete";
+        }
+    }
+
+
 }
