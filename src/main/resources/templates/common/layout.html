@@ -49,6 +49,8 @@
                             <a th:if="${chatRoom == null}" class="nav-link" th:href="@{/chat/1/room}"><i class="fa-solid fa-arrow-right-to-bracket"></i>채팅방 생성</a>
                             <a th:if="${chatRoom != null}" class="nav-link" th:value="${chatRoom.id}+1" sec:authorize="isAuthenticated()" th:href="@{|/chat/${chatRoom.id+1}/room|}"><i class="fa-solid fa-arrow-right-to-bracket"></i>채팅방 생성</a>
                         </li>
+
+                        <li><a href="/user/payment"><i class="fa-solid fa-user"></i> 결제</a></li>
                     </ul>
                 </div>
             </div>
