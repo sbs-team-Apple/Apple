@@ -69,3 +69,12 @@ custom:
   genFile:
     dirPath: c:/temp/apple
 
+  devtools:
+    livereload:
+      enabled: true
+
+  freemarker:
+    cache: false
+
+  thymeleaf:
+    cache: false
