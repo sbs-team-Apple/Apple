@@ -29,12 +29,13 @@ public class ChatController {
     }
 
     @GetMapping("/{roomId}/room")
-    public String showRoom(@PathVariable Long roomId, Model model, Principal principal) {
+    public String showRoom(@PathVariable Long roomId, Model model, Principal principal ,@RequestParam("trick") String trick) {
         SiteUser user =userService.getUserbyName(principal.getName());
         System.out.println(user.getId());
 
-        chatRoomService.create(user.getId());
-
+        if(trick.equals("ok")) {
+            chatRoomService.create(user.getId());
+        }
 
         model.addAttribute("roomId", roomId);
         return "chat/room";
