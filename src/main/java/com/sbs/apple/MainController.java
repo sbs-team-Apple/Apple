@@ -14,6 +14,9 @@ public class MainController {
     @GetMapping("/")
     public String showMain(Model model) {
         ChatRoom chatRoom= chatRoomService.findLastRoom();
+        if(chatRoom == null){
+            chatRoom=chatRoomService.create(1);
+        }
 
         model.addAttribute("chatRoom", chatRoom);
         return "main";
