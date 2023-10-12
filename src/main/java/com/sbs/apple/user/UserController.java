@@ -162,6 +162,50 @@ public class UserController {
             return "redirect:/user/delete";
         }
     }
-
-
+    //프로필 수정
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/profile_modify")
+    public String profile_modify1(UserAddForm userAddForm,Principal principal,Model model){
+        SiteUser siteUser = this.userService.getUserbyName(principal.getName());
+        userAddForm.setAge(siteUser.getAge()); userAddForm.setLiving(siteUser.getLiving());
+        userAddForm.setHobby(siteUser.getHobby()); userAddForm.setTall(siteUser.getTall());
+        userAddForm.setBody_type(siteUser.getBody_type()); userAddForm.setSmoking(siteUser.isSmoking());
+        userAddForm.setDrinking(siteUser.getDrinking()); userAddForm.setStyle(siteUser.getStyle());
+        userAddForm.setReligion(siteUser.getReligion()); userAddForm.setMbti(siteUser.getMbti());
+        userAddForm.setSchool(siteUser.getSchool()); userAddForm.setJob(siteUser.getJob());
+        model.addAttribute("siteUser", siteUser);
+        return "user/profile_modify";
+    }
+    @PostMapping("/profile_modify")
+    public String profile_modify(UserAddForm userAddForm,Principal principal) {
+        SiteUser user = this.userService.getUserbyName(principal.getName());
+        userService.add_profile(user,userAddForm.getAge(),userAddForm.getLiving(),userAddForm.getHobby(),
+                userAddForm.getTall(),userAddForm.getBody_type(),userAddForm.isSmoking(),
+                userAddForm.getDrinking(),userAddForm.getStyle(),userAddForm.getReligion(),
+                userAddForm.getMbti(),userAddForm.getSchool(),userAddForm.getJob());
+        return "redirect:/user/myPage";
+    }
+    //이상형 수정
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/desired_modify")
+    public String desired_modify1(UserDesiredForm userDesiredForm,Principal principal,Model model){
+        SiteUser siteUser = this.userService.getUserbyName(principal.getName());
+        userDesiredForm.setDesired_age(siteUser.getDesired_age()); userDesiredForm.setDesired_living(siteUser.getDesired_living());
+        userDesiredForm.setDesired_hobby(siteUser.getDesired_hobby()); userDesiredForm.setDesired_tall(siteUser.getDesired_tall());
+        userDesiredForm.setDesired_body_type(siteUser.getDesired_body_type()); userDesiredForm.setDesired_smoking(siteUser.getDesired_smoking());
+        userDesiredForm.setDesired_drinking(siteUser.getDesired_drinking()); userDesiredForm.setDesired_style(siteUser.getDesired_style());
+        userDesiredForm.setDesired_religion(siteUser.getDesired_religion()); userDesiredForm.setDesired_mbti(siteUser.getDesired_mbti());
+        model.addAttribute("siteUser", siteUser);
+        return "user/desired_modify";
+    }
+    @PostMapping("/desired_modify")
+    public String desired_modify(UserDesiredForm userDesiredForm,Principal principal) {
+        SiteUser user = this.userService.getUserbyName(principal.getName());
+        userService.add_desired(user,userDesiredForm.getDesired_age(),userDesiredForm.getDesired_living(),
+                userDesiredForm.getDesired_hobby(),userDesiredForm.getDesired_tall(),
+                userDesiredForm.getDesired_body_type(),userDesiredForm.getDesired_smoking(),
+                userDesiredForm.getDesired_drinking(),userDesiredForm.getDesired_style(),
+                userDesiredForm.getDesired_religion(),userDesiredForm.getDesired_mbti());
+        return "redirect:/user/myPage";
+    }
 }

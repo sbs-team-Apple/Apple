@@ -31,18 +31,12 @@ public class SiteUser {
     private String body_type; //체형
 
     private boolean smoking; //흡연 유무
-
     private String drinking; //음주 유무
-
     private String style; //스타일(성격)
-
     private String religion; //종교
-
     private String mbti; //MBTI
-
     private String school; //학력
     private String job; //직장
-
     private String desired_age; //원하는 나이 어떻게 구현할지 다시 고민
     private String desired_living; //원하는 지역
     private String desired_hobby; // 여러개 고를 수 있게 하기
