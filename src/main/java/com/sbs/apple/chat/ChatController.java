@@ -1,11 +1,14 @@
 package com.sbs.apple.chat;
 
+import com.sbs.apple.user.SiteUser;
+import com.sbs.apple.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -14,8 +17,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ChatController {
     private final SseEmitters sseEmitters;
-
+    private final UserService userService;
     private final ChatMessages chatMessages;
+    private final ChatRoomService chatRoomService;
+
 
     public record WriteMessageRequest(String authorName, String content) {
     }
@@ -24,7 +29,13 @@ public class ChatController {
     }
 
     @GetMapping("/{roomId}/room")
-    public String showRoom(@PathVariable Long roomId, Model model) {
+    public String showRoom(@PathVariable Long roomId, Model model, Principal principal) {
+        SiteUser user =userService.getUserbyName(principal.getName());
+        System.out.println(user.getId());
+
+        chatRoomService.create(user.getId());
+
+
         model.addAttribute("roomId", roomId);
         return "chat/room";
     }
