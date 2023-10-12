@@ -7,12 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class MainController {
     @GetMapping("/")
-    public String root() {
+    public String showMain() {
         return "main";
-    }
-
-    @GetMapping("login")
-    public String login() {
-        return "login_form";
     }
 }

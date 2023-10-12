@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html layout:decorate="~{/common/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="content" class="container my-3">
+    <div>
+        <h4>회원가입</h4>
+    </div>
+    <form th:action="@{/user/signup}" th:object="${userCreateForm}" method="post">
+        <div class="mb-3">
+            <label for="username" class="form-label">사용자ID</label>
+            <input type="text" th:field="*{username}" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="password1" class="form-label">비밀번호</label>
+            <input type="password" th:field="*{password1}" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="password2" class="form-label">비밀번호 확인</label>
+            <input type="password" th:field="*{password2}" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="nickname" class="form-label">닉네임</label>
+            <input type="text" th:field="*{nickname}" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="gender" class="form-label">성별</label>
+            <select th:field="*{gender}" class="form-control">
+                <option value="남">남</option>
+                <option value="여">여</option>
+            </select>
+        </div>
+        <input type="submit" value="다음" class="btn btn-primary my-2">
+    </form>
+</div>
+</body>
+</html>
