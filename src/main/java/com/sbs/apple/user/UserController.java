@@ -208,4 +208,13 @@ public class UserController {
                 userDesiredForm.getDesired_religion(),userDesiredForm.getDesired_mbti());
         return "redirect:/user/myPage";
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/payment")
+    public String paymentPage(Model model, Principal principal) {
+        String username = principal.getName();
+        SiteUser user = userService.getUserbyName(username);
+        model.addAttribute("user", user);
+        return "payment";
+    }
 }
