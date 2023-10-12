@@ -1,6 +1,5 @@
 package com.sbs.apple.chat;
 
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 
