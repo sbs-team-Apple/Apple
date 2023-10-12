@@ -12,11 +12,12 @@ public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
 
 
-    public void create(Integer userId){
+    public ChatRoom create(Integer userId){
         ChatRoom chatRoom = new ChatRoom();
         chatRoom.setUserId1(userId);
         chatRoom.setCreateDate(LocalDateTime.now());
         chatRoomRepository.save(chatRoom);
+        return chatRoom;
 
     }
 
@@ -27,8 +28,12 @@ public class ChatRoomService {
 
     public ChatRoom findLastRoom(){
 
-        ChatRoom chatRoom = chatRoomRepository.findTopByOrderByIdDesc().get();
-        return chatRoom;
+
+        if(chatRoomRepository.findTopByOrderByIdDesc().isEmpty()){
+            return null;
+        }
+
+        return chatRoomRepository.findTopByOrderByIdDesc().get();
     }
 
     public List<ChatRoom> findAll(){
