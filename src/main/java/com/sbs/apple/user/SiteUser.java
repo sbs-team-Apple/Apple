@@ -3,6 +3,11 @@ package com.sbs.apple.user;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -48,4 +53,12 @@ public class SiteUser {
     private String desired_religion; //원하는 종교
     private String desired_mbti; //원하는 MBTI
     //여러개를 선택해야할 때의 칼럼
+    public List<? extends GrantedAuthority> getGrantedAuthorities() {
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        grantedAuthorities.add(new SimpleGrantedAuthority("siteuser"));
+        if ("admin".equals(username)) {
+            grantedAuthorities.add(new SimpleGrantedAuthority("admin"));
+        }
+        return grantedAuthorities;
+    }
 }
