@@ -3,6 +3,7 @@ package com.sbs.apple.chat;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ChatRoomRepository extends JpaRepository<ChatRoom, Integer> {
@@ -11,4 +12,6 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Integer> {
     Integer findMaxId();
 
     Optional<ChatRoom> findTopByOrderByIdDesc();
+
+    List<ChatRoom> findByUserId1(Integer userId);
 }

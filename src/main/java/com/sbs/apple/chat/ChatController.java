@@ -74,4 +74,12 @@ public class ChatController {
                 new MessagesResponse(messages, messages.size())
         );
     }
+
+    @GetMapping("/allRoom")
+    public String allRoom(Model model,Principal principal){
+        SiteUser siteUser = userService.getUserbyName(principal.getName());
+        List<ChatRoom> chatRooms=chatRoomService.findByUserId1(siteUser.getId());
+        model.addAttribute("chatRoom",chatRooms);
+        return "chat/allRoom";
+    }
 }

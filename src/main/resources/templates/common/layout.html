@@ -46,8 +46,6 @@
                         <li><a href="/user/signup"><i class="fa-solid fa-user-plus"></i> 회원가입</a></li>
                         <li><a href="/user/myPage"><i class="fa-solid fa-user"></i> 내 정보</a></li>
                         <li>
-                            <div ></div>
-
                             <a class="nav-link" th:value="${chatRoom.id}" sec:authorize="isAuthenticated()" th:href="@{|/chat/${chatRoom.id}/room|}"><i class="fa-solid fa-arrow-right-to-bracket"></i>채팅방 생성</a>
                         </li>
                     </ul>
