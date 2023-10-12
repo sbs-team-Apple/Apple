@@ -77,4 +77,27 @@ public class UserService {
         this.userRepository.save(user);
         return user;
     }
+    public boolean isCorrectPassword(String username, String password) {
+        SiteUser user = getUserbyName(username);
+        String actualPassword = user.getPassword();
+        return passwordEncoder.matches(password, actualPassword);
+    }
+    public void updatePassword(String username, String newPassword) {
+        SiteUser user = getUserbyName(username);
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+    }
+    public void delete(SiteUser siteUser) {
+        // 해당 사용자와 연결된 answer 레코드 삭제
+//        List<Answer> userAnswers = answerRepository.findByAuthor(siteUser);
+//        answerRepository.deleteAll(userAnswers);
+
+        // 해당 사용자와 연결된 question 레코드 삭제
+//        List<Question> userQuestions = questionRepository.findByAuthor(siteUser);
+//        questionRepository.deleteAll(userQuestions);
+
+        // 사용자 삭제
+        this.userRepository.delete(siteUser);
+    }
+
 }
