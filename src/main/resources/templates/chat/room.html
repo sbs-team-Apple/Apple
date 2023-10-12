@@ -1,6 +1,4 @@
-<script th:inline="javascript">
-    const roomId = [[${roomId}]];
-</script>
+
 
 <head>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -23,6 +21,9 @@
         </ul>
     </div>
 </div>
+<script th:inline="javascript">
+    const roomId = [[${roomId}]];
+</script>
 
 <script>
     var token = $("meta[name='_csrf']").attr("content");

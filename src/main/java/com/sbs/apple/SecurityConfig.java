@@ -1,4 +1,4 @@
-package com.sbs.apple.base.security;
+package com.sbs.apple;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
