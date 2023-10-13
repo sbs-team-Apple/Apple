@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.util.List;
 
 //회원가입
 @RequiredArgsConstructor
@@ -90,7 +91,9 @@ public class UserController {
 
     //로그인
     @GetMapping("/login")
-    public String login() {
+    public String login(Model model)
+    {List<SiteUser> userList = userService.getFourUsers(); // 사용자 정보를 가져오는 예시 메서드
+        model.addAttribute("userList", userList);
         return "user/login_form";
     }
     //마이 페이지

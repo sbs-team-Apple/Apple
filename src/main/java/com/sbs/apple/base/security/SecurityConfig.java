@@ -20,22 +20,25 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf((csrf) -> csrf
+                .csrf(csrf -> csrf
                         .ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**")))
-                .headers((headers) -> headers
+                .headers(headers -> headers
                         .addHeaderWriter(new XFrameOptionsHeaderWriter(
                                 XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
-                .formLogin((formLogin) -> formLogin
+                .formLogin(formLogin -> formLogin
                         .loginPage("/user/login")
                         .defaultSuccessUrl("/"))
-                .oauth2Login(
-                        oauth2Login -> oauth2Login
-                                .loginPage("/user/login")
-                )
-                .logout((logout) -> logout
+                .oauth2Login(oauth2Login -> oauth2Login
+                        .loginPage("/user/login"))
+                .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
                         .logoutSuccessUrl("/")
                         .invalidateHttpSession(true))
+                .authorizeRequests(authorizeRequests ->
+                        authorizeRequests
+                                .requestMatchers("/admin/**").hasRole("ADMIN") // "ADMIN" 권한이 있는 사용자만 "/consulting/create" 경로에 접근 가능
+                                .requestMatchers("/**").permitAll()
+                )
         ;
         return http.build();
     }
