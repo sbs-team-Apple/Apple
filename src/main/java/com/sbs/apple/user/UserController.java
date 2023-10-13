@@ -99,6 +99,9 @@ public class UserController {
     public String userMyPage(Model model, Principal principal) {
         String username = principal.getName();
         SiteUser user = userService.getUserbyName(username);
+
+        int userCyberMoney = user.getCyberMoney();
+        model.addAttribute("userCyberMoney", userCyberMoney);
         model.addAttribute("user", user);
         return "myPage";
     }
@@ -217,4 +220,5 @@ public class UserController {
         model.addAttribute("user", user);
         return "payment";
     }
+
 }
