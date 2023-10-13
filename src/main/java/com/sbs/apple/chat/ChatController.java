@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -28,8 +29,10 @@ public class ChatController {
     public record WriteMessageResponse(long id) {
     }
 
+
+    //채팅방 만들기
     @GetMapping("/{roomId}/room")
-    public String showRoom(  @RequestParam("userId") Integer userId2 ,@PathVariable Long roomId, Model model, Principal principal) {
+    public String showRoom(  @RequestParam("userId") Integer userId2 , Model model, Principal principal) {
         SiteUser user =userService.getUserbyName(principal.getName());
         SiteUser user2= userService.getUser(userId2);
 
@@ -38,9 +41,17 @@ public class ChatController {
             chatRoomService.create(user, user2);
 
 
-        model.addAttribute("roomId", roomId+1);
         return "chat/room";
     }
+
+//    원래 있던 채팅방 들어가기
+//    @GetMapping("/{roomId}/room")
+//    public String showRoom2(  @RequestParam("userId2") Integer userId2 ,Model model, Principal principal) {
+//        SiteUser user =userService.getUserbyName(principal.getName());
+//
+//
+//        return "chat/room";
+//    }
 
     @PostMapping("/{roomId}/writeMessage")
     @ResponseBody
@@ -81,7 +92,24 @@ public class ChatController {
     public String allRoom(Model model,Principal principal){
         SiteUser siteUser = userService.getUserbyName(principal.getName());
         List<ChatRoom> chatRooms=chatRoomService.findByUser(siteUser);
+        List<ChatRoom> chatRooms2 =new ArrayList<>();
+        List<ChatRoom> chatRooms3=new ArrayList<>() ;
+        for(int i=0; i<chatRooms.size(); i++){
+            if(chatRooms.get(i).getSiteUser().getId() == siteUser.getId()){
+                chatRooms2.add(chatRooms.get(i));
+            }else {
+                chatRooms3.add(chatRooms.get(i));
+            }
+        }
         model.addAttribute("chatRoom",chatRooms);
+
+        if( chatRooms2 !=null) {
+            model.addAttribute("chatRoom2",chatRooms2); //내가 초대 한  채팅방
+        }
+        if( chatRooms3 !=null) {
+            model.addAttribute("chatRoom3",chatRooms3);  //내가 초대 받은 채팅방
+        }
+
         return "chat/allRoom";
     }
 }
