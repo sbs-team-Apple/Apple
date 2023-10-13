@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>마이 프로필</title>
+</head>
+<body>
+<div>
+    <h2>내 프로필 정보:</h2>
+    <p>나이: <span th:text="${user.age}"></span></p>
+    <p>사는 지역: <span th:text="${user.living}"></span></p>
+    <p>키: <span th:text="${user.tall}"></span></p>
+    <p>체형: <span th:text="${user.body_type}"></span></p>
+    <p>흡연 여부: <span th:text="${user.smoking} ? '흡연' : '비흡연'"></span></p>
+    <p>음주 여부: <span th:text="${user.drinking}"></span></p>
+    <p>스타일(성격): <span th:text="${user.style}"></span></p>
+    <p>종교: <span th:text="${user.religion}"></span></p>
+    <p>MBTI: <span th:text="${user.mbti}"></span></p>
+    <p>학력: <span th:text="${user.school}"></span></p>
+    <p>직장: <span th:text="${user.job}"></span></p>
+</div>
+
+<div>
+    <h2>나의 이상형 정보:</h2>
+    <p>원하는 나이: <span th:text="${user.desired_age}"></span></p>
+    <p>원하는 지역: <span th:text="${user.desired_living}"></span></p>
+    <p>원하는 취미: <span th:text="${user.desired_hobby}"></span></p>
+    <p>원하는 키: <span th:text="${user.desired_tall}"></span></p>
+    <p>원하는 체형: <span th:text="${user.desired_body_type}"></span></p>
+    <p>원하는 흡연 여부: <span th:text="${user.desired_smoking}"></span></p>
+    <p>원하는 음주 여부: <span th:text="${user.desired_drinking}"></span></p>
+    <p>원하는 스타일(성격): <span th:text="${user.desired_style}"></span></p>
+    <p>원하는 종교: <span th:text="${user.desired_religion}"></span></p>
+    <p>원하는 MBTI: <span th:text="${user.desired_mbti}"></span></p>
+</div>
+</body>
+</html>
