@@ -12,9 +12,10 @@ public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
 
 
-    public ChatRoom create(Integer userId){
+    public ChatRoom create(Integer userId, Integer userId2){
         ChatRoom chatRoom = new ChatRoom();
         chatRoom.setUserId1(userId);
+        chatRoom.setUserId2(userId2);
         chatRoom.setCreateDate(LocalDateTime.now());
         chatRoomRepository.save(chatRoom);
         return chatRoom;
