@@ -8,6 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -61,5 +62,15 @@ public class SiteUser {
         }
         return grantedAuthorities;
     }
+    @Enumerated(EnumType.STRING)
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<UserRole> authorities;
 
+    public boolean hasRole(UserRole role) {
+        return authorities.contains(role);
+    }
+
+    public boolean isAdmin() {
+        return hasRole(UserRole.ADMIN);
+    }
 }
