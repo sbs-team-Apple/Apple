@@ -5,6 +5,7 @@
     <title>Title</title>
 </head>
 <body>
+<<<<<<< HEAD
 <div layout:fragment="content" class="container my-3">
     <div class="user-info">
         <div th:each="user : ${userList}">
@@ -14,5 +15,23 @@
         </div>
     </div>
 </div>
+=======
+<div th:value="${chatRoom.id}"></div>
+<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    <li class="nav-item">
+        <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/user/login}">로그인</a>
+        <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/user/logout}">로그아웃</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" th:href="@{/user/signup}">회원가입</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" th:href="@{/user/myPage}">마이 페이지</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" th:href="@{/user/payment}">결제</a>
+    </li>
+</ul>
+>>>>>>> 8f77ebef031f3287e4175fdd9d66dd66febc21e4
 </body>
 </html>

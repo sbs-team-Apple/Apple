@@ -1,7 +1,11 @@
 package com.sbs.apple.payment;
 
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,12 +25,25 @@ import java.util.Base64;
 @RequestMapping(value = "/")
 public class PaymentController {
 
+    @Autowired
+    private PaymentService paymentService;
+
     @GetMapping(value = "success")
     public String paymentResult(
             Model model,
             @RequestParam(value = "orderId") String orderId,
             @RequestParam(value = "amount") Integer amount,
             @RequestParam(value = "paymentKey") String paymentKey) throws Exception {
+
+        String username;
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
 
 
 
@@ -51,10 +68,11 @@ public class PaymentController {
         outputStream.write(obj.toString().getBytes("UTF-8"));
 
         int code = connection.getResponseCode();
-        boolean isSuccess = code == 200 ? true : false;
+        boolean isSuccess = code == 200;
 
-        if ( isSuccess ) {
-
+        if (isSuccess) {
+            // 결제 성공 시, 사용자에게 사이버머니를 지급
+            paymentService.grantCyberMoneyToUser(username, amount/100);
         }
 
         model.addAttribute("isSuccess", isSuccess);
