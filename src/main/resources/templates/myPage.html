@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html layout:decorate="~{/common/layout}" lang="en">
+<head >
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
 
-
+<div layout:fragment="content" class="container my-3">
 <ul>
     <li><a href="/user/passwordChange">비밀번호 변경</a></li>
     <li><a href="/user/profile_modify">프로필 수정</a></li>
@@ -15,5 +15,6 @@
     <li><a th:href="@{/chat/allRoom}">내 채팅방</a></li>
 </ul>
 
+</div>
 </body>
 </html>
