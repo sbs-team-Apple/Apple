@@ -31,7 +31,7 @@ public class ChatController {
     @GetMapping("/{roomId}/room")
     public String showRoom(@PathVariable Long roomId, Model model, Principal principal ) {
         SiteUser user =userService.getUserbyName(principal.getName());
-        System.out.println(user.getId());
+
 
 
             chatRoomService.create(user.getId());
