@@ -31,27 +31,28 @@ public class ChatController {
 
 
     //채팅방 만들기
-    @GetMapping("/{roomId}/room")
-    public String showRoom(  @RequestParam("userId") Integer userId2 , Model model, Principal principal) {
+    @PostMapping("/{roomId}/room")
+    public String showRoom(  @RequestParam("userId") Integer userId2 , @PathVariable Long roomId, Model model, Principal principal) {
         SiteUser user =userService.getUserbyName(principal.getName());
         SiteUser user2= userService.getUser(userId2);
 
 
 
             chatRoomService.create(user, user2);
-
+        model.addAttribute("roomId", roomId+1);
 
         return "chat/room";
     }
 
 //    원래 있던 채팅방 들어가기
-//    @GetMapping("/{roomId}/room")
-//    public String showRoom2(  @RequestParam("userId2") Integer userId2 ,Model model, Principal principal) {
-//        SiteUser user =userService.getUserbyName(principal.getName());
-//
-//
-//        return "chat/room";
-//    }
+    @GetMapping("/{roomId}/room")
+    public String showRoom2(  @RequestParam("userId2") Integer userId2 ,Model model, Principal principal) {
+        SiteUser user =userService.getUserbyName(principal.getName());
+        Integer roomId =1;
+        model.addAttribute("roomId", roomId+1);
+
+        return "chat/room";
+    }
 
     @PostMapping("/{roomId}/writeMessage")
     @ResponseBody
@@ -101,7 +102,7 @@ public class ChatController {
                 chatRooms3.add(chatRooms.get(i));
             }
         }
-        model.addAttribute("chatRoom",chatRooms);
+
 
         if( chatRooms2 !=null) {
             model.addAttribute("chatRoom2",chatRooms2); //내가 초대 한  채팅방
