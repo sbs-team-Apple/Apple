@@ -1,11 +1,14 @@
 package com.sbs.apple.chat;
 
+import com.sbs.apple.user.SiteUser;
+import com.sbs.apple.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -14,8 +17,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ChatController {
     private final SseEmitters sseEmitters;
-
+    private final UserService userService;
     private final ChatMessages chatMessages;
+    private final ChatRoomService chatRoomService;
+
 
     public record WriteMessageRequest(String authorName, String content) {
     }
@@ -24,8 +29,15 @@ public class ChatController {
     }
 
     @GetMapping("/{roomId}/room")
-    public String showRoom(@PathVariable Long roomId, Model model) {
-        model.addAttribute("roomId", roomId);
+    public String showRoom(@PathVariable Long roomId, Model model, Principal principal ) {
+        SiteUser user =userService.getUserbyName(principal.getName());
+
+
+
+            chatRoomService.create(user.getId());
+
+
+        model.addAttribute("roomId", roomId+1);
         return "chat/room";
     }
 
@@ -62,5 +74,13 @@ public class ChatController {
                 "성공",
                 new MessagesResponse(messages, messages.size())
         );
+    }
+
+    @GetMapping("/allRoom")
+    public String allRoom(Model model,Principal principal){
+        SiteUser siteUser = userService.getUserbyName(principal.getName());
+        List<ChatRoom> chatRooms=chatRoomService.findByUserId1(siteUser.getId());
+        model.addAttribute("chatRoom",chatRooms);
+        return "chat/allRoom";
     }
 }
