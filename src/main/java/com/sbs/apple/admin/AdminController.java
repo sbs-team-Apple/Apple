@@ -21,6 +21,7 @@ public class AdminController {
         adminAccountService.createAdminAccount();
         return "Admin account created!";
     }
+
     @GetMapping("/report_list")
     public String report_list(){
         return "report_list";
