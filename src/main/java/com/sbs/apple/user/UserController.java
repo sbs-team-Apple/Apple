@@ -221,4 +221,11 @@ public class UserController {
         return "payment";
     }
 
+    @GetMapping("/myProfile")
+    public String userMyprofile(Model model, Principal principal) {
+        String username = principal.getName();
+        SiteUser user = userService.getUserbyName(username);
+        model.addAttribute("user", user);
+        return "myProfile";
+    }
 }

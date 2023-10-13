@@ -72,7 +72,7 @@ public class PaymentController {
 
         if (isSuccess) {
             // 결제 성공 시, 사용자에게 사이버머니를 지급
-            paymentService.grantCyberMoneyToUser(username, amount/100);
+            paymentService.grantCyberMoneyToUser(username, amount);
         }
 
         model.addAttribute("isSuccess", isSuccess);
