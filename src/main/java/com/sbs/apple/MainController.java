@@ -21,7 +21,9 @@ public class MainController {
     public String showMain(Model model) {
         ChatRoom chatRoom= chatRoomService.findLastRoom();
         if(chatRoom == null){
-            chatRoom=chatRoomService.create(1,1);
+            SiteUser user = userService.getUser(1);
+            SiteUser user2 = userService.getUser(1);
+            chatRoom=chatRoomService.create(user, user2);
         }
 
         List<SiteUser> siteUsers = userService.getAllUser();

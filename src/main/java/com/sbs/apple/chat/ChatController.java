@@ -31,10 +31,11 @@ public class ChatController {
     @GetMapping("/{roomId}/room")
     public String showRoom(  @RequestParam("userId") Integer userId2 ,@PathVariable Long roomId, Model model, Principal principal) {
         SiteUser user =userService.getUserbyName(principal.getName());
+        SiteUser user2= userService.getUser(userId2);
 
 
 
-            chatRoomService.create(user.getId() ,userId2);
+            chatRoomService.create(user, user2);
 
 
         model.addAttribute("roomId", roomId+1);
@@ -79,7 +80,7 @@ public class ChatController {
     @GetMapping("/allRoom")
     public String allRoom(Model model,Principal principal){
         SiteUser siteUser = userService.getUserbyName(principal.getName());
-        List<ChatRoom> chatRooms=chatRoomService.findByUserId1(siteUser.getId());
+        List<ChatRoom> chatRooms=chatRoomService.findByUser(siteUser);
         model.addAttribute("chatRoom",chatRooms);
         return "chat/allRoom";
     }

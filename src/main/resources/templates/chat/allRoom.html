@@ -1,7 +1,13 @@
-<!doctype html>
-<html lang="ko">
-
+<!DOCTYPE html>
+<html >
+        <meta charset="UTF-8">
+        <title>Title</title>
+</head>
 <body>
+
+
+
+
         <div> 내 채팅방 목록들</div>
         <div th:each="room : ${chatRoom}">
                 <a th:href="@{|/chat/${room.id}/room|}"><div th:text="${room.id}+번방"></div></a>
@@ -9,5 +15,9 @@
         </div>
 
 
+
+
 </body>
 </html>
+
+
