@@ -44,7 +44,7 @@ public class UserService {
 
     public SiteUser add_profile(SiteUser user, int age, String living, String hobby, int tall, String bodyType,
                                 boolean smoking, String drinking, String style, String religion,
-                                String mbti, String school, String job) {
+                                String mbti, String school, String job, String About_Me) {
         user.setAge(age);
         user.setLiving(living);
         user.setHobby(hobby);
@@ -57,6 +57,7 @@ public class UserService {
         user.setMbti(mbti);
         user.setSchool(school);
         user.setJob(job);
+        user.setAbout_Me(About_Me);
         this.userRepository.save(user);
         return user;
     }
