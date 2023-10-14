@@ -1,6 +1,5 @@
 package com.sbs.apple.user;
 
-import com.sbs.apple.cybermoney.TransactionLog;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,6 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -72,24 +72,11 @@ public class SiteUser {
         }
         return grantedAuthorities;
     }
-
-    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
-    private List<TransactionLog> sentTransactions;
-
-    @OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL)
-    private List<TransactionLog> receivedTransactions;
-
-    public void addSentTransaction(TransactionLog transactionLog) {
-        if (sentTransactions == null) {
-            sentTransactions = new ArrayList<>();
-        }
-        sentTransactions.add(transactionLog);
+    @Enumerated(EnumType.STRING)
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<UserRole> authorities;
+    public boolean hasRole(UserRole role) {
+        return authorities.contains(role);
     }
 
-    public void addReceivedTransaction(TransactionLog transactionLog) {
-        if (receivedTransactions == null) {
-            receivedTransactions = new ArrayList<>();
-        }
-        receivedTransactions.add(transactionLog);
-    }
 }
