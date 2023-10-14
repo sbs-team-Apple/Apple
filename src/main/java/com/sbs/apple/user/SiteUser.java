@@ -1,5 +1,6 @@
 package com.sbs.apple.user;
 
+import com.sbs.apple.report.Report;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -43,6 +44,8 @@ public class SiteUser {
     private String mbti; //MBTI
     private String school; //학력
     private String job; //직장
+    private String About_Me; //자기소개
+
     private String desired_age; //원하는 나이 어떻게 구현할지 다시 고민
     private String desired_living; //원하는 지역
     private String desired_hobby; // 여러개 고를 수 있게 하기
@@ -53,6 +56,10 @@ public class SiteUser {
     private String desired_style; //원하는 스타일
     private String desired_religion; //원하는 종교
     private String desired_mbti; //원하는 MBTI
+
+    @OneToMany(mappedBy = "siteUser", cascade = CascadeType.REMOVE)
+    private List<Report> reportList;
+
     @Column
     private Integer cyberMoney = 0; // 기본값 0으로 초기화
 

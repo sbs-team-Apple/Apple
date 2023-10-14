@@ -34,4 +34,6 @@ public class UserAddForm {
     private String school; //학력
 
     private String job; //직장
+
+    private String About_Me; //자기소개
 }

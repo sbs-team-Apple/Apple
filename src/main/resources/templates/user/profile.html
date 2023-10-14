@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>소개</h1>
+<div th:text="${siteUser.age}"></div>
+<div th:text="${siteUser.living}"></div>
+<div th:text="${siteUser.hobby}"></div>
+<div th:text="${siteUser.tall}"></div>
+<div th:text="${siteUser.smoking}"></div>
+<div th:text="${siteUser.drinking}"></div>
+<div th:text="${siteUser.style}"></div>
+<div th:text="${siteUser.religion}"></div>
+<div th:text="${siteUser.mbti}"></div>
+<div th:text="${siteUser.school}"></div>
+<div th:text="${siteUser.job}"></div>
+<div th:text="${siteUser.About_Me}"></div>
+<h2>원하는 이상형</h2>
+<div th:text="${siteUser.desired_age}"></div>
+<div th:text="${siteUser.desired_living}"></div>
+<div th:text="${siteUser.desired_hobby}"></div>
+<div th:text="${siteUser.desired_tall}"></div>
+<div th:text="${siteUser.desired_body_type}"></div>
+<div th:text="${siteUser.desired_smoking}"></div>
+<div th:text="${siteUser.desired_drinking}"></div>
+<div th:text="${siteUser.desired_style}"></div>
+<div th:text="${siteUser.desired_religion}"></div>
+<div th:text="${siteUser.desired_mbti}"></div>
+<a th:href="@{/user/report}">신고하기</a>
+
+</body>
+</html>
