@@ -33,6 +33,8 @@ public class ChatController {
     //채팅방 만들기
     @PostMapping("/{roomId}/room")
     public String showRoom(  @RequestParam("userId") Integer userId2 , @PathVariable Long roomId, Model model, Principal principal) {
+        System.out.println("채팅방 만들기 실행됨");
+
         SiteUser user =userService.getUserbyName(principal.getName());
         SiteUser user2= userService.getUser(userId2);
 
@@ -41,15 +43,31 @@ public class ChatController {
             chatRoomService.create(user, user2);
         model.addAttribute("roomId", roomId+1);
 
-        return "chat/room";
+        return "redirect:/";
     }
 
 //    원래 있던 채팅방 들어가기
     @GetMapping("/{roomId}/room")
     public String showRoom2(  @RequestParam("userId2") Integer userId2 ,Model model, Principal principal) {
+        System.out.println("원래 있던 채팅방에 접속");
         SiteUser user =userService.getUserbyName(principal.getName());
-        Integer roomId =1;
-        model.addAttribute("roomId", roomId+1);
+        ChatRoom room = chatRoomService.findRoomByUserIdAndUserId2(user.getId(),userId2);
+        System.out.println("채팅방에 들어갈 방번호 "+room.getId());
+
+        model.addAttribute("roomId",room.getId() );
+
+        return "chat/room";
+    }
+
+
+    @GetMapping("/{roomId}/room2")
+    public String showRoom3(  @RequestParam("userId") Integer userId ,Model model, Principal principal) {
+        System.out.println("원래 있던 채팅방에 접속");
+        SiteUser user =userService.getUserbyName(principal.getName());
+        ChatRoom room = chatRoomService.findRoomByUserIdAndUserId2(userId,user.getId());
+        System.out.println("채팅방에 들어갈 방번호 "+room.getId());
+
+        model.addAttribute("roomId",room.getId() );
 
         return "chat/room";
     }
@@ -57,6 +75,7 @@ public class ChatController {
     @PostMapping("/{roomId}/writeMessage")
     @ResponseBody
     public RsData<WriteMessageResponse> writeMessage(@PathVariable Long roomId, @RequestBody WriteMessageRequest req) {
+
         ChatMessage message = new ChatMessage(req.authorName(), req.content());
 
         chatMessages.add(roomId, message);
