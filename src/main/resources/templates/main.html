@@ -9,7 +9,7 @@
 
     <div th:each="user : ${siteUsers}">
         <div class="flex  ">
-        <div><a  th:href="@{|/chat/${chatRoom.id+1}/room|}" th:value="${user.id}"  name="userId" th:text="${user.nickname}"></a></div>
+        <div><a  th:value="${user.id}"  name="userId" th:text="${user.nickname}"></a></div>
         <div>
             <form method="post" th:action="@{|/chat/${chatRoom.id+1}/room?userId2=${user.id}|}">
                 <input type="hidden" name="userId" th:value="${user.id}">

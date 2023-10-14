@@ -49,6 +49,8 @@ public class ChatRoomService {
     }
 
 
+    public ChatRoom findRoomByUserIdAndUserId2(Integer userId, Integer userId2) {
+        return chatRoomRepository.findRoomByUserIdAndUserId2(userId, userId2);
 
-
+    }
 }
