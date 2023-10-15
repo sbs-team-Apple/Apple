@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -43,7 +44,7 @@ public class UserService {
 
     public SiteUser add_profile(SiteUser user, int age, String living, String hobby, int tall, String bodyType,
                                 String smoking, String drinking, String style, String religion,
-                                String mbti, String school, String job) {
+                                String mbti, String school, String job, String About_Me) {
         user.setAge(age);
         user.setLiving(living);
         user.setHobby(hobby);
@@ -56,6 +57,7 @@ public class UserService {
         user.setMbti(mbti);
         user.setSchool(school);
         user.setJob(job);
+        user.setAbout_Me(About_Me);
         this.userRepository.save(user);
         return user;
     }
@@ -107,5 +109,10 @@ public class UserService {
     public SiteUser whenSocialLogin(String providerTypeCode, String username, String nickname) {
         // 소셜 로그인를 통한 가입시 비번은 없다.
         return create(username, "",nickname,""); // 최초 로그인 시 딱 한번 실행
+    }
+
+    public List<SiteUser> getFourUsers() {
+        List<SiteUser> randomUsers = this.userRepository.findRandomUsers(4);
+        return randomUsers;
     }
 }
