@@ -25,4 +25,8 @@ public class UserDesiredForm {
     private String desired_religion; //원하는 종교
 
     private String desired_mbti; //원하는 MBTI
+
+    private String desired_school;
+
+    private String desired_job;
 }

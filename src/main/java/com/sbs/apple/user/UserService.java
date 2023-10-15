@@ -42,7 +42,7 @@ public class UserService {
     }
 
     public SiteUser add_profile(SiteUser user, int age, String living, String hobby, int tall, String bodyType,
-                                boolean smoking, String drinking, String style, String religion,
+                                String smoking, String drinking, String style, String religion,
                                 String mbti, String school, String job) {
         user.setAge(age);
         user.setLiving(living);
@@ -64,7 +64,7 @@ public class UserService {
     public SiteUser add_desired(SiteUser user, String desiredAge, String desiredLiving, String desiredHobby,
                                 String desiredTall, String desiredBodyType, String desiredSmoking,
                                 String desiredDrinking, String desiredStyle, String desiredReligion,
-                                String desiredMbti) {
+                                String desiredMbti, String desiredSchool, String desiredJob) {
         user.setDesired_age(desiredAge);
         user.setDesired_living(desiredLiving);
         user.setDesired_hobby(desiredHobby);
@@ -75,6 +75,8 @@ public class UserService {
         user.setDesired_style(desiredStyle);
         user.setDesired_religion(desiredReligion);
         user.setDesired_mbti(desiredMbti);
+        user.setDesired_school(desiredSchool);
+        user.setDesired_job(desiredJob);
         this.userRepository.save(user);
         return user;
     }

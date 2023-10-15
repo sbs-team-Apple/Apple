@@ -61,7 +61,7 @@ public class UserController {
     public String add2(@PathVariable("id") Integer id,UserAddForm userAddForm,RedirectAttributes redirectAttributes) {
         SiteUser user = this.userService.getUser(id);
         userService.add_profile(user,userAddForm.getAge(),userAddForm.getLiving(),userAddForm.getHobby(),
-                userAddForm.getTall(),userAddForm.getBody_type(),userAddForm.isSmoking(),
+                userAddForm.getTall(),userAddForm.getBody_type(),userAddForm.getSmoking(),
                 userAddForm.getDrinking(),userAddForm.getStyle(),userAddForm.getReligion(),
                 userAddForm.getMbti(),userAddForm.getSchool(),userAddForm.getJob());
         redirectAttributes.addAttribute("id", user.getId());
@@ -84,7 +84,8 @@ public class UserController {
                 userDesiredForm.getDesired_hobby(),userDesiredForm.getDesired_tall(),
                 userDesiredForm.getDesired_body_type(),userDesiredForm.getDesired_smoking(),
                 userDesiredForm.getDesired_drinking(),userDesiredForm.getDesired_style(),
-                userDesiredForm.getDesired_religion(),userDesiredForm.getDesired_mbti());
+                userDesiredForm.getDesired_religion(),userDesiredForm.getDesired_mbti(),
+                userDesiredForm.getDesired_school(),userDesiredForm.getDesired_job());
         return "redirect:/";
     }
 
@@ -169,7 +170,7 @@ public class UserController {
         SiteUser siteUser = this.userService.getUserbyName(principal.getName());
         userAddForm.setAge(siteUser.getAge()); userAddForm.setLiving(siteUser.getLiving());
         userAddForm.setHobby(siteUser.getHobby()); userAddForm.setTall(siteUser.getTall());
-        userAddForm.setBody_type(siteUser.getBody_type()); userAddForm.setSmoking(siteUser.isSmoking());
+        userAddForm.setBody_type(siteUser.getBody_type()); userAddForm.setSmoking(siteUser.getSmoking());
         userAddForm.setDrinking(siteUser.getDrinking()); userAddForm.setStyle(siteUser.getStyle());
         userAddForm.setReligion(siteUser.getReligion()); userAddForm.setMbti(siteUser.getMbti());
         userAddForm.setSchool(siteUser.getSchool()); userAddForm.setJob(siteUser.getJob());
@@ -180,7 +181,7 @@ public class UserController {
     public String profile_modify(UserAddForm userAddForm,Principal principal) {
         SiteUser user = this.userService.getUserbyName(principal.getName());
         userService.add_profile(user,userAddForm.getAge(),userAddForm.getLiving(),userAddForm.getHobby(),
-                userAddForm.getTall(),userAddForm.getBody_type(),userAddForm.isSmoking(),
+                userAddForm.getTall(),userAddForm.getBody_type(),userAddForm.getSmoking(),
                 userAddForm.getDrinking(),userAddForm.getStyle(),userAddForm.getReligion(),
                 userAddForm.getMbti(),userAddForm.getSchool(),userAddForm.getJob());
         return "redirect:/user/myPage";
@@ -195,6 +196,7 @@ public class UserController {
         userDesiredForm.setDesired_body_type(siteUser.getDesired_body_type()); userDesiredForm.setDesired_smoking(siteUser.getDesired_smoking());
         userDesiredForm.setDesired_drinking(siteUser.getDesired_drinking()); userDesiredForm.setDesired_style(siteUser.getDesired_style());
         userDesiredForm.setDesired_religion(siteUser.getDesired_religion()); userDesiredForm.setDesired_mbti(siteUser.getDesired_mbti());
+        userDesiredForm.setDesired_school(siteUser.getDesired_school()); userDesiredForm.setDesired_job(siteUser.getDesired_job());
         model.addAttribute("siteUser", siteUser);
         return "user/desired_modify";
     }
@@ -205,7 +207,8 @@ public class UserController {
                 userDesiredForm.getDesired_hobby(),userDesiredForm.getDesired_tall(),
                 userDesiredForm.getDesired_body_type(),userDesiredForm.getDesired_smoking(),
                 userDesiredForm.getDesired_drinking(),userDesiredForm.getDesired_style(),
-                userDesiredForm.getDesired_religion(),userDesiredForm.getDesired_mbti());
+                userDesiredForm.getDesired_religion(),userDesiredForm.getDesired_mbti(),
+                userDesiredForm.getDesired_school(),userDesiredForm.getDesired_job());
         return "redirect:/user/myPage";
     }
 

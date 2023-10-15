@@ -35,7 +35,7 @@ public class SiteUser {
 
     private String body_type; //체형
 
-    private boolean smoking; //흡연 유무
+    private String smoking; //흡연 유무
     private String drinking; //음주 유무
     private String style; //스타일(성격)
     private String religion; //종교
@@ -52,6 +52,8 @@ public class SiteUser {
     private String desired_style; //원하는 스타일
     private String desired_religion; //원하는 종교
     private String desired_mbti; //원하는 MBTI
+    private String desired_school;
+    private String desired_job;
     //여러개를 선택해야할 때의 칼럼
     public List<? extends GrantedAuthority> getGrantedAuthorities() {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
