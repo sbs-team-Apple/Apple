@@ -49,18 +49,28 @@
                     return;
                 }
 
+                form.About_Me.value = form.About_Me.value.trim();
+
+                if (form.About_Me.value.length == 0) {
+                    form.About_Me.focus();
+                    alert('자기소개를 입력해주세요.');
+                    return;
+                }
+
                 form.submit();
                 submitJoinFormDone = true;
             }
         </script>
 
-        <form th:action="@{/user/add/{id}(id=${id})}" th:object="${userAddForm}" method="post" onsubmit="submitJoinForm(this); return false;" class="flex flex-col gap-6">
+        <form th:action="@{/user/add/{id}(id=${id})}" th:object="${userAddForm}" method="post"
+              onsubmit="submitJoinForm(this); return false;" class="flex flex-col gap-6">
             <div class="form-control">
                 <label class="label">
                     <span class="label-text">나이</span>
                     <span>(숫자만 입력해주세요.)</span>
                 </label>
-                <input type="text" name="age" placeholder="나이" class="input input-bordered" maxlength="30" pattern="[0-9]*">
+                <input type="text" name="age" placeholder="나이" class="input input-bordered" maxlength="30"
+                       pattern="[0-9]*">
             </div>
 
             <div class="form-control">
@@ -95,7 +105,8 @@
                 <label class="label">
                     <span class="label-text">키</span>
                 </label>
-                <input type="text" name="tall" placeholder="키" class="input input-bordered" maxlength="255" pattern="[0-9]*">
+                <input type="text" name="tall" placeholder="키" class="input input-bordered" maxlength="255"
+                       pattern="[0-9]*">
                 <span>(숫자만 입력해주세요.)</span>
             </div>
             <div class="form-control">
@@ -198,6 +209,13 @@
                     <option value="무직">무직</option>
                     <option value="준비중">준비중</option>
                 </select>
+            </div>
+
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">자기소개</span>
+                </label>
+                <textarea name="About_Me" placeholder="자기소개" class="input input-bordered" maxlength="500" style="height: 200px;"></textarea>
             </div>
 
             <div>
