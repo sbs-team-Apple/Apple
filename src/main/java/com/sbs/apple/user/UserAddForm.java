@@ -21,7 +21,7 @@ public class UserAddForm {
 
     private String body_type; //체형
 
-    private boolean smoking; //흡연 유무
+    private String smoking; //흡연 유무
 
     private String drinking; //음주 유무
 
