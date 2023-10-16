@@ -4,10 +4,14 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
 public class UserCreateForm {
+    @NotEmpty(message = "사진은 필수 항목입니다.")
+    private MultipartFile photo;
+
     @Size(min = 3, max = 25)
     @NotEmpty(message = "ID는 필수항목입니다.")
     private String username;

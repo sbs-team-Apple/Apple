@@ -63,6 +63,13 @@
         <form th:action="@{/user/signup}" th:object="${userCreateForm}" method="post" onsubmit="submitJoinForm(this); return false;" class="flex flex-col gap-6">
             <div class="form-control">
                 <label class="label">
+                    <span class="label-text">프로필 사진</span>
+                </label>
+                <input type="file" name="photo" class="input" accept="image/*">
+            </div>
+
+            <div class="form-control">
+                <label class="label">
                     <span class="label-text">아이디</span>
                 </label>
                 <input type="text" name="username" placeholder="아이디" class="input input-bordered" autofocus maxlength="30">

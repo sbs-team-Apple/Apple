@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class AdminController {
     private final ReportService reportService;
 
     @GetMapping("/createAdminAccount")
+    @ResponseBody
     public String createAdminAccount() {
         adminAccountService.createAdminAccount();
         return "Admin account created!";
