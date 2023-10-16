@@ -123,4 +123,15 @@ public class UserService {
         return randomUsers;
 
     }
+
+    public List<SiteUser> getAllUser2(SiteUser loginUser) {
+        List<SiteUser> siteUsers = userRepository.findAll();
+
+        for (int i = 0; i <siteUsers.size(); i++) {
+            if(siteUsers.get(i).getId()==loginUser.getId()){
+                siteUsers.remove(i);
+            }
+        }
+        return siteUsers;
+    }
 }
