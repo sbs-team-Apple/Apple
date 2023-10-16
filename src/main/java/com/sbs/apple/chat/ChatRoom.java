@@ -1,6 +1,7 @@
 package com.sbs.apple.chat;
 
 
+import com.sbs.apple.user.SiteUser;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,11 +18,15 @@ public class ChatRoom {
     private Integer id;
     //회원가입 할 때 기본 정보
 
-    @Column
-    private Integer userId1;
+    @ManyToOne
+    private SiteUser siteUser;
 
-    @Column
-    private Integer userId2;
+
+    @ManyToOne
+    private SiteUser siteUser2;
 
     private LocalDateTime createDate;
+
+
+
 }
