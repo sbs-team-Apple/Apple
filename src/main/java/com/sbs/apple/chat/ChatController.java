@@ -42,8 +42,8 @@ public class ChatController {
 
             chatRoomService.create(user, user2);
         model.addAttribute("roomId", roomId+1);
-
-        return "redirect:/";
+        model.addAttribute("user",user);
+        return "chat/room";
     }
 
 //    원래 있던 채팅방 들어가기
@@ -55,7 +55,7 @@ public class ChatController {
         System.out.println("채팅방에 들어갈 방번호 "+room.getId());
 
         model.addAttribute("roomId",room.getId() );
-
+        model.addAttribute("user",user);
         return "chat/room";
     }
 
