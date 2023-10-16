@@ -1,5 +1,6 @@
 package com.sbs.apple.chat;
 
+import com.sbs.apple.user.SiteUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +13,13 @@ public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
 
 
-    public ChatRoom create(Integer userId){
+    public ChatRoom create(SiteUser user,SiteUser user2){
         ChatRoom chatRoom = new ChatRoom();
-        chatRoom.setUserId1(userId);
+//        chatRoom.setUserId1(user);
+//        chatRoom.setUserId2(userId2);
         chatRoom.setCreateDate(LocalDateTime.now());
+        chatRoom.setSiteUser(user);
+        chatRoom.setSiteUser2(user2);
         chatRoomRepository.save(chatRoom);
         return chatRoom;
 
@@ -40,11 +44,13 @@ public class ChatRoomService {
         return chatRoomRepository.findAll();
     }
 
-    public List<ChatRoom> findByUserId1(Integer userId1){
-        return chatRoomRepository.findByUserId1(userId1);
+    public List<ChatRoom> findByUser(SiteUser user){
+       return chatRoomRepository.findChatRoomsByUserId(user);
     }
 
 
+    public ChatRoom findRoomByUserIdAndUserId2(Integer userId, Integer userId2) {
+        return chatRoomRepository.findRoomByUserIdAndUserId2(userId, userId2);
 
-
+    }
 }
