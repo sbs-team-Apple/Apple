@@ -26,8 +26,4 @@ public class PaymentService {
             userRepository.save(user);
         }
     }
-
-
 }
-
-

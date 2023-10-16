@@ -15,7 +15,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public SiteUser getUser(Integer id){
+    public SiteUser getUser(Integer id) {
         Optional<SiteUser> user = this.userRepository.findById(id);
         if (user.isPresent()) {
             return user.get();
@@ -23,7 +23,8 @@ public class UserService {
             throw new DataNotFoundException("user not found");
         }
     }
-    public SiteUser getUserbyName(String name){
+
+    public SiteUser getUserbyName(String name) {
         Optional<SiteUser> user = this.userRepository.findByusername(name);
         if (user.isPresent()) {
             return user.get();
@@ -44,7 +45,7 @@ public class UserService {
 
     public SiteUser add_profile(SiteUser user, int age, String living, String hobby, int tall, String bodyType,
                                 boolean smoking, String drinking, String style, String religion,
-                                String mbti, String school, String job) {
+                                String mbti, String school, String job, String About_Me) {
         user.setAge(age);
         user.setLiving(living);
         user.setHobby(hobby);
@@ -57,6 +58,7 @@ public class UserService {
         user.setMbti(mbti);
         user.setSchool(school);
         user.setJob(job);
+        user.setAbout_Me(About_Me);
         this.userRepository.save(user);
         return user;
     }
@@ -79,16 +81,19 @@ public class UserService {
         this.userRepository.save(user);
         return user;
     }
+
     public boolean isCorrectPassword(String username, String password) {
         SiteUser user = getUserbyName(username);
         String actualPassword = user.getPassword();
         return passwordEncoder.matches(password, actualPassword);
     }
+
     public void updatePassword(String username, String newPassword) {
         SiteUser user = getUserbyName(username);
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
     }
+
     public void delete(SiteUser siteUser) {
         // 해당 사용자와 연결된 answer 레코드 삭제
 //        List<Answer> userAnswers = answerRepository.findByAuthor(siteUser);
@@ -101,11 +106,12 @@ public class UserService {
         // 사용자 삭제
         this.userRepository.delete(siteUser);
     }
+
     //소셜 로그인
     @Transactional
     public SiteUser whenSocialLogin(String providerTypeCode, String username, String nickname) {
         // 소셜 로그인를 통한 가입시 비번은 없다.
-        return create(username, "",nickname,""); // 최초 로그인 시 딱 한번 실행
+        return create(username, "", nickname, ""); // 최초 로그인 시 딱 한번 실행
     }
 
     public List<SiteUser> getFourUsers() {
@@ -113,3 +119,5 @@ public class UserService {
         return randomUsers;
     }
 }
+
+

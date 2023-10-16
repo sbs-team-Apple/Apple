@@ -1,40 +1,53 @@
 package com.sbs.apple.cybermoney;
 
-import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import com.sbs.apple.user.SiteUser;
+import com.sbs.apple.user.UserRepository;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.security.Principal;
+import java.util.Optional;
 
-@Controller
-@RequestMapping("/cybermoney")
+@RestController
+@RequestMapping("/api/cybermoney")
 public class CyberMoneyController {
-    @Autowired
-    private CyberMoneyTransferService transferService;
+    private final CyberMoneyService cyberMoneyService;
+    private final UserRepository siteUserRepository;
 
-    @PostMapping("/transfer")
-    public String transferCyberMoney(HttpServletRequest request,
-                                     @RequestParam String recipientUsername,
-                                     @RequestParam int amount,
-                                     RedirectAttributes attributes) {
-        try {
-            Principal principal = request.getUserPrincipal();
-            String senderUsername = principal.getName();
+    public CyberMoneyController(CyberMoneyService cyberMoneyService, UserRepository siteUserRepository) {
+        this.cyberMoneyService = cyberMoneyService;
+        this.siteUserRepository = siteUserRepository;
+    }
 
-            // 사용자의 사이버 머니 전송을 처리하는 서비스 호출
-            transferService.transferCyberMoney(senderUsername, recipientUsername, amount);
+    @PostMapping("/send")
+    public ResponseEntity<String> sendCyberMoney(
+            @RequestParam("recipientUsername") String recipientUsername,
+            @RequestParam("amount") int amount
+    ) {
+        // 현재 로그인한 사용자를 가져옵니다.
+        SiteUser senderUser = (SiteUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-            attributes.addFlashAttribute("successMessage", amount + " 사이버 머니를 전송했습니다.");
-        } catch (InsufficientFundsException e) {
-            attributes.addFlashAttribute("errorMessage", "사이버 머니가 부족합니다.");
-        } catch (UserNotFoundException e) {
-            attributes.addFlashAttribute("errorMessage", "사용자를 찾을 수 없습니다.");
+        // 보내는 사람과 받는 사람이 다른 사용자인지 확인합니다.
+        if (senderUser.getUsername().equals(recipientUsername)) {
+            return ResponseEntity.badRequest().body("자기 자신에게 사이버 머니를 보낼 수 없습니다.");
         }
 
-        return "redirect:/";
+        // 받는 사용자를 찾습니다.
+        Optional<SiteUser> recipientUserOptional = siteUserRepository.findByusername(recipientUsername);
+        if (!recipientUserOptional.isPresent()) {
+            return ResponseEntity.badRequest().body("받는 사용자를 찾을 수 없습니다.");
+        }
+        SiteUser recipientUser = recipientUserOptional.get();
+
+        // 사이버 머니를 보냅니다.
+        try {
+            cyberMoneyService.sendCyberMoney(senderUser, recipientUser, amount);
+            return ResponseEntity.ok("사이버 머니 전송이 성공했습니다.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

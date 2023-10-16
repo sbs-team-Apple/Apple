@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- Bootstrap CSS를 추가하세요 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+</head>
+
+<body>
+<div id="userId" th:text="${siteUser.id}"></div>
+<h1>소개</h1>
+<div th:text="${siteUser.age}"></div>
+<div th:text="${siteUser.living}"></div>
+<div th:text="${siteUser.hobby}"></div>
+<div th:text="${siteUser.tall}"></div>
+<div th:text="${siteUser.smoking}"></div>
+<div th:text="${siteUser.drinking}"></div>
+<div th:text="${siteUser.style}"></div>
+<div th:text="${siteUser.religion}"></div>
+<div th:text="${siteUser.mbti}"></div>
+<div th:text="${siteUser.school}"></div>
+<div th:text="${siteUser.job}"></div>
+<div th:text="${siteUser.About_Me}"></div>
+<h2>원하는 이상형</h2>
+<div th:text="${siteUser.desired_age}"></div>
+<div th:text="${siteUser.desired_living}"></div>
+<div th:text="${siteUser.desired_hobby}"></div>
+<div th:text="${siteUser.desired_tall}"></div>
+<div th:text="${siteUser.desired_body_type}"></div>
+<div th:text="${siteUser.desired_smoking}"></div>
+<div th:text="${siteUser.desired_drinking}"></div>
+<div th:text="${siteUser.desired_style}"></div>
+<div th:text="${siteUser.desired_religion}"></div>
+<div th:text="${siteUser.desired_mbti}"></div>
+<a th:href="@{/user/report}">신고하기</a>
+<button id="sendCyberMoneyBtn" class="btn btn-primary" data-toggle="modal" data-target="#cyberMoneyModal">사이버머니 보내기</button>
+
+<!-- 모달 다이얼로그 -->
+<div class="modal fade" id="cyberMoneyModal" tabindex="-1" role="dialog" aria-labelledby="cyberMoneyModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cyberMoneyModalLabel">사이버머니 보내기</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>금액을 입력해주세요:</p>
+                <input type="number" id="cyberMoneyAmount" class="form-control" required>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                <button type="button" class="btn btn-primary" id="sendCyberMoneyConfirmBtn">확인</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS 및 jQuery 스크립트를 추가하세요 -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    document.getElementById('sendCyberMoneyBtn').addEventListener('click', function() {
+        $('#cyberMoneyModal').modal('show'); // 모달을 열 때
+
+        document.getElementById('sendCyberMoneyConfirmBtn').addEventListener('click', function() {
+            var amount = document.getElementById('cyberMoneyAmount').value;
+
+            var csrfToken = document.querySelector("meta[name='_csrf']").getAttribute("content");
+            var csrfHeader = document.querySelector("meta[name='_csrf_header']").getAttribute("content");
+            var recipientUsernameElement = document.getElementById('userId');
+
+            if (recipientUsernameElement) {
+                var recipientUsername = recipientUsernameElement.textContent;
+
+                if (amount >= 0) {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', '/api/cybermoney/send', true);
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === 4) {
+                            if (xhr.status === 200) {
+                                $('#cyberMoneyModal').modal('hide'); // 성공 시 모달을 닫음
+                                alert('사이버 머니 전송이 성공했습니다.');
+                                // 사이버 머니 갱신 등의 추가 작업 수행
+                            } else {
+                                if (xhr.status === 400) {
+                                    alert('사이버 머니 전송에 실패했습니다. 요청이 잘못되었습니다.');
+                                } else if (xhr.status === 403) {
+                                    alert('사이버 머니 전송에 실패했습니다. 권한이 없습니다.');
+                                } else {
+                                    console.log(xhr.status);
+                                    alert('사이버 머니 전송에 실패했습니다. 서버 오류가 발생했습니다.');
+                                }
+                            }
+                        }
+                    };
+
+                    // 요청 본문 데이터
+                    var data = 'recipientUsername=' + recipientUsername + '&amount=' + amount;
+
+                    xhr.send(data);
+                } else {
+                    alert('금액은 0 이상이어야 합니다.');
+                }
+            } else {
+                alert('받는 사용자를 찾을 수 없습니다.');
+            }
+        });
+    });
+</script>
+
+
+</body>
+</html>
+

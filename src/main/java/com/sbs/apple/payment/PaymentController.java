@@ -35,19 +35,20 @@ public class PaymentController {
             @RequestParam(value = "amount") Integer amount,
             @RequestParam(value = "paymentKey") String paymentKey) throws Exception {
 
-        String username;
-
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = null;
 
         if (principal instanceof UserDetails) {
-            username = ((UserDetails) principal).getUsername();
-        } else {
-            username = principal.toString();
+            UserDetails userDetails = (UserDetails) principal;
+            username = userDetails.getUsername();
         }
 
-
-
         String secretKey = "test_sk_nRQoOaPz8L9X60z0eEG3y47BMw6v:";
+
+        if (username != null) {
+            // 결제가 발생한 사용자에게만 사이버 머니 추가
+            paymentService.grantCyberMoneyToUser(username, amount);
+        }
 
         Base64.Encoder encoder = Base64.getEncoder();
         byte[] encodedBytes = encoder.encode(secretKey.getBytes("UTF-8"));
@@ -69,11 +70,6 @@ public class PaymentController {
 
         int code = connection.getResponseCode();
         boolean isSuccess = code == 200;
-
-        if (isSuccess) {
-            // 결제 성공 시, 사용자에게 사이버머니를 지급
-            paymentService.grantCyberMoneyToUser(username, amount);
-        }
 
         model.addAttribute("isSuccess", isSuccess);
 
@@ -106,18 +102,4 @@ public class PaymentController {
 
         return "success";
     }
-
-    @GetMapping(value = "fail")
-    public String paymentResult(
-            Model model,
-            @RequestParam(value = "message") String message,
-            @RequestParam(value = "code") Integer code
-    ) throws Exception {
-
-        model.addAttribute("code", code);
-        model.addAttribute("message", message);
-
-        return "fail";
-    }
-
 }
