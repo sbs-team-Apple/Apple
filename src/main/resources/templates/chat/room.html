@@ -1,4 +1,4 @@
-
+<html layout:decorate="~{/common/layout}">
 
 <head>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -8,10 +8,12 @@
     <title></title>
 
 </head>
+<div layout:fragment="content" class="container my-3">
 
 <div class="chat">
     <form class="chat__write-message" onsubmit="Chat__writeMessage(this); return false;">
         <input type="hidden" name="roomId" th:value="${roomId}">
+
         <input type="text" placeholder="작성자" name="authorName" autocomplete="off">
         <input type="text" placeholder="내용을 입력해주세요." name="content" autocomplete="off">
         <input type="submit" value="작성">
@@ -23,6 +25,11 @@
     </div>
 </div>
 
+
+
+</div>
+
+</html>
 
 <script th:inline="javascript">
     const roomId = [[${roomId}]];

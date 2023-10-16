@@ -1,6 +1,10 @@
 package com.sbs.apple.user;
 
+
+import com.sbs.apple.chat.ChatRoom;
+
 import com.sbs.apple.report.Report;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -56,6 +60,16 @@ public class SiteUser {
     private String desired_style; //원하는 스타일
     private String desired_religion; //원하는 종교
     private String desired_mbti; //원하는 MBTI
+
+
+
+    @OneToMany(mappedBy = "siteUser" , cascade = CascadeType.REMOVE)
+    private List<ChatRoom> chatRoomList;
+
+
+
+
+
     private String desired_school;
     private String desired_job;
 
@@ -72,6 +86,7 @@ public class SiteUser {
         }
         return cyberMoney;
     }
+
     //여러개를 선택해야할 때의 칼럼
     public List<? extends GrantedAuthority> getGrantedAuthorities() {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
