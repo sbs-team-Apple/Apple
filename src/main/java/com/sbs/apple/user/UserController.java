@@ -1,6 +1,8 @@
 package com.sbs.apple.user;
 
 
+import com.sbs.apple.report.ReportForm;
+import com.sbs.apple.report.ReportService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -18,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
-import java.util.List;
 
 //회원가입
 @RequiredArgsConstructor
@@ -28,6 +29,7 @@ public class UserController {
 
 
     private final UserService userService;
+    private final ReportService reportService;
 
     @GetMapping("/signup")
     public String signup1(UserCreateForm userCreateForm) {
@@ -64,7 +66,7 @@ public class UserController {
         userService.add_profile(user,userAddForm.getAge(),userAddForm.getLiving(),userAddForm.getHobby(),
                 userAddForm.getTall(),userAddForm.getBody_type(),userAddForm.isSmoking(),
                 userAddForm.getDrinking(),userAddForm.getStyle(),userAddForm.getReligion(),
-                userAddForm.getMbti(),userAddForm.getSchool(),userAddForm.getJob());
+                userAddForm.getMbti(),userAddForm.getSchool(),userAddForm.getJob(),userAddForm.getAbout_Me());
         redirectAttributes.addAttribute("id", user.getId());
         return "redirect:/user/desired/" + user.getId();
     }
@@ -91,9 +93,7 @@ public class UserController {
 
     //로그인
     @GetMapping("/login")
-    public String login(Model model)
-    {List<SiteUser> userList = userService.getFourUsers(); // 사용자 정보를 가져오는 예시 메서드
-        model.addAttribute("userList", userList);
+    public String login(Model model) {
         return "user/login_form";
     }
     //마이 페이지
@@ -104,8 +104,12 @@ public class UserController {
         SiteUser user = userService.getUserbyName(username);
 
         int userCyberMoney = user.getCyberMoney();
+        int receivedCyberMoney = user.getReceivedCyberMoney(); // 다른 사용자로부터 받은 사이버머니
+
         model.addAttribute("userCyberMoney", userCyberMoney);
+        model.addAttribute("receivedCyberMoney", receivedCyberMoney); // 다른 사용자로부터 받은 사이버머니
         model.addAttribute("user", user);
+
         return "myPage";
     }
     //비밀번호 변경
@@ -188,7 +192,7 @@ public class UserController {
         userService.add_profile(user,userAddForm.getAge(),userAddForm.getLiving(),userAddForm.getHobby(),
                 userAddForm.getTall(),userAddForm.getBody_type(),userAddForm.isSmoking(),
                 userAddForm.getDrinking(),userAddForm.getStyle(),userAddForm.getReligion(),
-                userAddForm.getMbti(),userAddForm.getSchool(),userAddForm.getJob());
+                userAddForm.getMbti(),userAddForm.getSchool(),userAddForm.getJob(),userAddForm.getAbout_Me());
         return "redirect:/user/myPage";
     }
     //이상형 수정
@@ -223,4 +227,27 @@ public class UserController {
         model.addAttribute("user", user);
         return "payment";
     }
+    //조회하기
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/detail/{id}")
+    public String paymentPage(Model model,@PathVariable("id") Integer id) {
+        SiteUser siteUser =this.userService.getUser(id);
+        model.addAttribute("siteUser",siteUser);
+        return "user/profile";
+    }
+    //신고하기
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/report")
+    public String report(ReportForm reportForm) {
+        return "user/report";
+    }
+    @PostMapping("/report")
+    public String reportCreate(@Valid ReportForm reportForm, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "user/report";
+        }
+        this.reportService.create(reportForm.getSubject(), reportForm.getContent());
+        return "redirect:/";
+    }
+
 }
