@@ -2,14 +2,13 @@ package com.sbs.apple.user;
 
 
 import com.sbs.apple.chat.ChatRoom;
-
 import com.sbs.apple.report.Report;
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +23,8 @@ public class SiteUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     //회원가입 할 때 기본 정보
+
+    private MultipartFile photo;
     @Column(unique = true)
     private String username;
     private String password;
