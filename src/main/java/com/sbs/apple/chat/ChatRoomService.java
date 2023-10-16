@@ -53,4 +53,11 @@ public class ChatRoomService {
         return chatRoomRepository.findRoomByUserIdAndUserId2(userId, userId2);
 
     }
+
+    public List<ChatRoom> getAll() {
+        if( chatRoomRepository.findAll()==null){
+            return null;
+        }
+        return  chatRoomRepository.findAll();
+    }
 }
