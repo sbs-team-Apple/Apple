@@ -1,6 +1,8 @@
 package com.sbs.apple.user;
 
 
+import com.sbs.apple.report.ReportForm;
+import com.sbs.apple.report.ReportService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -27,6 +29,7 @@ public class UserController {
 
 
     private final UserService userService;
+    private final ReportService reportService;
 
     @GetMapping("/signup")
     public String signup1(UserCreateForm userCreateForm) {
@@ -61,9 +64,9 @@ public class UserController {
     public String add2(@PathVariable("id") Integer id,UserAddForm userAddForm,RedirectAttributes redirectAttributes) {
         SiteUser user = this.userService.getUser(id);
         userService.add_profile(user,userAddForm.getAge(),userAddForm.getLiving(),userAddForm.getHobby(),
-                userAddForm.getTall(),userAddForm.getBody_type(),userAddForm.isSmoking(),
+                userAddForm.getTall(),userAddForm.getBody_type(),userAddForm.getSmoking(),
                 userAddForm.getDrinking(),userAddForm.getStyle(),userAddForm.getReligion(),
-                userAddForm.getMbti(),userAddForm.getSchool(),userAddForm.getJob());
+                userAddForm.getMbti(),userAddForm.getSchool(),userAddForm.getJob(),userAddForm.getAbout_Me());
         redirectAttributes.addAttribute("id", user.getId());
         return "redirect:/user/desired/" + user.getId();
     }
@@ -84,13 +87,14 @@ public class UserController {
                 userDesiredForm.getDesired_hobby(),userDesiredForm.getDesired_tall(),
                 userDesiredForm.getDesired_body_type(),userDesiredForm.getDesired_smoking(),
                 userDesiredForm.getDesired_drinking(),userDesiredForm.getDesired_style(),
-                userDesiredForm.getDesired_religion(),userDesiredForm.getDesired_mbti());
+                userDesiredForm.getDesired_religion(),userDesiredForm.getDesired_mbti(),
+                userDesiredForm.getDesired_school(),userDesiredForm.getDesired_job());
         return "redirect:/";
     }
 
     //로그인
     @GetMapping("/login")
-    public String login() {
+    public String login(Model model) {
         return "user/login_form";
     }
     //마이 페이지
@@ -99,6 +103,9 @@ public class UserController {
     public String userMyPage(Model model, Principal principal) {
         String username = principal.getName();
         SiteUser user = userService.getUserbyName(username);
+
+        int userCyberMoney = user.getCyberMoney();
+        model.addAttribute("userCyberMoney", userCyberMoney);
         model.addAttribute("user", user);
         return "myPage";
     }
@@ -169,7 +176,7 @@ public class UserController {
         SiteUser siteUser = this.userService.getUserbyName(principal.getName());
         userAddForm.setAge(siteUser.getAge()); userAddForm.setLiving(siteUser.getLiving());
         userAddForm.setHobby(siteUser.getHobby()); userAddForm.setTall(siteUser.getTall());
-        userAddForm.setBody_type(siteUser.getBody_type()); userAddForm.setSmoking(siteUser.isSmoking());
+        userAddForm.setBody_type(siteUser.getBody_type()); userAddForm.setSmoking(siteUser.getSmoking());
         userAddForm.setDrinking(siteUser.getDrinking()); userAddForm.setStyle(siteUser.getStyle());
         userAddForm.setReligion(siteUser.getReligion()); userAddForm.setMbti(siteUser.getMbti());
         userAddForm.setSchool(siteUser.getSchool()); userAddForm.setJob(siteUser.getJob());
@@ -180,9 +187,9 @@ public class UserController {
     public String profile_modify(UserAddForm userAddForm,Principal principal) {
         SiteUser user = this.userService.getUserbyName(principal.getName());
         userService.add_profile(user,userAddForm.getAge(),userAddForm.getLiving(),userAddForm.getHobby(),
-                userAddForm.getTall(),userAddForm.getBody_type(),userAddForm.isSmoking(),
+                userAddForm.getTall(),userAddForm.getBody_type(),userAddForm.getSmoking(),
                 userAddForm.getDrinking(),userAddForm.getStyle(),userAddForm.getReligion(),
-                userAddForm.getMbti(),userAddForm.getSchool(),userAddForm.getJob());
+                userAddForm.getMbti(),userAddForm.getSchool(),userAddForm.getJob(),userAddForm.getAbout_Me());
         return "redirect:/user/myPage";
     }
     //이상형 수정
@@ -195,6 +202,7 @@ public class UserController {
         userDesiredForm.setDesired_body_type(siteUser.getDesired_body_type()); userDesiredForm.setDesired_smoking(siteUser.getDesired_smoking());
         userDesiredForm.setDesired_drinking(siteUser.getDesired_drinking()); userDesiredForm.setDesired_style(siteUser.getDesired_style());
         userDesiredForm.setDesired_religion(siteUser.getDesired_religion()); userDesiredForm.setDesired_mbti(siteUser.getDesired_mbti());
+        userDesiredForm.setDesired_school(siteUser.getDesired_school()); userDesiredForm.setDesired_job(siteUser.getDesired_job());
         model.addAttribute("siteUser", siteUser);
         return "user/desired_modify";
     }
@@ -205,7 +213,8 @@ public class UserController {
                 userDesiredForm.getDesired_hobby(),userDesiredForm.getDesired_tall(),
                 userDesiredForm.getDesired_body_type(),userDesiredForm.getDesired_smoking(),
                 userDesiredForm.getDesired_drinking(),userDesiredForm.getDesired_style(),
-                userDesiredForm.getDesired_religion(),userDesiredForm.getDesired_mbti());
+                userDesiredForm.getDesired_religion(),userDesiredForm.getDesired_mbti(),
+                userDesiredForm.getDesired_school(),userDesiredForm.getDesired_job());
         return "redirect:/user/myPage";
     }
 
@@ -216,5 +225,27 @@ public class UserController {
         SiteUser user = userService.getUserbyName(username);
         model.addAttribute("user", user);
         return "payment";
+    }
+    //조회하기
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/detail/{id}")
+    public String paymentPage(Model model,@PathVariable("id") Integer id) {
+        SiteUser siteUser =this.userService.getUser(id);
+        model.addAttribute("siteUser",siteUser);
+        return "user/profile";
+    }
+    //신고하기
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/report")
+    public String report(ReportForm reportForm) {
+        return "user/report";
+    }
+    @PostMapping("/report")
+    public String reportCreate(@Valid ReportForm reportForm, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "user/report";
+        }
+        this.reportService.create(reportForm.getSubject(), reportForm.getContent());
+        return "redirect:/";
     }
 }

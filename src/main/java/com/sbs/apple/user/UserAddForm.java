@@ -21,7 +21,7 @@ public class UserAddForm {
 
     private String body_type; //체형
 
-    private boolean smoking; //흡연 유무
+    private String smoking; //흡연 유무
 
     private String drinking; //음주 유무
 
@@ -34,4 +34,6 @@ public class UserAddForm {
     private String school; //학력
 
     private String job; //직장
+
+    private String About_Me; //자기소개
 }
