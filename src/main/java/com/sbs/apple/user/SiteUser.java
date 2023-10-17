@@ -1,37 +1,28 @@
 package com.sbs.apple.user;
 
 
-import com.sbs.apple.Base;
 import com.sbs.apple.chat.ChatRoom;
 import com.sbs.apple.report.Report;
 import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.SuperBuilder;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import static lombok.AccessLevel.PROTECTED;
 
 @Getter
 @Setter
 @Entity
-@AllArgsConstructor(access = PROTECTED)
-@NoArgsConstructor(access = PROTECTED)
-@SuperBuilder
-@ToString(callSuper = true)
-public class SiteUser extends Base {
+public class SiteUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     //회원가입 할 때 기본 정보
-
-    private MultipartFile photo;
     @Column(unique = true)
     private String username;
     private String password;
@@ -99,14 +90,14 @@ public class SiteUser extends Base {
     public List<? extends GrantedAuthority> getGrantedAuthorities() {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         grantedAuthorities.add(new SimpleGrantedAuthority("siteuser"));
-        if ("admin".equals(username)) {
-            grantedAuthorities.add(new SimpleGrantedAuthority("admin"));
-        }
+        grantedAuthorities.add(new SimpleGrantedAuthority("admin"));
         return grantedAuthorities;
     }
-    @Enumerated(EnumType.STRING)
+
     @ElementCollection(fetch = FetchType.EAGER)
-    private Set<UserRole> authorities;
+    @Enumerated(EnumType.STRING)
+    private Set<UserRole> authorities = new HashSet<>();
+
     public boolean hasRole(UserRole role) {
         return authorities.contains(role);
     }
@@ -114,4 +105,5 @@ public class SiteUser extends Base {
     public boolean isAdmin() {
         return hasRole(UserRole.ADMIN);
     }
+
 }

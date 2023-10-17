@@ -30,6 +30,7 @@ public class UserController {
 
     private final UserService userService;
     private final ReportService reportService;
+    private final UserRepository userRepository;
 
     @GetMapping("/signup")
     public String signup1(UserCreateForm userCreateForm) {
@@ -250,4 +251,20 @@ public class UserController {
         this.reportService.create(siteUser, reportForm.getSubject(), reportForm.getContent());
         return "redirect:/";
     }
+    //admin 계정 부여하기
+    @GetMapping("/grantAuthorityToAdmin")
+    public String grantAuthorityForm(Principal principal){
+
+        return "/admin/grantAuthorityForm";
+    }
+    @PostMapping("/grantAuthorityToAdmin")
+    public String grantAdminAuthority(@RequestParam String adminCode, Principal principal) {
+        if ("admin".equals(adminCode)) {
+            String username = principal.getName();
+            userService.grantAdminAuthority(username);
+
+        }
+        return "redirect:/";
+    }
+
 }

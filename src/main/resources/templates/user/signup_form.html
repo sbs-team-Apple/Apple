@@ -60,13 +60,7 @@
             }
         </script>
 
-        <form enctype="multipart/form-data" th:action="@{/user/signup}" th:object="${userCreateForm}" method="post" onsubmit="submitJoinForm(this); return false;" class="flex flex-col gap-6">
-            <div class="form-control">
-                <label class="label">
-                    <span class="label-text">프로필 사진</span>
-                </label>
-                <input type="file" name="photo" class="file-input file-input-bordered" accept="image/*">
-            </div>
+        <form th:action="@{/user/signup}" th:object="${userCreateForm}" method="post" onsubmit="submitJoinForm(this); return false;" class="flex flex-col gap-6">
 
             <div class="form-control">
                 <label class="label">
