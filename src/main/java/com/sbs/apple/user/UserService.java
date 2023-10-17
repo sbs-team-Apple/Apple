@@ -35,7 +35,6 @@ public class UserService {
 
     public SiteUser create(MultipartFile photo, String username, String password, String nickname, String gender) {
         SiteUser user = new SiteUser();
-        user.setPhoto(photo);
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
         user.setNickname(nickname);
@@ -134,5 +133,16 @@ public class UserService {
         List<SiteUser> randomUsers = this.userRepository.findRandomUsers(4);
         return randomUsers;
 
+    }
+
+    public void grantAdminAuthority(String username) {
+        SiteUser user = userRepository.findByusername(username).orElse(null);
+
+        if (user != null) {
+            // 기존 권한 수정
+            user.getAuthorities().clear(); // 모든 권한 제거
+            user.getAuthorities().add(UserRole.ADMIN); // "ADMIN" 권한 추가
+            userRepository.save(user);
+        }
     }
 }
