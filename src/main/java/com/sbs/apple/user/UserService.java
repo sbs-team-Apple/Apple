@@ -111,8 +111,16 @@ public class UserService {
         return create(username, "",nickname,""); // 최초 로그인 시 딱 한번 실행
     }
 
+
+
+    public List<SiteUser> getAllUser() {
+        List<SiteUser> siteUsers = userRepository.findAll();
+        return siteUsers;
+    }
+
     public List<SiteUser> getFourUsers() {
         List<SiteUser> randomUsers = this.userRepository.findRandomUsers(4);
         return randomUsers;
+
     }
 }
