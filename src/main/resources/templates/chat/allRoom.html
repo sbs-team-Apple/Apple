@@ -12,7 +12,7 @@
 
         <div> 내가 초대한 채팅방</div>
         <div th:each="room2 : ${chatRoom2}">
-                <a th:href="@{|/chat/${room2.id}/room?userId2=${room2.siteUser2.id}|}"><div th:text="${room2.siteUser2.nickname}+'님과 채팅방'">내가 초대한</div></a>
+               <div th:text="${room2.siteUser2.nickname}+'님과 채팅방'">내가 초대한</div>
                 <form method="get" th:action="@{|/chat/${room2.id}/room?userId2=${room2.siteUser2.id}|}">
                         <input type="hidden" name="userId2" th:value="${room2.siteUser2.id}">
                         <button type="submit" >님과 채팅방 만들기 </button>
@@ -22,7 +22,7 @@
 
         <div> 내가 초대받은 채팅방</div>
         <div th:each="room3 : ${chatRoom3}">
-                <a th:href="@{|/chat/${room3.id}/room?userId2=${room3.siteUser2.id}|}"><div th:text="${room3.siteUser.nickname}+'님과 채팅방'">내가 초대 받은</div></a>
+               <div th:text="${room3.siteUser.nickname}+'님과 채팅방'">내가 초대 받은</div>
                 <form method="get" th:action="@{|/chat/${room3.id}/room2?userId=${room3.siteUser2.id}|}">
                         <input type="hidden" name="userId" th:value="${room3.siteUser.id}">
                         <button type="submit" >님과 채팅방 만들기 </button>
