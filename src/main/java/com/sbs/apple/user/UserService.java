@@ -34,7 +34,8 @@ public class UserService {
         if (user.isPresent()) {
             return user.get();
         } else {
-            throw new DataNotFoundException("user not found");
+
+            return null;
         }
     }
 
