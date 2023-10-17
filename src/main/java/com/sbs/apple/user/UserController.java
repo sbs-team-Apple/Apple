@@ -30,6 +30,7 @@ public class UserController {
 
     private final UserService userService;
     private final ReportService reportService;
+    private final UserRepository userRepository;
 
     @GetMapping("/signup")
     public String signup1(UserCreateForm userCreateForm) {
@@ -47,7 +48,6 @@ public class UserController {
                     "2개의 패스워드가 일치하지 않습니다.");
             return "user/signup_form";
         }
-        //adsdfur
         SiteUser user= userService.create(userCreateForm.getUsername(), userCreateForm.getPassword1(),
                 userCreateForm.getNickname(), userCreateForm.getGender());
         redirectAttributes.addAttribute("id", user.getId());
@@ -236,16 +236,35 @@ public class UserController {
     }
     //신고하기
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/report")
-    public String report(ReportForm reportForm) {
+    @GetMapping("/report/{id}")
+    public String report(ReportForm reportForm,@PathVariable("id") Integer id, Model model)
+        {model.addAttribute("userId",id);
         return "user/report";
-    }
-    @PostMapping("/report")
-    public String reportCreate(@Valid ReportForm reportForm, BindingResult bindingResult) {
+        }
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/report/{id}")
+    public String reportCreate(@PathVariable("id") Integer id,ReportForm reportForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "user/report";
         }
-        this.reportService.create(reportForm.getSubject(), reportForm.getContent());
+        SiteUser siteUser = userService.getUser(id);
+        this.reportService.create(siteUser, reportForm.getSubject(), reportForm.getContent());
         return "redirect:/";
     }
+    //admin 계정 부여하기
+    @GetMapping("/grantAuthorityToAdmin")
+    public String grantAuthorityForm(Principal principal){
+
+        return "/admin/grantAuthorityForm";
+    }
+    @PostMapping("/grantAuthorityToAdmin")
+    public String grantAdminAuthority(@RequestParam String adminCode, Principal principal) {
+        if ("admin".equals(adminCode)) {
+            String username = principal.getName();
+            userService.grantAdminAuthority(username);
+
+        }
+        return "redirect:/";
+    }
+
 }
