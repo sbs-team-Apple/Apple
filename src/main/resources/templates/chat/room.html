@@ -11,29 +11,82 @@
 <div layout:fragment="content" class="container my-3">
 
 <div class="chat">
-    <form class="chat__write-message" onsubmit="Chat__writeMessage(this); return false;">
-        <input type="hidden" name="roomId" th:value="${roomId}">
 
-        <input type="text" placeholder="작성자" name="authorName" autocomplete="off">
-        <input type="text" placeholder="내용을 입력해주세요." name="content" autocomplete="off">
-        <input type="submit" value="작성">
-    </form>
     <div class="chat__message-box">
+        <li th:text="${user.nickname+'님이 입장하셨습니다.'}"></li>
         <ul class="chat__message-ul">
 
         </ul>
     </div>
+    <div class="chat-write-box">
+    <form class="chat__write-message" onsubmit="Chat__writeMessage(this); return false;">
+    <input type="hidden" name="roomId" th:value="${roomId}">
+
+    <input type="text" placeholder="작성자" th:value="${user.nickname}" name="authorName" autocomplete="off">
+    <input type="text" placeholder="내용을 입력해주세요." name="content" autocomplete="off">
+        <button type="submit" value="작성">보내기</button>
+    </form>
+    </div>
+</div>
+
+    <div>
+        <form th:action="@{|/chat/${roomId}/delete|}" method="get">
+            <button type="submit" >채팅방 나가기 </button>
+
+
+        </form>
+
+    </div>
+
+
+
+
 </div>
 
 
-
-</div>
 
 </html>
+
+<style>
+    body, ul, li{
+  margin:0;
+  list-style:none;
+  padding:0;
+}
+a{
+  text-decoration:none;
+  color:inherit;
+}
+
+    .chat{
+        display:block;
+        height:300px;
+        width:400px;
+        border:1px solid red;
+        margin-left:auto;
+        margin-right:auto;
+         position:relative;
+    }
+    .chat__message-box{
+        max-height:300px;
+         width:400px;
+         border :1px solid green;
+         overflow-y: auto; /* 세로 스크롤만 활성화 */
+         overflow-x: hidden;
+    }
+    .chat-write-box {
+
+        position:absolute;
+        bottom:-20%;
+        left:0;
+    }
+
+</style>
 
 <script th:inline="javascript">
     const roomId = [[${roomId}]];
 </script>
+
 
 
 <script>
@@ -134,9 +187,14 @@
         messages.forEach((message) => {
             Chat__elMessageUl
                 .insertAdjacentHTML(
-                    "afterBegin",
+                    "beforeBegin",
                     `<li>${message.authorName} : ${message.content}</li>`
                 );
+
+
+        // 스크롤 컨테이너의 스크롤 위치를 가장 아래로 이동
+        const scrollContainer = document.querySelector(".chat__message-box"); // 스크롤 컨테이너의 선택자를 적절히 변경
+        scrollContainer.scrollTop = scrollContainer.scrollHeight;
         });
     }
 
