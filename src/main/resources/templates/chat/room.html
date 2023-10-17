@@ -28,30 +28,55 @@
     </div>
 </div>
 
+    <div>
+        <form th:action="@{|/chat/${roomId}/delete|}" method="get">
+            <button type="submit" >채팅방 나가기 </button>
+
+
+        </form>
+
+    </div>
+
+
 
 
 </div>
 
+
+
 </html>
 
 <style>
+    body, ul, li{
+  margin:0;
+  list-style:none;
+  padding:0;
+}
+a{
+  text-decoration:none;
+  color:inherit;
+}
+
     .chat{
         display:block;
         height:300px;
         width:400px;
         border:1px solid red;
-         overflow: auto; /* 스크롤바를 자동으로 표시하도록 설정 */
+        margin-left:auto;
+        margin-right:auto;
          position:relative;
     }
     .chat__message-box{
         max-height:300px;
          width:400px;
          border :1px solid green;
+         overflow-y: auto; /* 세로 스크롤만 활성화 */
+         overflow-x: hidden;
     }
     .chat-write-box {
-        margin-top:100%;
-        position:fixed;
-        bottom:0;
+
+        position:absolute;
+        bottom:-20%;
         left:0;
     }
 
@@ -167,7 +192,7 @@
 
 
         // 스크롤 컨테이너의 스크롤 위치를 가장 아래로 이동
-        const scrollContainer = document.querySelector(".chat"); // 스크롤 컨테이너의 선택자를 적절히 변경
+        const scrollContainer = document.querySelector(".chat__message-box"); // 스크롤 컨테이너의 선택자를 적절히 변경
         scrollContainer.scrollTop = scrollContainer.scrollHeight;
         });
     }

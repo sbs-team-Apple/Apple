@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -59,5 +60,20 @@ public class ChatRoomService {
             return null;
         }
         return  chatRoomRepository.findAll();
+    }
+
+    public ChatRoom findById(Integer roomId) {
+        Optional<ChatRoom> room= chatRoomRepository.findById(roomId);
+         if(room.isEmpty()){
+             System.out.println("지울 방이 없습니다.");
+             return null;
+         }
+         ChatRoom room2=room.get();
+         return room2;
+    }
+
+
+    public void delete(ChatRoom chatRoom) {
+        this.chatRoomRepository.delete(chatRoom);
     }
 }
