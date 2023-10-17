@@ -40,14 +40,14 @@ public class ChatController {
 
 
 
-            chatRoomService.create(user, user2);
-        model.addAttribute("roomId", roomId+1);
+           ChatRoom room= chatRoomService.create(user, user2);
+        model.addAttribute("roomId", room.getId());
         model.addAttribute("user",user);
         return "chat/room";
     }
 
 //   내가 초대했던 원래 있던 채팅방 들어가기
-    @GetMapping("/{roomId}/room")
+    @GetMapping("/{roomId}/room3")
     public String showRoom2(  @RequestParam("userId2") Integer userId2 ,Model model, Principal principal) {
         System.out.println("원래 있던 채팅방에 접속");
         SiteUser user =userService.getUserbyName(principal.getName());
@@ -132,5 +132,16 @@ public class ChatController {
         }
 
         return "chat/allRoom";
+    }
+
+
+    @GetMapping("/{roomId}/delete")
+    public String deleteRoom ( @PathVariable Integer roomId) {
+        ChatRoom room=chatRoomService.findById(roomId);
+
+        chatRoomService.delete(room);
+        return "redirect:/chat/allRoom";
+
+
     }
 }
