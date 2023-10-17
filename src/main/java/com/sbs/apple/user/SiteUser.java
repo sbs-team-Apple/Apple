@@ -40,7 +40,9 @@ public class SiteUser {
 
     private String body_type; //체형
 
+    @Column(nullable = true)
     private String smoking; //흡연 유무
+
     private String drinking; //음주 유무
     private String style; //스타일(성격)
     private String religion; //종교
