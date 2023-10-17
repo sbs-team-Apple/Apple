@@ -18,10 +18,10 @@ public class AdminController {
     private final AdminAccountService adminAccountService;
     private final ReportService reportService;
 
-    @GetMapping("/createAdminAccount")
-    public String createAdminAccount() {
-        adminAccountService.createAdminAccount();
-        return "Admin account created!";
+    @GetMapping("/grantAuthority")
+    public String grantAuthorityForm(){
+
+        return "/admin/grantAuthorityForm";
     }
 
     @GetMapping("/report_list")

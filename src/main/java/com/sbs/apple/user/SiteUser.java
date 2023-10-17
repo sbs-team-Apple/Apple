@@ -2,9 +2,7 @@ package com.sbs.apple.user;
 
 
 import com.sbs.apple.chat.ChatRoom;
-
 import com.sbs.apple.report.Report;
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -93,14 +92,14 @@ public class SiteUser {
     public List<? extends GrantedAuthority> getGrantedAuthorities() {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         grantedAuthorities.add(new SimpleGrantedAuthority("siteuser"));
-        if ("admin".equals(username)) {
-            grantedAuthorities.add(new SimpleGrantedAuthority("admin"));
-        }
+        grantedAuthorities.add(new SimpleGrantedAuthority("admin"));
         return grantedAuthorities;
     }
-    @Enumerated(EnumType.STRING)
+
     @ElementCollection(fetch = FetchType.EAGER)
-    private Set<UserRole> authorities;
+    @Enumerated(EnumType.STRING)
+    private Set<UserRole> authorities = new HashSet<>();
+
     public boolean hasRole(UserRole role) {
         return authorities.contains(role);
     }
@@ -108,4 +107,5 @@ public class SiteUser {
     public boolean isAdmin() {
         return hasRole(UserRole.ADMIN);
     }
+
 }

@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +40,16 @@ public class UserService {
         }
     }
 
-    public SiteUser create(String username, String password, String nickname, String gender) {
+    public SiteUser create(MultipartFile photo, String username, String password, String nickname, String gender) {
+        SiteUser user = new SiteUser();
+        user.setUsername(username);
+        user.setPassword(passwordEncoder.encode(password));
+        user.setNickname(nickname);
+        user.setGender(gender);
+        this.userRepository.save(user);
+        return user;
+    }
+    public SiteUser create( String username, String password, String nickname, String gender) {
         SiteUser user = new SiteUser();
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
@@ -134,6 +144,16 @@ public class UserService {
 
     }
 
+    public void grantAdminAuthority(String username) {
+        SiteUser user = userRepository.findByusername(username).orElse(null);
+
+        if (user != null) {
+            // 기존 권한 수정
+            user.getAuthorities().clear(); // 모든 권한 제거
+            user.getAuthorities().add(UserRole.ADMIN); // "ADMIN" 권한 추가
+            userRepository.save(user);
+        }
+    }
 
     //로그인 한 유저 제외한 유저 목록들 불러오기
     public List<SiteUser> getAllUser2(SiteUser loginUser) {
@@ -190,13 +210,6 @@ public class UserService {
         return siteUsers;
 
     }
-
-
-
-
-
-
-
 
 
 
