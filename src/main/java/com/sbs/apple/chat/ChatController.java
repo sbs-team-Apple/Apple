@@ -46,7 +46,7 @@ public class ChatController {
         return "chat/room";
     }
 
-//    원래 있던 채팅방 들어가기
+//   내가 초대했던 원래 있던 채팅방 들어가기
     @GetMapping("/{roomId}/room")
     public String showRoom2(  @RequestParam("userId2") Integer userId2 ,Model model, Principal principal) {
         System.out.println("원래 있던 채팅방에 접속");
@@ -59,7 +59,7 @@ public class ChatController {
         return "chat/room";
     }
 
-
+// 내가 초대 받은 채팅방 들어가기
     @GetMapping("/{roomId}/room2")
     public String showRoom3(  @RequestParam("userId") Integer userId ,Model model, Principal principal) {
         System.out.println("원래 있던 채팅방에 접속");
@@ -68,6 +68,7 @@ public class ChatController {
         System.out.println("채팅방에 들어갈 방번호 "+room.getId());
 
         model.addAttribute("roomId",room.getId() );
+        model.addAttribute("user",user);
 
         return "chat/room";
     }
