@@ -1,11 +1,12 @@
 package com.sbs.apple.user;
 
 
+import com.sbs.apple.Base;
 import com.sbs.apple.chat.ChatRoom;
 import com.sbs.apple.report.Report;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,10 +15,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import static lombok.AccessLevel.PROTECTED;
+
 @Getter
 @Setter
 @Entity
-public class SiteUser {
+@AllArgsConstructor(access = PROTECTED)
+@NoArgsConstructor(access = PROTECTED)
+@SuperBuilder
+@ToString(callSuper = true)
+public class SiteUser extends Base {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
