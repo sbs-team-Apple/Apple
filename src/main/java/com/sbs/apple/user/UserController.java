@@ -105,8 +105,12 @@ public class UserController {
         SiteUser user = userService.getUserbyName(username);
 
         int userCyberMoney = user.getCyberMoney();
+        int receivedCyberMoney = user.getReceivedCyberMoney(); // 다른 사용자로부터 받은 사이버머니
+
         model.addAttribute("userCyberMoney", userCyberMoney);
+        model.addAttribute("receivedCyberMoney", receivedCyberMoney); // 다른 사용자로부터 받은 사이버머니
         model.addAttribute("user", user);
+
         return "myPage";
     }
     //비밀번호 변경
@@ -251,6 +255,7 @@ public class UserController {
         this.reportService.create(siteUser, reportForm.getSubject(), reportForm.getContent());
         return "redirect:/";
     }
+
     //admin 계정 부여하기
     @GetMapping("/grantAuthorityToAdmin")
     public String grantAuthorityForm(Principal principal){
