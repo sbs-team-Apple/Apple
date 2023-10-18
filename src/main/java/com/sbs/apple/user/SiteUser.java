@@ -1,11 +1,12 @@
 package com.sbs.apple.user;
 
 
+import com.sbs.apple.Base;
 import com.sbs.apple.chat.ChatRoom;
 import com.sbs.apple.report.Report;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -14,14 +15,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static lombok.AccessLevel.PUBLIC;
+
 @Getter
 @Setter
 @Entity
-public class SiteUser {
+@AllArgsConstructor(access = PUBLIC)
+@NoArgsConstructor(access = PUBLIC)
+@SuperBuilder
+@ToString(callSuper = true)
+public class SiteUser extends Base {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
     //회원가입 할 때 기본 정보
     @Column(unique = true)
     private String username;
