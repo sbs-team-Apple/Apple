@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -8,12 +8,16 @@
 <table>
     <thead>
     <tr>
+        <th>신고된 사람</th>
         <th>제목</th>
         <th>내용</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="reportList : ${reportList}">
+        <td>
+            <a th:href="@{|/user/detail/${reportList.siteUser.id}|}" th:text="${reportList.reported_user}"></a>
+        </td>
         <td th:text="${reportList.subject}"></td>
         <td th:text="${reportList.content}"></td>
     </tr>
