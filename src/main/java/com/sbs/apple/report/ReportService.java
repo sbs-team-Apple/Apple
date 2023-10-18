@@ -15,6 +15,7 @@ public class ReportService {
         r.setSiteUser(siteUser);
         r.setSubject(subject);
         r.setContent(content);
+        r.setReported_user(siteUser.getNickname());
         this.reportRepository.save(r);
     }
     public List<Report> getList() {
