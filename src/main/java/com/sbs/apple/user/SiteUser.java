@@ -82,14 +82,15 @@ public class SiteUser extends Base {
     private List<Report> reportList;
 
     @Column
-    private Integer cyberMoney = 0; // 기본값 0으로 초기화
+    private int cyberMoney = 0; // 기본값 0으로 초기화
 
-
-    public Integer getCyberMoney() {
-        if (cyberMoney == null) {
-            return 0; // 필드가 null인 경우 0을 반환
+    @Column
+    private Integer receivedCyberMoney = 0; // 다른 사용자로부터 받은 사이버머니 기본값 0으로 초기화
+    public Integer getReceivedCyberMoney() {
+        if (receivedCyberMoney == null) {
+            return 0; // 또는 다른 기본값을 사용할 수 있습니다.
         }
-        return cyberMoney;
+        return receivedCyberMoney;
     }
 
     //여러개를 선택해야할 때의 칼럼
