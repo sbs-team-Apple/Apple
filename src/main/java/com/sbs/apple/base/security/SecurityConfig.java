@@ -33,7 +33,13 @@ public class SecurityConfig {
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
                         .logoutSuccessUrl("/")
-                        .invalidateHttpSession(true));
+                        .invalidateHttpSession(true))
+                .authorizeRequests(authorizeRequests ->
+                        authorizeRequests
+                                .requestMatchers("/admin/**").hasRole("ADMIN")
+                                .requestMatchers("/**").permitAll()
+                )
+        ;
 
         http
                 .authorizeRequests()
@@ -41,7 +47,6 @@ public class SecurityConfig {
                 .requestMatchers("/api/cybermoney/send").hasRole("USER")
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/**").permitAll();
-
 
         return http.build();
     }

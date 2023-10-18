@@ -1,24 +1,31 @@
 package com.sbs.apple.user;
 
+
+import com.sbs.apple.Base;
+import com.sbs.apple.chat.ChatRoom;
 import com.sbs.apple.report.Report;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static lombok.AccessLevel.PUBLIC;
 
 @Getter
 @Setter
 @Entity
-public class SiteUser {
+@AllArgsConstructor(access = PUBLIC)
+@NoArgsConstructor(access = PUBLIC)
+@SuperBuilder
+@ToString(callSuper = true)
+public class SiteUser extends Base {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
     //회원가입 할 때 기본 정보
     @Column(unique = true)
     private String username;
@@ -37,7 +44,9 @@ public class SiteUser {
 
     private String body_type; //체형
 
-    private boolean smoking; //흡연 유무
+    @Column(nullable = true)
+    private String smoking; //흡연 유무
+
     private String drinking; //음주 유무
     private String style; //스타일(성격)
     private String religion; //종교
@@ -57,6 +66,18 @@ public class SiteUser {
     private String desired_religion; //원하는 종교
     private String desired_mbti; //원하는 MBTI
 
+
+
+    @OneToMany(mappedBy = "siteUser" , cascade = CascadeType.REMOVE)
+    private List<ChatRoom> chatRoomList;
+
+
+
+
+
+    private String desired_school;
+    private String desired_job;
+
     @OneToMany(mappedBy = "siteUser", cascade = CascadeType.REMOVE)
     private List<Report> reportList;
 
@@ -71,20 +92,25 @@ public class SiteUser {
         }
         return receivedCyberMoney;
     }
+
     //여러개를 선택해야할 때의 칼럼
     public List<? extends GrantedAuthority> getGrantedAuthorities() {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         grantedAuthorities.add(new SimpleGrantedAuthority("siteuser"));
-        if ("admin".equals(username)) {
-            grantedAuthorities.add(new SimpleGrantedAuthority("admin"));
-        }
+        grantedAuthorities.add(new SimpleGrantedAuthority("admin"));
         return grantedAuthorities;
     }
-    @Enumerated(EnumType.STRING)
+
     @ElementCollection(fetch = FetchType.EAGER)
-    private Set<UserRole> authorities;
+    @Enumerated(EnumType.STRING)
+    private Set<UserRole> authorities = new HashSet<>();
+
     public boolean hasRole(UserRole role) {
         return authorities.contains(role);
+    }
+
+    public boolean isAdmin() {
+        return hasRole(UserRole.ADMIN);
     }
 
 }
