@@ -39,7 +39,9 @@
     <tbody>
     <tr th:each="userList : ${userList}">
         <td>
-        <a th:href="@{|/user/detail/${userList.id}|}" th:text="${userList.username}"></a>
+            <a th:href="@{|/user/detail/${userList.id}|}">
+                <img th:src="@{|${userList.filepath}|}" alt="User Image">
+            </a>
         </td>
         <td th:text="${userList.nickname}"></td>
         <td th:text="${userList.living}"></td>
