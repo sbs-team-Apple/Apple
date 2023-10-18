@@ -19,19 +19,25 @@
         </ul>
     </div>
     <div class="chat-write-box">
-    <form class="chat__write-message" onsubmit="Chat__writeMessage(this); return false;">
-    <input type="hidden" name="roomId" th:value="${roomId}">
+        <div class="chat-write-box-item  ">
+            <form class="chat__write-message flex" onsubmit="Chat__writeMessage(this); return false;">
+                <input type="hidden" name="roomId" th:value="${roomId}">
 
-    <input  class ="hidden"  type="text" placeholder="작성자" th:value="${user.nickname}"  name="authorName" autocomplete="off">
-    <input type="text" placeholder="내용을 입력해주세요." name="content" autocomplete="off">
-        <button type="submit" value="작성">보내기</button>
-    </form>
+                <input  class ="hidden"  type="text" placeholder="작성자" th:value="${user.nickname}"  name="authorName" autocomplete="off">
+                <input class="w-11/12  h-10" type="text" placeholder="내용을 입력해주세요." name="content" autocomplete="off">
+                <button class="w-20 chat-write-box-item-button"type="submit" value="작성">전송</button>
+            </form>
+        </div>
     </div>
 
 
 
 </div>
 
+
+    <br>
+    <br>
+    <br>
     <div>
         <form th:action="@{|/chat/${roomId}/delete|}" method="get">
             <button type="submit" >채팅방 나가기 </button>
@@ -71,7 +77,7 @@ a{
          position:relative;
     }
     .chat__message-box{
-          height:600px;
+          height:95%;
          width:400px;
 
          overflow-y: scroll; /* 세로 스크롤만 활성화 */
@@ -86,14 +92,24 @@ a{
 
     .chat-write-box {
 
-        position:absolute;
+
         bottom:0%;
         left:0;
+        width:100%;
     }
+    .chat-write-box-item {
+        margin:10px 20px;
+    }
+
+    .chat-write-box-item-button {
+        background-color : #fef01b;
+        margin-left:10px;
+    }
+
 
     .chat__message{
         margin-bottom:30px;
-         box-sizing: border-box;
+
          max-width:230px;
         border-radius:15px;
         margin-top:20px;
