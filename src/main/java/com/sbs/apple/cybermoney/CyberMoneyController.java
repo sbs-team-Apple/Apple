@@ -4,6 +4,7 @@ import com.sbs.apple.user.SiteUser;
 import com.sbs.apple.user.UserRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,11 +16,11 @@ import java.util.Optional;
 @RequestMapping("/api/cybermoney")
 public class CyberMoneyController {
     private final CyberMoneyService cyberMoneyService;
-    private final UserRepository siteUserRepository;
+    private final UserRepository userRepository;
 
-    public CyberMoneyController(CyberMoneyService cyberMoneyService, UserRepository siteUserRepository) {
+    public CyberMoneyController(CyberMoneyService cyberMoneyService, UserRepository userRepository) {
         this.cyberMoneyService = cyberMoneyService;
-        this.siteUserRepository = siteUserRepository;
+        this.userRepository = userRepository;
     }
 
     @PostMapping("/send")
@@ -27,8 +28,15 @@ public class CyberMoneyController {
             @RequestParam("recipientUsername") String recipientUsername,
             @RequestParam("amount") int amount
     ) {
-        // 현재 로그인한 사용자를 가져옵니다.
-        SiteUser senderUser = (SiteUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        // 이후에 username을 사용하여 사용자 데이터를 불러옵니다.
+        Optional<SiteUser> senderUserOptional = userRepository.findByusername(username);
+        if (!senderUserOptional.isPresent()) {
+            return ResponseEntity.badRequest().body("보내는 사용자를 찾을 수 없습니다.");
+        }
+        SiteUser senderUser = senderUserOptional.get();
 
         // 보내는 사람과 받는 사람이 다른 사용자인지 확인합니다.
         if (senderUser.getUsername().equals(recipientUsername)) {
@@ -36,7 +44,7 @@ public class CyberMoneyController {
         }
 
         // 받는 사용자를 찾습니다.
-        Optional<SiteUser> recipientUserOptional = siteUserRepository.findByusername(recipientUsername);
+        Optional<SiteUser> recipientUserOptional = userRepository.findByusername(recipientUsername);
         if (!recipientUserOptional.isPresent()) {
             return ResponseEntity.badRequest().body("받는 사용자를 찾을 수 없습니다.");
         }

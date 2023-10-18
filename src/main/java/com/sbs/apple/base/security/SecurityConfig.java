@@ -33,20 +33,23 @@ public class SecurityConfig {
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
                         .logoutSuccessUrl("/")
-                        .invalidateHttpSession(true))
-                .authorizeRequests(authorizeRequests ->
-                        authorizeRequests
-                                .requestMatchers("/admin/**").hasRole("ADMIN") // "ADMIN" 권한이 있는 사용자만 "/consulting/create" 경로에 접근 가능
-                                .requestMatchers("/**").permitAll()
-                )
-        ;
+                        .invalidateHttpSession(true));
+
+        http
+                .authorizeRequests()
+                .requestMatchers("/api/getCurrentUser").hasRole("USER")
+                .requestMatchers("/api/cybermoney/send").hasRole("USER")
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/**").permitAll();
+
+
         return http.build();
     }
+
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
     @Bean
     AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {

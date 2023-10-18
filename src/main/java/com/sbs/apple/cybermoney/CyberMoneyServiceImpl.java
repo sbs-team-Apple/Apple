@@ -13,16 +13,16 @@ public class CyberMoneyServiceImpl implements CyberMoneyService {
     }
 
     @Override
-    public void sendCyberMoney(SiteUser sender, SiteUser recipient, int amount) {
+    public void sendCyberMoney(SiteUser senderUser, SiteUser recipientUser, int amount) {
         // 보내는 사람이 충분한 사이버 머니를 가지고 있는지 확인합니다.
-        if (sender.getCyberMoney() >= amount) {
+        if (senderUser.getCyberMoney() >= amount) {
             // 보내는 사람의 계좌에서 금액을 차감합니다.
-            sender.setCyberMoney(sender.getCyberMoney() - amount);
-            userRepository.save(sender);
+            senderUser.setCyberMoney(senderUser.getCyberMoney() - amount);
+            userRepository.save(senderUser);
 
             // 받는 사람의 계좌에 금액을 추가합니다.
-            recipient.setCyberMoney(recipient.getCyberMoney() + amount);
-            userRepository.save(recipient);
+            recipientUser.setReceivedCyberMoney(recipientUser.getReceivedCyberMoney() + amount);
+            userRepository.save(recipientUser);
         } else {
             throw new IllegalArgumentException("사이버 머니가 부족합니다.");
         }

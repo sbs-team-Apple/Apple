@@ -230,9 +230,19 @@ public class UserController {
     //조회하기
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/detail/{id}")
-    public String paymentPage(Model model,@PathVariable("id") Integer id) {
-        SiteUser siteUser =this.userService.getUser(id);
-        model.addAttribute("siteUser",siteUser);
+    public String profile(Model model, @PathVariable("id") Integer id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof SiteUser) {
+            SiteUser siteUser = (SiteUser) authentication.getPrincipal();
+            String username = siteUser.getUsername();
+            model.addAttribute("recipientUsername", username);
+        }
+
+        if (id != null) {
+            SiteUser siteUser = this.userService.getUser(id);
+            model.addAttribute("siteUser", siteUser);
+        }
+
         return "user/profile";
     }
     //신고하기
