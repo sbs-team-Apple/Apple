@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
@@ -38,7 +39,9 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public String signup2(@Valid UserCreateForm userCreateForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String signup2(@Valid UserCreateForm userCreateForm, BindingResult bindingResult,
+                          RedirectAttributes redirectAttributes, Model model, MultipartFile file)
+    throws Exception{
         if (bindingResult.hasErrors()) {
             return "user/signup_form";
         }
@@ -48,7 +51,7 @@ public class UserController {
                     "2개의 패스워드가 일치하지 않습니다.");
             return "user/signup_form";
         }
-        SiteUser user= userService.create(userCreateForm.getPhoto(),userCreateForm.getUsername(), userCreateForm.getPassword1(),
+        SiteUser user= userService.create(userCreateForm.getFile(),userCreateForm.getUsername(), userCreateForm.getPassword1(),
                 userCreateForm.getNickname(), userCreateForm.getGender());
         redirectAttributes.addAttribute("id", user.getId());
         return "redirect:/user/add/" + user.getId();

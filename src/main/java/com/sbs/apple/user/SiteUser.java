@@ -25,7 +25,8 @@ import static lombok.AccessLevel.PUBLIC;
 @SuperBuilder
 @ToString(callSuper = true)
 public class SiteUser extends Base {
-
+    private String filename;
+    private String filepath;
     //회원가입 할 때 기본 정보
     @Column(unique = true)
     private String username;
