@@ -3,7 +3,6 @@ package com.sbs.apple.user;
 import com.sbs.apple.DataNotFoundException;
 import com.sbs.apple.chat.ChatRoom;
 import com.sbs.apple.chat.ChatRoomService;
-import com.sbs.apple.genfile.GenFileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,6 @@ import java.util.UUID;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final GenFileService genFileService;
     private final ChatRoomService chatRoomService;
     private  UserService userService;
 
