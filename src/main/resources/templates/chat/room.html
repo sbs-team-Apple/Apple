@@ -13,7 +13,7 @@
 <div class="chat">
 
     <div class="chat__message-box">
-        <li th:text="${user.nickname+'님이 입장하셨습니다.'}"></li>
+
         <ul class="chat__message-ul">
 
         </ul>
@@ -22,7 +22,7 @@
     <form class="chat__write-message" onsubmit="Chat__writeMessage(this); return false;">
     <input type="hidden" name="roomId" th:value="${roomId}">
 
-    <input type="text" placeholder="작성자" th:value="${user.nickname}" name="authorName" autocomplete="off">
+    <input  class ="hidden"  type="text" placeholder="작성자" th:value="${user.nickname}"  name="authorName" autocomplete="off">
     <input type="text" placeholder="내용을 입력해주세요." name="content" autocomplete="off">
         <button type="submit" value="작성">보내기</button>
     </form>
@@ -62,18 +62,25 @@ a{
         display:block;
         height:300px;
         width:400px;
-        border:1px solid red;
+
         margin-left:auto;
         margin-right:auto;
          position:relative;
     }
     .chat__message-box{
-        max-height:300px;
+          height:300px;
          width:400px;
-         border :1px solid green;
-         overflow-y: auto; /* 세로 스크롤만 활성화 */
+
+         overflow-y: scroll; /* 세로 스크롤만 활성화 */
          overflow-x: hidden;
+         background-color :#9bbbd4;
     }
+
+    .chat__message-box::-webkit-scrollbar {
+        	display:none /* Chrome , Safari , Opera */
+        }
+
+
     .chat-write-box {
 
         position:absolute;
@@ -81,10 +88,46 @@ a{
         left:0;
     }
 
+    .chat__message{
+        margin-bottom:30px;
+         box-sizing: border-box;
+         max-width:230px;
+        border-radius:15px;
+        margin-top:20px;
+        padding:5px 15px;
+    }
+
+
+
+
+    .chat__message.right {
+    text-align: left;
+    background-color: #fef01b; /* 원하는 배경색으로 변경 */
+     clear:both;
+        float:right;
+        margin-right:10px;
+
+
+}
+
+/* 상대방의 메시지 */
+.chat__message.left {
+    text-align: left;
+    background-color: #ffffff; /* 원하는 배경색으로 변경 */
+    clear:both;
+    float:left;
+        margin-left:10px;
+
+
+
+}
+
 </style>
 
 <script th:inline="javascript">
     const roomId = [[${roomId}]];
+
+    const userNickname = /*[[${user.nickname}]]*/ null;
 </script>
 
 
@@ -185,10 +228,16 @@ a{
         }
 
         messages.forEach((message) => {
+              const isMyMessage = message.authorName === userNickname; // 자신의 메시지 여부 확인
+              console.log(userNickname);
+              const alignClass = isMyMessage ? 'right' : 'left'; // 오른쪽 또는 왼쪽 클래스 선택
+
+
+
             Chat__elMessageUl
                 .insertAdjacentHTML(
                     "beforeBegin",
-                    `<li>${message.authorName} : ${message.content}</li>`
+                    `<li class="chat__message ${alignClass}">${message.authorName} : ${message.content}</li>`
                 );
 
 
@@ -211,4 +260,10 @@ a{
     });
 
     // 채팅 메시지들 읽기 끝
+
+
+
+
+
+
 </script>
