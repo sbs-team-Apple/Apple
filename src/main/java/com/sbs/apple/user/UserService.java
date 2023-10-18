@@ -3,6 +3,7 @@ package com.sbs.apple.user;
 import com.sbs.apple.DataNotFoundException;
 import com.sbs.apple.chat.ChatRoom;
 import com.sbs.apple.chat.ChatRoomService;
+import com.sbs.apple.genfile.GenFileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final GenFileService genFileService;
     private final ChatRoomService chatRoomService;
     private  UserService userService;
 
@@ -47,6 +49,10 @@ public class UserService {
         user.setNickname(nickname);
         user.setGender(gender);
         this.userRepository.save(user);
+        if (photo != null) {
+            genFileService.save(user.getModelName(), user.getId(), "common", "photo", 0, photo);
+        }
+
         return user;
     }
     public SiteUser create( String username, String password, String nickname, String gender) {
