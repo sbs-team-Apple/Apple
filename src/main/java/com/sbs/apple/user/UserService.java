@@ -10,9 +10,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -42,19 +44,25 @@ public class UserService {
         }
     }
 
-    public SiteUser create(MultipartFile photo, String username, String password, String nickname, String gender) {
+    public SiteUser create(MultipartFile file, String username, String password, String nickname, String gender)
+            throws Exception {
         SiteUser user = new SiteUser();
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
         user.setNickname(nickname);
         user.setGender(gender);
-        this.userRepository.save(user);
-        if (photo != null) {
-            genFileService.save(user.getModelName(), user.getId(), "common", "photo", 0, photo);
-        }
+         String projectPath = System.getProperty("user.dir")+"\\src\\main\\resources\\static\\files";
+         UUID uuid = UUID.randomUUID();
+         String fileName =uuid + "_" + file.getOriginalFilename();
+         File saveFile =new File(projectPath,fileName);
+         file.transferTo(saveFile);
+         user.setFilename(fileName);
+        user.setFilepath("/files/"+fileName);
 
+        this.userRepository.save(user);
         return user;
     }
+
     public SiteUser create( String username, String password, String nickname, String gender) {
         SiteUser user = new SiteUser();
         user.setUsername(username);
