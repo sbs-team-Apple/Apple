@@ -6,6 +6,26 @@
 </head>
 <body>
 <div layout:fragment="content" class="container my-3">
+
+
+    <div th:if="${siteUsers != null}" th:each="user : ${siteUsers}">
+        <div class="flex  ">
+        <div><a  th:value="${user.id}"  name="userId" th:text="${user.nickname}"></a></div>
+        <div>
+            <form method="post"  th:action="@{|/chat/${chatRoom != null ? chatRoom.id+1 : 1}/room?userId2=${user.id}|}">
+                <input type="hidden" name="userId" th:value="${user.id}">
+                <button type="submit" >님과 채팅방 만들기 </button>
+            </form>
+        </div>
+          </div>
+
+    </div>
+
+
+
+
+
+
     <table th:if="${#authorization.expression('isAuthenticated()')}">
     <thead>
     <tr>
@@ -30,21 +50,28 @@
     </tbody>
     </table>
 </div>
+
+
 <div th:value="${chatRoom.id}"></div>
-<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-    <li class="nav-item">
-        <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/user/login}">로그인</a>
-        <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/user/logout}">로그아웃</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" th:href="@{/user/signup}">회원가입</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" th:href="@{/user/myPage}">마이 페이지</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" th:href="@{/user/payment}">결제</a>
-    </li>
-</ul>
+
+
 </body>
 </html>
+
+<script >
+
+    $(document).ready(function () {
+      $("#myLink").click(function () {
+          var valueToSend = "exampleValue"; // 보낼 값
+          var url = "/chat/"+roomId+"?paramName=" + valueToSend;
+
+          $.get(url, function (data) {
+              // 서버 응답을 처리
+              console.log(data);
+          });
+      });
+  });
+
+
+
+</script>

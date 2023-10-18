@@ -1,30 +1,35 @@
 package com.sbs.apple.admin;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.sbs.apple.report.Report;
+import com.sbs.apple.report.ReportService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+import java.util.List;
+
+@RequiredArgsConstructor
+@Controller
 @RequestMapping("/admin")
 public class AdminController {
 
     private final AdminAccountService adminAccountService;
+    private final ReportService reportService;
 
-    @Autowired
-    public AdminController(AdminAccountService adminAccountService) {
-        this.adminAccountService = adminAccountService;
-    }
+    @GetMapping("/grantAuthority")
+    public String grantAuthorityForm(){
 
-    @GetMapping("/createAdminAccount")
-    public String createAdminAccount() {
-        adminAccountService.createAdminAccount();
-        return "Admin account created!";
+        return "/admin/grantAuthorityForm";
     }
 
     @GetMapping("/report_list")
-    public String report_list(){
+    public String report_list(Model model){
+        List<Report> reportList = this.reportService.getList();
+        model.addAttribute("reportList",reportList);
         return "report_list";
     }
+
 
 }

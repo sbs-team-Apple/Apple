@@ -36,7 +36,7 @@
 <div th:text="${siteUser.desired_style}"></div>
 <div th:text="${siteUser.desired_religion}"></div>
 <div th:text="${siteUser.desired_mbti}"></div>
-<a th:href="@{/user/report}">신고하기</a>
+<a th:href="@{'/user/report/' + ${siteUser.id}}">신고하기</a>
 <button id="sendCyberMoneyBtn" class="btn btn-primary" data-toggle="modal" data-target="#cyberMoneyModal">사이버머니 보내기</button>
 
 <!-- 모달 다이얼로그 -->
@@ -135,7 +135,6 @@
 });
 
 </script>
-
 
 </body>
 </html>
