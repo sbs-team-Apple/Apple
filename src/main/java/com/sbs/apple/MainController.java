@@ -69,8 +69,10 @@ public class MainController {
         //model.addAttribute("chatRoom", chatRoom);
 
 
-
-        List<SiteUser> userList = userService.getFourUsers(); // 사용자 정보를 가져오는 예시 메서드
+        String username = principal.getName();
+        SiteUser siteUser =userService.getUserbyName(username);
+        String Gender =siteUser.getGender();
+        List<SiteUser> userList = userService.getFourUsers(Gender); // 사용자 정보를 가져오는 예시 메서드
         model.addAttribute("userList", userList);
 
         return "main";
