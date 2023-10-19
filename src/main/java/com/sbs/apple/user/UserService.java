@@ -10,10 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -150,10 +147,19 @@ public class UserService {
         return siteUsers;
     }
 
-    public List<SiteUser> getFourUsers() {
-        List<SiteUser> randomUsers = this.userRepository.findRandomUsers(4);
-        return randomUsers;
+    public List<SiteUser> getFourUsers(String gender) {
+        List<SiteUser> randomUsers;
 
+        if ("남".equals(gender)) {
+            randomUsers = this.userRepository.findRandomUsersByGender("여", 4);
+        } else if ("여".equals(gender)) {
+            randomUsers = this.userRepository.findRandomUsersByGender("남", 4);
+        } else {
+            // Handle invalid gender or other cases
+            randomUsers = Collections.emptyList();
+        }
+
+        return randomUsers;
     }
 
     public void grantAdminAuthority(String username) {
