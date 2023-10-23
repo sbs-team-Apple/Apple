@@ -51,7 +51,7 @@ public class UserController {
                     "2개의 패스워드가 일치하지 않습니다.");
             return "user/signup_form";
         }
-        SiteUser user= userService.create(userCreateForm.getFile(),userCreateForm.getUsername(), userCreateForm.getPassword1(),
+        SiteUser user= userService.create(false,userCreateForm.getFile(),userCreateForm.getUsername(), userCreateForm.getPassword1(),
                 userCreateForm.getNickname(), userCreateForm.getGender());
         redirectAttributes.addAttribute("id", user.getId());
         return "redirect:/user/add/" + user.getId();
@@ -190,6 +190,7 @@ public class UserController {
         model.addAttribute("siteUser", siteUser);
         return "user/profile_modify";
     }
+
     @PostMapping("/profile_modify")
     public String profile_modify(UserAddForm userAddForm,Principal principal) {
         SiteUser user = this.userService.getUserbyName(principal.getName());
