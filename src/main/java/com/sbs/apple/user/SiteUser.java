@@ -2,6 +2,7 @@ package com.sbs.apple.user;
 
 
 import com.sbs.apple.Base;
+import com.sbs.apple.board.Board;
 import com.sbs.apple.chat.ChatRoom;
 import com.sbs.apple.report.Report;
 import jakarta.persistence.*;
@@ -113,5 +114,10 @@ public class SiteUser extends Base {
     public boolean isAdmin() {
         return hasRole(UserRole.ADMIN);
     }
+
+
+
+    @OneToMany(mappedBy = "siteUser" , cascade = CascadeType.REMOVE)
+    private List<Board> boardList;
 
 }
