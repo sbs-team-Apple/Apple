@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -18,11 +19,6 @@ public class AdminController {
     private final AdminAccountService adminAccountService;
     private final ReportService reportService;
 
-    @GetMapping("/grantAuthority")
-    public String grantAuthorityForm(){
-
-        return "/admin/grantAuthorityForm";
-    }
 
     @GetMapping("/report_list")
     public String report_list(Model model){
@@ -30,6 +26,11 @@ public class AdminController {
         model.addAttribute("reportList",reportList);
         return "report_list";
     }
+    @GetMapping("/punish/{id}")
+    public String punish(Model model, @PathVariable("id") Integer id){
+        return "punish";
+    }
+
 
 
 }

@@ -39,9 +39,10 @@ public class UserService {
         }
     }
 
-    public SiteUser create(MultipartFile file, String username, String password, String nickname, String gender)
+    public SiteUser create(boolean userStop, MultipartFile file, String username, String password, String nickname, String gender)
             throws Exception {
         SiteUser user = new SiteUser();
+        user.setUserStop(userStop);
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
         user.setNickname(nickname);
@@ -169,6 +170,16 @@ public class UserService {
             // 기존 권한 수정
             user.getAuthorities().clear(); // 모든 권한 제거
             user.getAuthorities().add(UserRole.ADMIN); // "ADMIN" 권한 추가
+            userRepository.save(user);
+        }
+    }
+    //관리자 권한 삭제
+    public void deleteAdminAuthority(String username) {
+        SiteUser user = userRepository.findByusername(username).orElse(null);
+
+        if (user != null) {
+            // 기존 권한 수정
+            user.getAuthorities().clear(); // 모든 권한 제거
             userRepository.save(user);
         }
     }
