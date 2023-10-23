@@ -4,6 +4,7 @@ import com.sbs.apple.DataNotFoundException;
 import com.sbs.apple.chat.ChatRoom;
 import com.sbs.apple.chat.ChatRoomService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -240,8 +241,15 @@ public class UserService {
 
     }
 
-
-
+    public void changeUserStop(SiteUser siteUser) {
+        siteUser.setUserStop(true);
+        userRepository.save(siteUser);
+    }
+    @Scheduled(fixedDelay = 60 * 1000) // 1분(밀리초) 후에 실행
+    public void resetUserStop(SiteUser siteUser) {
+        siteUser.setUserStop(false);
+        userRepository.save(siteUser);
+    }
 }
 
 

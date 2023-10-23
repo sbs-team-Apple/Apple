@@ -100,6 +100,7 @@ public class UserController {
     public String login(Model model) {
         return "user/login_form";
     }
+
     //마이 페이지
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/myPage")
