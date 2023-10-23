@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html layout:decorate="~{/common/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="content" class="container my-3 flex">
+    <div class="m-auto">
+
+            <div class="flex">
+                <img class="w-40  h-40" th:src="${board.filepath}" alt="">
+                <div th:text="${board.subject}"></div>
+                <div th:text="${board.content}"></div>
+            </div>
+
+
+    </div>
+
+
+
+
+
+</div>
+</body>
+</html>
+
+<script >
+
+
+
+</script>

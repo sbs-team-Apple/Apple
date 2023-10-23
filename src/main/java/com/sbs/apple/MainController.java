@@ -61,12 +61,9 @@ public class MainController {
 
         model.addAttribute("chatRoom", chatRoom);
 
-        //ChatRoom chatRoom= chatRoomService.findLastRoom();
-        //if(chatRoom == null){
-        //    chatRoom=chatRoomService.create(1);
-        //}
+
         System.out.println("메인페이지 실행3");
-        //model.addAttribute("chatRoom", chatRoom);
+
 
 
         String username = principal.getName();
