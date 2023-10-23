@@ -6,13 +6,14 @@
 </head>
 <body>
 <div>
-    <a href="#">경고</a>
+    <a href="${id.subject}">경고</a>
 </div>
 <div>
     <a href="#">3일 정지</a>
 </div>
 <div>
-    <a href="#">영구 정지</a>
+    <a th:href="@{|/admin/Permanent_stop/${id}|}">영구 정지</a>
+    </a>
 </div>
 </body>
 </html>
