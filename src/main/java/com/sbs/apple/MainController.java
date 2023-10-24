@@ -66,11 +66,15 @@ public class MainController {
 
         String username = principal.getName();
         SiteUser siteUser =userService.getUserbyName(username);
+        boolean userWarning = siteUser.isUserWarning();
         String Gender =siteUser.getGender();
         String living =siteUser.getLiving();
         List<SiteUser> userList = userService.getFourUsers(Gender,living); // 사용자 정보를 가져오는 예시 메서드
         model.addAttribute("userList", userList);
-        model.addAttribute("siteUser", siteUser);
+        model.addAttribute("userWarning", userWarning);
+        if(userWarning== true){
+            userService.resetUserWarning(siteUser);
+        }
         return "main";
     }
 }
