@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @RequiredArgsConstructor
 @Controller
@@ -41,9 +44,12 @@ public class AdminController {
     @GetMapping("/Day3_stop/{id}")
     public String Day_stop(@PathVariable Integer id){
         SiteUser siteUser = this.userService.getUser(id);
-        userService.resetUserStop(siteUser);
+        userService.changeUserStop(siteUser);
+        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+        executor.schedule(() -> {
+            userService.resetUserStop(siteUser);
+        }, 3, TimeUnit.DAYS);
         return "redirect:/";
     }
-
 
 }
