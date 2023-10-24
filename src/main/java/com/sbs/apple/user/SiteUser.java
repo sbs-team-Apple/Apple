@@ -1,28 +1,32 @@
 package com.sbs.apple.user;
 
 
+import com.sbs.apple.Base;
 import com.sbs.apple.chat.ChatRoom;
-
 import com.sbs.apple.report.Report;
-
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static lombok.AccessLevel.PUBLIC;
 
 @Getter
 @Setter
 @Entity
-public class SiteUser {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+@AllArgsConstructor(access = PUBLIC)
+@NoArgsConstructor(access = PUBLIC)
+@SuperBuilder
+@ToString(callSuper = true)
+public class SiteUser extends Base {
+    private String filename;
+    private String filepath;
     //회원가입 할 때 기본 정보
     @Column(unique = true)
     private String username;
@@ -41,7 +45,9 @@ public class SiteUser {
 
     private String body_type; //체형
 
+    @Column(nullable = true)
     private String smoking; //흡연 유무
+
     private String drinking; //음주 유무
     private String style; //스타일(성격)
     private String religion; //종교
@@ -77,28 +83,29 @@ public class SiteUser {
     private List<Report> reportList;
 
     @Column
-    private Integer cyberMoney = 0; // 기본값 0으로 초기화
+    private int cyberMoney = 0; // 기본값 0으로 초기화
 
-
-    public Integer getCyberMoney() {
-        if (cyberMoney == null) {
-            return 0; // 필드가 null인 경우 0을 반환
+    @Column
+    private Integer receivedCyberMoney = 0; // 다른 사용자로부터 받은 사이버머니 기본값 0으로 초기화
+    public Integer getReceivedCyberMoney() {
+        if (receivedCyberMoney == null) {
+            return 0; // 또는 다른 기본값을 사용할 수 있습니다.
         }
-        return cyberMoney;
+        return receivedCyberMoney;
     }
 
     //여러개를 선택해야할 때의 칼럼
     public List<? extends GrantedAuthority> getGrantedAuthorities() {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         grantedAuthorities.add(new SimpleGrantedAuthority("siteuser"));
-        if ("admin".equals(username)) {
-            grantedAuthorities.add(new SimpleGrantedAuthority("admin"));
-        }
+        grantedAuthorities.add(new SimpleGrantedAuthority("admin"));
         return grantedAuthorities;
     }
-    @Enumerated(EnumType.STRING)
+
     @ElementCollection(fetch = FetchType.EAGER)
-    private Set<UserRole> authorities;
+    @Enumerated(EnumType.STRING)
+    private Set<UserRole> authorities = new HashSet<>();
+
     public boolean hasRole(UserRole role) {
         return authorities.contains(role);
     }
@@ -106,4 +113,5 @@ public class SiteUser {
     public boolean isAdmin() {
         return hasRole(UserRole.ADMIN);
     }
+
 }

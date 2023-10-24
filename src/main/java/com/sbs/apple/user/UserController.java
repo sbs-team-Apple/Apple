@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
@@ -30,6 +31,7 @@ public class UserController {
 
     private final UserService userService;
     private final ReportService reportService;
+    private final UserRepository userRepository;
 
     @GetMapping("/signup")
     public String signup1(UserCreateForm userCreateForm) {
@@ -37,7 +39,9 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public String signup2(@Valid UserCreateForm userCreateForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String signup2(@Valid UserCreateForm userCreateForm, BindingResult bindingResult,
+                          RedirectAttributes redirectAttributes, Model model, MultipartFile file)
+    throws Exception{
         if (bindingResult.hasErrors()) {
             return "user/signup_form";
         }
@@ -47,8 +51,7 @@ public class UserController {
                     "2개의 패스워드가 일치하지 않습니다.");
             return "user/signup_form";
         }
-        //adsdfur
-        SiteUser user= userService.create(userCreateForm.getUsername(), userCreateForm.getPassword1(),
+        SiteUser user= userService.create(userCreateForm.getFile(),userCreateForm.getUsername(), userCreateForm.getPassword1(),
                 userCreateForm.getNickname(), userCreateForm.getGender());
         redirectAttributes.addAttribute("id", user.getId());
         return "redirect:/user/add/" + user.getId();
@@ -105,8 +108,12 @@ public class UserController {
         SiteUser user = userService.getUserbyName(username);
 
         int userCyberMoney = user.getCyberMoney();
+        int receivedCyberMoney = user.getReceivedCyberMoney(); // 다른 사용자로부터 받은 사이버머니
+
         model.addAttribute("userCyberMoney", userCyberMoney);
+        model.addAttribute("receivedCyberMoney", receivedCyberMoney); // 다른 사용자로부터 받은 사이버머니
         model.addAttribute("user", user);
+
         return "myPage";
     }
     //비밀번호 변경
@@ -236,16 +243,36 @@ public class UserController {
     }
     //신고하기
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/report")
-    public String report(ReportForm reportForm) {
+    @GetMapping("/report/{id}")
+    public String report(ReportForm reportForm,@PathVariable("id") Integer id, Model model)
+        {model.addAttribute("userId",id);
         return "user/report";
-    }
-    @PostMapping("/report")
-    public String reportCreate(@Valid ReportForm reportForm, BindingResult bindingResult) {
+        }
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/report/{id}")
+    public String reportCreate(@PathVariable("id") Integer id,ReportForm reportForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "user/report";
         }
-        this.reportService.create(reportForm.getSubject(), reportForm.getContent());
+        SiteUser siteUser = userService.getUser(id);
+        this.reportService.create(siteUser, reportForm.getSubject(), reportForm.getContent());
         return "redirect:/";
     }
+
+    //admin 계정 부여하기
+    @GetMapping("/grantAuthorityToAdmin")
+    public String grantAuthorityForm(Principal principal){
+
+        return "/admin/grantAuthorityForm";
+    }
+    @PostMapping("/grantAuthorityToAdmin")
+    public String grantAdminAuthority(@RequestParam String adminCode, Principal principal) {
+        if ("admin".equals(adminCode)) {
+            String username = principal.getName();
+            userService.grantAdminAuthority(username);
+
+        }
+        return "redirect:/";
+    }
+
 }

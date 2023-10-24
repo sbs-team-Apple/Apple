@@ -1,3 +1,4 @@
+
 package com.sbs.apple.util;
 
 
@@ -25,6 +26,7 @@ public class DataCreator {
     public void createTestData(){
         createUser();
     }
+
 
     public void createUser() {
         for(int i = 0; i < userNum; i++){
