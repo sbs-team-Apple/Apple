@@ -66,7 +66,6 @@ public class DataCreator {
             user.setDesired_school("4년제 졸업");
             user.setDesired_job("무직");
             userRepository.save(user);
-            System.out.println("qwe");
         }
 
         for(int i = 0; i < userNum; i++){
