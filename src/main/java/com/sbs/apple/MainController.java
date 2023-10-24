@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -29,16 +30,33 @@ public class MainController {
     // *********************************************
 
     @GetMapping("/")
-    public String showMain(Model model) {
+    public String showMain(Model model, Principal principal) {
         System.out.println("메인페이지 실행1");
+        // ************ TEST DATA CREATE ***************
+        if (!isTestDataCreated && ddlAutoValue.equals("create")) {
+            dataCreator.createTestData();
+            isTestDataCreated = true;
+        }
+        // *********************************************
+
+
         ChatRoom chatRoom= chatRoomService.findLastRoom();
-        if(chatRoom == null){
-            SiteUser user = userService.getUser(1);
-            SiteUser user2 = userService.getUser(1);
-            chatRoom=chatRoomService.create(user, user2);
+
+        if(principal==null){
+            return "main";
         }
 
-        List<SiteUser> siteUsers = userService.getAllUser();
+        SiteUser loginUser = userService.getUserbyName(principal.getName());
+
+        if(loginUser==null) {
+            return "main";
+        }
+
+        List<SiteUser> siteUsers2 = userService.getAllUser2(loginUser);
+
+        List<SiteUser> siteUsers =userService.getUsersNotRoom(loginUser,siteUsers2);
+
+
 
         System.out.println("메인페이지 실행2");
         model.addAttribute("siteUsers", siteUsers);
@@ -52,13 +70,11 @@ public class MainController {
         System.out.println("메인페이지 실행3");
         //model.addAttribute("chatRoom", chatRoom);
 
-        // ************ TEST DATA CREATE ***************
-        if (!isTestDataCreated && ddlAutoValue.equals("create")) {
-            dataCreator.createTestData();
-            isTestDataCreated = true;
-        }// *********************************************
 
-        List<SiteUser> userList = userService.getFourUsers(); // 사용자 정보를 가져오는 예시 메서드
+        String username = principal.getName();
+        SiteUser siteUser =userService.getUserbyName(username);
+        String Gender =siteUser.getGender();
+        List<SiteUser> userList = userService.getFourUsers(Gender); // 사용자 정보를 가져오는 예시 메서드
         model.addAttribute("userList", userList);
 
         return "main";

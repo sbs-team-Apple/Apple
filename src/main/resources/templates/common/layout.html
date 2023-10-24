@@ -47,6 +47,7 @@
                         </li>
                         <li><a href="/user/signup"><i class="fa-solid fa-user-plus"></i> 회원가입</a></li>
                         <li><a href="/user/myPage"><i class="fa-solid fa-user"></i> 내 정보</a></li>
+
                         <li>
                             <a th:if="${chatRoom == null}" class="nav-link" th:href="@{/chat/1/room}"><i
                                     class="fa-solid fa-arrow-right-to-bracket"></i>채팅방 생성</a>
@@ -54,9 +55,13 @@
                                sec:authorize="isAuthenticated()" th:href="@{|/chat/${chatRoom.id+1}/room|}"><i
                                     class="fa-solid fa-arrow-right-to-bracket"></i>채팅방 생성</a>
                         </li>
+
                         <li><a href="/user/payment"><i class="fa-solid fa-user"></i> 결제</a></li>
-                        <li class="nav-item" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+                        <li class="nav-item" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
                             <a class="nav-link" th:href="@{/admin/report_list}">신고 게시판</a>
+                        </li>
+                        <li th:if="${#authorization.expression('isAuthenticated()')}">
+                            <a href="/user/grantAuthorityToAdmin" class="nav-domain" hx-boost="true">관리자</a>
                         </li>
                     </ul>
                 </div>

@@ -36,12 +36,21 @@ public class SecurityConfig {
                         .invalidateHttpSession(true))
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/admin/**").hasRole("ADMIN") // "ADMIN" 권한이 있는 사용자만 "/consulting/create" 경로에 접근 가능
+                                .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .requestMatchers("/**").permitAll()
                 )
         ;
+
+        http
+                .authorizeRequests()
+                .requestMatchers("/api/getCurrentUser").hasRole("USER")
+                .requestMatchers("/api/cybermoney/send").hasRole("USER")
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/**").permitAll();
+
         return http.build();
     }
+
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
