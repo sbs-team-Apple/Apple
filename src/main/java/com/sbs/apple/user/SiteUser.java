@@ -65,6 +65,8 @@ public class SiteUser extends Base {
     private String desired_style; //원하는 스타일
     private String desired_religion; //원하는 종교
     private String desired_mbti; //원하는 MBTI
+    private String owner;
+    private String addedUser;
 
 
 
@@ -86,6 +88,7 @@ public class SiteUser extends Base {
 
     @Column
     private Integer receivedCyberMoney = 0; // 다른 사용자로부터 받은 사이버머니 기본값 0으로 초기화
+
     public Integer getReceivedCyberMoney() {
         if (receivedCyberMoney == null) {
             return 0; // 또는 다른 기본값을 사용할 수 있습니다.
@@ -112,5 +115,5 @@ public class SiteUser extends Base {
     public boolean isAdmin() {
         return hasRole(UserRole.ADMIN);
     }
-
 }
+

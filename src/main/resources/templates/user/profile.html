@@ -37,6 +37,7 @@
 <div th:text="${siteUser.desired_religion}"></div>
 <div th:text="${siteUser.desired_mbti}"></div>
 <a th:href="@{'/user/report/' + ${siteUser.id}}">신고하기</a>
+<button id="addToWishlistBtn" class="btn btn-primary" data-user-id="${siteUser.id}">장바구니</button>
 <button id="sendCyberMoneyBtn" class="btn btn-primary" data-toggle="modal" data-target="#cyberMoneyModal">사이버머니 보내기</button>
 
 <!-- 모달 다이얼로그 -->
@@ -68,60 +69,120 @@
 
 <!-- Bootstrap JS 및 jQuery 스크립트를 추가하세요 -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
-<script>
-    document.getElementById('sendCyberMoneyBtn').addEventListener('click', function() {
-    // 사용자의 username을 HTML에서 가져옵니다.
-    var siteUserUsernameElement = document.querySelector(".user-username");
 
-    if (siteUserUsernameElement) {
-        var siteUserUsername = siteUserUsernameElement.textContent;
+<script>
+
+    $("#addToWishlistBtn").on("click", function(e){
+		$.ajax({
+			url: "/wishlist/add",
+			type: "POST",
+<!--			data: "${siteUser.id}",-->
+			success: function(result){
+				cartAlert(result);
+			}
+		})
+	});
+
+	function cartAlert(result){
+		if(result == '0'){
+			alert("장바구니에 추가를 하지 못하였습니다.");
+		} else if(result == '1'){
+			alert("장바구니에 추가되었습니다.");
+		} else if(result == '2'){
+			alert("장바구니에 이미 추가되어져 있습니다.");
+		} else if(result == '5'){
+			alert("로그인이 필요합니다.");
+		}
+	}
+<!--        document.getElementById('addToWishlistBtn').addEventListener('click', function() {-->
+<!--        // 사용자의 ID 가져오기-->
+<!--        var addedUserId = document.getElementById('addToWishlistBtn').getAttribute('data-user-id');-->
+
+<!--        // AJAX 요청을 통해 사용자를 찜 목록에 추가-->
+<!--        addToWishlist(addedUserId);-->
+<!--    });-->
+
+<!--    function addToWishlist(addedUserId) {-->
+<!--        // AJAX 요청을 수행하는 코드-->
+<!--        var requestData = {-->
+<!--            userId: addedUserId-->
+<!--        };-->
+
+<!--        var jsonData = JSON.stringify(requestData);-->
+
+<!--        // Fetch API를 사용하여 요청 보내기-->
+<!--        fetch("/wishlist/add", {-->
+<!--            method: 'POST',-->
+<!--            headers: {-->
+<!--                'Content-Type': 'application/json'-->
+<!--            },-->
+<!--            body: jsonData-->
+<!--        })-->
+<!--        .then(response => response.json())-->
+<!--        .then(data => {-->
+<!--            if (data) {-->
+<!--                // 결과를 'result' 엘리먼트에 추가하거나 다른 작업을 수행할 수 있습니다.-->
+<!--                document.getElementById("result").textContent = data.message;-->
+<!--            } else {-->
+<!--                // 실패한 경우 처리-->
+<!--                alert('사용자 추가에 실패했습니다.');-->
+<!--            }-->
+<!--        })-->
+<!--        .catch(error => {-->
+<!--            console.error('오류 발생:', error);-->
+
+<!--        });-->
+<!--    }-->
+
+      $('#sendCyberMoneyBtn').click(function() {
+    // 사용자의 username을 HTML에서 가져옵니다.
+    var siteUserUsernameElement = $(".user-username");
+
+    if (siteUserUsernameElement.length > 0) {
+        var siteUserUsername = siteUserUsernameElement.text();
 
         // "recipientUsername" 입력 필드의 값을 사용자의 username으로 설정합니다.
-        document.getElementById('recipientUsername').value = siteUserUsername;
+        $('#recipientUsername').val(siteUserUsername);
 
         $('#cyberMoneyModal').modal('show'); // 모달을 열 때
 
-        document.getElementById('sendCyberMoneyConfirmBtn').addEventListener('click', function() {
-            var amount = document.getElementById('cyberMoneyAmount').value;
-            var recipientUsername = document.getElementById('recipientUsername').value; // 변경된 부분
+        $('#sendCyberMoneyConfirmBtn').click(function() {
+            var amount = $('#cyberMoneyAmount').val();
+            var recipientUsername = $('#recipientUsername').val(); // 변경된 부분
 
-            var csrfToken = document.querySelector("meta[name='_csrf']").getAttribute("content");
-            var csrfHeader = document.querySelector("meta[name='_csrf_header']").getAttribute("content");
+            var csrfToken = $("meta[name='_csrf']").attr("content");
+            var csrfHeader = $("meta[name='_csrf_header']").attr("content");
 
             if (recipientUsername) { // 유효한 사용자 이름을 입력했는지 확인
                 if (amount >= 0) {
-                    var xhr = new XMLHttpRequest();
-                    xhr.open('POST', '/api/cybermoney/send', true);
-                    xhr.setRequestHeader(csrfHeader, csrfToken);
-                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-
-                    xhr.onreadystatechange = function() {
-                        if (xhr.readyState === 4) {
-                            if (xhr.status === 200) {
-                                $('#cyberMoneyModal').modal('hide'); // 성공 시 모달을 닫음
-                                alert('사이버 머니 전송이 성공했습니다.');
-                                // 사이버 머니 갱신 등의 추가 작업 수행
+                    $.ajax({
+                        type: "POST",
+                        url: "/user/cybermoney/send",
+                        data: 'recipientUsername=' + recipientUsername + '&amount=' + amount,
+                        beforeSend: function(request) {
+                            request.setRequestHeader(csrfHeader, csrfToken);
+                        },
+                        success: function() {
+                            $('#cyberMoneyModal').modal('hide'); // 성공 시 모달을 닫음
+                            alert('사이버 머니 전송이 성공했습니다.');
+                            // 사이버 머니 갱신 등의 추가 작업 수행
+                        },
+                        error: function(xhr) {
+                            if (xhr.status === 400) {
+                                alert('사이버 머니 전송에 실패했습니다. 요청이 잘못되었습니다.');
+                            } else if (xhr.status === 403) {
+                                alert('사이버 머니 전송에 실패했습니다. 권한이 없습니다.');
                             } else {
-                                if (xhr.status === 400) {
-                                    alert('사이버 머니 전송에 실패했습니다. 요청이 잘못되었습니다.');
-                                } else if (xhr.status === 403) {
-                                    alert('사이버 머니 전송에 실패했습니다. 권한이 없습니다.');
-                                } else {
-                                    console.log(xhr.status);
-                                    alert('사이버 머니 전송에 실패했습니다. 서버 오류가 발생했습니다.');
-                                }
+                                console.log(xhr.status);
+                                alert('사이버 머니 전송에 실패했습니다. 서버 오류가 발생했습니다.');
                             }
                         }
-                    };
-
-                    // 요청 본문 데이터
-                    var data = 'recipientUsername=' + recipientUsername + '&amount=' + amount;
-
-                    xhr.send(data);
+                    });
                 } else {
                     alert('금액은 0 이상이어야 합니다.');
                 }

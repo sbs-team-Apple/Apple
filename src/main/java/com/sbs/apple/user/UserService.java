@@ -10,9 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -21,7 +19,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final GenFileService genFileService;
     private final ChatRoomService chatRoomService;
-    private  UserService userService;
+    private UserService userService;
 
     public SiteUser getUser(Integer id) {
         Optional<SiteUser> user = this.userRepository.findById(id);
@@ -55,7 +53,8 @@ public class UserService {
 
         return user;
     }
-    public SiteUser create( String username, String password, String nickname, String gender) {
+
+    public SiteUser create(String username, String password, String nickname, String gender) {
         SiteUser user = new SiteUser();
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
@@ -179,7 +178,6 @@ public class UserService {
         List<ChatRoom> AllRooms = chatRoomService.getAll();
 
 
-
         //이미 채팅방이 있는 유저들 id 저장소
         List<Integer> chatUsers = new ArrayList<>();
 
@@ -217,8 +215,13 @@ public class UserService {
 
     }
 
+    public SiteUser getUserbyId(String addedUserId) {
+        // addedUserId를 사용하여 데이터베이스에서 사용자를 조회
+        SiteUser user = userRepository.findByusername(addedUserId).orElse(null);
 
 
+        return user;
+    }
 }
 
 

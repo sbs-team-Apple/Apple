@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/cybermoney")
+@RequestMapping("/user/cybermoney")
 public class CyberMoneyController {
     private final CyberMoneyService cyberMoneyService;
     private final UserRepository userRepository;
