@@ -14,7 +14,7 @@ public class PaymentService {
     private UserRepository userRepository;
 
     public void grantCyberMoneyToUser(String username, int amount) {
-        Optional<SiteUser> optionalUser = userRepository.findByusername(username);
+        Optional<SiteUser> optionalUser = userRepository.findByUsername(username);
 
         if (optionalUser.isPresent()) {
             SiteUser user = optionalUser.get();
