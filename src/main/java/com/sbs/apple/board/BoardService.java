@@ -15,7 +15,7 @@ import java.util.UUID;
 public class BoardService {
     private final BoardRepository boardRepository;
 
-    public Board create(MultipartFile file,String content, String subject, SiteUser user)
+    public Board create(MultipartFile file,String subject,String content,  SiteUser user)
             throws Exception {
         Board board =new Board();
 

@@ -4,6 +4,7 @@ import com.sbs.apple.chat.ChatRoom;
 import com.sbs.apple.chat.ChatRoomService;
 import com.sbs.apple.user.SiteUser;
 import com.sbs.apple.user.UserService;
+import com.sbs.apple.util.DataCreator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -20,7 +21,7 @@ public class MainController {
     private final ChatRoomService chatRoomService;
     private final UserService userService;
 
-//    private final DataCreator dataCreator;
+    private final DataCreator dataCreator;
     @Value("${spring.jpa.hibernate.ddl-auto}")
     private String ddlAutoValue;
 
@@ -33,10 +34,10 @@ public class MainController {
         System.out.println("메인페이지 실행1");
 
         // ************ TEST DATA CREATE ***************
-//        if (!isTestDataCreated && ddlAutoValue.equals("create")) {
-//            dataCreator.createTestData();
-//            isTestDataCreated = true;
-//        }// *********************************************
+        if (!isTestDataCreated && ddlAutoValue.equals("create")) {
+            dataCreator.createTestData();
+            isTestDataCreated = true;
+        }// *********************************************
 
 
         ChatRoom chatRoom= chatRoomService.findLastRoom();
@@ -65,11 +66,11 @@ public class MainController {
         System.out.println("메인페이지 실행3");
 
 
-
         String username = principal.getName();
         SiteUser siteUser =userService.getUserbyName(username);
         String Gender =siteUser.getGender();
-        List<SiteUser> userList = userService.getFourUsers(Gender); // 사용자 정보를 가져오는 예시 메서드
+        String living =siteUser.getLiving();
+        List<SiteUser> userList = userService.getFourUsers(Gender,living); // 사용자 정보를 가져오는 예시 메서드
         model.addAttribute("userList", userList);
 
         return "main";
