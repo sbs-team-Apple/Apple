@@ -9,7 +9,7 @@
     <div class="m-auto">
     <div th:each="board : ${board}">
         <div class="flex">
-            <a href="">
+            <a th:href="@{|/board/detail/${board.id}|}">
                 <img class="w-40  h-40" th:src="${board.filepath}" alt="">
             </a>
             <div th:text="${board.subject}"></div>
@@ -20,7 +20,9 @@
         </div>
     </div>
 
-
+    <div>
+        <a th:href="@{/board/create}">어필 게시판 작성하기</a>
+    </div>
 
 
 

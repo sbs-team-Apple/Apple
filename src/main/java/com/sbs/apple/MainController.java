@@ -31,6 +31,7 @@ public class MainController {
     @GetMapping("/")
     public String showMain(Model model, Principal principal) {
         System.out.println("메인페이지 실행1");
+
         // ************ TEST DATA CREATE ***************
 //        if (!isTestDataCreated && ddlAutoValue.equals("create")) {
 //            dataCreator.createTestData();
@@ -60,7 +61,6 @@ public class MainController {
         model.addAttribute("siteUsers", siteUsers);
 
         model.addAttribute("chatRoom", chatRoom);
-
 
         System.out.println("메인페이지 실행3");
 
