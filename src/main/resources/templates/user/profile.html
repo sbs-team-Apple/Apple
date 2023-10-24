@@ -41,7 +41,8 @@
 <div th:text="'선호하는 이성 MBTI : ' + ${siteUser.desired_mbti}"></div>
 <a th:href="@{'/user/report/' + ${siteUser.id}}">신고하기</a>
 <button id="sendCyberMoneyBtn" class="btn btn-primary" data-toggle="modal" data-target="#cyberMoneyModal">사이버머니 보내기</button>
-
+    <a class="nav-link" th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
+       th:href="@{'/admin/punish/' + ${siteUser.id}}">제재하기</a>
 <!-- 모달 다이얼로그 -->
 <div class="modal fade" id="cyberMoneyModal" tabindex="-1" role="dialog" aria-labelledby="cyberMoneyModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
