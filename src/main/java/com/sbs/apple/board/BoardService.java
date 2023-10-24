@@ -40,7 +40,7 @@ public class BoardService {
         File saveFile =new File(directory,fileName);
         file.transferTo(saveFile);
         board.setFilename(fileName);
-        board.setFilepath("file://C:/uploads/"+fileName);
+        board.setFilepath("/gen/"+fileName);
         board.setSubject(subject);
         board.setContent(content);
         board.setSiteUser(user);
@@ -72,7 +72,7 @@ public class BoardService {
         File saveFile =new File(directory,fileName);
         file.transferTo(saveFile);
         board.setFilename(fileName);
-        board.setFilepath("file:///C:/uploads/"+fileName);
+        board.setFilepath("/gen/"+fileName);
         board.setSubject(subject);
         board.setContent(content);
 
