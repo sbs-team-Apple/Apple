@@ -33,8 +33,9 @@ public class SiteUser {
     @GeneratedValue(strategy = IDENTITY)
     private Integer id;
 
-    @Column
+    @Column(nullable = true)
     private boolean userStop;
+
     private String filename;
     private String filepath;
     //회원가입 할 때 기본 정보

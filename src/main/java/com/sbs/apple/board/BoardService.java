@@ -2,6 +2,8 @@ package com.sbs.apple.board;
 
 import com.sbs.apple.user.SiteUser;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,19 +16,31 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class BoardService {
     private final BoardRepository boardRepository;
+    private String uploadDir;
+
+    @Value("${file.upload-dir}")
+    public void setUploadDir(String uploadDir) {
+        this.uploadDir = uploadDir;
+    }
+
+
 
     public Board create(MultipartFile file,String subject,String content,  SiteUser user)
             throws Exception {
         Board board =new Board();
 
 
-        String projectPath = System.getProperty("user.dir")+"\\src\\main\\resources\\static\\files";
+        File directory = new File(uploadDir);
+
+        if (!directory.exists()) {
+            directory.mkdirs(); // 디렉토리가 없으면 생성
+        }
         UUID uuid = UUID.randomUUID();
         String fileName =uuid + "_" + file.getOriginalFilename();
-        File saveFile =new File(projectPath,fileName);
+        File saveFile =new File(directory,fileName);
         file.transferTo(saveFile);
         board.setFilename(fileName);
-        board.setFilepath("/files/"+fileName);
+        board.setFilepath("file://C:/uploads/"+fileName);
         board.setSubject(subject);
         board.setContent(content);
         board.setSiteUser(user);
@@ -51,14 +65,14 @@ public class BoardService {
             throws Exception {
 
 
+        File directory = new File(uploadDir);
 
-        String projectPath = System.getProperty("user.dir")+"\\src\\main\\resources\\static\\files";
         UUID uuid = UUID.randomUUID();
         String fileName =uuid + "_" + file.getOriginalFilename();
-        File saveFile =new File(projectPath,fileName);
+        File saveFile =new File(directory,fileName);
         file.transferTo(saveFile);
         board.setFilename(fileName);
-        board.setFilepath("/files/"+fileName);
+        board.setFilepath("file:///C:/uploads/"+fileName);
         board.setSubject(subject);
         board.setContent(content);
 
