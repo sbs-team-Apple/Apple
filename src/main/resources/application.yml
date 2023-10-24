@@ -1,5 +1,7 @@
 server:
   port: 8090
+file:
+    upload-dir: C:/uploads/
 spring:
   profiles:
     include: secret
@@ -78,3 +80,4 @@ custom:
 
   thymeleaf:
     cache: false
+
