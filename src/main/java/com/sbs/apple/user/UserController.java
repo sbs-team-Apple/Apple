@@ -278,5 +278,12 @@ public class UserController {
         }
         return "redirect:/";
     }
+    @GetMapping("/okay")
+    public String ok(Principal principal){
+        String username =principal.getName();
+        SiteUser siteUser = this.userService.getUserbyName(username);
+        userService.resetUserWarning(siteUser);
+        return "redirect:/";
+    }
 
 }

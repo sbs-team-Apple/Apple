@@ -253,6 +253,10 @@ public class UserService {
         siteUser.setUserWarning(true);
         userRepository.save(siteUser);
     }
+    public void resetUserWarning(SiteUser siteUser) {
+        siteUser.setUserWarning(false);
+        userRepository.save(siteUser);
+    }
 }
 
 
