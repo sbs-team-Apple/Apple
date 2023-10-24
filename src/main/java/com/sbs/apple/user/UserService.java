@@ -244,8 +244,6 @@ public class UserService {
         siteUser.setUserStop(true);
         userRepository.save(siteUser);
     }
-
-
     public void resetUserStop(SiteUser siteUser) {
         siteUser.setUserStop(false);
         userRepository.save(siteUser);
