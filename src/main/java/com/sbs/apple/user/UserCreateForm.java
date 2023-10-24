@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Getter
 @Setter
 public class UserCreateForm {
+
     private MultipartFile file;
 
     @Size(min = 3, max = 25)

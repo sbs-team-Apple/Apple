@@ -36,8 +36,8 @@ public class MainController {
         if (!isTestDataCreated && ddlAutoValue.equals("create")) {
             dataCreator.createTestData();
             isTestDataCreated = true;
-        }
-        // *********************************************
+
+        }// *********************************************
 
 
         ChatRoom chatRoom= chatRoomService.findLastRoom();
@@ -63,18 +63,13 @@ public class MainController {
 
         model.addAttribute("chatRoom", chatRoom);
 
-        //ChatRoom chatRoom= chatRoomService.findLastRoom();
-        //if(chatRoom == null){
-        //    chatRoom=chatRoomService.create(1);
-        //}
         System.out.println("메인페이지 실행3");
-        //model.addAttribute("chatRoom", chatRoom);
-
 
         String username = principal.getName();
         SiteUser siteUser =userService.getUserbyName(username);
         String Gender =siteUser.getGender();
-        List<SiteUser> userList = userService.getFourUsers(Gender); // 사용자 정보를 가져오는 예시 메서드
+        String living =siteUser.getLiving();
+        List<SiteUser> userList = userService.getFourUsers(Gender,living); // 사용자 정보를 가져오는 예시 메서드
         model.addAttribute("userList", userList);
 
         return "main";

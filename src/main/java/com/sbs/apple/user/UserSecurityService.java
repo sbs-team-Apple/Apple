@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -21,15 +20,20 @@ public class UserSecurityService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<SiteUser> _siteUser = this.userRepository.findByusername(username);
-        if (_siteUser.isEmpty()) {
+        SiteUser siteUser = userRepository.findByUsername(username).orElse(null);
+        if (siteUser == null) {
             throw new UsernameNotFoundException("사용자를 찾을수 없습니다.");
         }
-        SiteUser siteUser = _siteUser.get();
+        if (isBannedUser(siteUser)) {
+            throw new UsernameNotFoundException("영구정지 된 계정입니다.");
+        }
         List<GrantedAuthority> authorities = siteUser.getAuthorities().stream()
                 .map(authority -> new SimpleGrantedAuthority(authority.getValue()))
                 .collect(Collectors.toList());
         authorities.add(new SimpleGrantedAuthority(UserRole.USER.getValue()));
         return new User(siteUser.getUsername(), siteUser.getPassword(), authorities);
+    }
+    private boolean isBannedUser(SiteUser user) {
+        return user.isUserStop();
     }
 }
