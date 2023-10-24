@@ -7,13 +7,13 @@
 <body>
 <div layout:fragment="content" class="container my-3">
 
-    <form  enctype="multipart/form-data" th:action="@{/board/create}"  object="${boardForm}" method="post" >
+    <form  enctype="multipart/form-data" th:action="@{|/board/modify/${board.id}|}"  object="${boardForm}" method="post" >
         <div>이미지 넣기</div>
         <input type="file" name="file" accept="image/**">
         <div>제목</div>
-        <input type="text" name="subject">
+        <input type="text" name="subject" th:value="${board.subject}">
         <div>내용</div>
-        <input type="text" name="content">
+        <input type="text" name="content"  th:value="${board.content}">
 
         <button type="submit">작성 완료</button>
 

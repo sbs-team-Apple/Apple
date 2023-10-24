@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.boot.Banner;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,13 +31,13 @@ public class BoardController {
 
 
     @GetMapping("/board/create")
-    public String Create2(BoardForm boardForm) {
+    public String Create(BoardForm boardForm) {
         return "/Board/appeal_board_create";
 
     }
 
 
-    @PostMapping("/board/create2")
+    @PostMapping("/board/create")
     public String Create(@Valid BoardForm boardForm , MultipartFile file, Model model, Principal principal)throws Exception{
         SiteUser user = userService.getUserbyName(principal.getName());
 
@@ -44,12 +45,12 @@ public class BoardController {
               );
 
 
-        return "redirect:/list";
+        return "redirect:/board/list";
     }
 
     @GetMapping("/board/list")
     public String showList(Model model) {
-
+        System.out.println(System.currentTimeMillis());
         List<Board> boards =this.boardService.getAllBoard();
 
         model.addAttribute("board", boards);
@@ -71,6 +72,26 @@ public class BoardController {
 
     }
 
+    @GetMapping("/board/modify/{id}")
+    public String modify2( BoardForm boardForm , MultipartFile file, Model model, Principal principal,@PathVariable Integer id){
+       Board board = boardService.getBoard(id);
+       model.addAttribute("board",board);
+
+        return "/Board/appeal_board_modify";
+
+    }
+
+    @PostMapping("/board/modify/{id}")
+    public String modify(@Valid BoardForm boardForm , MultipartFile file, Model model, Principal principal,
+                         @PathVariable Integer id)throws Exception{
+        SiteUser user = userService.getUserbyName(principal.getName());
+        Board board = boardService.getBoard(id);
+        boardService.modify( boardForm.getFile(),boardForm.getSubject(), boardForm.getContent(), board);
+
+
+
+        return "redirect:/board/list";
+    }
 
 
 

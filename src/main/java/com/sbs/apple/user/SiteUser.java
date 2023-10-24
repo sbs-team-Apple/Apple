@@ -120,4 +120,6 @@ public class SiteUser extends Base {
     @OneToMany(mappedBy = "siteUser" , cascade = CascadeType.REMOVE)
     private List<Board> boardList;
 
+
+
 }

@@ -45,4 +45,24 @@ public class BoardService {
             return board.get();
         }else return null;
     }
+
+
+    public Board modify(MultipartFile file, String subject, String content,Board board)
+            throws Exception {
+
+
+
+        String projectPath = System.getProperty("user.dir")+"\\src\\main\\resources\\static\\files";
+        UUID uuid = UUID.randomUUID();
+        String fileName =uuid + "_" + file.getOriginalFilename();
+        File saveFile =new File(projectPath,fileName);
+        file.transferTo(saveFile);
+        board.setFilename(fileName);
+        board.setFilepath("/files/"+fileName);
+        board.setSubject(subject);
+        board.setContent(content);
+
+        this.boardRepository.save(board);
+        return board;
+    }
 }
