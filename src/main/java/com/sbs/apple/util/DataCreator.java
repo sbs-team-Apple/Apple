@@ -34,6 +34,7 @@ public class DataCreator {
             String username = String.valueOf(asciiChar);
 
             SiteUser user = new SiteUser();
+            user.setUserWarning(false);
             user.setUserStop(false);
             user.setUsername(username);
             user.setPassword(passwordEncoder.encode(username));
@@ -74,6 +75,7 @@ public class DataCreator {
 
             SiteUser user = new SiteUser();
             user.setUserStop(false);
+            user.setUserWarning(false);
             user.setUsername(username);
             user.setPassword(passwordEncoder.encode(username));
             user.setNickname("유저 " + username);
