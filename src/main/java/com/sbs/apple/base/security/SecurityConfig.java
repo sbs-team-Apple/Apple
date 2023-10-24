@@ -38,15 +38,18 @@ public class SecurityConfig {
                         authorizeRequests
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .requestMatchers("/**").permitAll()
+
                 )
         ;
 
         http
                 .authorizeRequests()
+                .requestMatchers("/wishlist/add").hasRole("USER")
                 .requestMatchers("/api/getCurrentUser").hasRole("USER")
                 .requestMatchers("/api/cybermoney/send").hasRole("USER")
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/**").permitAll();
+
 
         return http.build();
     }
