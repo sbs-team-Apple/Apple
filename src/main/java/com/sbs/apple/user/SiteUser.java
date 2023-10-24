@@ -1,8 +1,10 @@
 package com.sbs.apple.user;
 
 
-import com.sbs.apple.Base;
+
 import com.sbs.apple.board.Board;
+
+
 import com.sbs.apple.chat.ChatRoom;
 import com.sbs.apple.report.Report;
 import jakarta.persistence.*;
@@ -16,6 +18,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PUBLIC;
 
 @Getter
@@ -25,7 +28,13 @@ import static lombok.AccessLevel.PUBLIC;
 @NoArgsConstructor(access = PUBLIC)
 @SuperBuilder
 @ToString(callSuper = true)
-public class SiteUser extends Base {
+public class SiteUser {
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    private Integer id;
+
+    @Column
+    private boolean userStop;
     private String filename;
     private String filepath;
     //회원가입 할 때 기본 정보

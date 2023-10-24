@@ -10,7 +10,7 @@
     <div th:each="board : ${board}">
         <div class="flex">
             <a th:href="@{|/board/detail/${board.id}|}">
-                <img class="w-40  h-40" th:src="${board.filepath}" alt="">
+                <img class="w-40  h-40" th:src="@{|${board.filepath}|}" alt="">
             </a>
             <div th:text="${board.subject}"></div>
 

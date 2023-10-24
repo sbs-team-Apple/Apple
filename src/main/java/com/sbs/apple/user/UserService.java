@@ -15,10 +15,10 @@ import java.util.*;
 @RequiredArgsConstructor
 @Service
 public class UserService {
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ChatRoomService chatRoomService;
-    private  UserService userService;
 
     public SiteUser getUser(Integer id) {
         Optional<SiteUser> user = this.userRepository.findById(id);
@@ -30,7 +30,7 @@ public class UserService {
     }
 
     public SiteUser getUserbyName(String name) {
-        Optional<SiteUser> user = this.userRepository.findByusername(name);
+        Optional<SiteUser> user = this.userRepository.findByUsername(name);
         if (user.isPresent()) {
             return user.get();
         } else {
@@ -39,9 +39,10 @@ public class UserService {
         }
     }
 
-    public SiteUser create(MultipartFile file, String username, String password, String nickname, String gender)
+    public SiteUser create(boolean userStop, MultipartFile file, String username, String password, String nickname, String gender)
             throws Exception {
         SiteUser user = new SiteUser();
+        user.setUserStop(userStop);
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
         user.setNickname(nickname);
@@ -147,13 +148,13 @@ public class UserService {
         return siteUsers;
     }
 
-    public List<SiteUser> getFourUsers(String gender) {
+    public List<SiteUser> getFourUsers(String gender,String living) {
         List<SiteUser> randomUsers;
 
         if ("남".equals(gender)) {
-            randomUsers = this.userRepository.findRandomUsersByGender("여", 4);
+            randomUsers = this.userRepository.findRandomUsersByGenderAndLiving("여",living,4);
         } else if ("여".equals(gender)) {
-            randomUsers = this.userRepository.findRandomUsersByGender("남", 4);
+            randomUsers = this.userRepository.findRandomUsersByGenderAndLiving("남",living,4);
         } else {
             // Handle invalid gender or other cases
             randomUsers = Collections.emptyList();
@@ -163,12 +164,22 @@ public class UserService {
     }
 
     public void grantAdminAuthority(String username) {
-        SiteUser user = userRepository.findByusername(username).orElse(null);
+        SiteUser user = userRepository.findByUsername(username).orElse(null);
 
         if (user != null) {
             // 기존 권한 수정
             user.getAuthorities().clear(); // 모든 권한 제거
             user.getAuthorities().add(UserRole.ADMIN); // "ADMIN" 권한 추가
+            userRepository.save(user);
+        }
+    }
+    //관리자 권한 삭제
+    public void deleteAdminAuthority(String username) {
+        SiteUser user = userRepository.findByUsername(username).orElse(null);
+
+        if (user != null) {
+            // 기존 권한 수정
+            user.getAuthorities().clear(); // 모든 권한 제거
             userRepository.save(user);
         }
     }
@@ -229,7 +240,16 @@ public class UserService {
 
     }
 
+    public void changeUserStop(SiteUser siteUser) {
+        siteUser.setUserStop(true);
+        userRepository.save(siteUser);
+    }
 
+
+    public void resetUserStop(SiteUser siteUser) {
+        siteUser.setUserStop(false);
+        userRepository.save(siteUser);
+    }
 
 }
 
