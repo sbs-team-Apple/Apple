@@ -4,7 +4,6 @@ import com.sbs.apple.DataNotFoundException;
 import com.sbs.apple.chat.ChatRoom;
 import com.sbs.apple.chat.ChatRoomService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,10 +15,10 @@ import java.util.*;
 @RequiredArgsConstructor
 @Service
 public class UserService {
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ChatRoomService chatRoomService;
-    private  UserService userService;
 
     public SiteUser getUser(Integer id) {
         Optional<SiteUser> user = this.userRepository.findById(id);
@@ -31,7 +30,7 @@ public class UserService {
     }
 
     public SiteUser getUserbyName(String name) {
-        Optional<SiteUser> user = this.userRepository.findByusername(name);
+        Optional<SiteUser> user = this.userRepository.findByUsername(name);
         if (user.isPresent()) {
             return user.get();
         } else {
@@ -149,13 +148,13 @@ public class UserService {
         return siteUsers;
     }
 
-    public List<SiteUser> getFourUsers(String gender) {
+    public List<SiteUser> getFourUsers(String gender,String living) {
         List<SiteUser> randomUsers;
 
         if ("남".equals(gender)) {
-            randomUsers = this.userRepository.findRandomUsersByGender("여", 4);
+            randomUsers = this.userRepository.findRandomUsersByGenderAndLiving("여",living,4);
         } else if ("여".equals(gender)) {
-            randomUsers = this.userRepository.findRandomUsersByGender("남", 4);
+            randomUsers = this.userRepository.findRandomUsersByGenderAndLiving("남",living,4);
         } else {
             // Handle invalid gender or other cases
             randomUsers = Collections.emptyList();
@@ -165,7 +164,7 @@ public class UserService {
     }
 
     public void grantAdminAuthority(String username) {
-        SiteUser user = userRepository.findByusername(username).orElse(null);
+        SiteUser user = userRepository.findByUsername(username).orElse(null);
 
         if (user != null) {
             // 기존 권한 수정
@@ -176,7 +175,7 @@ public class UserService {
     }
     //관리자 권한 삭제
     public void deleteAdminAuthority(String username) {
-        SiteUser user = userRepository.findByusername(username).orElse(null);
+        SiteUser user = userRepository.findByUsername(username).orElse(null);
 
         if (user != null) {
             // 기존 권한 수정
@@ -245,11 +244,13 @@ public class UserService {
         siteUser.setUserStop(true);
         userRepository.save(siteUser);
     }
-    @Scheduled(fixedDelay = 60 * 1000) // 1분(밀리초) 후에 실행
+
+
     public void resetUserStop(SiteUser siteUser) {
         siteUser.setUserStop(false);
         userRepository.save(siteUser);
     }
+
 }
 
 

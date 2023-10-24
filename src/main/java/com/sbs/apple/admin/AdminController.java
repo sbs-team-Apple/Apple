@@ -18,9 +18,7 @@ import java.util.List;
 @RequestMapping("/admin")
 public class AdminController {
     private final UserService userService;
-    private final AdminAccountService adminAccountService;
     private final ReportService reportService;
-
 
     @GetMapping("/report_list")
     public String report_list(Model model){
@@ -38,10 +36,14 @@ public class AdminController {
     public String Permanent_stop(@PathVariable Integer id){
         SiteUser siteUser = this.userService.getUser(id);
         userService.changeUserStop(siteUser);
-        userService.resetUserStop(siteUser);
-        return "main";
+        return "redirect:/";
     }
-
+    @GetMapping("/Day3_stop/{id}")
+    public String Day_stop(@PathVariable Integer id){
+        SiteUser siteUser = this.userService.getUser(id);
+        userService.resetUserStop(siteUser);
+        return "redirect:/";
+    }
 
 
 }
