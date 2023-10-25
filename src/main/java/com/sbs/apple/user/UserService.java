@@ -215,13 +215,4 @@ public class UserService {
 
     }
 
-    public SiteUser getUserbyId(String addedUserId) {
-        // addedUserId를 사용하여 데이터베이스에서 사용자를 조회
-        SiteUser user = userRepository.findByusername(addedUserId).orElse(null);
-
-
-        return user;
-    }
 }
-
-

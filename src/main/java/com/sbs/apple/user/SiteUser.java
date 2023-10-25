@@ -25,7 +25,8 @@ import static lombok.AccessLevel.PUBLIC;
 @SuperBuilder
 @ToString(callSuper = true)
 public class SiteUser extends Base {
-
+    @Column(name = "USER_STOP", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private Boolean userStop = false;
     //회원가입 할 때 기본 정보
     @Column(unique = true)
     private String username;
@@ -116,4 +117,3 @@ public class SiteUser extends Base {
         return hasRole(UserRole.ADMIN);
     }
 }
-
