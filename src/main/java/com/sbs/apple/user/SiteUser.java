@@ -30,6 +30,7 @@ public class SiteUser {
     private Integer id;
 
     private boolean userStop;
+    private boolean userWarning;
     private String filename;
     private String filepath;
     //회원가입 할 때 기본 정보

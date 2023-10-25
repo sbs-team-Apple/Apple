@@ -7,7 +7,12 @@
 <body>
 <div layout:fragment="content" class="container my-3">
 
-
+    <div th:if="${#authorization.expression('isAuthenticated()') and userWarning}">
+        <div id="warningMessage" style="color: red; font-weight: bold;">경고합니다</div>
+    </div>
+    <div th:if="${#authorization.expression('isAuthenticated()') and userWarning}">
+        <a th:href="@{/user/okay}">확인했습니다.</a>
+    </div>
     <div th:if="${siteUsers != null}" th:each="user : ${siteUsers}">
         <div class="flex  ">
         <div><a  th:value="${user.id}"  name="userId" th:text="${user.nickname}"></a></div>
@@ -60,20 +65,16 @@
 </body>
 </html>
 
-<script >
-
+<script>
     $(document).ready(function () {
-      $("#myLink").click(function () {
-          var valueToSend = "exampleValue"; // 보낼 값
-          var url = "/chat/"+roomId+"?paramName=" + valueToSend;
+        $("#myLink").click(function () {
+            var valueToSend = "exampleValue"; // 보낼 값
+            var url = "/chat/" + roomId + "?paramName=" + valueToSend;
 
-          $.get(url, function (data) {
-              // 서버 응답을 처리
-              console.log(data);
-          });
-      });
-  });
-
-
-
+            $.get(url, function (data) {
+                // 서버 응답을 처리
+                console.log(data);
+            });
+        });
+    });
 </script>
