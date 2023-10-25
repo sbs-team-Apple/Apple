@@ -3,23 +3,22 @@ package com.sbs.apple.user;
 import com.sbs.apple.DataNotFoundException;
 import com.sbs.apple.chat.ChatRoom;
 import com.sbs.apple.chat.ChatRoomService;
-import com.sbs.apple.genfile.GenFileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.*;
 
 @RequiredArgsConstructor
 @Service
 public class UserService {
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final GenFileService genFileService;
     private final ChatRoomService chatRoomService;
-    private UserService userService;
 
     public SiteUser getUser(Integer id) {
         Optional<SiteUser> user = this.userRepository.findById(id);
@@ -31,7 +30,7 @@ public class UserService {
     }
 
     public SiteUser getUserbyName(String name) {
-        Optional<SiteUser> user = this.userRepository.findByusername(name);
+        Optional<SiteUser> user = this.userRepository.findByUsername(name);
         if (user.isPresent()) {
             return user.get();
         } else {
@@ -40,21 +39,28 @@ public class UserService {
         }
     }
 
-    public SiteUser create(MultipartFile photo, String username, String password, String nickname, String gender) {
+    public SiteUser create(boolean userStop,boolean userWarning, MultipartFile file, String username, String password, String nickname, String gender)
+            throws Exception {
         SiteUser user = new SiteUser();
+        user.setUserStop(userStop);
+        user.setUserWarning(userWarning);
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
         user.setNickname(nickname);
         user.setGender(gender);
-        this.userRepository.save(user);
-        if (photo != null) {
-            genFileService.save(user.getModelName(), user.getId(), "common", "photo", 0, photo);
-        }
+        String projectPath = System.getProperty("user.dir")+"\\src\\main\\resources\\static\\files";
+        UUID uuid = UUID.randomUUID();
+        String fileName =uuid + "_" + file.getOriginalFilename();
+        File saveFile =new File(projectPath,fileName);
+        file.transferTo(saveFile);
+        user.setFilename(fileName);
+        user.setFilepath("/files/"+fileName);
 
+        this.userRepository.save(user);
         return user;
     }
 
-    public SiteUser create(String username, String password, String nickname, String gender) {
+    public SiteUser create( String username, String password, String nickname, String gender) {
         SiteUser user = new SiteUser();
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
@@ -143,19 +149,38 @@ public class UserService {
         return siteUsers;
     }
 
-    public List<SiteUser> getFourUsers() {
-        List<SiteUser> randomUsers = this.userRepository.findRandomUsers(4);
-        return randomUsers;
+    public List<SiteUser> getFourUsers(String gender,String living) {
+        List<SiteUser> randomUsers;
 
+        if ("남".equals(gender)) {
+            randomUsers = this.userRepository.findRandomUsersByGenderAndLiving("여",living,4);
+        } else if ("여".equals(gender)) {
+            randomUsers = this.userRepository.findRandomUsersByGenderAndLiving("남",living,4);
+        } else {
+            // Handle invalid gender or other cases
+            randomUsers = Collections.emptyList();
+        }
+
+        return randomUsers;
     }
 
     public void grantAdminAuthority(String username) {
-        SiteUser user = userRepository.findByusername(username).orElse(null);
+        SiteUser user = userRepository.findByUsername(username).orElse(null);
 
         if (user != null) {
             // 기존 권한 수정
             user.getAuthorities().clear(); // 모든 권한 제거
             user.getAuthorities().add(UserRole.ADMIN); // "ADMIN" 권한 추가
+            userRepository.save(user);
+        }
+    }
+    //관리자 권한 삭제
+    public void deleteAdminAuthority(String username) {
+        SiteUser user = userRepository.findByUsername(username).orElse(null);
+
+        if (user != null) {
+            // 기존 권한 수정
+            user.getAuthorities().clear(); // 모든 권한 제거
             userRepository.save(user);
         }
     }
@@ -176,6 +201,7 @@ public class UserService {
     //로그인한 사용자와 채팅방이 없는 유저만 불러오는 함수
     public List<SiteUser> getUsersNotRoom(SiteUser loginUser, List<SiteUser> siteUsers) {
         List<ChatRoom> AllRooms = chatRoomService.getAll();
+
 
 
         //이미 채팅방이 있는 유저들 id 저장소
@@ -215,4 +241,20 @@ public class UserService {
 
     }
 
+    public void changeUserStop(SiteUser siteUser) {
+        siteUser.setUserStop(true);
+        userRepository.save(siteUser);
+    }
+    public void resetUserStop(SiteUser siteUser) {
+        siteUser.setUserStop(false);
+        userRepository.save(siteUser);
+    }
+    public void changeUserWarning(SiteUser siteUser) {
+        siteUser.setUserWarning(true);
+        userRepository.save(siteUser);
+    }
+    public void resetUserWarning(SiteUser siteUser) {
+        siteUser.setUserWarning(false);
+        userRepository.save(siteUser);
+    }
 }

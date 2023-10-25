@@ -1,23 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html layout:decorate="~{/common/layout}">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>신고 리스트</title>
 </head>
 <body>
-<table>
-    <thead>
-    <tr>
-        <th>제목</th>
-        <th>내용</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="reportList : ${reportList}">
-        <td th:text="${reportList.subject}"></td>
-        <td th:text="${reportList.content}"></td>
-    </tr>
-    </tbody>
-</table>
+<div layout:fragment="content" class="container my-3">
+
+    <table>
+        <thead>
+        <tr>
+            <th>신고된 사람</th>
+            <th>제목</th>
+            <th>내용</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="reportList : ${reportList}">
+            <td>
+                <a th:href="@{|/user/detail/${reportList.siteUser.id}|}" th:text="${reportList.reported_user}"></a>
+            </td>
+            <td th:text="${reportList.subject}"></td>
+            <td th:text="${reportList.content}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>

@@ -1,7 +1,10 @@
 package com.sbs.apple.user;
 
 
-import com.sbs.apple.Base;
+
+import com.sbs.apple.board.Board;
+
+
 import com.sbs.apple.chat.ChatRoom;
 import com.sbs.apple.report.Report;
 import jakarta.persistence.*;
@@ -15,6 +18,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PUBLIC;
 
 @Getter
@@ -24,9 +28,17 @@ import static lombok.AccessLevel.PUBLIC;
 @NoArgsConstructor(access = PUBLIC)
 @SuperBuilder
 @ToString(callSuper = true)
-public class SiteUser extends Base {
-    @Column(name = "USER_STOP", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private Boolean userStop = false;
+public class SiteUser {
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    private Integer id;
+
+    @Column(nullable = true)
+    private boolean userStop;
+
+    private boolean userWarning;
+    private String filename;
+    private String filepath;
     //회원가입 할 때 기본 정보
     @Column(unique = true)
     private String username;
@@ -89,7 +101,6 @@ public class SiteUser extends Base {
 
     @Column
     private Integer receivedCyberMoney = 0; // 다른 사용자로부터 받은 사이버머니 기본값 0으로 초기화
-
     public Integer getReceivedCyberMoney() {
         if (receivedCyberMoney == null) {
             return 0; // 또는 다른 기본값을 사용할 수 있습니다.
@@ -116,4 +127,12 @@ public class SiteUser extends Base {
     public boolean isAdmin() {
         return hasRole(UserRole.ADMIN);
     }
+
+
+
+    @OneToMany(mappedBy = "siteUser" , cascade = CascadeType.REMOVE)
+    private List<Board> boardList;
+
+
+
 }

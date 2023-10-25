@@ -32,7 +32,7 @@ public class CyberMoneyController {
         String username = authentication.getName();
 
         // 이후에 username을 사용하여 사용자 데이터를 불러옵니다.
-        Optional<SiteUser> senderUserOptional = userRepository.findByusername(username);
+        Optional<SiteUser> senderUserOptional = userRepository.findByUsername(username);
         if (!senderUserOptional.isPresent()) {
             return ResponseEntity.badRequest().body("보내는 사용자를 찾을 수 없습니다.");
         }
@@ -44,7 +44,7 @@ public class CyberMoneyController {
         }
 
         // 받는 사용자를 찾습니다.
-        Optional<SiteUser> recipientUserOptional = userRepository.findByusername(recipientUsername);
+        Optional<SiteUser> recipientUserOptional = userRepository.findByUsername(recipientUsername);
         if (!recipientUserOptional.isPresent()) {
             return ResponseEntity.badRequest().body("받는 사용자를 찾을 수 없습니다.");
         }

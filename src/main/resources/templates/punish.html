@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html layout:decorate="~{/common/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>제재하기</title>
+</head>
+<body>
+<div layout:fragment="content" class="container my-3">
+
+    <div>
+        <a th:href="@{|/admin/warning/${id}|}">경고</a>
+    </div>
+    <div>
+        <a th:href="@{|/admin/Day3_stop/${id}|}">3일 정지</a>
+    </div>
+    <div>
+        <a th:href="@{|/admin/Permanent_stop/${id}|}">영구 정지</a>
+        </a>
+    </div>
+</div>
+</body>
+</html>

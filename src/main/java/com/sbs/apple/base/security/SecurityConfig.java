@@ -16,6 +16,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+
+
+
 public class SecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -37,11 +40,8 @@ public class SecurityConfig {
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
-                                .requestMatchers("/**").permitAll()
-
-                )
+                                .requestMatchers("/**").permitAll())
         ;
-
         http
                 .authorizeRequests()
                 .requestMatchers("/wishlist/add").hasRole("USER")
@@ -49,18 +49,19 @@ public class SecurityConfig {
                 .requestMatchers("/api/cybermoney/send").hasRole("USER")
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/**").permitAll();
-
-
-        return http.build();
+        return http.build()
+                ;
     }
 
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
     @Bean
     AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
+
+
+
 }
