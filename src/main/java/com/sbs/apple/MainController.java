@@ -37,6 +37,7 @@ public class MainController {
         if (!isTestDataCreated && ddlAutoValue.equals("create")) {
             dataCreator.createTestData();
             isTestDataCreated = true;
+
         }// *********************************************
 
 
@@ -60,7 +61,6 @@ public class MainController {
 
         System.out.println("메인페이지 실행2");
         model.addAttribute("siteUsers", siteUsers);
-
         model.addAttribute("chatRoom", chatRoom);
 
         System.out.println("메인페이지 실행3");
@@ -68,11 +68,15 @@ public class MainController {
 
         String username = principal.getName();
         SiteUser siteUser =userService.getUserbyName(username);
+        boolean userWarning = siteUser.isUserWarning();
         String Gender =siteUser.getGender();
         String living =siteUser.getLiving();
         List<SiteUser> userList = userService.getFourUsers(Gender,living); // 사용자 정보를 가져오는 예시 메서드
         model.addAttribute("userList", userList);
-
+        model.addAttribute("userWarning", userWarning);
+        if(userWarning== true){
+            userService.resetUserWarning(siteUser);
+        }
         return "main";
     }
 }
