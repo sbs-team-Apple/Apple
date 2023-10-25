@@ -39,10 +39,11 @@ public class UserService {
         }
     }
 
-    public SiteUser create(boolean userStop, MultipartFile file, String username, String password, String nickname, String gender)
+    public SiteUser create(boolean userStop,boolean userWarning, MultipartFile file, String username, String password, String nickname, String gender)
             throws Exception {
         SiteUser user = new SiteUser();
         user.setUserStop(userStop);
+        user.setUserWarning(userWarning);
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
         user.setNickname(nickname);
@@ -244,13 +245,18 @@ public class UserService {
         siteUser.setUserStop(true);
         userRepository.save(siteUser);
     }
-
-
     public void resetUserStop(SiteUser siteUser) {
         siteUser.setUserStop(false);
         userRepository.save(siteUser);
     }
-
+    public void changeUserWarning(SiteUser siteUser) {
+        siteUser.setUserWarning(true);
+        userRepository.save(siteUser);
+    }
+    public void resetUserWarning(SiteUser siteUser) {
+        siteUser.setUserWarning(false);
+        userRepository.save(siteUser);
+    }
 }
 
 

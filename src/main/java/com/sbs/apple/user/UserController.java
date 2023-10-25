@@ -51,7 +51,7 @@ public class UserController {
                     "2개의 패스워드가 일치하지 않습니다.");
             return "user/signup_form";
         }
-        SiteUser user= userService.create(false,userCreateForm.getFile(),userCreateForm.getUsername(), userCreateForm.getPassword1(),
+        SiteUser user= userService.create(false,false,userCreateForm.getFile(),userCreateForm.getUsername(), userCreateForm.getPassword1(),
                 userCreateForm.getNickname(), userCreateForm.getGender());
         redirectAttributes.addAttribute("id", user.getId());
         return "redirect:/user/add/" + user.getId();
@@ -243,6 +243,7 @@ public class UserController {
         model.addAttribute("siteUser",siteUser);
         return "user/profile";
     }
+
     //신고하기
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/report/{id}")
@@ -271,10 +272,19 @@ public class UserController {
     public String grantAdminAuthority(@RequestParam String adminCode, Principal principal) {
         if ("admin".equals(adminCode)) {
             String username = principal.getName();
+
             userService.grantAdminAuthority(username);
 
         }
         return "redirect:/";
     }
+    @GetMapping("/okay")
+    public String ok(Principal principal){
+        String username =principal.getName();
+        SiteUser siteUser = this.userService.getUserbyName(username);
+        userService.resetUserWarning(siteUser);
+        return "redirect:/";
+    }
+
 
 }

@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @RequiredArgsConstructor
 @Controller
@@ -32,16 +35,29 @@ public class AdminController {
         model.addAttribute("id",id);
         return "punish";
     }
+    //영구 정지
     @GetMapping("/Permanent_stop/{id}")
     public String Permanent_stop(@PathVariable Integer id){
         SiteUser siteUser = this.userService.getUser(id);
         userService.changeUserStop(siteUser);
         return "redirect:/";
     }
+    //3일 정지
     @GetMapping("/Day3_stop/{id}")
     public String Day_stop(@PathVariable Integer id){
         SiteUser siteUser = this.userService.getUser(id);
-        userService.resetUserStop(siteUser);
+        userService.changeUserStop(siteUser);
+        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+        executor.schedule(() -> {
+            userService.resetUserStop(siteUser);
+        }, 3, TimeUnit.DAYS);
+        return "redirect:/";
+    }
+    //경고 알림
+    @GetMapping("/warning/{id}")
+    public String warning(@PathVariable Integer id){
+        SiteUser siteUser = this.userService.getUser(id);
+        userService.changeUserWarning(siteUser);
         return "redirect:/";
     }
 

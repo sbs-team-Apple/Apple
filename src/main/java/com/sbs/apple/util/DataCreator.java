@@ -34,6 +34,7 @@ public class DataCreator {
             String username = String.valueOf(asciiChar);
 
             SiteUser user = new SiteUser();
+            user.setUserWarning(false);
             user.setUserStop(false);
             user.setUsername(username);
             user.setPassword(passwordEncoder.encode(username));
@@ -65,7 +66,6 @@ public class DataCreator {
             user.setDesired_school("4년제 졸업");
             user.setDesired_job("무직");
             userRepository.save(user);
-            System.out.println("qwe");
         }
 
         for(int i = 0; i < userNum; i++){
@@ -74,6 +74,7 @@ public class DataCreator {
 
             SiteUser user = new SiteUser();
             user.setUserStop(false);
+            user.setUserWarning(false);
             user.setUsername(username);
             user.setPassword(passwordEncoder.encode(username));
             user.setNickname("유저 " + username);
