@@ -1,5 +1,7 @@
 server:
   port: 8090
+file:
+    upload-dir: C:/uploads/
 spring:
   profiles:
     include: secret
@@ -67,7 +69,9 @@ custom:
     name: 애플
     baseUrl: "http://localhost:8090"
   genFile:
-    dirPath: c:/temp/apple
+
+    dirPath: c:/uploads/
+
 
   devtools:
     livereload:
@@ -78,3 +82,4 @@ custom:
 
   thymeleaf:
     cache: false
+
