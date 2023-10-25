@@ -69,7 +69,9 @@ custom:
     name: 애플
     baseUrl: "http://localhost:8090"
   genFile:
+
     dirPath: c:/uploads/
+
 
   devtools:
     livereload:
