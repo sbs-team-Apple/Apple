@@ -1,6 +1,10 @@
 package com.sbs.apple.user;
 
 
+
+import com.sbs.apple.board.Board;
+
+
 import com.sbs.apple.chat.ChatRoom;
 import com.sbs.apple.report.Report;
 import jakarta.persistence.*;
@@ -29,7 +33,9 @@ public class SiteUser {
     @GeneratedValue(strategy = IDENTITY)
     private Integer id;
 
+    @Column(nullable = true)
     private boolean userStop;
+
     private boolean userWarning;
     private String filename;
     private String filepath;
@@ -119,5 +125,12 @@ public class SiteUser {
     public boolean isAdmin() {
         return hasRole(UserRole.ADMIN);
     }
+
+
+
+    @OneToMany(mappedBy = "siteUser" , cascade = CascadeType.REMOVE)
+    private List<Board> boardList;
+
+
 
 }

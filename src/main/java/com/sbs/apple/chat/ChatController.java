@@ -23,6 +23,7 @@ public class ChatController {
     private final ChatRoomService chatRoomService;
 
 
+
     public record WriteMessageRequest(String authorName, String content) {
     }
 
@@ -130,6 +131,9 @@ public class ChatController {
         if( chatRooms3 !=null) {
             model.addAttribute("chatRoom3",chatRooms3);  //내가 초대 받은 채팅방
         }
+
+
+
 
         return "chat/allRoom";
     }
