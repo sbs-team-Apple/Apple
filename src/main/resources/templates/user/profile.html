@@ -1,17 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
+
+<html layout:decorate="~{/common/layout}" lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <!-- Bootstrap CSS를 추가하세요 -->
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <meta name="_csrf" th:content="${_csrf.token}" />
     <meta name="_csrf_header" th:content="${_csrf.headerName}" />
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.1/js/bootstrap.min.js"></script>
+
+    <!-- Bootstrap JS 및 jQuery 스크립트를 추가하세요 -->
+
 </head>
 
-<body>
+
+<div layout:fragment="content" class="container my-3">
+
 <h1>소개</h1>
+<div class="user-username"></div>
 <div>
     <img th:src="@{|${siteUser.filepath}|}" alt="User Image">
 </div>
@@ -70,10 +77,13 @@
     </div>
 </div>
 
-<!-- Bootstrap JS 및 jQuery 스크립트를 추가하세요 -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</div>
+
+
+</html>
+
+
 
 
 <script>
@@ -140,5 +150,3 @@
 
 </script>
 
-</body>
-</html>

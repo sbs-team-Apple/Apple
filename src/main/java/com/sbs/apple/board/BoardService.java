@@ -40,7 +40,7 @@ public class BoardService {
         File saveFile =new File(directory,fileName);
         file.transferTo(saveFile);
         board.setFilename(fileName);
-        board.setFilepath("file://C:/uploads/"+fileName);
+        board.setFilepath("/gen/"+fileName);
         board.setSubject(subject);
         board.setContent(content);
         board.setSiteUser(user);
@@ -63,7 +63,14 @@ public class BoardService {
 
     public Board modify(MultipartFile file, String subject, String content,Board board)
             throws Exception {
+        if(file.isEmpty()){
+            board.setSubject(subject);
+            board.setContent(content);
 
+            this.boardRepository.save(board);
+            return board;
+
+        }
 
         File directory = new File(uploadDir);
 
@@ -72,11 +79,16 @@ public class BoardService {
         File saveFile =new File(directory,fileName);
         file.transferTo(saveFile);
         board.setFilename(fileName);
-        board.setFilepath("file:///C:/uploads/"+fileName);
+        board.setFilepath("/gen/"+fileName);
         board.setSubject(subject);
         board.setContent(content);
 
         this.boardRepository.save(board);
         return board;
+    }
+
+    public void doDelete(Board board) {
+        this.boardRepository.delete(board);
+
     }
 }
