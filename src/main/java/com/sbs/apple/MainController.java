@@ -32,12 +32,13 @@ public class MainController {
     @GetMapping("/")
     public String showMain(Model model, Principal principal) {
         System.out.println("메인페이지 실행1");
+
         // ************ TEST DATA CREATE ***************
         if (!isTestDataCreated && ddlAutoValue.equals("create")) {
             dataCreator.createTestData();
             isTestDataCreated = true;
-        }
-        // *********************************************
+
+        }// *********************************************
 
 
         ChatRoom chatRoom= chatRoomService.findLastRoom();
@@ -60,20 +61,19 @@ public class MainController {
 
         System.out.println("메인페이지 실행2");
         model.addAttribute("siteUsers", siteUsers);
-
         model.addAttribute("chatRoom", chatRoom);
 
-        //ChatRoom chatRoom= chatRoomService.findLastRoom();
-        //if(chatRoom == null){
-        //    chatRoom=chatRoomService.create(1);
-        //}
         System.out.println("메인페이지 실행3");
-        //model.addAttribute("chatRoom", chatRoom);
 
 
-
-        List<SiteUser> userList = userService.getFourUsers(); // 사용자 정보를 가져오는 예시 메서드
+        String username = principal.getName();
+        SiteUser siteUser =userService.getUserbyName(username);
+        boolean userWarning = siteUser.isUserWarning();
+        String Gender =siteUser.getGender();
+        String living =siteUser.getLiving();
+        List<SiteUser> userList = userService.getFourUsers(Gender,living); // 사용자 정보를 가져오는 예시 메서드
         model.addAttribute("userList", userList);
+        model.addAttribute("userWarning", userWarning);
 
         return "main";
     }

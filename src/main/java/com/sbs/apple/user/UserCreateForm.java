@@ -9,7 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Getter
 @Setter
 public class UserCreateForm {
-    private MultipartFile photo;
+
+    private MultipartFile file;
 
     @Size(min = 3, max = 25)
     @NotEmpty(message = "ID는 필수항목입니다.")

@@ -19,6 +19,8 @@ public class Report {
     @Column(columnDefinition = "TEXT")
     private String content;
 
+    private String reported_user;
+
     @ManyToOne
     private SiteUser siteUser;
 }
