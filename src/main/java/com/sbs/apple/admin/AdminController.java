@@ -35,12 +35,14 @@ public class AdminController {
         model.addAttribute("id",id);
         return "punish";
     }
+    //영구 정지
     @GetMapping("/Permanent_stop/{id}")
     public String Permanent_stop(@PathVariable Integer id){
         SiteUser siteUser = this.userService.getUser(id);
         userService.changeUserStop(siteUser);
         return "redirect:/";
     }
+    //3일 정지
     @GetMapping("/Day3_stop/{id}")
     public String Day_stop(@PathVariable Integer id){
         SiteUser siteUser = this.userService.getUser(id);
@@ -51,5 +53,13 @@ public class AdminController {
         }, 3, TimeUnit.DAYS);
         return "redirect:/";
     }
+    //경고 알림
+    @GetMapping("/warning/{id}")
+    public String warning(@PathVariable Integer id){
+        SiteUser siteUser = this.userService.getUser(id);
+        userService.changeUserWarning(siteUser);
+        return "redirect:/";
+    }
+
 
 }
