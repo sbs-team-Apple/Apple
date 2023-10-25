@@ -17,10 +17,9 @@
 
 <div layout:fragment="content" class="container my-3">
 
-<h1>소개</h1>
 <div class="user-username"></div>
 <div>
-    <img th:src="@{|${siteUser.filepath}|}" alt="User Image">
+    <img th:src="@{|${siteUser.filepath}|}" alt="User Image" style="max-width: 300px; max-height: 300px;">
 </div>
 <div th:text="'나이 : ' + ${siteUser.age}"></div>
 <div th:text="'지역 : ' + ${siteUser.living}"></div>

@@ -1,6 +1,7 @@
 package com.sbs.apple.user;
 
 
+import com.sbs.apple.board.BoardForm;
 import com.sbs.apple.report.ReportForm;
 import com.sbs.apple.report.ReportService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -278,6 +279,7 @@ public class UserController {
         }
         return "redirect:/";
     }
+    //경고 확인하기
     @GetMapping("/okay")
     public String ok(Principal principal){
         String username =principal.getName();
@@ -285,6 +287,22 @@ public class UserController {
         userService.resetUserWarning(siteUser);
         return "redirect:/";
     }
+    //사진 수정하기
+    @GetMapping("/photoModify/{id}")
+    public String photoModify(UserCreateForm userCreateForm , MultipartFile file, Model model, Principal principal, @PathVariable Integer id){
+        SiteUser siteUser =userService.getUser(id);
+        model.addAttribute("siteUser",siteUser);
 
+        return "/user/userPhoto_modify";
+
+    }
+
+    @PostMapping("/photoModify/{id}")
+    public String photoModify2(@Valid BoardForm boardForm , MultipartFile file, Model model, Principal principal,
+                               @PathVariable Integer id)throws Exception{
+        SiteUser user = userService.getUserbyName(principal.getName());
+        userService.photoModify(user,boardForm.getFile());
+        return "redirect:/user/myPage";
+    }
 
 }
