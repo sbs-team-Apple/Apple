@@ -6,20 +6,33 @@
 </head>
 <body>
 <div layout:fragment="content" class="container my-3 flex">
-    <div class="m-auto">
-    <div th:each="board : ${board}">
-        <div class="flex">
-            <a th:href="@{|/board/detail/${board.id}|}">
-                <img class="w-40  h-40" th:src="@{|${board.filepath}|}" alt="">
-            </a>
-            <div th:text="${board.subject}"></div>
+    <div class="w-4/12 m-auto">
+        <div th:each="board : ${board}">
+            <div class="flex">
+                <a th:href="@{|/board/detail/${board.id}|}">
+                    <img class="w-40  h-40" th:src="@{|${board.filepath}|}" alt="">
+                </a>
 
-            <div th:text="${board.siteUser.age}"></div>
-        </div>
+            </div>
+            <div >
+                <div th:text="${board.subject}"></div>
+                <div class="flex">
+
+
+                <div th:text="${board.siteUser.age}+'/'"></div>
+                    <div th:text="${board.siteUser.nickname}+'/'"></div>
+
+                    <div th:text="${board.siteUser.living}"></div>
+
+                </div>
+            </div>
+
+
 
         </div>
     </div>
 
+    <br>
     <div>
         <a th:href="@{/board/create}">어필 게시판 작성하기</a>
     </div>
