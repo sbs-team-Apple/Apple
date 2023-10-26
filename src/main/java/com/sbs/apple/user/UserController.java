@@ -318,14 +318,14 @@ public class UserController {
         this.interestService.add_interest(siteUser,interest_user);
         return "redirect:/";
     }
-
+    //관심 조회하기
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/wish")
-    public String showWish(Principal principal,Model model){
+    public String showWish(Principal principal, Model model){
         String username = principal.getName();
-        SiteUser siteUser =userService.getUserbyName(username);
-        List<Interest> userList = userService.getWishUsers(username);
-        model.addAttribute("userList", userList);
+        List<Interest> interestList = interestService.getWishUsers(username);
+        model.addAttribute("interestList", interestList);
         return "wish";
     }
+
 }
