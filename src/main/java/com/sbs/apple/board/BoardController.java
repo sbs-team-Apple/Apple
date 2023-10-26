@@ -30,7 +30,7 @@ public class BoardController {
 
     @GetMapping("/create")
     public String Create(BoardForm boardForm) {
-        return "/Board/appeal_board_create";
+        return "/board/appeal_board_create";
 
     }
 
@@ -54,7 +54,7 @@ public class BoardController {
         model.addAttribute("board", boards);
 
 
-        return "/Board/appeal_board_list";
+        return "/board/appeal_board_list";
 
     }
 
@@ -66,7 +66,7 @@ public class BoardController {
         model.addAttribute("board", board);
 
 
-        return "/Board/appeal_board_detail";
+        return "/board/appeal_board_detail";
 
     }
 
@@ -75,7 +75,7 @@ public class BoardController {
        Board board = boardService.getBoard(id);
        model.addAttribute("board",board);
 
-        return "/Board/appeal_board_modify";
+        return "/board/appeal_board_modify";
 
     }
 
@@ -101,6 +101,18 @@ public class BoardController {
         return "redirect:/board/list";
     }
 
+
+    @GetMapping("/myAppealBoard")
+    public String showMyBoard(Principal principal, Model model){
+        SiteUser user=userService.getUserbyName(principal.getName());
+        List<Board> boards = boardService.getBoardByUserId(user);
+
+        model.addAttribute("board",boards );
+
+
+
+        return "/board/my_appeal_board";
+    }
 
 
 
