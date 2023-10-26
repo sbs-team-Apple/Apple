@@ -2,6 +2,7 @@ package com.sbs.apple.user;
 
 
 import com.sbs.apple.board.BoardForm;
+import com.sbs.apple.interest.Interest;
 import com.sbs.apple.interest.InterestService;
 import com.sbs.apple.report.ReportForm;
 import com.sbs.apple.report.ReportService;
@@ -23,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.util.List;
 
 //회원가입
 @RequiredArgsConstructor
@@ -315,6 +317,15 @@ public class UserController {
         SiteUser siteUser =userService.getUser(id);
         this.interestService.add_interest(siteUser,interest_user);
         return "redirect:/";
+    }
+    //관심 조회하기
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/wish")
+    public String showWish(Principal principal, Model model){
+        String username = principal.getName();
+        List<Interest> interestList = interestService.getWishUsers(username);
+        model.addAttribute("interestList", interestList);
+        return "wish";
     }
 
 

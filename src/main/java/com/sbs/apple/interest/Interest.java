@@ -13,8 +13,8 @@ public class Interest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String interest_user;
-    private String interested_user;
+    private String interestUser;
+    private String interestedUser;
 
     @ManyToOne
     private SiteUser siteUser;
