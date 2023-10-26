@@ -17,34 +17,21 @@
             function submitJoinForm(form) {
                 if (submitJoinFormDone) return;
 
-                form.age.value = form.age.value.trim();
 
-                if (form.age.value.length == 0) {
-                    form.age.focus();
-                    toastWarning('나이를 입력해주세요.');
-                    return;
-                }
+                form.desired_hobby.value = form.desired_hobby.value.trim();
 
-                form.hobby.value = form.hobby.value.trim();
-
-                if (form.hobby.value.length == 0) {
-                    form.hobby.focus();
+                if (form.desired_hobby.value.length == 0) {
+                    form.desired_hobby.focus();
                     toastWarning('취미를 입력해주세요.');
                     return;
                 }
 
-                form.tall.value = form.tall.value.trim();
 
-                if (form.tall.value.length == 0) {
-                    form.tall.focus();
-                    toastWarning('키를 입력해주세요.');
-                    return;
-                }
 
-                form.style.value = form.style.value.trim();
+                form.desired_style.value = form.desired_style.value.trim();
 
-                if (form.style.value.length == 0) {
-                    form.style.focus();
+                if (form.desired_style.value.length == 0) {
+                    form.desired_style.focus();
                     toastWarning('스타일을 입력해주세요.');
                     return;
                 }
@@ -139,8 +126,10 @@
                 </label>
                 <select name="desired_smoking" class="input input-bordered">
                     <option value="상관없음" selected>상관없음</option>
-                    <option value="된다">된다</option>
-                    <option value="안된다">안된다</option>
+                    <option value="비흡연">비흡연</option>
+                    <option value="가끔">가끔</option>
+                    <option value="자주">자주</option>
+                    <option value="매일">매일</option>
                 </select>
             </div>
 
@@ -150,8 +139,10 @@
                 </label>
                 <select name="desired_drinking" class="input input-bordered">
                     <option value="상관없음" selected>상관없음</option>
-                    <option value="된다">된다</option>
-                    <option value="안된다">안된다</option>
+                    <option value="안마심">안마심</option>
+                    <option value="가끔">가끔</option>
+                    <option value="자주">자주</option>
+                    <option value="매일">매일</option>
                 </select>
             </div>
 
