@@ -284,7 +284,7 @@ public class UserService {
     public List<Interest> getWishUsers(String username) {
         List<Interest> wishUsers;
 
-        wishUsers = this.interestRepository.findAllByInterest_user(username);
+        wishUsers = this.interestRepository.findAllByInterestUser(username);
 
         return  wishUsers;
     }
