@@ -1,72 +1,48 @@
-package com.sbs.apple.whislist;
+package com.sbs.apple.wishlist;
 
 import com.sbs.apple.user.SiteUser;
 import com.sbs.apple.user.UserService;
-import com.sbs.apple.wishlist.WishlistRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.Map;
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/wishlist")
 public class WishlistController {
     @Autowired
     private UserService userService;
-    @Autowired
-    private WishlistRepository wishlistRepository;
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/add")
-    public String addToWishlist(Model model, Principal principal) {
+    @GetMapping("add")
+    public String showWish(Model model, Principal principal) {
+
         String username = principal.getName();
-        SiteUser ownerUser = userService.getUserbyName(username);
-
-        if (ownerUser != null) {
-            List<SiteUser> addedUsers = wishlistRepository.findByOwner(ownerUser.getId().toString());
-            model.addAttribute("addedUsers", addedUsers);
-        }
-
+        SiteUser siteUser =userService.getUserbyName(username);
+        List<SiteUser> userList = userService.getWishUsers();
+        model.addAttribute("userList", userList);
         return "add";
     }
-
-
-    @PreAuthorize("isAuthenticated")
-    @PostMapping("/add")
-    public ResponseEntity<String> addToWishlist(@RequestBody Map<String, String> requestData, Principal principal) {
-        String addedUserId = requestData.get("userId");
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("add")
+    @ResponseBody
+    public String addToWishlist(@RequestParam("userId") int userId, Principal principal) {
+        // 현재 로그인한 사용자 정보 가져오기
         String username = principal.getName();
+        SiteUser currentUser = userService.getUserbyName(username);
 
-        System.out.println("addedUserId : " + addedUserId);
-        System.out.println("username : " + username);
+        // 관심목록에 추가할 유저 정보 가져오기
+        SiteUser userToAdd = userService.getUser(userId);
 
-        SiteUser ownerUser = userService.getUserbyName(username);
-//        SiteUser addedUser = userService.getUserbyId(addedUserId);
+        // userToAdd를 currentUser의 관심목록에 추가
+         userService.addUserToWishlist(currentUser, userToAdd);  // 이렇게 추가하는 메소드를 만들어야 함
 
-        if (ownerUser != null) {
-            SiteUser siteUser = new SiteUser();
-            siteUser.setOwner(ownerUser.getId().toString());
-            // ownerUser를 문자열로 변환하여 할당
-//            siteUser.setAddedUser(addedUser.toString()); // addedUser를 문자열로 변환하여 할당
-
-            // 데이터베이스에 저장
-            wishlistRepository.save(siteUser);
-            System.out.println("siteUser__ : " + siteUser);
-
-            return ResponseEntity.ok("사용자가 찜 목록에 추가되었습니다.");
-        } else {
-            return ResponseEntity.badRequest().body("사용자 또는 소유자를 찾을 수 없습니다.");
-        }
+        return "success";  // 또는 적절한 응답을 반환
     }
-
 }
+

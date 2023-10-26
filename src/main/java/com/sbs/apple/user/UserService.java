@@ -257,4 +257,11 @@ public class UserService {
         siteUser.setUserWarning(false);
         userRepository.save(siteUser);
     }
+
+    public List<SiteUser> getWishUsers() {
+        return null;
+    }
+
+    public void addUserToWishlist(SiteUser currentUser, SiteUser userToAdd) {
+    }
 }
