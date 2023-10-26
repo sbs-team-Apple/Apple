@@ -10,11 +10,9 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="userList : ${userList}">
-<!--            <td>-->
-<!--                <a th:href="@{|/user/detail/${reportList.siteUser.id}|}" th:text="${reportList.reported_user}"></a>-->
-<!--            </td>-->
-            <td th:text="${userList.interested_user}"></td>
+
+        <tr th:each="interestList : ${interestList}">
+            <td th:text="${interestList.interestedUser}"></td>
         </tr>
         </tbody>
     </table>

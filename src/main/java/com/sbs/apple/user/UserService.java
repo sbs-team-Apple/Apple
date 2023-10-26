@@ -280,6 +280,8 @@ public class UserService {
         user.setFilepath("/gen/"+fileName);
         this.userRepository.save(user);
     }
+    //관심 가져오기
+
 
     public List<Interest> getWishUsers(String username) {
         List<Interest> wishUsers;

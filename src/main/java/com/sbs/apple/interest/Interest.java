@@ -17,7 +17,6 @@ public class Interest {
     private String interestedUser;
 
 
-
     @ManyToOne
     private SiteUser siteUser;
 }
