@@ -2,6 +2,7 @@ package com.sbs.apple.user;
 
 
 
+import com.sbs.apple.interest.Interest;
 import com.sbs.apple.board.Board;
 
 
@@ -90,6 +91,9 @@ public class SiteUser {
 
     private String desired_school;
     private String desired_job;
+
+    @OneToMany(mappedBy = "siteUser", cascade = CascadeType.REMOVE)
+    private List<Interest> interestList;
 
     @OneToMany(mappedBy = "siteUser", cascade = CascadeType.REMOVE)
     private List<Report> reportList;

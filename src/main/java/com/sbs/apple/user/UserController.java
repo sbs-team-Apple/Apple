@@ -1,6 +1,8 @@
 package com.sbs.apple.user;
 
 
+import com.sbs.apple.board.BoardForm;
+import com.sbs.apple.interest.InterestService;
 import com.sbs.apple.report.ReportForm;
 import com.sbs.apple.report.ReportService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,6 +34,7 @@ public class UserController {
     private final UserService userService;
     private final ReportService reportService;
     private final UserRepository userRepository;
+    private final InterestService interestService;
 
     @GetMapping("/signup")
     public String signup1(UserCreateForm userCreateForm) {
@@ -278,11 +281,39 @@ public class UserController {
         }
         return "redirect:/";
     }
+    //경고 확인하기
     @GetMapping("/okay")
     public String ok(Principal principal){
         String username =principal.getName();
         SiteUser siteUser = this.userService.getUserbyName(username);
         userService.resetUserWarning(siteUser);
+        return "redirect:/";
+    }
+    //사진 수정하기
+    @GetMapping("/photoModify/{id}")
+    public String photoModify(UserCreateForm userCreateForm , MultipartFile file, Model model, Principal principal, @PathVariable Integer id){
+        SiteUser siteUser =userService.getUser(id);
+        model.addAttribute("siteUser",siteUser);
+
+        return "/user/userPhoto_modify";
+
+    }
+
+    @PostMapping("/photoModify/{id}")
+    public String photoModify2(@Valid BoardForm boardForm , MultipartFile file, Model model, Principal principal,
+                               @PathVariable Integer id)throws Exception{
+        SiteUser user = userService.getUserbyName(principal.getName());
+        userService.photoModify(user,boardForm.getFile());
+        return "redirect:/user/myPage";
+    }
+    //관심 추가하기
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/add_interest/{id}")
+    public String add_interest(Principal principal,@PathVariable Integer id,Model model){
+        String interest_user = principal.getName();
+        model.addAttribute("userId",id);
+        SiteUser siteUser =userService.getUser(id);
+        this.interestService.add_interest(siteUser,interest_user);
         return "redirect:/";
     }
 

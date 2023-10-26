@@ -10,8 +10,8 @@
 
     <ul>
         <div  sec:authorize="isAuthenticated()" th:text="${user.nickname}+'님 환영합니다!'"></div>
-
         <li><a th:href="@{|/user/detail/${user.id}|}">내 프로필</a></li>
+        <li><a th:href="@{|/user/photoModify/${user.id}|}">사진 수정하기</a></li>
         <li><a href="/user/passwordChange">비밀번호 변경</a></li>
         <li><a href="/user/profile_modify">프로필 수정</a></li>
         <li><a href="/user/desired_modify">나의 이상형 정보 수정</a></li>
@@ -26,7 +26,7 @@
         <p>보유 중인 사이버머니: <span th:text="${userCyberMoney}"></span></p>
 
         <p>다른 사용자로부터 받은 사이버머니: <span th:text="${receivedCyberMoney}"></span></p>
-        <li><a href="/wishlist/add">관심있는 이성</a></li>
+
     </div>
 
 </div>
