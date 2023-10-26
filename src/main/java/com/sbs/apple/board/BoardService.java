@@ -91,4 +91,13 @@ public class BoardService {
         this.boardRepository.delete(board);
 
     }
+
+    public List<Board> getBoardByUserId(SiteUser user) {
+        List<Board> boards=this.boardRepository.findByUserId(user);
+        if(boards==null){
+            return null;
+
+        }
+        return boards;
+    }
 }
