@@ -2,6 +2,7 @@ package com.sbs.apple.user;
 
 
 import com.sbs.apple.board.BoardForm;
+import com.sbs.apple.interest.InterestService;
 import com.sbs.apple.report.ReportForm;
 import com.sbs.apple.report.ReportService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,6 +34,7 @@ public class UserController {
     private final UserService userService;
     private final ReportService reportService;
     private final UserRepository userRepository;
+    private final InterestService interestService;
 
     @GetMapping("/signup")
     public String signup1(UserCreateForm userCreateForm) {
@@ -304,5 +306,16 @@ public class UserController {
         userService.photoModify(user,boardForm.getFile());
         return "redirect:/user/myPage";
     }
+    //관심 추가하기
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/add_interest/{id}")
+    public String add_interest(Principal principal,@PathVariable Integer id,Model model){
+        String interest_user = principal.getName();
+        model.addAttribute("userId",id);
+        SiteUser siteUser =userService.getUser(id);
+        this.interestService.add_interest(siteUser,interest_user);
+        return "redirect:/";
+    }
+
 
 }
