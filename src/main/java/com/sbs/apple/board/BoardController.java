@@ -43,10 +43,10 @@ public class BoardController {
               );
 
 
-        return "redirect:/board/list";
+        return "redirect:/board/appealList";
     }
 
-    @GetMapping("/list")
+    @GetMapping("/appealList")
     public String showList(Model model) {
         System.out.println(System.currentTimeMillis());
         List<Board> boards =this.boardService.getAllBoard();
@@ -88,7 +88,7 @@ public class BoardController {
 
 
 
-        return "redirect:/board/list";
+        return "redirect:/board/appealList";
     }
 
 
@@ -98,7 +98,7 @@ public class BoardController {
         boardService.doDelete(board);
 
 
-        return "redirect:/board/list";
+        return "redirect:/board/appealList";
     }
 
 
@@ -112,6 +112,21 @@ public class BoardController {
 
 
         return "/board/my_appeal_board";
+    }
+
+
+    @GetMapping("/desiredList")
+    public String showMyDreamUsers(Principal principal, Model model){
+        SiteUser user=userService.getUserbyName(principal.getName());
+        List<SiteUser> users=userService.getDesiredUsers(user);
+
+
+
+        model.addAttribute("users",users);
+
+
+
+        return "/board/my_desiredList";
     }
 
 
