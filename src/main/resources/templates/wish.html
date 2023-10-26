@@ -1,0 +1,23 @@
+<html layout:decorate="~{/common/layout}" lang="en">
+<head>
+    <meta charset="UTF-8"></head>
+<body>
+<div layout:fragment="content" class="container my-3">
+    <table>
+        <thead>
+        <tr>
+            <th>관심있는 사람</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="userList : ${userList}">
+<!--            <td>-->
+<!--                <a th:href="@{|/user/detail/${reportList.siteUser.id}|}" th:text="${reportList.reported_user}"></a>-->
+<!--            </td>-->
+            <td th:text="${userList.interested_user}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
