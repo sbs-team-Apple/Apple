@@ -5,8 +5,8 @@
     <title>Title</title>
 </head>
 <body>
-<div layout:fragment="content" class="container my-3 w-12/12">
-    <div class="m-auto flex flex-wrap board-container">
+<div layout:fragment="content" class="container my-3 w-10/12 m-auto">
+    <div class="m-auto w-4/12 flex flex-wrap board-container  justify-center">
         <div  class="m-10" th:each="board : ${board}">
             <div class="flex ">
                 <a th:href="@{|/board/detail/${board.id}|}">
@@ -50,8 +50,8 @@
     }
 
     .board-img {
-        width:200px;
-        height:200px;
+        width:150px;
+        height:150px;
 
     }
 

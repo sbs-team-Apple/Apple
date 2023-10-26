@@ -257,6 +257,14 @@ public class UserService {
         siteUser.setUserWarning(false);
         userRepository.save(siteUser);
     }
+
+    public List<SiteUser> getDesiredUsers(SiteUser user) {
+
+           return userRepository.findByDesired(user.getGender(),user.getDesired_living(),user.getDesired_religion());
+
+
+
+    }
 }
 
 
