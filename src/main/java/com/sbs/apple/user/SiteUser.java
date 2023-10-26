@@ -78,8 +78,6 @@ public class SiteUser {
     private String desired_style; //원하는 스타일
     private String desired_religion; //원하는 종교
     private String desired_mbti; //원하는 MBTI
-    private String owner;
-    private String addedUser;
 
 
 
