@@ -238,7 +238,7 @@ public class UserController {
         String username = principal.getName();
         SiteUser user = userService.getUserbyName(username);
         model.addAttribute("user", user);
-        return "payment";
+        return "/pay/payment";
     }
     //조회하기
     @PreAuthorize("isAuthenticated()")
@@ -309,15 +309,16 @@ public class UserController {
         return "redirect:/user/myPage";
     }
     //관심 추가하기
+    //관심 추가하기
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/add_interest/{id}")
-    public String add_interest(Principal principal,@PathVariable Integer id,Model model){
+    public String add_interest(Principal principal, @PathVariable Integer id, Model model) {
         String interest_user = principal.getName();
-        model.addAttribute("userId",id);
-        SiteUser siteUser =userService.getUser(id);
-        this.interestService.add_interest(siteUser,interest_user);
+        model.addAttribute("userId", id);
+        this.interestService.add_interest(id, interest_user);
         return "redirect:/";
     }
+
     //관심 조회하기
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/wish")
@@ -327,5 +328,13 @@ public class UserController {
         model.addAttribute("interestList", interestList);
         return "wish";
     }
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/exchange")
+    public String exchange(Model model, Principal principal) {
+        String username = principal.getName();
+        SiteUser user = userService.getUserbyName(username);
+        model.addAttribute("user", user);
 
+        return "pay/exchange";
+    }
 }
