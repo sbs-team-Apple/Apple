@@ -3,7 +3,10 @@ package com.sbs.apple.user;
 import com.sbs.apple.DataNotFoundException;
 import com.sbs.apple.chat.ChatRoom;
 import com.sbs.apple.chat.ChatRoomService;
+import com.sbs.apple.interest.Interest;
+import com.sbs.apple.interest.InterestRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +22,13 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ChatRoomService chatRoomService;
+    private final InterestRepository interestRepository;
+    private String uploadDir;
+
+    @Value("${file.upload-dir}")
+    public void setUploadDir(String uploadDir) {
+        this.uploadDir = uploadDir;
+    }
 
     public SiteUser getUser(Integer id) {
         Optional<SiteUser> user = this.userRepository.findById(id);
@@ -42,20 +52,22 @@ public class UserService {
     public SiteUser create(boolean userStop,boolean userWarning, MultipartFile file, String username, String password, String nickname, String gender)
             throws Exception {
         SiteUser user = new SiteUser();
+        File directory = new File(uploadDir);
+        if (!directory.exists()) {
+            directory.mkdirs(); // 디렉토리가 없으면 생성
+        }
+        UUID uuid = UUID.randomUUID();
+        String fileName =uuid + "_" + file.getOriginalFilename();
+        File saveFile =new File(directory,fileName);
+        file.transferTo(saveFile);
+        user.setFilename(fileName);
+        user.setFilepath("/gen/"+fileName);
         user.setUserStop(userStop);
         user.setUserWarning(userWarning);
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
         user.setNickname(nickname);
         user.setGender(gender);
-         String projectPath = System.getProperty("user.dir")+"\\src\\main\\resources\\static\\files";
-         UUID uuid = UUID.randomUUID();
-         String fileName =uuid + "_" + file.getOriginalFilename();
-         File saveFile =new File(projectPath,fileName);
-         file.transferTo(saveFile);
-         user.setFilename(fileName);
-        user.setFilepath("/files/"+fileName);
-
         this.userRepository.save(user);
         return user;
     }
@@ -258,6 +270,7 @@ public class UserService {
         userRepository.save(siteUser);
     }
 
+
     public List<SiteUser> getDesiredUsers(SiteUser user) {
 
            return userRepository.findByDesired(user.getGender(),user.getDesired_living(),user.getDesired_religion());
@@ -265,6 +278,27 @@ public class UserService {
 
 
     }
+
+
+    public void photoModify(SiteUser user, MultipartFile file)throws Exception {
+        File directory = new File(uploadDir);
+        UUID uuid = UUID.randomUUID();
+        String fileName =uuid + "_" + file.getOriginalFilename();
+        File saveFile =new File(directory,fileName);
+        file.transferTo(saveFile);
+        user.setFilename(fileName);
+        user.setFilepath("/gen/"+fileName);
+        this.userRepository.save(user);
+    }
+    //관심 가져오기
+
+
+
+    public List<Interest> getWishUsers(String username) {
+        List<Interest> wishUsers;
+
+        wishUsers = this.interestRepository.findAllByInterestUser(username);
+
+        return  wishUsers;
+    }
 }
-
-
