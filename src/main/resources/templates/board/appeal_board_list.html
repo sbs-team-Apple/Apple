@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html layout:decorate="~{/common/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="content" class="container my-3 w-10/12 m-auto">
+    <div class="m-auto w-4/12 flex flex-wrap board-container  justify-center">
+        <div  class="m-10" th:each="board : ${board}">
+            <div class="flex ">
+                <a th:href="@{|/board/detail/${board.id}|}">
+                    <img class="w-30 h-30 board-img" th:src="@{|${board.filepath}|}" alt="">
+                </a>
+
+            </div>
+            <div >
+                <div th:text="${board.subject}"></div>
+                <div class="flex">
+
+
+                <div th:text="${board.siteUser.age}+'/'"></div>
+                    <div th:text="${board.siteUser.nickname}+'/'"></div>
+
+                    <div th:text="${board.siteUser.living}"></div>
+
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+    <br>
+    <div>
+        <a th:href="@{/board/create}">어필 게시판 작성하기</a>
+    </div>
+
+
+
+</div>
+</body>
+</html>
+
+<style>
+
+    .board-container{
+        width:600px;
+    }
+
+    .board-img {
+        width:150px;
+        height:150px;
+
+    }
+
+</style>
+
+
+<script >
+
+
+
+</script>

@@ -267,6 +267,16 @@ public class UserService {
         userRepository.save(siteUser);
     }
     //사진 수정
+
+
+    public List<SiteUser> getDesiredUsers(SiteUser user) {
+
+           return userRepository.findByDesired(user.getGender(),user.getDesired_living(),user.getDesired_religion());
+
+
+
+    }
+
     public void photoModify(SiteUser user, MultipartFile file)throws Exception {
         File directory = new File(uploadDir);
         UUID uuid = UUID.randomUUID();
@@ -277,6 +287,7 @@ public class UserService {
         user.setFilepath("/gen/"+fileName);
         this.userRepository.save(user);
     }
+
 
 
 
