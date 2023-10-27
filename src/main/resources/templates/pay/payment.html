@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html layout:decorate="~{/common/layout}" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
+<div layout:fragment="content" class="container my-3">
 <section>
     <div>
         <h2>구매할 머니 선택:</h2>
@@ -123,6 +124,8 @@
             "failUrl": failUrl
         }
     }
+
 </script>
+</div>
 </body>
 </html>
