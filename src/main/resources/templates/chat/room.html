@@ -30,12 +30,11 @@
             </form>
 
             <div class="emo-box flex flex-wrap" style="display:none;">
-                <div class="flex emo-kind">
-                    <div>face</div>
-                    <div>human</div>
-                    <div>food</div>
-                    <div>nature</div>
-                    <div>symbols</div>
+                <div class="flex emo-kind justify-around">
+                    <div class="face">😀</div>
+                    <div class="symbol">👍</div>
+                    <div class="nature">⛅</div>
+                    <div class="food">🍖</div>
 
                 </div>
 
@@ -47,11 +46,25 @@
                     <p>😓</p><p>😓</p><p>😓</p><p>😓</p><p>😓</p><p>&#128527;</p>
 
                 </div>
-                <div class="symbol-emo flex flex-wrap" style="display:none;">
+                <div class="symbol-emo emo flex flex-wrap" style="display:none;">
                     <p>👍</p> <p>👎</p> <p>💪</p><p>👉</p>
                     <p>☝</p> <p>✌</p> <p>🤞</p> <p>🖐</p><p>✋</p><p>👌</p>
                     <p>👊</p> <p>🤜</p><p>👏</p><p>👋</p><p>👂</p><p>👃</p>
                     <p>💬</p><p>💢</p>
+
+                </div>
+                <div class="nature-emo emo flex flex-wrap" style="display:none;">
+                    <p>🌍</p> <p>🌐</p> <p>🌗</p><p>🌛</p>
+                    <p>☀</p> <p>🌞</p> <p>⭐</p> <p>☁</p><p>⛈</p><p>🌧</p>
+                    <p>🌩</p> <p>🌈</p><p>⚡</p><p>☔</p><p>❄</p><p>🔥</p>
+                    <p>🎄</p><p>🌊</p>
+
+                </div>
+                <div class="food-emo emo flex flex-wrap" style="display:none;">
+                    <p>🍇</p> <p>🍉</p> <p>🍌</p><p>🍎</p>
+                    <p>🍍</p> <p>🥝</p> <p>🥥</p> <p>🍖</p><p>🧀</p><p>🍕</p>
+                    <p>🍔</p> <p>🌭</p><p>🍨</p><p>🍛</p><p>🍜</p><p>🍮</p>
+                    <p>🍷</p><p>🍣</p>
 
                 </div>
 
@@ -89,7 +102,9 @@
         </ul>
     </div>
 
-
+    <div class="tooltip" data-tip="helddsadlo">
+        <button class="btn">😀</button>
+    </div>
 
 
 </div>
@@ -201,24 +216,30 @@
         left:0;
         width:100%;
         height:150px;
-        border:1px solid red;
         transform:translate(-0,100%);
 
          overflow-y: scroll; /* 세로 스크롤만 활성화 */
          overflow-x: hidden;
+         background-color:gray;
     }
 
 
     .emo-box::-webkit-scrollbar {
         	display:none /* Chrome , Safari , Opera */
         }
+      .emo-kind {
+      margin-top:10px;
+      margin-bottom:10px;
+           width: 348px;
+      }
+
 
     .emo-kind >div{
         margin:0 5px;
     }
 
-    .face-emo >p{
-
+    .emo >p{
+        width:22px;
         height:22px; margin: 10px;
     }
 
@@ -230,6 +251,45 @@
 
     const userNickname = /*[[${user.nickname}]]*/ null;
 </script>
+
+<script>
+    $(document).ready(function() {
+    $(".face").click(function() {
+        $(".face-emo").show();
+        $(".symbol-emo").hide();
+        $(".nature-emo").hide();
+        $(".food-emo").hide();
+    });
+
+    $(".symbol").click(function() {
+        $(".face-emo").hide();
+        $(".symbol-emo").show();
+      $(".food-emo").hide();
+        $(".nature-emo").hide();
+
+    });
+
+     $(".nature").click(function() {
+        $(".face-emo").hide();
+        $(".symbol-emo").hide();
+        $(".food-emo").hide();
+        $(".nature-emo").show();
+
+    });
+
+
+     $(".food").click(function() {
+        $(".face-emo").hide();
+        $(".symbol-emo").hide();
+        $(".food-emo").show();
+        $(".nature-emo").hide();
+
+    });
+});
+
+
+</script>
+
 
 <script>
     var emoButton = $(".emo-button");
