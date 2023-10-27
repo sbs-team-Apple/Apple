@@ -40,8 +40,8 @@
     <div th:text="'선호하는 이성 성격 : ' + ${siteUser.desired_style}"></div>
     <div th:text="'선호하는 이성 종교 : ' + ${siteUser.desired_religion}"></div>
     <div th:text="'선호하는 이성 MBTI : ' + ${siteUser.desired_mbti}"></div>
-    <a th:href="@{'/user/report/' + ${siteUser.id}}">신고하기</a>
-    <a th:href="@{'/user/add_interest/' + ${siteUser.id}}">관심 등록하기</a>
+    <a class="btn btn-primary" th:href="@{'/user/report/' + ${siteUser.id}}">신고하기</a>
+    <a class="btn btn-primary" th:href="@{'/user/add_interest/' + ${siteUser.id}}">☆</a>
     <!--    <button id="sendCyberMoneyBtn" class="btn btn-primary" data-toggle="modal" data-target="#cyberMoneyModal" >사이버머니-->
     <!--        보내기-->
     <!--    </button>-->

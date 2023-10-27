@@ -16,4 +16,5 @@ public interface UserRepository extends JpaRepository<SiteUser, Integer> {
 
     @Query(value = "SELECT * FROM site_user WHERE gender = :gender AND living = :living ORDER BY RAND() LIMIT :count", nativeQuery = true)
     List<SiteUser> findRandomUsersByGenderAndLiving(@Param("gender") String gender, @Param("living") String living, @Param("count") int count);
+
 }
