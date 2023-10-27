@@ -8,6 +8,17 @@
 <div layout:fragment="content" class="container my-3 flex">
     <div class="m-auto">
 
+            <div >
+                <img class="w-40  h-40" th:src="@{|${board.filepath}|}" alt="">
+                <div>제목</div>
+                <div th:text="${board.subject}"></div>
+                <div>내용</div>
+                <div th:text="${board.content}"></div>
+            </div>
+            <div>  <a th:if="${ #authentication.getPrincipal().getUsername() == board.siteUser.username}" th:href="@{|/board/modify/${board.id}|}" >수정</a></div>
+            <div th:if="${#authentication.getPrincipal().getUsername() == board.siteUser.username or #authorization.expression('hasRole(''ADMIN'')')}">
+                <a th:href="@{|/board/delete/${board.id}|}">삭제</a>
+            </div>
         <div class="">
             <img class="w-40  h-40" th:src="@{|${board.filepath}|}" alt="">
             <div>제목</div>
