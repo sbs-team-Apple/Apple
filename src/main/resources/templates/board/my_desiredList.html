@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html layout:decorate="~{/common/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="content" class="container my-3 w-12/12">
+   <div>내 이상형들</div>
+    <div th:each="user : ${users}">
+        <div th:text="${user.nickname}"></div>
+
+    </div>
+
+
+
+</div>
+</body>
+</html>
+
+<style>
+
+
+</style>
+
+
+<script >
+
+
+
+</script>
