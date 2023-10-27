@@ -20,6 +20,8 @@ public interface UserRepository extends JpaRepository<SiteUser, Integer> {
 
 
 
-    @Query("SELECT su FROM SiteUser su WHERE  su.gender <> :userGender AND su.living = :desiredLiving OR su.religion = :desiredReligion")
-    List<SiteUser> findByDesired(@Param("desiredLiving") String desiredLiving, @Param("userGender") String userGender, @Param("desiredReligion") String desiredReligion);
+
+    @Query("SELECT su FROM SiteUser su WHERE  su.gender <> :userGender AND (su.living = :desiredLiving OR su.religion = :desiredReligion)")
+    List<SiteUser> findByDesired( @Param("userGender") String userGender, @Param("desiredLiving") String desiredLiving, @Param("desiredReligion") String desiredReligion);
+
 }

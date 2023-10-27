@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html layout:decorate="~{/common/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>사진 변경하기</title>
+</head>
+<body>
+<div layout:fragment="content" class="container my-3">
+    <form enctype="multipart/form-data" th:action="@{|/user/photoModify/${siteUser.id}|}" object="${boardForm}"
+          method="post">
+        <div>이미지 넣기</div>
+        <input type="file" name="file" accept="image/**">
+        <button type="submit">변경하기</button>
+    </form>
+</div>
+</body>
+</html>

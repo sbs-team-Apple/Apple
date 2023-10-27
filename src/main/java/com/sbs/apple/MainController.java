@@ -77,6 +77,7 @@ public class MainController {
         if(userWarning== true){
             userService.resetUserWarning(siteUser);
         }
+
         return "main";
     }
 }
