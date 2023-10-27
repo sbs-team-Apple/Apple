@@ -270,6 +270,16 @@ public class UserService {
         userRepository.save(siteUser);
     }
 
+
+    public List<SiteUser> getDesiredUsers(SiteUser user) {
+
+           return userRepository.findByDesired(user.getGender(),user.getDesired_living(),user.getDesired_religion());
+
+
+
+    }
+
+
     public void photoModify(SiteUser user, MultipartFile file)throws Exception {
         File directory = new File(uploadDir);
         UUID uuid = UUID.randomUUID();
@@ -281,6 +291,7 @@ public class UserService {
         this.userRepository.save(user);
     }
     //관심 가져오기
+
 
 
     public List<Interest> getWishUsers(String username) {

@@ -24,11 +24,58 @@
                 <input type="hidden" name="roomId" th:value="${roomId}">
 
                 <input  class ="hidden"  type="text" placeholder="작성자" th:value="${user.nickname}"  name="authorName" autocomplete="off">
-                <input class="w-11/12  h-10" type="text" placeholder="내용을 입력해주세요." name="content" autocomplete="off">
+                <div class="emo-button">🙂</div>
+                <input class="w-11/12  h-10  mt-2 mb-2  chat-content" type="text" placeholder="내용을 입력해주세요."  name="content" autocomplete="off">
                 <button class="w-20 chat-write-box-item-button" type="submit" value="작성">전송</button>
             </form>
+
+            <div class="emo-box flex flex-wrap" style="display:none;">
+                <div class="flex emo-kind justify-around">
+                    <div class="face">😀</div>
+                    <div class="symbol">👍</div>
+                    <div class="nature">⛅</div>
+                    <div class="food">🍖</div>
+
+                </div>
+
+                <div class="face-emo emo flex flex-wrap">
+                    <p>😀</p> <p>😁</p> <p>😃</p><p>😄</p>
+                    <p>😅</p> <p>😆</p> <p>😉</p> <p>😋</p><p>😊</p><p>😎</p>
+                    <p>😍</p> <p>😘</p><p>😗</p><p>😴</p><p>😛</p><p>😓</p>
+                    <p>😓</p><p>😓</p><p>😓</p><p>😓</p><p>😓</p><p>😓</p>
+                    <p>😓</p><p>😓</p><p>😓</p><p>😓</p><p>😓</p><p>&#128527;</p>
+
+                </div>
+                <div class="symbol-emo emo flex flex-wrap" style="display:none;">
+                    <p>👍</p> <p>👎</p> <p>💪</p><p>👉</p>
+                    <p>☝</p> <p>✌</p> <p>🤞</p> <p>🖐</p><p>✋</p><p>👌</p>
+                    <p>👊</p> <p>🤜</p><p>👏</p><p>👋</p><p>👂</p><p>👃</p>
+                    <p>💬</p><p>💢</p>
+
+                </div>
+                <div class="nature-emo emo flex flex-wrap" style="display:none;">
+                    <p>🌍</p> <p>🌐</p> <p>🌗</p><p>🌛</p>
+                    <p>☀</p> <p>🌞</p> <p>⭐</p> <p>☁</p><p>⛈</p><p>🌧</p>
+                    <p>🌩</p> <p>🌈</p><p>⚡</p><p>☔</p><p>❄</p><p>🔥</p>
+                    <p>🎄</p><p>🌊</p>
+
+                </div>
+                <div class="food-emo emo flex flex-wrap" style="display:none;">
+                    <p>🍇</p> <p>🍉</p> <p>🍌</p><p>🍎</p>
+                    <p>🍍</p> <p>🥝</p> <p>🥥</p> <p>🍖</p><p>🧀</p><p>🍕</p>
+                    <p>🍔</p> <p>🌭</p><p>🍨</p><p>🍛</p><p>🍜</p><p>🍮</p>
+                    <p>🍷</p><p>🍣</p>
+
+                </div>
+
+
+
+
+            </div>
         </div>
+
     </div>
+
 
 
 
@@ -47,7 +94,17 @@
 
     </div>
 
+    <div class="dropdown">
+        <label tabindex="0" class="btn m-1">Click</label>
+        <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+            <li><a>Item 1</a></li>
+            <li><a>Item 2</a></li>
+        </ul>
+    </div>
 
+    <div class="tooltip" data-tip="helddsadlo">
+        <button class="btn">😀</button>
+    </div>
 
 
 </div>
@@ -57,28 +114,32 @@
 </html>
 
 <style>
-    body, ul, li{
-  margin:0;
-  list-style:none;
-  padding:0;
-}
-a{
-  text-decoration:none;
-  color:inherit;
-}
+        body, ul, li{
+      margin:0;
+      list-style:none;
+      padding:0;
+              }
+    a        {
+      text-decoration:none;
+      color:inherit;
+              }
+    input:focus {
+        outline: none;
+    }
+
 
     .chat{
         display:block;
-        height:700px;
-        width:400px;
+
+        width:350px;
 
         margin-left:auto;
         margin-right:auto;
          position:relative;
     }
     .chat__message-box{
-          height:95%;
-         width:400px;
+          height:500px;
+
 
          overflow-y: scroll; /* 세로 스크롤만 활성화 */
          overflow-x: hidden;
@@ -93,12 +154,13 @@ a{
     .chat-write-box {
 
 
-        bottom:0%;
-        left:0;
-        width:100%;
+
     }
     .chat-write-box-item {
-        margin:10px 20px;
+
+       margin-top:10px;
+       border: 1px solid black;
+
     }
 
     .chat-write-box-item-button {
@@ -141,12 +203,137 @@ a{
 
 }
 
+    .emo-button {
+            line-height: 56px;
+            margin: 0 10px;
+
+    }
+
+
+    .emo-box {
+        position:absolute;
+        bottom:0;
+        left:0;
+        width:100%;
+        height:150px;
+        transform:translate(-0,100%);
+
+         overflow-y: scroll; /* 세로 스크롤만 활성화 */
+         overflow-x: hidden;
+         background-color:gray;
+    }
+
+
+    .emo-box::-webkit-scrollbar {
+        	display:none /* Chrome , Safari , Opera */
+        }
+      .emo-kind {
+      margin-top:10px;
+      margin-bottom:10px;
+           width: 348px;
+      }
+
+
+    .emo-kind >div{
+        margin:0 5px;
+    }
+
+    .emo >p{
+        width:22px;
+        height:22px; margin: 10px;
+    }
+
+
 </style>
 
 <script th:inline="javascript">
     const roomId = [[${roomId}]];
 
     const userNickname = /*[[${user.nickname}]]*/ null;
+</script>
+
+<script>
+    $(document).ready(function() {
+    $(".face").click(function() {
+        $(".face-emo").show();
+        $(".symbol-emo").hide();
+        $(".nature-emo").hide();
+        $(".food-emo").hide();
+    });
+
+    $(".symbol").click(function() {
+        $(".face-emo").hide();
+        $(".symbol-emo").show();
+      $(".food-emo").hide();
+        $(".nature-emo").hide();
+
+    });
+
+     $(".nature").click(function() {
+        $(".face-emo").hide();
+        $(".symbol-emo").hide();
+        $(".food-emo").hide();
+        $(".nature-emo").show();
+
+    });
+
+
+     $(".food").click(function() {
+        $(".face-emo").hide();
+        $(".symbol-emo").hide();
+        $(".food-emo").show();
+        $(".nature-emo").hide();
+
+    });
+});
+
+
+</script>
+
+
+<script>
+    var emoButton = $(".emo-button");
+    emoButton.click(function(event){
+      event.stopPropagation(); // 이벤트 버블링을 막음
+           emoBox.toggle();
+    });
+     emoBox.click(function(event) {
+            event.stopPropagation();
+        });
+
+    $(document).click(function(event) {
+        if (!emoBox.is(event.target) && !emoButton.is(event.target) && emoBox.is(":visible")) {
+            emoBox.hide();
+        }
+    });
+
+
+
+
+
+</script>
+
+
+<script>
+
+    var emoBox= $(".emo-box");
+    var emo = emoBox.find("p");
+    var content=$(".chat-content");
+
+    console.log(emo);
+
+     emo.on("click", function() {
+       var clickedText = $(this).text(); // 클릭한 <p> 태그의 내용을 가져옴
+        var currentContent = content.val(); // 입력란의 현재 내용을 가져옴
+        var newContent = currentContent + " " + clickedText; // 새로운 내용을 생성
+
+        content.val(newContent); // 입력란에 새로운 내용
+
+
+    });
+
+
+
 </script>
 
 
