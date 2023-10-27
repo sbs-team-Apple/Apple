@@ -16,7 +16,7 @@
         <tbody>
         <tr th:each="interestList : ${interestList}">
             <td>
-                <a th:href="@{|/user/detail/${interestList.id}|}">
+                <a th:href="@{|/user/detail/${interestList.siteUser.id}|}">
                     <img class="w-30 h-30" th:src="@{|${interestList.siteUser.filepath}|}" alt="User Image" style="max-width: 300px; max-height: 300px;">
                 </a>
             </td>
