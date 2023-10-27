@@ -1,6 +1,8 @@
 package com.sbs.apple.interest;
 
 import com.sbs.apple.user.SiteUser;
+import com.sbs.apple.user.UserRepository;
+import com.sbs.apple.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,17 +12,25 @@ import java.util.List;
 @Service
 public class InterestService {
     private final InterestRepository interestRepository;
-    public void add_interest(SiteUser siteUser,String interest_user) {
+    private final UserService userService;
+    private final UserRepository userRepository;
+    public void add_interest(Integer siteUserId, String interest_user) {
+        SiteUser siteUser = userService.getUser(siteUserId);
+
         Interest i = new Interest();
         i.setSiteUser(siteUser);
         i.setInterestUser(interest_user);
         i.setInterestedUser(siteUser.getUsername());
-        this.interestRepository.save(i);
+        interestRepository.save(i);
     }
+
     public List<Interest> getWishUsers(String Interest_user) {
         List<Interest> wishUsers;
         wishUsers = this.interestRepository.findAllByInterestUser(Interest_user);
 
         return  wishUsers;
     }
+
 }
+
+

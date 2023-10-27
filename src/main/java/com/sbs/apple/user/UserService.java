@@ -3,6 +3,8 @@ package com.sbs.apple.user;
 import com.sbs.apple.DataNotFoundException;
 import com.sbs.apple.chat.ChatRoom;
 import com.sbs.apple.chat.ChatRoomService;
+import com.sbs.apple.interest.Interest;
+import com.sbs.apple.interest.InterestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,6 +22,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ChatRoomService chatRoomService;
+    private final InterestRepository interestRepository;
     private String uploadDir;
 
     @Value("${file.upload-dir}")
@@ -278,6 +281,11 @@ public class UserService {
 
 
 
+    public List<Interest> getWishUsers(String username) {
+        List<Interest> wishUsers;
+
+        wishUsers = this.interestRepository.findAllByInterestUser(username);
+
+        return  wishUsers;
+    }
 }
-
-
