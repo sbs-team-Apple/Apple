@@ -86,7 +86,7 @@
             my_modal_5.showModal();
 
             // 사용자의 username을 HTML에서 가져옵니다.
-           var siteUserUsernameElement = $(".user-username");
+           var siteUserUsernameElement = $(".user-username"); //요 부분
             var recipientUsername = siteUserUsernameElement.text();
 
             $('#recipientUsername').text(recipientUsername);
@@ -110,8 +110,8 @@
                             $('#cyberMoneyModal').modal('hide'); // 성공 시 모달을 닫음
                             alert('사이버 머니 전송이 성공했습니다.');
                             // 사이버 머니 갱신 등의 추가 작업 수행
-                        },
                         error: function(xhr) {
+                        },
                             if (xhr.status === 400) {
                                 alert('사이버 머니 전송에 실패했습니다. 요청이 잘못되었습니다.');
                             } else if (xhr.status === 403) {
