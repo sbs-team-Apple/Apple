@@ -59,6 +59,7 @@
                         </li>
 
                         <li><a href="/user/payment"><i class="fa-solid fa-user"></i> 결제</a></li>
+                        <li><a href="/user/exchange"><i class="fa-solid fa-user"></i> 환전하기</a></li>
                         <li class="nav-item" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
                             <a class="nav-link" th:href="@{/admin/report_list}">신고 게시판</a>
                         </li>
