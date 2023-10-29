@@ -13,8 +13,14 @@ public class Interest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String interest_user;
-    private String interested_user;
+    private String interestUser;
+    private String interestedUser;
+    private String nickname;
+    private String age;
+    private String living;
+    private String About_Me;
+    private String filepath;
+
 
     @ManyToOne
     private SiteUser siteUser;

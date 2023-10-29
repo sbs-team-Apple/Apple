@@ -11,7 +11,7 @@
                 <label class="label">
                     <span class="label-text">원하는 나이</span>
                 </label>
-                <select name="desired_age" class="input input-bordered">
+                <select name="desired_age" class="input input-bordered" th:field="*{desired_age}">
                     <option value="상관없음" selected>상관없음</option>
                     <option value="20~22">20~22</option>
                     <option value="23~25">23~25</option>
@@ -29,7 +29,7 @@
                 <label class="label">
                     <span class="label-text">원하는 지역</span>
                 </label>
-                <select name="desired_living" class="input input-bordered">
+                <select name="desired_living" class="input input-bordered" th:field="*{desired_living}">
                     <option value="상관없음" selected>상관없음</option>
                     <option value="서울">서울</option>
                     <option value="인천">인천</option>
@@ -52,14 +52,15 @@
                 <label class="label">
                     <span class="label-text">이상형 취미</span>
                 </label>
-                <input type="text" name="desired_hobby" placeholder="이상형 취미" class="input input-bordered" maxlength="255">
+                <input type="text" name="desired_hobby" placeholder="이상형 취미" class="input input-bordered" maxlength="255"
+                       th:field="*{desired_hobby}">
             </div>
 
             <div class="form-control">
                 <label class="label">
                     <span class="label-text">이상형 키</span>
                 </label>
-                <select name="desired_tall" class="input input-bordered">
+                <select name="desired_tall" class="input input-bordered" th:field="*{desired_tall}">
                     <option value="상관없음" selected>상관없음</option>
                     <option value="160cm이하">160cm이하</option>
                     <option value="161cm~165cm">161cm~165cm</option>
@@ -76,7 +77,7 @@
                 <label class="label">
                     <span class="label-text">이상형 체형</span>
                 </label>
-                <select name="desired_body_type" class="input input-bordered">
+                <select name="desired_body_type" class="input input-bordered" th:field="*{desired_body_type}">
                     <option value="상관없음" selected>상관없음</option>
                     <option value="슬림한">슬림한</option>
                     <option value="평범한">평범한</option>
@@ -89,10 +90,12 @@
                 <label class="label">
                     <span class="label-text">이상형 흡연유무</span>
                 </label>
-                <select name="desired_smoking" class="input input-bordered">
+                <select name="desired_smoking" class="input input-bordered" th:field="*{desired_smoking}">
                     <option value="상관없음" selected>상관없음</option>
-                    <option value="된다">된다</option>
-                    <option value="안된다">안된다</option>
+                    <option value="비흡연">비흡연</option>
+                    <option value="가끔">가끔</option>
+                    <option value="자주">자주</option>
+                    <option value="매일">매일</option>
                 </select>
             </div>
 
@@ -100,10 +103,12 @@
                 <label class="label">
                     <span class="label-text">이상형 음주</span>
                 </label>
-                <select name="desired_drinking" class="input input-bordered">
+                <select name="desired_drinking" class="input input-bordered" th:field="*{desired_drinking}">
                     <option value="상관없음" selected>상관없음</option>
-                    <option value="된다">된다</option>
-                    <option value="안된다">안된다</option>
+                    <option value="안마심">안마심</option>
+                    <option value="가끔">가끔</option>
+                    <option value="자주">자주</option>
+                    <option value="매일">매일</option>
                 </select>
             </div>
 
@@ -111,14 +116,15 @@
                 <label class="label">
                     <span class="label-text">이상형 스타일</span>
                 </label>
-                <input type="text" name="desired_style" placeholder="이상형 스타일" class="input input-bordered" maxlength="255">
+                <input type="text" name="desired_style" placeholder="이상형 스타일" class="input input-bordered" maxlength="255"
+                       th:field="*{desired_style}">
             </div>
 
             <div class="form-control">
                 <label class="label">
                     <span class="label-text">이상형 종교</span>
                 </label>
-                <select name="desired_religion" class="input input-bordered">
+                <select name="desired_religion" class="input input-bordered" th:field="*{desired_religion}">
                     <option value="상관없음" selected>상관없음</option>
                     <option value="무교">무교</option>
                     <option value="불교">불교</option>
@@ -132,7 +138,7 @@
                 <label class="label">
                     <span class="label-text">MBTI</span>
                 </label>
-                <select name="desired_mbti" class="input input-bordered">
+                <select name="desired_mbti" class="input input-bordered" th:field="*{desired_mbti}">
                     <option value="상관없음" selected>상관없음</option>
                     <option value="ISTJ">ISTJ</option>
                     <option value="ISFJ">ISFJ</option>
@@ -157,7 +163,7 @@
                 <label class="label">
                     <span class="label-text">학력</span>
                 </label>
-                <select name="desired_school" class="input input-bordered">
+                <select name="desired_school" class="input input-bordered" th:field="*{desired_school}">
                     <option value="상관없음" selected>상관없음</option>
                     <option value="고교 졸업 이하">고교 졸업 이하</option>
                     <option value="고등학교 졸업">고등학교 졸업</option>
@@ -173,7 +179,7 @@
                 <label class="label">
                     <span class="label-text">직장</span>
                 </label>
-                <select name="desired_job" class="input input-bordered">
+                <select name="desired_job" class="input input-bordered" th:field="*{desired_job}">
                     <option value="상관없음" selected>상관없음</option>
                     <option value="공무원">공무원</option>
                     <option value="학생">학생</option>
