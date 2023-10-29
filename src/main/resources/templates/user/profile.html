@@ -17,7 +17,6 @@
         <img th:src="@{|${siteUser.filepath}|}" alt="User Image" style="max-width: 300px; max-height: 300px;">
     </div>
     <div th:text="'나이 : ' + ${siteUser.age}"></div>
-    <div th:text="'나이 : ' + ${siteUser.username}"></div>
     <div th:text="'지역 : ' + ${siteUser.living}"></div>
     <div th:text="'취미 : ' + ${siteUser.hobby}"></div>
     <div th:text="'키 : ' + ${siteUser.tall}"></div>
@@ -41,8 +40,8 @@
     <div th:text="'선호하는 이성 성격 : ' + ${siteUser.desired_style}"></div>
     <div th:text="'선호하는 이성 종교 : ' + ${siteUser.desired_religion}"></div>
     <div th:text="'선호하는 이성 MBTI : ' + ${siteUser.desired_mbti}"></div>
-    <a th:href="@{'/user/report/' + ${siteUser.id}}">신고하기</a>
-    <a th:href="@{'/user/add_interest/' + ${siteUser.id}}">관심 등록하기</a>
+    <a class="btn btn-primary" th:href="@{'/user/report/' + ${siteUser.id}}">신고하기</a>
+    <a class="btn btn-primary" th:href="@{'/user/add_interest/' + ${siteUser.id}}">☆</a>
     <!--    <button id="sendCyberMoneyBtn" class="btn btn-primary" data-toggle="modal" data-target="#cyberMoneyModal" >사이버머니-->
     <!--        보내기-->
     <!--    </button>-->
@@ -87,12 +86,13 @@
             my_modal_5.showModal();
 
             // 사용자의 username을 HTML에서 가져옵니다.
-            var siteUserUsernameElement = $(".user-username");
+           var siteUserUsernameElement = $(".user-username");
+            var recipientUsername = siteUserUsernameElement.text();
 
-            const recipientUsername = "F";
+            $('#recipientUsername').text(recipientUsername);
 
             $('#sendCyberMoneyConfirmBtn').click(function() {
-            alert("dddd");
+            alert("사이버 머니가 성공적으로 전송 되었습니다.");
             var amount = $('#cyberMoneyAmount').val();
 
             var csrfToken = $("meta[name='_csrf']").attr("content");
@@ -101,7 +101,7 @@
                 if (amount >= 0) {
                     $.ajax({
                         type: 'POST',
-                        url: '/api/cybermoney/send',
+                        url: '/user/cybermoney/send',
                         data: 'recipientUsername=' + recipientUsername + '&amount=' + amount,
                         beforeSend: function(xhr) {
                             xhr.setRequestHeader(csrfHeader, csrfToken);
