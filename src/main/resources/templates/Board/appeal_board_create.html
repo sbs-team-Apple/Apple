@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html layout:decorate="~{/common/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="content" class="container my-3">
+
+    <form  enctype="multipart/form-data" th:action="@{/board/create}"  object="${boardForm}" method="post" >
+        <div>이미지 넣기</div>
+        <input type="file" name="file" accept="image/**">
+        <div>제목</div>
+        <input type="text" name="subject">
+        <div>내용</div>
+        <input type="text" name="content">
+
+        <button type="submit">작성 완료</button>
+
+
+
+    </form>
+
+
+
+
+
+</div>
+</body>
+</html>
+
+<script >
+
+
+
+</script>
