@@ -264,7 +264,7 @@ public class UserController {
     //조회하기
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/detail/{id}")
-    public String paymentPage(Model model, @PathVariable("id") Integer id) {
+    public String paymentPage(Model model, @PathVariable("id") Integer id,Principal principal) {
         SiteUser siteUser = this.userService.getUser(id);
         model.addAttribute("siteUser", siteUser);
         return "user/profile";
@@ -343,6 +343,7 @@ public class UserController {
 
         // Check if the user already has this user in their interests
         boolean isInterested = interestService.isInterested(id, interest_user);
+
 
         if (isInterested) {
             // If already interested, remove from the interest list

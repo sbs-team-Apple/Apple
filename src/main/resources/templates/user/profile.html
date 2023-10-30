@@ -45,11 +45,57 @@
     <div>
         <a class="btn btn-primary interest-button"
            th:if="${isInterested}"
-           th:href="@{'/user/add_interest/' + ${siteUser.id}}">관심 해제</a>
+           th:href="@{'/user/add_interest/' + ${siteUser.id}}"
+           data-userid="${siteUser.id}" data-interested="true">관심 해제</a>
         <a class="btn btn-primary interest-button"
            th:unless="${isInterested}"
-           th:href="@{'/user/add_interest/' + ${siteUser.id}}">관심 등록하기</a>
+           th:href="@{'/user/add_interest/' + ${siteUser.id}}"
+           data-userid="${siteUser.id}" data-interested="false">관심 등록하기</a>
     </div>
+    <script th:inline="javascript">
+        $(document).ready(function() {
+            var interestButton = $('.interest-button');
+            var siteUserId = /*[[${siteUser.id}]]*/ null;
+            var isInterested = /*[[${isInterested}]]*/ false;
+
+            // 함수를 사용하여 버튼 텍스트 업데이트
+            function updateButtonState() {
+                if (isInterested) {
+                    interestButton.text('관심 해제');
+                } else {
+                    interestButton.text('관심 등록하기');
+                }
+            }
+
+            // 버튼 초기 텍스트 설정
+            updateButtonState();
+
+            interestButton.click(function() {
+                var button = $(this);
+                var userId = button.data('userid');
+
+                // AJAX 요청으로 관심 여부 확인
+                $.ajax({
+                    type: 'GET',
+                    url: '/user/add_interest/' + siteUserId,
+                    success: function(response) {
+                        if (response === 'interested') {
+                            isInterested = true;
+                        } else if (response === 'not_interested') {
+                            isInterested = false;
+                        }
+                        // 버튼 상태 업데이트
+                        updateButtonState();
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        // 에러 핸들링
+                        console.log("AJAX 오류: " + textStatus, errorThrown);
+                        alert('오류가 발생했습니다.');
+                    }
+                });
+            });
+        });
+    </script>
 
 
 
