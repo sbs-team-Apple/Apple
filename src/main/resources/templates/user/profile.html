@@ -16,6 +16,7 @@
     <div>
         <img th:src="@{|${siteUser.filepath}|}" alt="User Image" style="max-width: 300px; max-height: 300px;">
     </div>
+    <div th:text="'닉네임 : ' + ${siteUser.nickname}"></div>
     <div th:text="'나이 : ' + ${siteUser.age}"></div>
     <div th:text="'지역 : ' + ${siteUser.living}"></div>
     <div th:text="'취미 : ' + ${siteUser.hobby}"></div>
