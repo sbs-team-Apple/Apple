@@ -2,6 +2,7 @@ package com.sbs.apple.util;
 
 
 import com.sbs.apple.user.SiteUser;
+import com.sbs.apple.user.UserService;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -14,6 +15,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -32,32 +34,42 @@ public class Rq {
     private final HttpServletRequest request;
     private final HttpServletResponse response;
     private final HttpSession session;
-    private SiteUser user;
+    private SiteUser loginUser =null;
     private boolean login;
+    private final UserService userService;
+    private User user;
 
 
-    public Rq() {
+    public Rq(UserService userService) {
         ServletRequestAttributes sessionAttributes = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes()));
         HttpServletRequest request = sessionAttributes.getRequest();
         HttpServletResponse response = sessionAttributes.getResponse();
         this.request = request;
         this.response = response;
         this.session = request.getSession();
+        this.userService=userService;
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if(authentication instanceof UsernamePasswordAuthenticationToken) {
-            SiteUser user = (SiteUser) authentication.getPrincipal();
-            this.user = user;
-            this.login = true;
-        } else if(authentication instanceof AnonymousAuthenticationToken) {
-            SiteUser anonymous = new SiteUser();
-            anonymous.setId((int) -1);
-            anonymous.setUsername("");
+//        if(authentication instanceof UsernamePasswordAuthenticationToken) {
+//            SiteUser user = (SiteUser) authentication.getPrincipal();
+//            this.user = user;
+//            this.login = true;
+//        } else if(authentication instanceof AnonymousAuthenticationToken) {
+//            SiteUser anonymous = new SiteUser();
+//            anonymous.setId((int) -1);
+//            anonymous.setUsername("");
+//
+//            this.user = anonymous;
+//            this.login = false;
+//        }
 
-            this.user = anonymous;
-            this.login = false;
+        if (authentication.getPrincipal() instanceof User) {
+            this.user = (User) authentication.getPrincipal();
+        } else {
+            this.user= null;
         }
+
     }
 
     // forwarding
@@ -105,6 +117,34 @@ public class Rq {
         }
 
         return false;
+    }
+
+    public boolean isLogin() {
+        return user != null;
+    }
+
+    public boolean isLogout() {
+        return !isLogin();
+    }
+
+
+    private String getLoginedMemberUsername() {
+        if (isLogout()) return null;
+
+        return user.getUsername();
+    }
+    public SiteUser getUser() {
+        if (isLogout()) {
+            return null;
+        }
+        if(loginUser ==null) {
+            loginUser = userService.getUserbyName(getLoginedMemberUsername());
+
+
+        }
+
+
+        return loginUser;
     }
 }
 

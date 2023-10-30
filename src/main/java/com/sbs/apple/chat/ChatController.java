@@ -42,6 +42,14 @@ public class ChatController {
 
 
            ChatRoom room= chatRoomService.create(user, user2);
+
+
+        String groupKey = "userId_" + userId2;
+        System.out.println(groupKey);
+        sseEmitters.noti(groupKey, "invite_chatRoom");
+
+
+
         model.addAttribute("roomId", room.getId());
         model.addAttribute("user",user);
         return "redirect:/chat/"+room.getId()+"/room3?userId2="+userId2;
