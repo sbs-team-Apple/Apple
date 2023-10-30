@@ -73,6 +73,7 @@
                 <a th:href="@{/}" class="btn btn-ghost normal-case text-xl">사과</a>
             </div>
             <div class="navbar-end">
+                <div  class="userIdDiv" th:if="${@rq.login}" th:text="${@rq.user.id}"></div>
                 <button class="btn btn-ghost btn-circle">
                     <div class="indicator">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
@@ -117,5 +118,19 @@
         toastWarning(decodeURIComponent(failMsg));
     }
 </script>
+
+<script>
+    const userId = $(".userIdDiv").text();
+    const sse2 = new EventSource(`/sse/connect/userId_${userId}`);
+
+   // 서버로부터 "chat__messageAdded" 라는 명령이 내려오면 Chat__loadMore 함수를 실행
+   sse2.addEventListener('invite_chatRoom', e => {
+      alert("채팅방에 초대됨");
+   });
+
+
+
+</script>
+
 </body>
 </html>

@@ -18,7 +18,7 @@ public class SseEmitters {
     private final HashMap<String, List<SseEmitter>> emitters = new HashMap<>();
 
     public SseEmitter add(String groupKey, SseEmitter emitter) {
-
+        System.out.println("이미터에 그룹키 추가");
         if (!emitters.containsKey(groupKey)) {
             emitters.put(groupKey, new CopyOnWriteArrayList<>());
         }
@@ -35,6 +35,7 @@ public class SseEmitters {
     }
 
     public void noti(String groupKey, String eventName) {
+        System.out.println("노티 첫단계");
         noti(groupKey, eventName, Ut.mapOf());
     }
 
