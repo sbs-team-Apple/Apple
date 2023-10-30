@@ -136,5 +136,4 @@ public class SiteUser {
     private List<Board> boardList;
 
 
-
 }

@@ -337,12 +337,33 @@ public class UserController {
     //관심 추가하기
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/add_interest/{id}")
-    public String add_interest(Principal principal, @PathVariable Integer id, Model model) {
+    public String toggleInterest(Principal principal, @PathVariable Integer id, Model model) {
         String interest_user = principal.getName();
         model.addAttribute("userId", id);
-        this.interestService.add_interest(id, interest_user);
+
+        // Check if the user already has this user in their interests
+        boolean isInterested = interestService.isInterested(id, interest_user);
+
+
+        System.out.println("isInterestedCheck" + isInterested);
+
+        if (isInterested) {
+            // If already interested, remove from the interest list
+            interestService.removeInterest(id, interest_user);
+            System.out.println("isInterestedCheck1" + isInterested);
+            model.addAttribute("isInterested", false);
+//            model.addAttribute("isInterested", isInterested); // Set isInterested to false
+        } else {
+            // If not interested, add to the interest list
+            interestService.addInterest(id, interest_user);
+            System.out.println("isInterestedCheck2" + isInterested);
+            model.addAttribute("isInterested", true);
+//            model.addAttribute("isInterested", isInterested); // Set isInterested to true
+        }
+
         return "redirect:/user/detail/{id}";
     }
+
 
     //관심 조회하기
     @PreAuthorize("isAuthenticated()")
