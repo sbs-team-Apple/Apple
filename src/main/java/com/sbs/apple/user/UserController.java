@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 //회원가입
 @RequiredArgsConstructor
@@ -153,6 +155,23 @@ public class UserController {
     }
 
     // 마이페이지 탈퇴 페이지
+    @GetMapping("/checkLoginPw")
+    public ResponseEntity<String> checkLoginPw(@RequestBody Map<String, String> requestData, Principal principal) {
+        System.out.println("확인");
+        return ResponseEntity.ok("");
+//        String deleteUserPw = requestData.get("userPassword");
+//
+//
+//        System.out.println("deleteUserPw : " + deleteUserPw);
+//        SiteUser siteUser = this.userService.getUserbyName(principal.getName());
+//
+//        if (BCrypt.checkpw(deleteUserPw, siteUser.getPassword())) {
+//         return ResponseEntity.ok("");
+//        } else {
+//            return ResponseEntity.badRequest().body("비밀번호가 일치하지 않습니다. 다시 시도해주세요.");
+//        }
+    }
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete")
     public String mypage_exit(Principal principal, Model model) {
