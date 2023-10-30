@@ -14,6 +14,7 @@ public class Interest {
     private Integer id;
 
     private String interestUser;
+    private Integer interestUserId;
     private String interestedUser;
     private String nickname;
     private String age;

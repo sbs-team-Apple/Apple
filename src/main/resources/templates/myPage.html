@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html layout:decorate="~{/common/layout}" lang="en">
-<head >
+<head>
     <meta charset="UTF-8">
     <title>마이 페이지</title>
 </head>
@@ -8,27 +8,25 @@
 
 <div layout:fragment="content" class="container my-3">
 
-<ul>
-    <div  sec:authorize="isAuthenticated()" th:text="${user.nickname}+'님 환영합니다!'"></div>
-    <li><a th:href="@{|/user/detail/${user.id}|}">내 프로필</a></li>
-    <li><a th:href="@{|/user/photoModify/${user.id}|}">사진 수정하기</a></li>
-    <li><a href="/user/passwordChange">비밀번호 변경</a></li>
-    <li><a href="/user/profile_modify">프로필 수정</a></li>
-    <li><a href="/user/desired_modify">나의 이상형 정보 수정</a></li>
-    <li><a href="/user/delete">회원 탈퇴</a></li>
-    <li><a th:href="@{/chat/allRoom}">내 채팅방</a></li>
-    <li><a th:href="@{/user/wish}">관심</a></li>
-</ul>
-
-
+    <ul>
+        <div sec:authorize="isAuthenticated()" th:text="${user.nickname}+'님 환영합니다!'"></div>
+        <li><a th:href="@{|/user/detail/${user.id}|}">내 프로필</a></li>
+        <li><a th:href="@{|/user/photoModify/${user.id}|}">사진 수정하기</a></li>
+        <li><a href="/user/passwordChange">비밀번호 변경</a></li>
+        <li><a href="/user/profile_modify">프로필 수정</a></li>
+        <li><a href="/user/desired_modify">나의 이상형 정보 수정</a></li>
+        <li><a href="/user/delete">회원 탈퇴</a></li>
+        <li><a th:href="@{/chat/allRoom}">내 채팅방</a></li>
+        <li><a th:href="@{/user/wish}">내가 관심있는 사람</a></li>
+        <li><a th:href="@{/user/wished}">나를 관심있게 생각하는 사람</a></li>
+        <li><a th:href="@{/board/myAppealBoard}">내 어필 게시판</a></li>
+    </ul>
 
 
     <div>
         <h2>사이버머니 정보:</h2>
         <p>보유 중인 사이버머니: <span th:text="${userCyberMoney}"></span></p>
-
         <p>다른 사용자로부터 받은 사이버머니: <span th:text="${receivedCyberMoney}"></span></p>
-
     </div>
 
 </div>
