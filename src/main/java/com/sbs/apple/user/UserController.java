@@ -372,7 +372,7 @@ public class UserController {
     }
 
 
-    //관심 조회하기
+    //관심있는 사람 조회하기
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/wish")
     public String showWish(Principal principal, Model model) {
@@ -381,7 +381,14 @@ public class UserController {
         model.addAttribute("interestList", interestList);
         return "wish";
     }
-
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/wished")
+    public String showWished(Principal principal, Model model) {
+        String username = principal.getName();
+        List<Interest> interestList = interestService.getWishedUsers(username);
+        model.addAttribute("interestList", interestList);
+        return "wished";
+    }
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/exchange")
     public String exchange(Model model, Principal principal) {
