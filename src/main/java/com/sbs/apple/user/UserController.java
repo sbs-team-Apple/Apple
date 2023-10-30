@@ -283,9 +283,12 @@ public class UserController {
     //조회하기
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/detail/{id}")
-    public String paymentPage(Model model, @PathVariable("id") Integer id) {
+    public String paymentPage(Principal principal,Model model, @PathVariable("id") Integer id) {
         SiteUser siteUser = this.userService.getUser(id);
         model.addAttribute("siteUser", siteUser);
+        String interest_user = principal.getName();
+        boolean isInterested = interestService.isInterested(id, interest_user);
+        model.addAttribute("isInterested",isInterested);
         return "user/profile";
     }
 
@@ -356,12 +359,18 @@ public class UserController {
     //관심 추가하기
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/add_interest/{id}")
-    public String add_interest(Principal principal, @PathVariable Integer id, Model model) {
+    public String toggleInterest(Principal principal, @PathVariable Integer id, Model model) {
         String interest_user = principal.getName();
         model.addAttribute("userId", id);
-        this.interestService.add_interest(id, interest_user);
+        boolean isInterested = interestService.isInterested(id, interest_user);
+        if (isInterested) {
+            interestService.removeInterest(id, interest_user);
+        } else {
+            interestService.addInterest(id, interest_user);
+        }
         return "redirect:/user/detail/{id}";
     }
+
 
     //관심 조회하기
     @PreAuthorize("isAuthenticated()")
