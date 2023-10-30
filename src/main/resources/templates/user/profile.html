@@ -44,14 +44,11 @@
 
     <div>
         <a class="btn btn-primary interest-button"
-           th:if="${isInterested == 'true'}"
+           th:if="${isInterested}"
            th:href="@{'/user/add_interest/' + ${siteUser.id}}">관심 해제</a>
         <a class="btn btn-primary interest-button"
-           th:unless="${isInterested == 'false'}"
+           th:unless="${isInterested}"
            th:href="@{'/user/add_interest/' + ${siteUser.id}}">관심 등록하기</a>
-        <div th:text="'ddddd : ' + ${isInterestedCheck}"></div>
-        <div th:text="'ddffffddd : ' + ${isInterested}"></div>
-
     </div>
 
 
