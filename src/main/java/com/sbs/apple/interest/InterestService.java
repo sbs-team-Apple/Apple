@@ -14,12 +14,13 @@ public class InterestService {
     private final InterestRepository interestRepository;
     private final UserService userService;
     private final UserRepository userRepository;
-    public void addInterest(Integer siteUserId, String interestUser) {
+    public void addInterest(Integer siteUserId, String interestUserName) {
+        SiteUser interestUser =this.userService.getUserbyName(interestUserName);
         SiteUser siteUser = userService.getUser(siteUserId);
-
         Interest interest = new Interest();
         interest.setSiteUser(siteUser);
-        interest.setInterestUser(interestUser);
+        interest.setInterestUserId(interestUser.getId());
+        interest.setInterestUser(interestUserName);
         interest.setInterestedUser(siteUser.getUsername());
         interestRepository.save(interest);
     }
@@ -33,8 +34,8 @@ public class InterestService {
     }
 
     public boolean isInterested(Integer siteUserId, String interestUser) {
-        // Check if the user is interested in the specified user
         List<Interest> interests = interestRepository.findAllBySiteUser_IdAndInterestUser(siteUserId, interestUser);
+        //비어 있으면 관심등록이 안된거고 차있으면 관심등록이 되어 있는 거
         return !interests.isEmpty();
     }
 
@@ -44,5 +45,10 @@ public class InterestService {
 
         return  wishUsers;
     }
-}
+    public List<Interest> getWishedUsers(String Interested_user) {
+        List<Interest> wishUsers;
+        wishUsers = this.interestRepository.findAllByInterestedUser(Interested_user);
 
+        return  wishUsers;
+    }
+}

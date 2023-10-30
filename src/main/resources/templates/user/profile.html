@@ -1,6 +1,7 @@
 <html layout:decorate="~{/common/layout}" lang="en">
 
 <head>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
@@ -15,6 +16,7 @@
     <div>
         <img th:src="@{|${siteUser.filepath}|}" alt="User Image" style="max-width: 300px; max-height: 300px;">
     </div>
+    <div th:text="'닉네임 : ' + ${siteUser.nickname}"></div>
     <div th:text="'나이 : ' + ${siteUser.age}"></div>
     <div th:text="'지역 : ' + ${siteUser.living}"></div>
     <div th:text="'취미 : ' + ${siteUser.hobby}"></div>
@@ -40,70 +42,20 @@
     <div th:text="'선호하는 이성 종교 : ' + ${siteUser.desired_religion}"></div>
     <div th:text="'선호하는 이성 MBTI : ' + ${siteUser.desired_mbti}"></div>
     <a class="btn btn-primary" th:href="@{'/user/report/' + ${siteUser.id}}">신고하기</a>
-
-
-    <div>
-        <a class="btn btn-primary interest-button"
-           th:if="${isInterested}"
-           th:href="@{'/user/add_interest/' + ${siteUser.id}}"
-           data-userid="${siteUser.id}" data-interested="true">관심 해제</a>
-        <a class="btn btn-primary interest-button"
-           th:unless="${isInterested}"
-           th:href="@{'/user/add_interest/' + ${siteUser.id}}"
-           data-userid="${siteUser.id}" data-interested="false">관심 등록하기</a>
-    </div>
-    <script th:inline="javascript">
-        $(document).ready(function() {
-            var interestButton = $('.interest-button');
-            var siteUserId = /*[[${siteUser.id}]]*/ null;
-            var isInterested = /*[[${isInterested}]]*/ false;
-
-            // 함수를 사용하여 버튼 텍스트 업데이트
-            function updateButtonState() {
-                if (isInterested) {
-                    interestButton.text('관심 해제');
-                } else {
-                    interestButton.text('관심 등록하기');
-                }
-            }
-
-            // 버튼 초기 텍스트 설정
-            updateButtonState();
-
-            interestButton.click(function() {
-                var button = $(this);
-                var userId = button.data('userid');
-
-                // AJAX 요청으로 관심 여부 확인
-                $.ajax({
-                    type: 'GET',
-                    url: '/user/add_interest/' + siteUserId,
-                    success: function(response) {
-                        if (response === 'interested') {
-                            isInterested = true;
-                        } else if (response === 'not_interested') {
-                            isInterested = false;
-                        }
-                        // 버튼 상태 업데이트
-                        updateButtonState();
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        // 에러 핸들링
-                        console.log("AJAX 오류: " + textStatus, errorThrown);
-                        alert('오류가 발생했습니다.');
-                    }
-                });
-            });
-        });
-    </script>
-
-
-
+    <a class="btn btn-primary" th:href="@{'/user/add_interest/' + ${siteUser.id}}">
+        <span th:text="${isInterested ? '관심 해제' : '관심 등록'}"></span>
+    </a>
+    <!--    <button id="sendCyberMoneyBtn" class="btn btn-primary" data-toggle="modal" data-target="#cyberMoneyModal" >사이버머니-->
+    <!--        보내기-->
+    <!--    </button>-->
     <button id="sendCyberMoneyBtn" class="btn btn-primary" data-toggle="modal" data-target="#cyberMoneyModal">사이버머니
         보내기
     </button>
     <a class="nav-link" th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
        th:href="@{'/admin/punish/' + ${siteUser.id}}">제재하기</a>
+    <!-- 모달 다이얼로그 -->
+    <!--    <button id="cyberMoneyModal" onclick="my_modal_5.showModal()">Open Modal</button>-->
+
     <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
         <div class="modal-box">
             <h3 class="modal-title">사이버머니 보내기</h3>
@@ -137,7 +89,7 @@
             my_modal_5.showModal();
 
             // 사용자의 username을 HTML에서 가져옵니다.
-           var siteUserUsernameElement = $(".user-username");
+           var siteUserUsernameElement = $(".user-username"); //요 부분
             var recipientUsername = siteUserUsernameElement.text();
 
             $('#recipientUsername').text(recipientUsername);
@@ -161,8 +113,8 @@
                             $('#cyberMoneyModal').modal('hide'); // 성공 시 모달을 닫음
                             alert('사이버 머니 전송이 성공했습니다.');
                             // 사이버 머니 갱신 등의 추가 작업 수행
-                        },
                         error: function(xhr) {
+                        },
                             if (xhr.status === 400) {
                                 alert('사이버 머니 전송에 실패했습니다. 요청이 잘못되었습니다.');
                             } else if (xhr.status === 403) {
@@ -180,6 +132,3 @@
         });
     });
 </script>
-
-
-
