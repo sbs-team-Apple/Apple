@@ -103,30 +103,6 @@
     </main>
 </div>
 
-<script>
-
-    function getNewNotifications() {
-  $.ajax({
-    url: '/getNewNotifications',
-    type: 'GET',
-    success: function(data) {
-      // 서버에서 받은 데이터를 처리하여 페이지에 추가
-    }
-  });
-}
-
-    function addNewNotifications(data) {
-  var ul = $('.notification-box'); // 이 부분은 실제로 페이지의 요소에 맞게 수정해야 합니다.
-
-  data.forEach(function(notification) {
-    var li = $('<li>' + notification.siteUserFrom.nickname + '님이 채팅방에 초대했습니다.</li>');
-    ul.append(li);
-  });
-}
-
-
-
-</script>
 
 
 <script>
@@ -207,3 +183,28 @@
 
 </style>
 </html>
+
+<script>
+
+    <!--    function getNewNotifications() {-->
+    <!--  $.ajax({-->
+    <!--    url: '/getNewNotifications',-->
+    <!--    type: 'GET',-->
+    <!--    success: function(data) {-->
+    <!--      // 서버에서 받은 데이터를 처리하여 페이지에 추가-->
+    <!--    }-->
+    <!--  });-->
+    <!--}-->
+
+    <!--    function addNewNotifications(data) {-->
+    <!--  var ul = $('.notification-box'); // 이 부분은 실제로 페이지의 요소에 맞게 수정해야 합니다.-->
+
+    <!--  data.forEach(function(notification) {-->
+    <!--    var li = $('<li>' + notification.siteUserFrom.nickname + '님이 채팅방에 초대했습니다.</li>');-->
+    <!--    ul.append(li);-->
+    <!--  });-->
+    <!--}-->
+
+
+
+</script>
