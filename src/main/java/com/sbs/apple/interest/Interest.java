@@ -16,10 +16,6 @@ public class Interest {
     private String interestUser;
     private Integer interestUserId;
     private String interestedUser;
-    private String nickname;
-    private String age;
-    private String living;
-    private String About_Me;
     private String filepath;
 
 

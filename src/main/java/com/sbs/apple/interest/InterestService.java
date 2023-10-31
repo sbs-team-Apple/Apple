@@ -19,6 +19,7 @@ public class InterestService {
         SiteUser siteUser = userService.getUser(siteUserId);
         Interest interest = new Interest();
         interest.setSiteUser(siteUser);
+        interest.setFilepath(interestUser.getFilepath());
         interest.setInterestUserId(interestUser.getId());
         interest.setInterestUser(interestUserName);
         interest.setInterestedUser(siteUser.getUsername());
