@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -151,8 +152,18 @@ public class UserController {
         userService.updatePassword(username, newPassword);
         return "redirect:/user/myPage";
     }
+    //탈퇴 페이지
+    @PostMapping("/checkLoginPw")
+    public ResponseEntity<String> checkLoginPw(Principal principal, @RequestParam("userPassword") String userPassword) {
+        SiteUser siteUser = this.userService.getUserbyName(principal.getName());
 
-    // 마이페이지 탈퇴 페이지
+        if (BCrypt.checkpw(userPassword, siteUser.getPassword())) {
+            return ResponseEntity.ok("");
+        } else {
+            return ResponseEntity.badRequest().body("비밀번호가 일치하지 않습니다.");
+        }
+    }
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete")
     public String mypage_exit(Principal principal, Model model) {
@@ -264,9 +275,12 @@ public class UserController {
     //조회하기
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/detail/{id}")
-    public String paymentPage(Model model, @PathVariable("id") Integer id) {
+    public String paymentPage(Principal principal,Model model, @PathVariable("id") Integer id) {
         SiteUser siteUser = this.userService.getUser(id);
         model.addAttribute("siteUser", siteUser);
+        String interest_user = principal.getName();
+        boolean isInterested = interestService.isInterested(id, interest_user);
+        model.addAttribute("isInterested",isInterested);
         return "user/profile";
     }
 
@@ -337,14 +351,20 @@ public class UserController {
     //관심 추가하기
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/add_interest/{id}")
-    public String add_interest(Principal principal, @PathVariable Integer id, Model model) {
+    public String toggleInterest(Principal principal, @PathVariable Integer id, Model model) {
         String interest_user = principal.getName();
         model.addAttribute("userId", id);
-        this.interestService.add_interest(id, interest_user);
+        boolean isInterested = interestService.isInterested(id, interest_user);
+        if (isInterested) {
+            interestService.removeInterest(id, interest_user);
+        } else {
+            interestService.addInterest(id, interest_user);
+        }
         return "redirect:/user/detail/{id}";
     }
 
-    //관심 조회하기
+
+    //내가 관심있는 사람 조회하기
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/wish")
     public String showWish(Principal principal, Model model) {
@@ -353,7 +373,15 @@ public class UserController {
         model.addAttribute("interestList", interestList);
         return "wish";
     }
-
+    //나에게 관심 있는 사람 조회하기
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/wished")
+    public String showWished(Principal principal, Model model) {
+        String username = principal.getName();
+        List<Interest> interestList = interestService.getWishedUsers(username);
+        model.addAttribute("interestList", interestList);
+        return "wished";
+    }
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/exchange")
     public String exchange(Model model, Principal principal) {
@@ -365,3 +393,5 @@ public class UserController {
     }
 
 }
+
+

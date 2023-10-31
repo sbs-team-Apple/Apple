@@ -22,6 +22,7 @@ public class MainController {
     private final UserService userService;
 
     private final DataCreator dataCreator;
+
     @Value("${spring.jpa.hibernate.ddl-auto}")
     private String ddlAutoValue;
 
@@ -74,6 +75,7 @@ public class MainController {
         List<SiteUser> userList = userService.getFourUsers(Gender,living); // 사용자 정보를 가져오는 예시 메서드
         model.addAttribute("userList", userList);
         model.addAttribute("userWarning", userWarning);
+
         if(userWarning== true){
             userService.resetUserWarning(siteUser);
         }

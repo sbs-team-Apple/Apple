@@ -1,21 +1,19 @@
-<!DOCTYPE html>
 <html layout:decorate="~{/common/layout}">
 <head>
     <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>회원탈퇴</title>
 </head>
 <body>
 <div layout:fragment="content" class="container my-3">
 
-    <form th:action="@{/user/delete}" method="post">
+    <form id="deleteForm" th:action="@{/user/delete}" method="post" onsubmit="submitDeleteForm(this); return false;">
 
         <div>
-            <div class="sece-box">
-                <label for="currentPassword"
-                       style="padding: 10px 20px; font-size: 20px; font-weight: 500;">아이디 </label>
-                <input type="text" id="currentPassword" name="currentPassword" disabled
-                       th:value="${siteUser.username}"
-                       style="width: 50%; height: 50px; box-shadow: 0 2px 6px 0 rgba(68, 68, 68, 0.08); border: 1px solid #dadada; border-radius: 5px; padding-left: 15px; background-color: #fff;">
+            <div class="sece-box flex">
+                <label style="padding: 10px 20px; font-size: 20px; font-weight: 500;">아이디 </label>
+                <div th:text="${siteUser.username}" class="mt-3 ml-16 font-bold"></div>
                 <br><br>
             </div>
         </div>
@@ -23,7 +21,7 @@
         <div class="sece-box">
             <label for="password"
                    style="padding: 10px 20px; font-size: 20px; font-weight: 500;">비밀번호 입력 </label>
-            <input type="password" id="password" name="password" required
+            <input type="password" id="password" name="password"
                    style="width: 50%; height: 50px; box-shadow: 0 2px 6px 0 rgba(68, 68, 68, 0.08); border: 1px solid #dadada; border-radius: 5px; padding-left: 15px;">
             <br><br>
         </div>
@@ -37,11 +35,66 @@
                 style="color: black; width: 100%; height: 50px; box-shadow: 0 2px 6px 0 rgba(68, 68, 68, 0.08); border: 1px solid #dadada; border-radius: 10px; background-color: #fff; cursor: pointer; margin-top: 30px;">
             탈퇴하기
         </button>
-        <button type="button" onclick="window.location.href='/user/myPage'"
+
+        <button onclick="window.location.href='/user/myPage'"
                 style="width: 100%; height: 50px; box-shadow: 0 2px 6px 0 rgba(68, 68, 68, 0.08); border: 1px solid #dadada; border-radius: 10px; background-color: #fff; cursor: pointer; margin-top: 30px;">
             취소
         </button>
     </form>
+
+    <!-- 모달 창 -->
+    <dialog id="confirmationModal" class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box">
+            <h3 class="modal-title">회원탈퇴 확인</h3>
+            <div class="modal-action">
+                <button class="btn btn-secondary" data-dismiss="modal">취소</button>
+                <button class="btn btn-primary" id="confirmDeleteButton">확인</button>
+            </div>
+        </div>
+    </dialog>
+
+    <script>
+        let submitDeleteFormDone = false;
+        function submitDeleteForm(form) {
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+
+            if (submitDeleteFormDone) return;
+
+            form.password.value = form.password.value.trim();
+
+            if (form.password.value.length == 0) {
+                form.password.focus();
+                toastWarning('비밀번호를 입력해주세요.');
+                return;
+            }
+
+            $.ajax({
+                url: '/user/checkLoginPw',
+                type: 'POST',
+                data: 'userPassword=' + form.password.value,
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                success: function(response) {
+                    console.log("확인");
+
+                    if (confirm('정말 탈퇴하시겠습니까?')) {
+
+                        form.submit();
+                        submitDeleteFormDone = true;
+
+                        alert("탈퇴가 완료되었습니다.");
+                        return false;
+                    }
+                },
+                error: function(error) {
+                    console.log("error:", error);
+                    toastWarning(error.responseText);
+                }
+            });
+        }
+    </script>
 </div>
 </body>
 </html>
