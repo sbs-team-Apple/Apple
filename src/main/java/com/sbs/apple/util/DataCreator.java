@@ -31,14 +31,14 @@ public class DataCreator {
 
     public void createUser() {
         for(int i = 1; i <= userNum; i++){
-            String username = "유저" + i;
+            String username = "user" + i;
 
             SiteUser user = new SiteUser();
             user.setUserWarning(false);
             user.setUserStop(false);
             user.setUsername(username);
             user.setPassword(passwordEncoder.encode(username));
-            user.setNickname("유저 " + username);
+            user.setNickname(username);
             user.setGender("남");
             user.setAge(random.nextInt(30));
             user.setLiving("서울");
@@ -69,14 +69,14 @@ public class DataCreator {
         }
 
         for(int i = 21; i <= userNum+20; i++){
-            String username = "유저" + i;
+            String username = "user" + i;
 
             SiteUser user = new SiteUser();
             user.setUserStop(false);
             user.setUserWarning(false);
             user.setUsername(username);
             user.setPassword(passwordEncoder.encode(username));
-            user.setNickname("유저 " + username);
+            user.setNickname(username);
             user.setGender("여");
             user.setAge(random.nextInt(30));
             user.setLiving("서울");
