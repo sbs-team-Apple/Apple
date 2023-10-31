@@ -16,6 +16,7 @@
     <div>
         <img th:src="@{|${siteUser.filepath}|}" alt="User Image" style="max-width: 300px; max-height: 300px;">
     </div>
+    <div th:text="'닉네임 : ' + ${siteUser.nickname}"></div>
     <div th:text="'나이 : ' + ${siteUser.age}"></div>
     <div th:text="'지역 : ' + ${siteUser.living}"></div>
     <div th:text="'취미 : ' + ${siteUser.hobby}"></div>
@@ -41,7 +42,9 @@
     <div th:text="'선호하는 이성 종교 : ' + ${siteUser.desired_religion}"></div>
     <div th:text="'선호하는 이성 MBTI : ' + ${siteUser.desired_mbti}"></div>
     <a class="btn btn-primary" th:href="@{'/user/report/' + ${siteUser.id}}">신고하기</a>
-    <a class="btn btn-primary" th:href="@{'/user/add_interest/' + ${siteUser.id}}">☆</a>
+    <a class="btn btn-primary" th:href="@{'/user/add_interest/' + ${siteUser.id}}">
+        <span th:text="${isInterested ? '관심 해제' : '관심 등록'}"></span>
+    </a>
     <!--    <button id="sendCyberMoneyBtn" class="btn btn-primary" data-toggle="modal" data-target="#cyberMoneyModal" >사이버머니-->
     <!--        보내기-->
     <!--    </button>-->
@@ -86,7 +89,7 @@
             my_modal_5.showModal();
 
             // 사용자의 username을 HTML에서 가져옵니다.
-           var siteUserUsernameElement = $(".user-username");
+           var siteUserUsernameElement = $(".user-username"); //요 부분
             var recipientUsername = siteUserUsernameElement.text();
 
             $('#recipientUsername').text(recipientUsername);
@@ -110,8 +113,8 @@
                             $('#cyberMoneyModal').modal('hide'); // 성공 시 모달을 닫음
                             alert('사이버 머니 전송이 성공했습니다.');
                             // 사이버 머니 갱신 등의 추가 작업 수행
-                        },
                         error: function(xhr) {
+                        },
                             if (xhr.status === 400) {
                                 alert('사이버 머니 전송에 실패했습니다. 요청이 잘못되었습니다.');
                             } else if (xhr.status === 403) {
