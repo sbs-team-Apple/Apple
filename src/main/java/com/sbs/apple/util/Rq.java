@@ -1,6 +1,8 @@
 package com.sbs.apple.util;
 
 
+import com.sbs.apple.notification.Notification;
+import com.sbs.apple.notification.NotificationService;
 import com.sbs.apple.user.SiteUser;
 import com.sbs.apple.user.UserService;
 import jakarta.servlet.RequestDispatcher;
@@ -22,7 +24,9 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 @Component
@@ -38,9 +42,10 @@ public class Rq {
     private boolean login;
     private final UserService userService;
     private User user;
+    private final NotificationService notificationService;
 
 
-    public Rq(UserService userService) {
+    public Rq(UserService userService ,NotificationService notificationService) {
         ServletRequestAttributes sessionAttributes = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes()));
         HttpServletRequest request = sessionAttributes.getRequest();
         HttpServletResponse response = sessionAttributes.getResponse();
@@ -48,6 +53,7 @@ public class Rq {
         this.response = response;
         this.session = request.getSession();
         this.userService=userService;
+        this.notificationService=notificationService;
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -145,6 +151,22 @@ public class Rq {
 
 
         return loginUser;
+    }
+
+
+    public List<Notification> getNotification(){
+        if (isLogout()) {
+            return null;
+        }
+        List<Notification> notificationList =new ArrayList<>();
+
+
+            loginUser = userService.getUserbyName(getLoginedMemberUsername());
+
+            notificationList=notificationService.getByUserTo(loginUser);
+
+
+        return notificationList;
     }
 }
 
