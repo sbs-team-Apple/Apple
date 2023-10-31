@@ -7,6 +7,7 @@ import com.sbs.apple.board.Board;
 
 
 import com.sbs.apple.chat.ChatRoom;
+import com.sbs.apple.notification.Notification;
 import com.sbs.apple.report.Report;
 import jakarta.persistence.*;
 import lombok.*;
@@ -84,6 +85,12 @@ public class SiteUser {
 
     @OneToMany(mappedBy = "siteUser" , cascade = CascadeType.REMOVE)
     private List<ChatRoom> chatRoomList;
+
+
+    @OneToMany(mappedBy = "siteUser" , cascade = CascadeType.REMOVE)
+    private List<Notification> notificationList;
+
+
 
 
 
