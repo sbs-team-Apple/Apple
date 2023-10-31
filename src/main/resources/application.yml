@@ -1,7 +1,7 @@
 server:
   port: 8090
 file:
-    upload-dir: C:/uploads/
+  upload-dir: C:/uploads/
 spring:
   profiles:
     include: secret
@@ -19,18 +19,14 @@ spring:
   thymeleaf:
     cache: false
     prefix: file:src/main/resources/templates/
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
   output:
     ansi:
       enabled: always
   datasource:
-    url: jdbc:h2:/db/local
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+    url: jdbc:mariadb://118.67.142.168:3306/the__cupid
+    username: lldj
+    password: lldj123414
+    driver-class-name: org.mariadb.jdbc.Driver
   security:
     user:
       name: user
@@ -82,4 +78,3 @@ custom:
 
   thymeleaf:
     cache: false
-

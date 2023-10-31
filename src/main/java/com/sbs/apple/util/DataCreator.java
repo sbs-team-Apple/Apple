@@ -17,7 +17,8 @@ public class DataCreator {
     PasswordEncoder passwordEncoder;
     @Autowired
     UserRepository userRepository;
-
+//    @Autowired
+//    SiteUser siteUser;
     // 생성되는 유저 개수
     protected Integer userNum = 20;
 
@@ -29,16 +30,15 @@ public class DataCreator {
 
 
     public void createUser() {
-        for(int i = 0; i < userNum; i++){
-            char asciiChar = (char) (i + 65);
-            String username = String.valueOf(asciiChar);
+        for(int i = 1; i <= userNum; i++){
+            String username = "user" + i;
 
             SiteUser user = new SiteUser();
             user.setUserWarning(false);
             user.setUserStop(false);
             user.setUsername(username);
             user.setPassword(passwordEncoder.encode(username));
-            user.setNickname("유저 " + username);
+            user.setNickname(username);
             user.setGender("남");
             user.setAge(random.nextInt(30));
             user.setLiving("서울");
@@ -68,16 +68,15 @@ public class DataCreator {
             userRepository.save(user);
         }
 
-        for(int i = 0; i < userNum; i++){
-            char asciiChar = (char) (i + 97);
-            String username = String.valueOf(asciiChar);
+        for(int i = 21; i <= userNum+20; i++){
+            String username = "user" + i;
 
             SiteUser user = new SiteUser();
             user.setUserStop(false);
             user.setUserWarning(false);
             user.setUsername(username);
             user.setPassword(passwordEncoder.encode(username));
-            user.setNickname("유저 " + username);
+            user.setNickname(username);
             user.setGender("여");
             user.setAge(random.nextInt(30));
             user.setLiving("서울");
