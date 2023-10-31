@@ -73,7 +73,7 @@
                 <a th:href="@{/}" class="btn btn-ghost normal-case text-xl">사과</a>
             </div>
             <div class="navbar-end">
-                <div  class="userIdDiv" th:if="${@rq.login}" th:text="${@rq.user.id}"></div>
+                <div  class="userIdDiv" th:if="${@rq.login}" th:text="${@rq.user.username}"></div>
                 <button class="btn btn-ghost btn-circle btn-bell">
                     <div class="indicator">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
@@ -88,9 +88,12 @@
                 <ul tabindex="0"
                     class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 btn-bell-box" style="display:none">
 
-                    <li >
-                        <div> gdgdgd</div>
-                    </li>
+                    <ul class="notification-box" th:if="${@rq.login}">
+                        <div th:each="notification : ${@rq.notification}">
+                            <div th:text="${notification.siteUserFrom.nickname}+'님이 채팅방에 초대했습니다.'"></div>
+                        </div>
+                        <div>asdasd</div>
+                    </ul>
                 </ul>
             </div>
         </div>
@@ -99,6 +102,33 @@
         <th:block layout:fragment="content"></th:block>
     </main>
 </div>
+
+<script>
+
+    function getNewNotifications() {
+  $.ajax({
+    url: '/getNewNotifications',
+    type: 'GET',
+    success: function(data) {
+      // 서버에서 받은 데이터를 처리하여 페이지에 추가
+    }
+  });
+}
+
+    function addNewNotifications(data) {
+  var ul = $('.notification-box'); // 이 부분은 실제로 페이지의 요소에 맞게 수정해야 합니다.
+
+  data.forEach(function(notification) {
+    var li = $('<li>' + notification.siteUserFrom.nickname + '님이 채팅방에 초대했습니다.</li>');
+    ul.append(li);
+  });
+}
+
+    setInterval(getNewNotifications, 1000); // 5초마다 요청 보내기
+
+
+</script>
+
 
 <script>
     // URL에서 msg 파라미터의 값을 가져오는 함수
@@ -129,10 +159,7 @@
 
 <script>
 
-    function addListItem() {
-       var newItem = $('<li><div>채팅방 초대됨</div></li>'); // Create a new list item
-       bellBox.append(newItem); // Append the new item to the <ul>
-     }
+
 
 
 
@@ -143,7 +170,8 @@
       // 서버로부터 "chat__messageAdded" 라는 명령이 내려오면 아래 함수를 실행
       sse2.addEventListener('invite_chatRoom', e => {
          alert("채팅방에 초대됨");
-         addListItem();
+
+         getNewNotifications()
       });
 
 

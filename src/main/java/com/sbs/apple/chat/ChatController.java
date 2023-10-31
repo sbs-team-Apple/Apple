@@ -1,5 +1,6 @@
 package com.sbs.apple.chat;
 
+import com.sbs.apple.notification.NotificationService;
 import com.sbs.apple.user.SiteUser;
 import com.sbs.apple.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ public class ChatController {
     private final UserService userService;
     private final ChatMessages chatMessages;
     private final ChatRoomService chatRoomService;
+    private final NotificationService notificationService;
 
 
 
@@ -46,7 +49,14 @@ public class ChatController {
 
         String groupKey = "userId_" + userId2;
         System.out.println(groupKey);
+        SseEmitter emitter = new SseEmitter();
+        sseEmitters.add(groupKey, emitter);
         sseEmitters.noti(groupKey, "invite_chatRoom");
+
+        // 채팅방 만들었다는 알림 기록 남기기
+        notificationService.create(user2,user);
+
+
 
 
 
