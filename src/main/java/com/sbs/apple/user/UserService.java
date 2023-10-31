@@ -48,7 +48,7 @@ public class UserService {
             return null;
         }
     }
-
+    //회원가입
     public SiteUser create(boolean userStop,boolean userWarning, MultipartFile file, String username, String password, String nickname, String gender)
             throws Exception {
         SiteUser user = new SiteUser();
@@ -71,7 +71,7 @@ public class UserService {
         this.userRepository.save(user);
         return user;
     }
-
+    //회원가입
     public SiteUser create( String username, String password, String nickname, String gender) {
         SiteUser user = new SiteUser();
         user.setUsername(username);
@@ -81,7 +81,7 @@ public class UserService {
         this.userRepository.save(user);
         return user;
     }
-
+    //프로필 설정
     public SiteUser add_profile(SiteUser user, int age, String living, String hobby, int tall, String bodyType,
                                 String smoking, String drinking, String style, String religion,
                                 String mbti, String school, String job, String About_Me) {
@@ -101,8 +101,7 @@ public class UserService {
         this.userRepository.save(user);
         return user;
     }
-
-
+    //이상형 설정
     public SiteUser add_desired(SiteUser user, String desiredAge, String desiredLiving, String desiredHobby,
                                 String desiredTall, String desiredBodyType, String desiredSmoking,
                                 String desiredDrinking, String desiredStyle, String desiredReligion,
@@ -134,16 +133,11 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
     }
-
+    //회원 탈퇴
     public void delete(SiteUser siteUser) {
-        // 해당 사용자와 연결된 answer 레코드 삭제
-//        List<Answer> userAnswers = answerRepository.findByAuthor(siteUser);
-//        answerRepository.deleteAll(userAnswers);
-
         // 해당 사용자와 연결된 question 레코드 삭제
 //        List<Question> userQuestions = questionRepository.findByAuthor(siteUser);
 //        questionRepository.deleteAll(userQuestions);
-
         // 사용자 삭제
         this.userRepository.delete(siteUser);
     }
@@ -160,7 +154,7 @@ public class UserService {
         List<SiteUser> siteUsers = userRepository.findAll();
         return siteUsers;
     }
-
+    //메인에 지역이 같은 이성 랜덤하게 4명 불러오기
     public List<SiteUser> getFourUsers(String gender,String living) {
         List<SiteUser> randomUsers;
 
@@ -175,7 +169,7 @@ public class UserService {
 
         return randomUsers;
     }
-
+    //관리자 권한 부여
     public void grantAdminAuthority(String username) {
         SiteUser user = userRepository.findByUsername(username).orElse(null);
 
@@ -252,23 +246,27 @@ public class UserService {
         return siteUsers;
 
     }
-
+    //사용자 정지
     public void changeUserStop(SiteUser siteUser) {
         siteUser.setUserStop(true);
         userRepository.save(siteUser);
     }
+    //사용자 정지 해제
     public void resetUserStop(SiteUser siteUser) {
         siteUser.setUserStop(false);
         userRepository.save(siteUser);
     }
+    //사용자 경고
     public void changeUserWarning(SiteUser siteUser) {
         siteUser.setUserWarning(true);
         userRepository.save(siteUser);
     }
+    //사용자 경고 해제
     public void resetUserWarning(SiteUser siteUser) {
         siteUser.setUserWarning(false);
         userRepository.save(siteUser);
     }
+    //사진 수정
 
 
     public List<SiteUser> getDesiredUsers(SiteUser user) {
@@ -278,7 +276,6 @@ public class UserService {
 
 
     }
-
 
     public void photoModify(SiteUser user, MultipartFile file)throws Exception {
         File directory = new File(uploadDir);
@@ -290,7 +287,8 @@ public class UserService {
         user.setFilepath("/gen/"+fileName);
         this.userRepository.save(user);
     }
-    //관심 가져오기
+
+
 
 
 
