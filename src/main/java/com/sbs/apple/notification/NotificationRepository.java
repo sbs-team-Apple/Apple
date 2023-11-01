@@ -13,4 +13,8 @@ public interface NotificationRepository extends JpaRepository<Notification, Inte
 
     @Query("SELECT cr FROM Notification cr WHERE cr.siteUser = :user")
     List<Notification> findByUser(@Param("user") SiteUser user);
+
+
+    @Query("SELECT cr FROM Notification cr WHERE cr.siteUserFrom = :user AND cr.siteUser = :user2")
+    Notification findByUsers(@Param("user") SiteUser user,@Param("user2") SiteUser user2);
 }
