@@ -21,6 +21,7 @@ public class SseController {
     @GetMapping(value = "/connect/{groupKey}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public ResponseEntity<SseEmitter> connect(@PathVariable String groupKey) {
         System.out.println("sse 컨트롤러에서 커넥트 실행됨");
+        System.out.println(groupKey);
         SseEmitter emitter = new SseEmitter();
         sseEmitters.add(groupKey, emitter);
 

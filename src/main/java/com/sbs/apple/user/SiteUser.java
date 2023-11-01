@@ -1,12 +1,10 @@
 package com.sbs.apple.user;
 
 
-
-import com.sbs.apple.interest.Interest;
 import com.sbs.apple.board.Board;
-
-
 import com.sbs.apple.chat.ChatRoom;
+import com.sbs.apple.notification.Notification;
+import com.sbs.apple.interest.Interest;
 import com.sbs.apple.report.Report;
 import jakarta.persistence.*;
 import lombok.*;
@@ -52,7 +50,8 @@ public class SiteUser {
 
     private String living;//사는 지역
 
-    private String hobby;//취미 여려개 추가할 수 있게 변경하기
+    private List<String> hobbyList;
+    //private String[] hobby; //취미 여려개 추가할 수 있게 변경하기
 
     private int tall; //키
 
@@ -62,7 +61,7 @@ public class SiteUser {
     private String smoking; //흡연 유무
 
     private String drinking; //음주 유무
-    private String style; //스타일(성격)
+    private List<String> styleList;//스타일 (성격)
     private String religion; //종교
     private String mbti; //MBTI
     private String school; //학력
@@ -70,13 +69,13 @@ public class SiteUser {
     private String About_Me; //자기소개
 
     private String desired_age; //원하는 나이 어떻게 구현할지 다시 고민
-    private String desired_living; //원하는 지역
     private String desired_hobby; // 여러개 고를 수 있게 하기
+    private String desired_living; //원하는 지역
     private String desired_tall; // 원하는 키 어떻게 범위 설정할지 다시 고민
     private String desired_body_type; //원하는 체형
     private String desired_smoking; // 원하는 흡연 유무
     private String desired_drinking; // 원하는 음주 유무
-    private String desired_style; //원하는 스타일
+    private List<String>  desired_styleList;//원하는 스타일 리스트
     private String desired_religion; //원하는 종교
     private String desired_mbti; //원하는 MBTI
 
@@ -84,6 +83,12 @@ public class SiteUser {
 
     @OneToMany(mappedBy = "siteUser" , cascade = CascadeType.REMOVE)
     private List<ChatRoom> chatRoomList;
+
+
+    @OneToMany(mappedBy = "siteUser" , cascade = CascadeType.REMOVE)
+    private List<Notification> notificationList;
+
+
 
 
 

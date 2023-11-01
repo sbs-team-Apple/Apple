@@ -52,7 +52,7 @@ public class UserService {
         }
     }
 
-    public SiteUser createUser(String username, String gender) {
+    public SiteUser createUser(String username, String gender, List<String> hobbyList, List<String> styleList, List<String> desiredStyleList) {
         SiteUser user = new SiteUser();
         user.setUserWarning(false);
         user.setUserStop(false);
@@ -62,12 +62,12 @@ public class UserService {
         user.setGender(gender);
         user.setAge(random.nextInt(30));
         user.setLiving("서울");
-        user.setHobby("골프");
+        user.setHobbyList(hobbyList);
         user.setTall(random.nextInt(170));
         user.setBody_type("평범한");
         user.setSmoking("비흡연");
         user.setDrinking("가끔");
-        user.setStyle("슬림한");
+        user.setStyleList(styleList);
         user.setReligion("무교");
         user.setMbti("INFP");
         user.setSchool("4년제 졸업");
@@ -80,7 +80,7 @@ public class UserService {
         user.setDesired_body_type("평범한");
         user.setDesired_smoking("비흡연");
         user.setDesired_drinking("가끔");
-        user.setDesired_style("슬림한");
+        user.setDesired_styleList(desiredStyleList);
         user.setDesired_religion("무교");
         user.setDesired_mbti("INFP");
         user.setDesired_school("4년제 졸업");
@@ -90,7 +90,7 @@ public class UserService {
     }
 
     //회원가입
-    public SiteUser create(boolean userStop,boolean userWarning, MultipartFile file, String username, String password, String nickname, String gender)
+    public SiteUser create(boolean userStop, boolean userWarning, MultipartFile file, String username, String password, String nickname, String gender)
             throws Exception {
         SiteUser user = new SiteUser();
         File directory = new File(uploadDir);
@@ -98,11 +98,11 @@ public class UserService {
             directory.mkdirs(); // 디렉토리가 없으면 생성
         }
         UUID uuid = UUID.randomUUID();
-        String fileName =uuid + "_" + file.getOriginalFilename();
-        File saveFile =new File(directory,fileName);
+        String fileName = uuid + "_" + file.getOriginalFilename();
+        File saveFile = new File(directory, fileName);
         file.transferTo(saveFile);
         user.setFilename(fileName);
-        user.setFilepath("/gen/"+fileName);
+        user.setFilepath("/gen/" + fileName);
         user.setUserStop(userStop);
         user.setUserWarning(userWarning);
         user.setUsername(username);
@@ -114,7 +114,7 @@ public class UserService {
     }
 
     //회원가입
-    public SiteUser create( String username, String password, String nickname, String gender) {
+    public SiteUser create(String username, String password, String nickname, String gender) {
         SiteUser user = new SiteUser();
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
@@ -123,18 +123,19 @@ public class UserService {
         this.userRepository.save(user);
         return user;
     }
+
     //프로필 설정
-    public SiteUser add_profile(SiteUser user, int age, String living, String hobby, int tall, String bodyType,
-                                String smoking, String drinking, String style, String religion,
+    public SiteUser add_profile(SiteUser user, int age, String living, List<String> hobbyList, int tall, String bodyType,
+                                String smoking, String drinking, List<String> styleList, String religion,
                                 String mbti, String school, String job, String About_Me) {
         user.setAge(age);
         user.setLiving(living);
-        user.setHobby(hobby);
+        user.setHobbyList(hobbyList);
         user.setTall(tall);
         user.setBody_type(bodyType);
         user.setSmoking(smoking);
         user.setDrinking(drinking);
-        user.setStyle(style);
+        user.setStyleList(styleList);
         user.setReligion(religion);
         user.setMbti(mbti);
         user.setSchool(school);
@@ -143,19 +144,19 @@ public class UserService {
         this.userRepository.save(user);
         return user;
     }
+
     //이상형 설정
-    public SiteUser add_desired(SiteUser user, String desiredAge, String desiredLiving, String desiredHobby,
+    public SiteUser add_desired(SiteUser user, String desiredAge, String desiredLiving,
                                 String desiredTall, String desiredBodyType, String desiredSmoking,
-                                String desiredDrinking, String desiredStyle, String desiredReligion,
+                                String desiredDrinking, List<String> desiredStyleList, String desiredReligion,
                                 String desiredMbti, String desiredSchool, String desiredJob) {
         user.setDesired_age(desiredAge);
         user.setDesired_living(desiredLiving);
-        user.setDesired_hobby(desiredHobby);
         user.setDesired_tall(desiredTall);
         user.setDesired_body_type(desiredBodyType);
         user.setDesired_smoking(desiredSmoking);
         user.setDesired_drinking(desiredDrinking);
-        user.setDesired_style(desiredStyle);
+        user.setDesired_styleList(desiredStyleList);
         user.setDesired_religion(desiredReligion);
         user.setDesired_mbti(desiredMbti);
         user.setDesired_school(desiredSchool);
@@ -175,6 +176,7 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
     }
+
     //회원 탈퇴
     public void delete(SiteUser siteUser) {
         // 해당 사용자와 연결된 question 레코드 삭제
@@ -196,14 +198,15 @@ public class UserService {
         List<SiteUser> siteUsers = userRepository.findAll();
         return siteUsers;
     }
+
     //메인에 지역이 같은 이성 랜덤하게 4명 불러오기
-    public List<SiteUser> getFourUsers(String gender,String living) {
+    public List<SiteUser> getFourUsers(String gender, String living) {
         List<SiteUser> randomUsers;
 
         if ("남".equals(gender)) {
-            randomUsers = this.userRepository.findRandomUsersByGenderAndLiving("여",living,4);
+            randomUsers = this.userRepository.findRandomUsersByGenderAndLiving("여", living, 4);
         } else if ("여".equals(gender)) {
-            randomUsers = this.userRepository.findRandomUsersByGenderAndLiving("남",living,4);
+            randomUsers = this.userRepository.findRandomUsersByGenderAndLiving("남", living, 4);
         } else {
             // Handle invalid gender or other cases
             randomUsers = Collections.emptyList();
@@ -211,6 +214,7 @@ public class UserService {
 
         return randomUsers;
     }
+
     //관리자 권한 부여
     public void grantAdminAuthority(String username) {
         SiteUser user = userRepository.findByUsername(username).orElse(null);
@@ -222,12 +226,13 @@ public class UserService {
             userRepository.save(user);
         }
     }
+
     //관리자 권한 삭제
     public void deleteAdminAuthority(String username) {
         SiteUser user = userRepository.findByUsername(username).orElse(null);
 
         if (user != null) {
-            // 기존 권한 수정
+//             기존 권한 수정
             user.getAuthorities().clear(); // 모든 권한 제거
             userRepository.save(user);
         }
@@ -249,7 +254,6 @@ public class UserService {
     //로그인한 사용자와 채팅방이 없는 유저만 불러오는 함수
     public List<SiteUser> getUsersNotRoom(SiteUser loginUser, List<SiteUser> siteUsers) {
         List<ChatRoom> AllRooms = chatRoomService.getAll();
-
 
 
         //이미 채팅방이 있는 유저들 id 저장소
@@ -288,57 +292,51 @@ public class UserService {
         return siteUsers;
 
     }
+
     //사용자 정지
     public void changeUserStop(SiteUser siteUser) {
         siteUser.setUserStop(true);
         userRepository.save(siteUser);
     }
+
     //사용자 정지 해제
     public void resetUserStop(SiteUser siteUser) {
         siteUser.setUserStop(false);
         userRepository.save(siteUser);
     }
+
     //사용자 경고
     public void changeUserWarning(SiteUser siteUser) {
         siteUser.setUserWarning(true);
         userRepository.save(siteUser);
     }
+
     //사용자 경고 해제
     public void resetUserWarning(SiteUser siteUser) {
         siteUser.setUserWarning(false);
         userRepository.save(siteUser);
     }
-    //사진 수정
-
 
     public List<SiteUser> getDesiredUsers(SiteUser user) {
-
-           return userRepository.findByDesired(user.getGender(),user.getDesired_living(),user.getDesired_religion());
-
-
-
+        return userRepository.findByDesired(user.getGender(), user.getDesired_living(), user.getDesired_religion());
     }
-
-    public void photoModify(SiteUser user, MultipartFile file)throws Exception {
+    //사진 수정
+    public void photoModify(SiteUser user, MultipartFile file) throws Exception {
         File directory = new File(uploadDir);
         UUID uuid = UUID.randomUUID();
-        String fileName =uuid + "_" + file.getOriginalFilename();
-        File saveFile =new File(directory,fileName);
+        String fileName = uuid + "_" + file.getOriginalFilename();
+        File saveFile = new File(directory, fileName);
         file.transferTo(saveFile);
         user.setFilename(fileName);
-        user.setFilepath("/gen/"+fileName);
+        user.setFilepath("/gen/" + fileName);
         this.userRepository.save(user);
     }
-
-
-
-
 
     public List<Interest> getWishUsers(String username) {
         List<Interest> wishUsers;
 
         wishUsers = this.interestRepository.findAllByInterestUser(username);
 
-        return  wishUsers;
+        return wishUsers;
     }
 }

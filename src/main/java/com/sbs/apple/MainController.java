@@ -2,6 +2,8 @@ package com.sbs.apple;
 
 import com.sbs.apple.chat.ChatRoom;
 import com.sbs.apple.chat.ChatRoomService;
+import com.sbs.apple.notification.Notification;
+import com.sbs.apple.notification.NotificationService;
 import com.sbs.apple.user.SiteUser;
 import com.sbs.apple.user.UserService;
 import com.sbs.apple.util.DataCreator;
@@ -21,6 +23,7 @@ public class MainController {
     private final ChatRoomService chatRoomService;
     private final UserService userService;
     private final DataCreator dataCreator;
+    private final NotificationService notificationService;
 
 
     @Value("${spring.jpa.hibernate.ddl-auto}")
@@ -79,6 +82,9 @@ public class MainController {
             userService.resetUserWarning(siteUser);
         }
 
+
+        List<Notification> notificationsList = notificationService.getByUserTo(loginUser);
+        System.out.println("사이즈 크기는"+notificationsList.size());
         return "main";
     }
 }

@@ -54,7 +54,7 @@ public class QSiteUser extends EntityPathBase<SiteUser> {
 
     public final StringPath desired_smoking = createString("desired_smoking");
 
-    public final StringPath desired_style = createString("desired_style");
+    public final ListPath<String, StringPath> desired_styleList = this.<String, StringPath>createList("desired_styleList", String.class, StringPath.class, PathInits.DIRECT2);
 
     public final StringPath desired_tall = createString("desired_tall");
 
@@ -66,7 +66,7 @@ public class QSiteUser extends EntityPathBase<SiteUser> {
 
     public final StringPath gender = createString("gender");
 
-    public final StringPath hobby = createString("hobby");
+    public final ListPath<String, StringPath> hobbyList = this.<String, StringPath>createList("hobbyList", String.class, StringPath.class, PathInits.DIRECT2);
 
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
@@ -80,6 +80,8 @@ public class QSiteUser extends EntityPathBase<SiteUser> {
 
     public final StringPath nickname = createString("nickname");
 
+    public final ListPath<com.sbs.apple.notification.Notification, com.sbs.apple.notification.QNotification> notificationList = this.<com.sbs.apple.notification.Notification, com.sbs.apple.notification.QNotification>createList("notificationList", com.sbs.apple.notification.Notification.class, com.sbs.apple.notification.QNotification.class, PathInits.DIRECT2);
+
     public final StringPath password = createString("password");
 
     public final NumberPath<Integer> receivedCyberMoney = createNumber("receivedCyberMoney", Integer.class);
@@ -92,7 +94,7 @@ public class QSiteUser extends EntityPathBase<SiteUser> {
 
     public final StringPath smoking = createString("smoking");
 
-    public final StringPath style = createString("style");
+    public final ListPath<String, StringPath> styleList = this.<String, StringPath>createList("styleList", String.class, StringPath.class, PathInits.DIRECT2);
 
     public final NumberPath<Integer> tall = createNumber("tall", Integer.class);
 
