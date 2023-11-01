@@ -68,26 +68,23 @@
                     <option value="상관없음" selected>상관없음</option>
                     <option value="서울">서울</option>
                     <option value="인천">인천</option>
-                    <option value="경기">경기</option>
+                    <option value="경기도">경기도</option>
                     <option value="대전">대전</option>
+                    <option value="세종시">세종시</option>
                     <option value="대구">대구</option>
                     <option value="부산">부산</option>
                     <option value="강원">강원</option>
                     <option value="광주">광주</option>
                     <option value="울산">울산</option>
-                    <option value="경남">경남</option>
-                    <option value="경북">경북</option>
-                    <option value="전남">전남</option>
-                    <option value="전북">전북</option>
-                    <option value="제주">제주</option>
+                    <option value="강원도">강원도</option>
+                    <option value="충청남도">충청남도</option>
+                    <option value="충청북도">충청북도</option>
+                    <option value="경상남도">경상남도</option>
+                    <option value="경상북도">경상북도</option>
+                    <option value="전라남도">전라남도</option>
+                    <option value="전라북도">전라북도</option>
+                    <option value="제주도">제주도</option>
                 </select>
-            </div>
-
-            <div class="form-control">
-                <label class="label">
-                    <span class="label-text">이상형 취미</span>
-                </label>
-                <input type="text" name="desired_hobby" placeholder="이상형 취미" class="input input-bordered" maxlength="255">
             </div>
 
             <div class="form-control">
@@ -139,18 +136,54 @@
                 </label>
                 <select name="desired_drinking" class="input input-bordered">
                     <option value="상관없음" selected>상관없음</option>
-                    <option value="안마심">안마심</option>
+                    <option value="전혀 안함">전혀 안함</option>
                     <option value="가끔">가끔</option>
                     <option value="자주">자주</option>
                     <option value="매일">매일</option>
                 </select>
             </div>
-
             <div class="form-control">
                 <label class="label">
                     <span class="label-text">이상형 스타일</span>
                 </label>
-                <input type="text" name="desired_style" placeholder="이상형 스타일" class="input input-bordered" maxlength="255">
+                <div>
+                    <input type="checkbox" name="desired_styleList" value="예쁘고 잘생긴">예쁘고 잘생긴
+                    <input type="checkbox" name="desired_styleList" value="옷 잘 입는">옷 잘 입는
+                    <input type="checkbox" name="desired_styleList" value="듬직한">듬직한
+                    <input type="checkbox" name="desired_styleList" value="아담한">아담한
+                    <input type="checkbox" name="desired_styleList" value="연상">연상
+                    <input type="checkbox" name="desired_styleList" value="연하">연하
+                    <input type="checkbox" name="desired_styleList" value="동갑">동갑
+                    <input type="checkbox" name="desired_styleList" value="같은 동네">같은 동네
+                    <input type="checkbox" name="desired_styleList" value="취미가 같은">취미가 같은
+                    <input type="checkbox" name="desired_styleList" value="말이 통하는">말이 통하는
+                    <input type="checkbox" name="desired_styleList" value="잘 웃어주는">잘 웃어주는
+                    <input type="checkbox" name="desired_styleList" value="욕 안하는">욕 안하는
+                    <input type="checkbox" name="desired_styleList" value="목소리 좋은">목소리 좋은
+                    <input type="checkbox" name="desired_styleList" value="먼저 말 걸어주는">먼저 말 걸어주는
+                    <input type="checkbox" name="desired_styleList" value="애교가 넘치는">애교가 넘치는
+                    <input type="checkbox" name="desired_styleList" value="조용한">조용한
+                    <input type="checkbox" name="desired_styleList" value="활발한">활발한
+                    <input type="checkbox" name="desired_styleList" value="어른스러운">어른스러운
+                    <input type="checkbox" name="desired_styleList" value="열정적인">열정적인
+                    <input type="checkbox" name="desired_styleList" value="침착한">침착한
+                    <input type="checkbox" name="desired_styleList" value="예의 바른">예의 바른
+                    <input type="checkbox" name="desired_styleList" value="또라이 같은">또라이 같은
+                    <input type="checkbox" name="desired_styleList" value="유머러스한">유머러스한
+                    <input type="checkbox" name="desired_styleList" value="진지한">진지한
+                    <input type="checkbox" name="desired_styleList" value="자신감 넘치는">자신감 넘치는
+                    <input type="checkbox" name="desired_styleList" value="허세 없는">허세 없는
+                    <input type="checkbox" name="desired_styleList" value="엉뚱한">엉뚱한
+                    <input type="checkbox" name="desired_styleList" value="지적인">지적인
+                    <input type="checkbox" name="desired_styleList" value="성실한">성실한
+                    <input type="checkbox" name="desired_styleList" value="자유로운">자유로운
+                    <input type="checkbox" name="desired_styleList" value="감성적인">감성적인
+                    <input type="checkbox" name="desired_styleList" value="꼼꼼한">꼼꼼한
+                    <input type="checkbox" name="desired_styleList" value="논리적인">논리적인
+                    <input type="checkbox" name="desired_styleList" value="즉흥적인">즉흥적인
+                    <input type="checkbox" name="desired_styleList" value="소심한">소심한
+                    <input type="checkbox" name="desired_styleList" value="쿨한">쿨한
+                </div>
             </div>
 
             <div class="form-control">
@@ -163,7 +196,9 @@
                     <option value="불교">불교</option>
                     <option value="천주교">천주교</option>
                     <option value="기독교">기독교</option>
+                    <option value="원불교">원불교</option>
                     <option value="이슬람교">이슬람교</option>
+                    <option value="기타">기타</option>
                 </select>
             </div>
 
@@ -194,17 +229,16 @@
 
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text">학력</span>
+                    <span class="label-text">최종 졸업 또는 재학 중인 학교</span>
                 </label>
                 <select name="desired_school" class="input input-bordered">
                     <option value="상관없음" selected>상관없음</option>
                     <option value="고교 졸업 이하">고교 졸업 이하</option>
                     <option value="고등학교 졸업">고등학교 졸업</option>
-                    <option value="대학 졸업(2,3년제)">대학 졸업(2,3년제)</option>
-                    <option value="대학교 졸업(4년제)">대학교 졸업(4년제)</option>
-                    <option value="대학원 석사 졸업">대학원 석사 졸업</option>
-                    <option value="대학원 박사 졸업">대학원 박사 졸업</option>
-                    <option value="박사 졸업 이상">박사 졸업 이상</option>
+                    <option value="전문 대학교">전문 대학교</option>
+                    <option value="대학교">대학교</option>
+                    <option value="외국어대학교">외국어대학교</option>
+                    <option value="대학원">대학원</option>
                 </select>
             </div>
 
@@ -214,11 +248,22 @@
                 </label>
                 <select name="desired_job" class="input input-bordered">
                     <option value="상관없음" selected>상관없음</option>
+                    <option value="선택안함">선택안함</option>
                     <option value="공무원">공무원</option>
                     <option value="학생">학생</option>
                     <option value="군인">군인</option>
-                    <option value="무직">무직</option>
-                    <option value="준비중">준비중</option>
+                    <option value="아르바이트">아르바이트</option>
+                    <option value="프리랜서">프리랜스</option>
+                    <option value="회사원">회사원</option>
+                    <option value="자영업">자영업</option>
+                    <option value="전문직">전문직</option>
+                    <option value="의료직">의료직</option>
+                    <option value="교육직">교육직</option>
+                    <option value="금융직">금융직</option>
+                    <option value="연구,기술직">연구,기술직</option>
+                    <option value="사업가">사업가</option>
+                    <option value="취업준비중">취업준비중</option>
+                    <option value="기타">기타</option>
                 </select>
             </div>
 
