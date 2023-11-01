@@ -89,10 +89,10 @@
                     class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 btn-bell-box" style="display:none">
 
                     <ul class="notification-box" th:if="${@rq.login}">
-<!--                        <div th:each="notification : ${@rq.notification}">-->
-<!--                            <div th:text="${notification.siteUserFrom.nickname}+'님이 채팅방에 초대했습니다.'"></div>-->
-<!--                        </div>-->
-<!--                        <div>asdasd</div>-->
+                        <div th:each="notification : ${@rq.notification}">
+                            <div th:text="${notification.siteUserFrom.nickname}+'님이 채팅방에 초대했습니다.'"></div>
+                        </div>
+
                     </ul>
                 </ul>
             </div>

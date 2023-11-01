@@ -19,6 +19,8 @@ public class NotificationController {
     private final NotificationService notificationService;
     private  final UserService userService;
 
+
+    //아작스에서 쓰이는 함수
     @GetMapping("/getNewNotifications")
     @ResponseBody
     public List<NotificationDTO> getNewNotifications(Principal principal, Model model) {

@@ -1,5 +1,6 @@
 package com.sbs.apple.chat;
 
+import com.sbs.apple.notification.Notification;
 import com.sbs.apple.notification.NotificationService;
 import com.sbs.apple.user.SiteUser;
 import com.sbs.apple.user.UserService;
@@ -54,7 +55,7 @@ public class ChatController {
         sseEmitters.noti(groupKey, "invite_chatRoom");
 
         // 채팅방 만들었다는 알림 기록 남기기
-        notificationService.create(user2,user);
+        notificationService.create(user2,user,"chatRoom");
 
 
 
@@ -162,6 +163,19 @@ public class ChatController {
         ChatRoom room=chatRoomService.findById(roomId);
 
         chatRoomService.delete(room);
+
+
+        //그 채팅룸의 유저 정보로 알람 기록을 찾아서 나갈때 그 알람 기록도 삭제해주기
+        Notification notification=notificationService.findByUsers(room.getSiteUser(),room.getSiteUser2());
+
+        if(notification !=null){
+                notificationService.delete(notification);
+        }
+
+
+
+
+
         return "redirect:/chat/allRoom";
 
 
