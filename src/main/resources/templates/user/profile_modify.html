@@ -23,18 +23,22 @@
             <select name="living" class="input input-bordered" th:field="*{living}">
                 <option value="서울">서울</option>
                 <option value="인천">인천</option>
-                <option value="경기">경기</option>
+                <option value="경기도">경기도</option>
                 <option value="대전">대전</option>
+                <option value="세종시">세종시</option>
                 <option value="대구">대구</option>
                 <option value="부산">부산</option>
                 <option value="강원">강원</option>
                 <option value="광주">광주</option>
                 <option value="울산">울산</option>
-                <option value="경남">경남</option>
-                <option value="경북">경북</option>
-                <option value="전남">전남</option>
-                <option value="전북">전북</option>
-                <option value="제주">제주</option>
+                <option value="강원도">강원도</option>
+                <option value="충청남도">충청남도</option>
+                <option value="충청북도">충청북도</option>
+                <option value="경상남도">경상남도</option>
+                <option value="경상북도">경상북도</option>
+                <option value="전라남도">전라남도</option>
+                <option value="전라북도">전라북도</option>
+                <option value="제주도">제주도</option>
             </select>
         </div>
 
@@ -42,16 +46,105 @@
             <label class="label">
                 <span class="label-text">취미</span>
             </label>
-            <input type="text" name="hobby" placeholder="취미" class="input input-bordered"
-                   maxlength="255" th:field="*{hobby}">
+            <div>
+                <input type="checkbox" name="hobbyList" value="헬스">헬스
+                <input type="checkbox" name="hobbyList" value="배드민턴">배드민턴
+                <input type="checkbox" name="hobbyList" value="골프">골프
+                <input type="checkbox" name="hobbyList" value="산책">산책
+                <input type="checkbox" name="hobbyList" value="필라테스/요가">필라테스/요가
+                <input type="checkbox" name="hobbyList" value="홈트">홈트
+                <input type="checkbox" name="hobbyList" value="클라이밍">클라이밍
+                <input type="checkbox" name="hobbyList" value="자전거 라이딩">자전거 라이딩
+                <input type="checkbox" name="hobbyList" value="볼링">볼링
+                <input type="checkbox" name="hobbyList" value="당구">당구
+                <input type="checkbox" name="hobbyList" value="댄스">댄스
+                <input type="checkbox" name="hobbyList" value="등산">등산
+                <input type="checkbox" name="hobbyList" value="스포츠 시청">스포츠 시청
+                <input type="checkbox" name="hobbyList" value="영화">영화
+                <input type="checkbox" name="hobbyList" value="넷플릭스">넷플릭스
+                <input type="checkbox" name="hobbyList" value="드라마 정주행">드라마 정주행
+                <input type="checkbox" name="hobbyList" value="TV 예능">TV 예능
+                <input type="checkbox" name="hobbyList" value="독서">독서
+                <input type="checkbox" name="hobbyList" value="카페">카페
+                <input type="checkbox" name="hobbyList" value="코인노래방">코인노래방
+                <input type="checkbox" name="hobbyList" value="음주">음주
+                <input type="checkbox" name="hobbyList" value="쇼핑">쇼핑
+                <input type="checkbox" name="hobbyList" value="공부">공부
+                <input type="checkbox" name="hobbyList" value="원데이클래스">원데이클래스
+                <input type="checkbox" name="hobbyList" value="맛집 탐방">맛집 탐방
+                <input type="checkbox" name="hobbyList" value="여행">여행
+                <input type="checkbox" name="hobbyList" value="요리">요리
+                <input type="checkbox" name="hobbyList" value="그림 그리기">그림 그리기
+                <input type="checkbox" name="hobbyList" value="음악 듣기">음악 듣기
+                <input type="checkbox" name="hobbyList" value="악기 연주">악기 연주
+                <input type="checkbox" name="hobbyList" value="사진 찍기">사진 찍기
+                <input type="checkbox" name="hobbyList" value="웹툰">웹툰
+                <input type="checkbox" name="hobbyList" value="게임">게임
+                <input type="checkbox" name="hobbyList" value="재테크">재테크
+                <input type="checkbox" name="hobbyList" value="전시회 관람">전시회 관람
+                <input type="checkbox" name="hobbyList" value="봉사활동">봉사활동
+                <input type="checkbox" name="hobbyList" value="환경 보호 활동">환경 보호 활동
+                <input type="checkbox" name="hobbyList" value="드라이브">드라이브
+            </div>
         </div>
         <div class="form-control">
             <label class="label">
                 <span class="label-text">키</span>
             </label>
-            <input type="text" name="tall" placeholder="키" class="input input-bordered" maxlength="255"
-                   pattern="[0-9]*" th:field="*{tall}">
-            <span>(숫자만 입력해주세요.)</span>
+            <select name="tall" class="input input-bordered" th:field="*{tall}">
+                <option value="140">140</option><option value="141">141</option><option value="142">142</option><option value="143">143</option><option value="144">144</option>
+                <option value="145">145</option><option value="146">146</option><option value="147">147</option><option value="148">148</option><option value="149">149</option><option value="150">150</option>
+                <option value="151">151</option>
+                <option value="152">152</option>
+                <option value="153">153</option>
+                <option value="154">154</option>
+                <option value="155">155</option>
+                <option value="156">156</option>
+                <option value="157">157</option>
+                <option value="158">158</option>
+                <option value="159">159</option>
+                <option value="160">160</option>
+                <option value="161">161</option>
+                <option value="162">162</option>
+                <option value="163">163</option>
+                <option value="164">164</option>
+                <option value="165">165</option>
+                <option value="166">166</option>
+                <option value="167">167</option>
+                <option value="168">168</option>
+                <option value="169">169</option>
+                <option value="170">170</option>
+                <option value="171">171</option>
+                <option value="172">172</option>
+                <option value="173">173</option>
+                <option value="174">174</option>
+                <option value="175">175</option>
+                <option value="176">176</option>
+                <option value="177">177</option>
+                <option value="178">178</option>
+                <option value="179">179</option>
+                <option value="180">180</option>
+                <option value="181">181</option>
+                <option value="182">182</option>
+                <option value="183">183</option>
+                <option value="184">184</option>
+                <option value="185">185</option>
+                <option value="186">186</option>
+                <option value="187">187</option>
+                <option value="188">188</option>
+                <option value="189">189</option>
+                <option value="190">190</option>
+                <option value="191">191</option>
+                <option value="192">192</option>
+                <option value="193">193</option>
+                <option value="194">194</option>
+                <option value="195">195</option>
+                <option value="196">196</option>
+                <option value="197">197</option>
+                <option value="198">198</option>
+                <option value="199">199</option>
+                <option value="200">200</option>
+            </select>
         </div>
         <div class="form-control">
             <label class="label">
@@ -66,12 +159,15 @@
         </div>
         <div class="form-control">
             <label class="label">
-                <span class="label-text">흡연</span>
+                <span class="label-text">흡연 스타일</span>
             </label>
             <select name="smoking" class="input input-bordered" th:field="*{smoking}">
                 <option value="비흡연">비흡연</option>
+                <option value="술 마실 때만">술 마실 때만</option>
                 <option value="가끔">가끔</option>
                 <option value="자주">자주</option>
+                <option value="매일">매일</option>
+
             </select>
         </div>
         <div class="form-control">
@@ -79,17 +175,42 @@
                 <span class="label-text">음주</span>
             </label>
             <select name="drinking" class="input input-bordered" th:field="*{drinking}">
-                <option value="안마심">안마심</option>
+                <option value="전혀 안함">전혀 안함</option>
                 <option value="가끔">가끔</option>
                 <option value="자주">자주</option>
+                <option value="매일">매일</option>
             </select>
         </div>
         <div class="form-control">
             <label class="label">
                 <span class="label-text">스타일</span>
             </label>
-            <input type="text" name="style" placeholder="스타일" class="input input-bordered" maxlength="255" th:field="*{style}">
+            <div>
+                <input type="checkbox" name="styleList" value="활발한">활발한
+                <input type="checkbox" name="styleList" value="조용한">조용한
+                <input type="checkbox" name="styleList" value="애교가 넘치는">애교가 넘치는
+                <input type="checkbox" name="styleList" value="어른스러운">어른스러운
+                <input type="checkbox" name="styleList" value="열정적인">열정적인
+                <input type="checkbox" name="styleList" value="침착한">침착한
+                <input type="checkbox" name="styleList" value="예의 바른">예의 바른
+                <input type="checkbox" name="styleList" value="또라이 같은">또라이 같은
+                <input type="checkbox" name="styleList" value="유머러스한">유머러스한
+                <input type="checkbox" name="styleList" value="진지한">진지한
+                <input type="checkbox" name="styleList" value="자신감 넘치는">자신감 넘치는
+                <input type="checkbox" name="styleList" value="허세 없는">허세 없는
+                <input type="checkbox" name="styleList" value="엉뚱한">엉뚱한
+                <input type="checkbox" name="styleList" value="지적인">지적인
+                <input type="checkbox" name="styleList" value="성실한">성실한
+                <input type="checkbox" name="styleList" value="자유로운">자유로운
+                <input type="checkbox" name="styleList" value="감성적인">감성적인
+                <input type="checkbox" name="styleList" value="꼼꼼한">꼼꼼한
+                <input type="checkbox" name="styleList" value="논리적인">논리적인
+                <input type="checkbox" name="styleList" value="즉흥적인">즉흥적인
+                <input type="checkbox" name="styleList" value="소심한">소심한
+                <input type="checkbox" name="styleList" value="쿨한">쿨한
+            </div>
         </div>
+
         <div class="form-control">
             <label class="label">
                 <span class="label-text">종교</span>
@@ -99,7 +220,9 @@
                 <option value="불교">불교</option>
                 <option value="천주교">천주교</option>
                 <option value="기독교">기독교</option>
+                <option value="원불교">원불교</option>
                 <option value="이슬람교">이슬람교</option>
+                <option value="기타">기타</option>
             </select>
         </div>
         <div class="form-control">
@@ -128,17 +251,16 @@
         </div>
         <div class="form-control">
             <label class="label">
-                <span class="label-text">학력</span>
+                <span class="label-text">최종 졸업 또는 재학 중인 학교</span>
             </label>
             <select name="school" class="input input-bordered" th:field="*{school}">
                 <option value="선택안함">선택안함</option>
                 <option value="고교 졸업 이하">고교 졸업 이하</option>
                 <option value="고등학교 졸업">고등학교 졸업</option>
-                <option value="대학 졸업(2,3년제)">대학 졸업(2,3년제)</option>
-                <option value="대학교 졸업(4년제)">대학교 졸업(4년제)</option>
-                <option value="대학원 석사 졸업">대학원 석사 졸업</option>
-                <option value="대학원 박사 졸업">대학원 박사 졸업</option>
-                <option value="박사 졸업 이상">박사 졸업 이상</option>
+                <option value="전문 대학교">전문 대학교</option>
+                <option value="대학교">대학교</option>
+                <option value="외국어대학교">외국어대학교</option>
+                <option value="대학원">대학원</option>
             </select>
         </div>
         <div class="form-control">
@@ -150,8 +272,18 @@
                 <option value="공무원">공무원</option>
                 <option value="학생">학생</option>
                 <option value="군인">군인</option>
-                <option value="무직">무직</option>
-                <option value="준비중">준비중</option>
+                <option value="아르바이트">아르바이트</option>
+                <option value="프리랜서">프리랜스</option>
+                <option value="회사원">회사원</option>
+                <option value="자영업">자영업</option>
+                <option value="전문직">전문직</option>
+                <option value="의료직">의료직</option>
+                <option value="교육직">교육직</option>
+                <option value="금융직">금융직</option>
+                <option value="연구,기술직">연구,기술직</option>
+                <option value="사업가">사업가</option>
+                <option value="취업준비중">취업준비중</option>
+                <option value="기타">기타</option>
             </select>
         </div>
 
@@ -160,7 +292,7 @@
                 <span class="label-text">자기소개</span>
             </label>
             <textarea name="About_Me" placeholder="자기소개" class="input input-bordered" maxlength="500"
-                      style="height: 200px;" ></textarea>
+                      style="height: 200px;"></textarea>
         </div>
         <input type="submit" value="수정하기" class="btn btn-primary my-2">
     </form>
