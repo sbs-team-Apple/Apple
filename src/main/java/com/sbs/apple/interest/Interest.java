@@ -18,7 +18,6 @@ public class Interest {
     private String interestedUser;
     private String filepath;
 
-
     @ManyToOne
     private SiteUser siteUser;
 }
