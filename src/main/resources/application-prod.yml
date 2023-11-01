@@ -4,7 +4,7 @@ file:
   upload-dir: C:/uploads/
 spring:
   profiles:
-    active: dev
+    active: prod
     include: secret
   mail:
     host: smtp.gmail.com
@@ -24,7 +24,7 @@ spring:
     ansi:
       enabled: always
   datasource:
-    url: jdbc:mariadb://localhost:3306/the_cupid_dev
+    url: jdbc:mariadb://118.67.142.168:3306/the_cupid_prod
     username: root
     password:
     driver-class-name: org.mariadb.jdbc.Driver
@@ -48,7 +48,7 @@ spring:
             user-name-attribute: id
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         default_batch_fetch_size: 100
@@ -63,8 +63,8 @@ logging:
     org.springframework.transaction.interceptor: TRACE
 custom:
   site:
-    name: 애플
-    baseUrl: "http://localhost:8090"
+    name: The Cupid
+    baseUrl: "http://118.67.142.168"
   genFile:
 
     dirPath: c:/uploads/
