@@ -42,6 +42,7 @@ public class AdminController {
         userService.changeUserStop(siteUser);
         return "redirect:/";
     }
+
     //3일 정지
     @GetMapping("/Day3_stop/{id}")
     public String Day_stop(@PathVariable Integer id){
@@ -60,6 +61,4 @@ public class AdminController {
         userService.changeUserWarning(siteUser);
         return "redirect:/";
     }
-
-
 }
