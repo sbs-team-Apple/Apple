@@ -113,6 +113,4 @@ public class AdminController {
         userService.changeUserWarning(siteUser);
         return "redirect:/";
     }
-
-
 }
