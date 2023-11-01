@@ -42,12 +42,10 @@ public class DataCreator {
             user.setGender("남");
             user.setAge(random.nextInt(30));
             user.setLiving("서울");
-            user.setHobby("골프");
             user.setTall(random.nextInt(170));
             user.setBody_type("평범한");
             user.setSmoking("비흡연");
             user.setDrinking("가끔");
-            user.setStyle("슬림한");
             user.setReligion("무교");
             user.setMbti("INFP");
             user.setSchool("4년제 졸업");
@@ -60,7 +58,6 @@ public class DataCreator {
             user.setDesired_body_type("평범한");
             user.setDesired_smoking("비흡연");
             user.setDesired_drinking("가끔");
-            user.setDesired_style("슬림한");
             user.setDesired_religion("무교");
             user.setDesired_mbti("INFP");
             user.setDesired_school("4년제 졸업");
@@ -80,12 +77,10 @@ public class DataCreator {
             user.setGender("여");
             user.setAge(random.nextInt(30));
             user.setLiving("서울");
-            user.setHobby("골프");
             user.setTall(random.nextInt(170));
             user.setBody_type("평범한");
             user.setSmoking("비흡연");
             user.setDrinking("가끔");
-            user.setStyle("슬림한");
             user.setReligion("무교");
             user.setMbti("INFP");
             user.setSchool("4년제 졸업");
@@ -98,7 +93,7 @@ public class DataCreator {
             user.setDesired_body_type("평범한");
             user.setDesired_smoking("비흡연");
             user.setDesired_drinking("가끔");
-            user.setDesired_style("슬림한");
+
             user.setDesired_religion("무교");
             user.setDesired_mbti("INFP");
             user.setDesired_school("4년제 졸업");
