@@ -18,7 +18,7 @@
             <div><a  th:value="${user.id}"  name="userId" th:text="${user.nickname}"></a></div>
             <div>
                 <form method="post"  th:action="@{|/chat/${chatRoom != null ? chatRoom.id+1 : 1}/room?userId2=${user.id}|}">
-                    <input type="hidden" name="userId" th:value="${user.id}">
+                    <input class="userId_value" type="hidden" name="userId" th:value="${user.id}">
                     <button type="submit" >님과 채팅방 만들기 </button>
                 </form>
             </div>
@@ -76,5 +76,13 @@
                 console.log(data);
             });
         });
+    });
+
+
+      $('form').submit(function(event) {
+
+        const userId = $('.userId_value').val();
+        const sse2 = new EventSource(`/sse/connect/userId_${userId}`);
+        // 여기서 SSE 연결을 사용하여 원하는 동작을 수행
     });
 </script>
