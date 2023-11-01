@@ -20,8 +20,8 @@ public class MainController {
 
     private final ChatRoomService chatRoomService;
     private final UserService userService;
-
     private final DataCreator dataCreator;
+
 
     @Value("${spring.jpa.hibernate.ddl-auto}")
     private String ddlAutoValue;
@@ -40,7 +40,6 @@ public class MainController {
             isTestDataCreated = true;
 
         }// *********************************************
-
 
         ChatRoom chatRoom= chatRoomService.findLastRoom();
 
