@@ -7,9 +7,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+
 @Repository
 public interface UserRepository extends JpaRepository<SiteUser, Integer> {
     Optional<SiteUser> findByUsername(String username);
+
 
     boolean existsByUsername(String username);
 
@@ -18,10 +20,6 @@ public interface UserRepository extends JpaRepository<SiteUser, Integer> {
     List<SiteUser> findRandomUsersByGenderAndLiving(@Param("gender") String gender, @Param("living") String living, @Param("count") int count);
 
 
-
-
-
     @Query("SELECT su FROM SiteUser su WHERE  su.gender <> :userGender AND (su.living = :desiredLiving OR su.religion = :desiredReligion)")
     List<SiteUser> findByDesired( @Param("userGender") String userGender, @Param("desiredLiving") String desiredLiving, @Param("desiredReligion") String desiredReligion);
-
 }
