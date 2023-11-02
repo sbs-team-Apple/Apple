@@ -12,16 +12,17 @@
 
         <div> 내가 초대한 채팅방</div>
         <div class="flex" th:each="room2 : ${chatRoom2}">
-               <div class="chat-subject" th:text="${room2.siteUser2.nickname}+'님과 채팅방'">
+               <div  th:id="${room2.id}" class="chat-subject room-id" th:text="${room2.siteUser2.nickname}+'님과 채팅방'"    th:data-room-id="${room2.id}">
 
                </div>
-            <div>
-                <form method="get" th:action="@{|/chat/${room2.id}/room3?userId2=${room2.siteUser2.id}|}">
-                <input type="hidden" name="userId2" th:value="${room2.siteUser2.id}">
-                <button type="submit" >채팅방 입장</button>
-                </form>
-              </div>
-            <div class="room-id" th:data-room-id="${room2.id}"></div>
+                <div class="last-message"></div>
+                <div>
+                    <form method="get" th:action="@{|/chat/${room2.id}/room3?userId2=${room2.siteUser2.id}|}">
+                    <input type="hidden" name="userId2" th:value="${room2.siteUser2.id}">
+                    <button type="submit" >채팅방 입장</button>
+                    </form>
+                </div>
+
         </div>
 
 
@@ -85,9 +86,13 @@
             });
     }
 
+    const $lastMessageElement = $(`#${roomId}`);
 
 
-    const Chat__elMessageDiv = $('.chat-subject');
+    const Chat__elMessageDiv =$lastMessageElement.siblings('.last-message');
+
+
+    console.log("선택된 채팅방 번호"+Chat__elMessageDiv);
 
     // Function to draw messages for the room
     function Chat__drawMessages(messages) {
