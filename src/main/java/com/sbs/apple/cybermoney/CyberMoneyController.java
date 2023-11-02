@@ -3,8 +3,8 @@ package com.sbs.apple.cybermoney;
 import com.sbs.apple.user.SiteUser;
 import com.sbs.apple.user.UserRepository;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,11 +17,15 @@ import java.util.Optional;
 public class CyberMoneyController {
     private final CyberMoneyService cyberMoneyService;
     private final UserRepository userRepository;
+    private final CyberMoneyTransactionRepository cyberMoneyTransactionRepository;
 
-    public CyberMoneyController(CyberMoneyService cyberMoneyService, UserRepository userRepository) {
+
+    public CyberMoneyController(CyberMoneyService cyberMoneyService, UserRepository userRepository, CyberMoneyTransactionRepository cyberMoneyTransactionRepository) {
         this.cyberMoneyService = cyberMoneyService;
         this.userRepository = userRepository;
+        this.cyberMoneyTransactionRepository = cyberMoneyTransactionRepository;
     }
+
 
     @PostMapping("/send")
     public ResponseEntity<String> sendCyberMoney(
