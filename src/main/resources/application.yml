@@ -24,7 +24,7 @@ spring:
     ansi:
       enabled: always
   datasource:
-    url: jdbc:mariadb://localhost:3306/the_cupid_dev
+    url: jdbc:mariadb://localhost:3306/the__cupid
     username: root
     password:
     driver-class-name: org.mariadb.jdbc.Driver
