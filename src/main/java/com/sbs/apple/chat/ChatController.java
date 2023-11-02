@@ -129,6 +129,26 @@ public class ChatController {
         );
     }
 
+    @GetMapping("/{roomId}/lastMessages")
+    @ResponseBody
+    public  RsData<ChatMessage> lastMessages(@PathVariable Long roomId, MessagesRequest req) {
+        List<ChatMessage> messages = chatMessages.from(roomId, req.fromId);
+
+        ChatMessage lastMessage = null;
+        if (!messages.isEmpty()) {
+            lastMessage = messages.get(messages.size() - 1);
+        }
+
+
+        return new RsData<>(
+                "S-1",
+                "성공",
+                lastMessage
+        );
+    }
+
+
+
     @GetMapping("/allRoom")
     public String allRoom(Model model,Principal principal){
         SiteUser siteUser = userService.getUserbyName(principal.getName());
