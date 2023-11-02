@@ -94,6 +94,10 @@
         text-align:start;
     }
 
+    .chatRoom-user-message {
+        margin-top:20px;
+    }
+
 </style>
 
 
@@ -160,14 +164,17 @@
     }
 
     loadMoreMessages();
-     // Attach an EventSource for the SSE connection specific to the room
-    const sse = new EventSource(`/sse/connect/chatRoom__${roomId}`);
 
-    // When a new message is added to the room, load more messages for that room
-    sse.addEventListener('chat__messageAdded', e => {
-        console.log("sse 실행됨");
-        loadMoreMessages();
-    });
+
+        //
+
+<!--    const sse = new EventSource(`/sse/connect/chatRoom__${roomId}`);-->
+
+<!--    // When a new message is added to the room, load more messages for that room-->
+<!--    sse.addEventListener('chat__messageAdded', e => {-->
+<!--        console.log("sse 실행됨");-->
+<!--        loadMoreMessages();-->
+<!--    });-->
 
 
 }
@@ -175,7 +182,12 @@
      $('.room-id').each(function () {
     const roomId = $(this).data('room-id');
 
-    Chat__loadMessagesForRoom(roomId);
+        setInterval(function() {
+    // 여기에 Chat__loadMessagesForRoom 함수 호출 코드를 추가합니다.
+    // roomId를 파라미터로 전달하여 실행합니다.
+      Chat__loadMessagesForRoom(roomId);
+}, 100);
+
 
 
 
