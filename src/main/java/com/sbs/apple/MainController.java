@@ -5,11 +5,8 @@ import com.sbs.apple.chat.ChatRoomService;
 import com.sbs.apple.notification.Notification;
 import com.sbs.apple.notification.NotificationService;
 import com.sbs.apple.user.SiteUser;
-import com.sbs.apple.user.UserRepository;
 import com.sbs.apple.user.UserService;
-import com.sbs.apple.util.DataCreator;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,28 +20,28 @@ public class MainController {
 
     private final ChatRoomService chatRoomService;
     private final UserService userService;
-    private final DataCreator dataCreator;
+//    private final DataCreator dataCreator;
     private final NotificationService notificationService;
-    private final UserRepository userRepository;
+//    private final UserRepository userRepository;
 
 
-    @Value("${spring.jpa.hibernate.ddl-auto}")
-    private String ddlAutoValue;
+//    @Value("${spring.jpa.hibernate.ddl-auto}")
+//    private String ddlAutoValue;
 
-    // ************ TEST DATA CREATE ***************
-    private boolean isTestDataCreated = false;
-    // *********************************************
+//    // ************ TEST DATA CREATE ***************
+//    private boolean isTestDataCreated = false;
+//    // *********************************************
 
     @GetMapping("/")
     public String showMain(Model model, Principal principal) {
         System.out.println("메인페이지 실행1");
 
-        // ************ TEST DATA CREATE ***************
-        if (!isTestDataCreated && ddlAutoValue.equals("create") && userRepository.count() == 0) {
-            dataCreator.createTestData();
-            isTestDataCreated = true;
-
-        }// *********************************************
+//        // ************ TEST DATA CREATE ***************
+//        if (!isTestDataCreated && ddlAutoValue.equals("create") && userRepository.count() == 0) {
+//            dataCreator.createTestData();
+//            isTestDataCreated = true;
+//
+//        }// *********************************************
 
         ChatRoom chatRoom= chatRoomService.findLastRoom();
 
