@@ -24,20 +24,21 @@ public class AdminController {
     private final ReportService reportService;
 
     @GetMapping("/report_list")
-    public String report_list(Model model){
+    public String report_list(Model model) {
         List<Report> reportList = this.reportService.getList();
-        model.addAttribute("reportList",reportList);
+        model.addAttribute("reportList", reportList);
         return "report_list";
     }
 
     @GetMapping("/punish/{id}")
-    public String punish(Model model, @PathVariable("id") Integer id){
-        model.addAttribute("id",id);
+    public String punish(Model model, @PathVariable("id") Integer id) {
+        model.addAttribute("id", id);
         return "punish";
     }
+
     //영구 정지
     @GetMapping("/Permanent_stop/{id}")
-    public String Permanent_stop(@PathVariable Integer id){
+    public String Permanent_stop(@PathVariable Integer id) {
         SiteUser siteUser = this.userService.getUser(id);
         userService.changeUserStop(siteUser);
         return "redirect:/";
@@ -45,7 +46,7 @@ public class AdminController {
 
     //3일 정지
     @GetMapping("/Day3_stop/{id}")
-    public String Day_stop(@PathVariable Integer id){
+    public String Day_stop(@PathVariable Integer id) {
         SiteUser siteUser = this.userService.getUser(id);
         userService.changeUserStop(siteUser);
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
@@ -54,11 +55,13 @@ public class AdminController {
         }, 3, TimeUnit.DAYS);
         return "redirect:/";
     }
+
     //경고 알림
     @GetMapping("/warning/{id}")
-    public String warning(@PathVariable Integer id){
+    public String warning(@PathVariable Integer id) {
         SiteUser siteUser = this.userService.getUser(id);
         userService.changeUserWarning(siteUser);
         return "redirect:/";
     }
 }
+
