@@ -8,38 +8,195 @@
 <div layout:fragment="content" class="container my-3">
 
 
-        <div> 내 채팅방 목록들</div>
+        <div class="all-room-section"> 내 채팅방 목록들
 
-        <div> 내가 초대한 채팅방</div>
-        <div class="flex" th:each="room2 : ${chatRoom2}">
-               <div th:text="${room2.siteUser2.nickname}+'님과 채팅방'">
+<!--        <div> 내가 초대한 채팅방</div>-->
+        <div class="flex all-room-container" th:each="room2 : ${chatRoom2}">
+            <form method="get" th:action="@{|/chat/${room2.id}/room3?userId2=${room2.siteUser2.id}|}">
+                <button type="submit"  class="flex">
+                    <div class="avatar chatRoom-user-img">
+                        <div class="w-24 rounded-full ">
+                            <img th:src="@{|${room2.siteUser2.filepath}|}">
+                        </div>
+                    </div>
+                    <div class="chatRoom-user-message">
+                    <div  th:id="${room2.id}" class="chat-subject room-id" th:text="${room2.siteUser2.nickname}"    th:data-room-id="${room2.id}">
 
-               </div>
-            <div>
-                <form method="get" th:action="@{|/chat/${room2.id}/room3?userId2=${room2.siteUser2.id}|}">
-                <input type="hidden" name="userId2" th:value="${room2.siteUser2.id}">
-                <button type="submit" >채팅방 입장</button>
-                </form>
-              </div>
+                   </div>
+                    <div class="last-message"></div>
+                    <div>
+                        <input type="hidden" name="userId2" th:value="${room2.siteUser2.id}">
+                    </div>
+                    </div>
+
+
+                </button>
+              </form>
         </div>
 
 
-        <div> 내가 초대받은 채팅방</div>
-        <div class="flex"   th:each="room3 : ${chatRoom3}">
-               <div th:text="${room3.siteUser.nickname}+'님과 채팅방'">
+<!--        <div> 내가 초대받은 채팅방</div>-->
+        <div class="flex all-room-container"   th:each="room3 : ${chatRoom3}">
+            <form method="get" th:action="@{|/chat/${room3.id}/room2?userId=${room3.siteUser2.id}|}">
+                <button type="submit" class="flex" >
 
-               </div>
-            <div>
-                <form method="get" th:action="@{|/chat/${room3.id}/room2?userId=${room3.siteUser2.id}|}">
-                <input type="hidden" name="userId" th:value="${room3.siteUser.id}">
-                <button type="submit" >채팅방 입장 </button>
-                 </form>
-             </div>
+                    <div class="avatar chatRoom-user-img">
+                        <div class="w-24 rounded-full ">
+                            <img th:src="@{|${room3.siteUser.filepath}|}">
+                        </div>
+                    </div>
+                    <div class="chatRoom-user-message">
+                        <div  th:id="${room3.id}" class="chat-subject room-id" th:text="${room3.siteUser.nickname}"   th:data-room-id="${room3.id}">
+
+                           </div>
+                        <div class="last-message"></div>
+                        <div>
+                            <input type="hidden" name="userId" th:value="${room3.siteUser.id}">
+
+
+                         </div>
+                    </div>
+                </button>
+            </form>
         </div>
 
 
-
+        </div>
 </div>
 </body>
 </html>
+
+<style>
+    .all-room-section {
+        width:500px;
+        height:700px;
+        margin-left:auto;
+        margin-right:auto;
+
+    }
+
+
+    img {
+        width:100px;
+        height:100px;
+
+    }
+    .all-room-container {
+        margin-bottom:20px;
+    }
+
+
+    .chatRoom-user-img {
+        margin-right:20px;
+    }
+
+    .chat-subject {
+        text-align:start;
+    }
+
+    .chatRoom-user-message {
+        margin-top:20px;
+    }
+
+</style>
+
+
+
+<script>
+    function fetchGet(url, data) {
+
+
+         let query = Object.keys(data)
+             .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(data[k]))
+             .join('&');
+
+
+         return fetch(url + "?" + query, {
+             method: "GET",
+             headers: {
+                 "Content-Type": "application/json",
+                 "Accept": "application/json"
+
+
+
+             }
+         })
+             .then(response => response.json())
+     }
+
+
+</script>
+
+<script>
+
+    function Chat__loadMessagesForRoom(roomId) {
+    let lastLoadedId = 0; // Initialize the last loaded ID for the room
+
+    // Function to load more messages for the specified room
+    function loadMoreMessages() {
+        fetchGet(`/chat/${roomId}/messages`, {
+            fromId: lastLoadedId
+        })
+            .then(body => {
+                Chat__drawMessages(body.data.messages);
+            });
+    }
+
+    const $lastMessageElement = $(`#${roomId}`);
+
+
+    const Chat__elMessageDiv =$lastMessageElement.siblings('.last-message');
+
+
+    console.log("선택된 채팅방 번호"+Chat__elMessageDiv);
+
+    // Function to draw messages for the room
+    function Chat__drawMessages(messages) {
+        if (messages.length > 0) {
+            // Update the lastLoadedId variable for the room
+            lastLoadedId = messages[messages.length - 1].id;
+        }
+
+        messages.forEach((message) => {
+             const messageHTML = `<div class="chat__message">${message.authorName} : ${message.content}</div>`;
+            Chat__elMessageDiv.html(messageHTML);
+        });
+    }
+
+    loadMoreMessages();
+
+
+        //
+
+<!--    const sse = new EventSource(`/sse/connect/chatRoom__${roomId}`);-->
+
+<!--    // When a new message is added to the room, load more messages for that room-->
+<!--    sse.addEventListener('chat__messageAdded', e => {-->
+<!--        console.log("sse 실행됨");-->
+<!--        loadMoreMessages();-->
+<!--    });-->
+
+
+}
+
+     $('.room-id').each(function () {
+    const roomId = $(this).data('room-id');
+
+        setInterval(function() {
+    // 여기에 Chat__loadMessagesForRoom 함수 호출 코드를 추가합니다.
+    // roomId를 파라미터로 전달하여 실행합니다.
+      Chat__loadMessagesForRoom(roomId);
+}, 100);
+
+
+
+
+    // Load initial messages for the room
+
+
+
+});
+
+</script>
+
 

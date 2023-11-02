@@ -10,15 +10,15 @@
 </head>
 <div layout:fragment="content" class="container my-3">
 
-<div class="chat">
+<div class="chat-section">
+    <div class="chat-container">
+        <div class="chat__message-box">
 
-    <div class="chat__message-box">
+            <ul class="chat__message-ul">
 
-        <ul class="chat__message-ul">
-
-        </ul>
-    </div>
-    <div class="chat-write-box">
+            </ul>
+        </div>
+     <div class="chat-write-box">
         <div class="chat-write-box-item  ">
             <form class="chat__write-message flex" onsubmit="Chat__writeMessage(this); return false;">
                 <input type="hidden" name="roomId" th:value="${roomId}">
@@ -74,8 +74,9 @@
             </div>
         </div>
 
-    </div>
+     </div>
 
+    </div>
 
 
 
@@ -128,17 +129,26 @@
     }
 
 
-    .chat{
+    .chat-section{
         display:block;
 
-        width:350px;
+        width:80%;
+        height:80%;
 
         margin-left:auto;
         margin-right:auto;
          position:relative;
     }
+    .chat-container{
+
+
+    }
+
+
+
     .chat__message-box{
-          height:500px;
+
+          height:300px;
 
 
          overflow-y: scroll; /* 세로 스크롤만 활성화 */
