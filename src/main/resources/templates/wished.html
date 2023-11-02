@@ -1,24 +1,26 @@
 <html layout:decorate="~{/common/layout}" lang="en">
 <head>
-    <meta charset="UTF-8"></head>
+    <meta charset="UTF-8">
+</head>
 <body>
 <div layout:fragment="content" class="container my-3">
     <table>
         <thead>
         <tr>
+            <th>사진</th>
             <th>닉네임</th>
-            <th>조회</th>
         </tr>
         </thead>
         <tbody>
 
         <tr th:each="interestList : ${interestList}">
-            <td th:text="${interestList.interestUser}"></td>
             <td>
-                <a th:href="@{|/user/detail/${interestList.interestUserId}|}">조회
+                <a th:href="@{|/user/detail/${interestList.interestUserId}|}">
+                    <img class="w-30 h-30" th:src="@{|${interestList.filepath}|}" alt="User Image"
+                         style="max-width: 300px; max-height: 300px;">
                 </a>
             </td>
-
+            <td th:text="${interestList.interestUser}"></td>
         </tr>
         </tbody>
     </table>
