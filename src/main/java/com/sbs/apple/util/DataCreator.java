@@ -2,109 +2,36 @@
 package com.sbs.apple.util;
 
 
-import com.sbs.apple.user.SiteUser;
-import com.sbs.apple.user.UserRepository;
+import com.sbs.apple.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import java.util.Random;
+import java.util.Arrays;
+import java.util.List;
 
 
-@Component
+@Service
 public class DataCreator {
+    private final UserService userService;
+    protected Integer userNum = 40;
+
     @Autowired
-    PasswordEncoder passwordEncoder;
-    @Autowired
-    UserRepository userRepository;
+    public DataCreator(UserService userService) {
+        this.userService = userService;
+    }
 
-    // 생성되는 유저 개수
-    protected Integer userNum = 20;
-
-    Random random = new Random();
-
-    public void createTestData(){
+    public void createTestData() {
         createUser();
     }
 
-
-    public void createUser() {
-        for(int i = 0; i < userNum; i++){
-            char asciiChar = (char) (i + 65);
-            String username = String.valueOf(asciiChar);
-
-            SiteUser user = new SiteUser();
-            user.setUserWarning(false);
-            user.setUserStop(false);
-            user.setUsername(username);
-            user.setPassword(passwordEncoder.encode(username));
-            user.setNickname("유저 " + username);
-            user.setGender("남");
-            user.setAge(random.nextInt(30));
-            user.setLiving("서울");
-            user.setHobby("골프");
-            user.setTall(random.nextInt(170));
-            user.setBody_type("평범한");
-            user.setSmoking("비흡연");
-            user.setDrinking("가끔");
-            user.setStyle("슬림한");
-            user.setReligion("무교");
-            user.setMbti("INFP");
-            user.setSchool("4년제 졸업");
-            user.setJob("무직");
-            user.setAbout_Me("반갑소");
-            user.setDesired_age("상관없음");
-            user.setDesired_living("서울");
-            user.setDesired_hobby("골프");
-            user.setDesired_tall("상관없음");
-            user.setDesired_body_type("평범한");
-            user.setDesired_smoking("비흡연");
-            user.setDesired_drinking("가끔");
-            user.setDesired_style("슬림한");
-            user.setDesired_religion("무교");
-            user.setDesired_mbti("INFP");
-            user.setDesired_school("4년제 졸업");
-            user.setDesired_job("무직");
-            userRepository.save(user);
-        }
-
-        for(int i = 0; i < userNum; i++){
-            char asciiChar = (char) (i + 97);
-            String username = String.valueOf(asciiChar);
-
-            SiteUser user = new SiteUser();
-            user.setUserStop(false);
-            user.setUserWarning(false);
-            user.setUsername(username);
-            user.setPassword(passwordEncoder.encode(username));
-            user.setNickname("유저 " + username);
-            user.setGender("여");
-            user.setAge(random.nextInt(30));
-            user.setLiving("서울");
-            user.setHobby("골프");
-            user.setTall(random.nextInt(170));
-            user.setBody_type("평범한");
-            user.setSmoking("비흡연");
-            user.setDrinking("가끔");
-            user.setStyle("슬림한");
-            user.setReligion("무교");
-            user.setMbti("INFP");
-            user.setSchool("4년제 졸업");
-            user.setJob("무직");
-            user.setAbout_Me("반갑소");
-            user.setDesired_age("상관없음");
-            user.setDesired_living("서울");
-            user.setDesired_hobby("골프");
-            user.setDesired_tall("상관없음");
-            user.setDesired_body_type("평범한");
-            user.setDesired_smoking("비흡연");
-            user.setDesired_drinking("가끔");
-            user.setDesired_style("슬림한");
-            user.setDesired_religion("무교");
-            user.setDesired_mbti("INFP");
-            user.setDesired_school("4년제 졸업");
-            user.setDesired_job("무직");
-            userRepository.save(user);
+    private void createUser() {
+        for (int i = 1; i <= userNum; i++) {
+            String username = "user" + i;
+            String gender = i <= userNum / 2 ? "남" : "여";
+            List<String> hobbyList = i <= userNum / 2 ? (Arrays.asList("골프", "축구")) : (Arrays.asList("등산", "볼링"));
+            List<String> styleList = i <= userNum / 2 ? (Arrays.asList("어른스러운", "허세 없는")) : (Arrays.asList("엉뚱한", "소심한"));
+            List<String> desiredStyleList = i <= userNum / 2 ? (Arrays.asList("예쁘고 잘생긴", "활발한")) : (Arrays.asList("유머러스한", "성실한"));
+            userService.createUser(username, gender, hobbyList, styleList, desiredStyleList);
         }
     }
 }

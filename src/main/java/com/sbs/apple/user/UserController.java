@@ -28,8 +28,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.List;
+
 import java.util.Map;
 import java.util.Optional;
+
 
 //회원가입
 @RequiredArgsConstructor
@@ -43,6 +45,7 @@ public class UserController {
     private final UserRepository userRepository;
     private final InterestService interestService;
     private  final CyberMoneyTransactionRepository cyberMoneyTransactionRepository;
+
 
     @GetMapping("/signup")
     public String signup1(UserCreateForm userCreateForm) {
@@ -65,7 +68,6 @@ public class UserController {
         SiteUser user = userService.create(false, false, userCreateForm.getFile(), userCreateForm.getUsername(), userCreateForm.getPassword1(),
                 userCreateForm.getNickname(), userCreateForm.getGender());
         redirectAttributes.addAttribute("id", user.getId());
-
         return "redirect:/user/add/" + user.getId();
     }
 
@@ -79,9 +81,9 @@ public class UserController {
     @PostMapping("/add/{id}")
     public String add2(@PathVariable("id") Integer id, UserAddForm userAddForm, RedirectAttributes redirectAttributes) {
         SiteUser user = this.userService.getUser(id);
-        userService.add_profile(user, userAddForm.getAge(), userAddForm.getLiving(), userAddForm.getHobby(),
+        userService.add_profile(user, userAddForm.getAge(), userAddForm.getLiving(), userAddForm.getHobbyList(),
                 userAddForm.getTall(), userAddForm.getBody_type(), userAddForm.getSmoking(),
-                userAddForm.getDrinking(), userAddForm.getStyle(), userAddForm.getReligion(),
+                userAddForm.getDrinking(), userAddForm.getStyleList(), userAddForm.getReligion(),
                 userAddForm.getMbti(), userAddForm.getSchool(), userAddForm.getJob(), userAddForm.getAbout_Me());
         redirectAttributes.addAttribute("id", user.getId());
         return "redirect:/user/desired/" + user.getId();
@@ -101,12 +103,11 @@ public class UserController {
         }
         SiteUser user = this.userService.getUser(id);
         userService.add_desired(user, userDesiredForm.getDesired_age(), userDesiredForm.getDesired_living(),
-                userDesiredForm.getDesired_hobby(), userDesiredForm.getDesired_tall(),
-                userDesiredForm.getDesired_body_type(), userDesiredForm.getDesired_smoking(),
-                userDesiredForm.getDesired_drinking(), userDesiredForm.getDesired_style(),
-                userDesiredForm.getDesired_religion(), userDesiredForm.getDesired_mbti(),
-                userDesiredForm.getDesired_school(), userDesiredForm.getDesired_job());
-
+                userDesiredForm.getDesired_tall(), userDesiredForm.getDesired_body_type(),
+                userDesiredForm.getDesired_smoking(), userDesiredForm.getDesired_drinking(),
+                userDesiredForm.getDesired_styleList(), userDesiredForm.getDesired_religion(),
+                userDesiredForm.getDesired_mbti(),userDesiredForm.getDesired_school(),
+                userDesiredForm.getDesired_job());
         return "redirect:/";
     }
 
@@ -122,13 +123,10 @@ public class UserController {
     public String userMyPage(Model model, Principal principal) {
         String username = principal.getName();
         SiteUser user = userService.getUserbyName(username);
-        String senderUsername = principal.getName();
-
 
         int userCyberMoney = user.getCyberMoney();
         int receivedCyberMoney = user.getReceivedCyberMoney(); // 다른 사용자로부터 받은 사이버머니
 
-        model.addAttribute("senderUsername", senderUsername);
         model.addAttribute("userCyberMoney", userCyberMoney);
         model.addAttribute("receivedCyberMoney", receivedCyberMoney); // 다른 사용자로부터 받은 사이버머니
         model.addAttribute("user", user);
@@ -162,23 +160,16 @@ public class UserController {
         userService.updatePassword(username, newPassword);
         return "redirect:/user/myPage";
     }
+    //탈퇴 페이지
+    @PostMapping("/checkLoginPw")
+    public ResponseEntity<String> checkLoginPw(Principal principal, @RequestParam("userPassword") String userPassword) {
+        SiteUser siteUser = this.userService.getUserbyName(principal.getName());
 
-    // 마이페이지 탈퇴 페이지
-    @GetMapping("/checkLoginPw")
-    public ResponseEntity<String> checkLoginPw(@RequestBody Map<String, String> requestData, Principal principal) {
-        System.out.println("확인");
-        return ResponseEntity.ok("");
-//        String deleteUserPw = requestData.get("userPassword");
-//
-//
-//        System.out.println("deleteUserPw : " + deleteUserPw);
-//        SiteUser siteUser = this.userService.getUserbyName(principal.getName());
-//
-//        if (BCrypt.checkpw(deleteUserPw, siteUser.getPassword())) {
-//         return ResponseEntity.ok("");
-//        } else {
-//            return ResponseEntity.badRequest().body("비밀번호가 일치하지 않습니다. 다시 시도해주세요.");
-//        }
+        if (BCrypt.checkpw(userPassword, siteUser.getPassword())) {
+            return ResponseEntity.ok("");
+        } else {
+            return ResponseEntity.badRequest().body("비밀번호가 일치하지 않습니다.");
+        }
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -223,12 +214,12 @@ public class UserController {
         SiteUser siteUser = this.userService.getUserbyName(principal.getName());
         userAddForm.setAge(siteUser.getAge());
         userAddForm.setLiving(siteUser.getLiving());
-        userAddForm.setHobby(siteUser.getHobby());
+        userAddForm.setHobbyList(siteUser.getHobbyList());
         userAddForm.setTall(siteUser.getTall());
         userAddForm.setBody_type(siteUser.getBody_type());
         userAddForm.setSmoking(siteUser.getSmoking());
         userAddForm.setDrinking(siteUser.getDrinking());
-        userAddForm.setStyle(siteUser.getStyle());
+        userAddForm.setStyleList(siteUser.getStyleList());
         userAddForm.setReligion(siteUser.getReligion());
         userAddForm.setMbti(siteUser.getMbti());
         userAddForm.setSchool(siteUser.getSchool());
@@ -240,9 +231,9 @@ public class UserController {
     @PostMapping("/profile_modify")
     public String profile_modify(UserAddForm userAddForm, Principal principal) {
         SiteUser user = this.userService.getUserbyName(principal.getName());
-        userService.add_profile(user, userAddForm.getAge(), userAddForm.getLiving(), userAddForm.getHobby(),
+        userService.add_profile(user, userAddForm.getAge(), userAddForm.getLiving(), userAddForm.getHobbyList(),
                 userAddForm.getTall(), userAddForm.getBody_type(), userAddForm.getSmoking(),
-                userAddForm.getDrinking(), userAddForm.getStyle(), userAddForm.getReligion(),
+                userAddForm.getDrinking(), userAddForm.getStyleList(), userAddForm.getReligion(),
                 userAddForm.getMbti(), userAddForm.getSchool(), userAddForm.getJob(), userAddForm.getAbout_Me());
         return "redirect:/user/myPage";
     }
@@ -254,12 +245,11 @@ public class UserController {
         SiteUser siteUser = this.userService.getUserbyName(principal.getName());
         userDesiredForm.setDesired_age(siteUser.getDesired_age());
         userDesiredForm.setDesired_living(siteUser.getDesired_living());
-        userDesiredForm.setDesired_hobby(siteUser.getDesired_hobby());
         userDesiredForm.setDesired_tall(siteUser.getDesired_tall());
         userDesiredForm.setDesired_body_type(siteUser.getDesired_body_type());
         userDesiredForm.setDesired_smoking(siteUser.getDesired_smoking());
         userDesiredForm.setDesired_drinking(siteUser.getDesired_drinking());
-        userDesiredForm.setDesired_style(siteUser.getDesired_style());
+        userDesiredForm.setDesired_styleList(siteUser.getDesired_styleList());
         userDesiredForm.setDesired_religion(siteUser.getDesired_religion());
         userDesiredForm.setDesired_mbti(siteUser.getDesired_mbti());
         userDesiredForm.setDesired_school(siteUser.getDesired_school());
@@ -272,9 +262,9 @@ public class UserController {
     public String desired_modify(UserDesiredForm userDesiredForm, Principal principal) {
         SiteUser user = this.userService.getUserbyName(principal.getName());
         userService.add_desired(user, userDesiredForm.getDesired_age(), userDesiredForm.getDesired_living(),
-                userDesiredForm.getDesired_hobby(), userDesiredForm.getDesired_tall(),
+                userDesiredForm.getDesired_tall(),
                 userDesiredForm.getDesired_body_type(), userDesiredForm.getDesired_smoking(),
-                userDesiredForm.getDesired_drinking(), userDesiredForm.getDesired_style(),
+                userDesiredForm.getDesired_drinking(), userDesiredForm.getDesired_styleList(),
                 userDesiredForm.getDesired_religion(), userDesiredForm.getDesired_mbti(),
                 userDesiredForm.getDesired_school(), userDesiredForm.getDesired_job());
         return "redirect:/user/myPage";
@@ -292,12 +282,12 @@ public class UserController {
     //조회하기
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/detail/{id}")
-    public String paymentPage(Principal principal, Model model, @PathVariable("id") Integer id) {
+    public String paymentPage(Principal principal,Model model, @PathVariable("id") Integer id) {
         SiteUser siteUser = this.userService.getUser(id);
         model.addAttribute("siteUser", siteUser);
         String interest_user = principal.getName();
         boolean isInterested = interestService.isInterested(id, interest_user);
-        model.addAttribute("isInterested", isInterested);
+        model.addAttribute("isInterested",isInterested);
         return "user/profile";
     }
 
@@ -331,9 +321,7 @@ public class UserController {
     public String grantAdminAuthority(@RequestParam String adminCode, Principal principal) {
         if ("admin".equals(adminCode)) {
             String username = principal.getName();
-
             userService.grantAdminAuthority(username);
-
         }
         return "redirect:/";
     }
@@ -381,7 +369,7 @@ public class UserController {
     }
 
 
-    //관심있는 사람 조회하기
+    //내가 관심있는 사람 조회하기
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/wish")
     public String showWish(Principal principal, Model model) {
@@ -390,7 +378,7 @@ public class UserController {
         model.addAttribute("interestList", interestList);
         return "wish";
     }
-
+    //나에게 관심 있는 사람 조회하기
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/wished")
     public String showWished(Principal principal, Model model) {
@@ -399,7 +387,6 @@ public class UserController {
         model.addAttribute("interestList", interestList);
         return "wished";
     }
-
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/exchange")
     public String exchange(Model model, Principal principal) {
@@ -409,6 +396,7 @@ public class UserController {
 
         return "pay/exchange";
     }
+
     @GetMapping("/transactions")
     public String getTransactionHistory(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -431,6 +419,3 @@ public class UserController {
     }
 
 }
-
-
-

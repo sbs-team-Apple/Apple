@@ -3,6 +3,7 @@ package com.sbs.apple.user;
 import com.sbs.apple.DataNotFoundException;
 import com.sbs.apple.chat.ChatRoom;
 import com.sbs.apple.chat.ChatRoomService;
+import com.sbs.apple.interest.Interest;
 import com.sbs.apple.interest.InterestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,13 +19,14 @@ import java.util.*;
 @Service
 public class UserService {
 
-
-
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ChatRoomService chatRoomService;
     private final InterestRepository interestRepository;
     private String uploadDir;
+
+    Random random = new Random();
+
 
     @Value("${file.upload-dir}")
     public void setUploadDir(String uploadDir) {
@@ -48,6 +50,43 @@ public class UserService {
 
             return null;
         }
+    }
+
+    public SiteUser createUser(String username, String gender, List<String> hobbyList, List<String> styleList, List<String> desiredStyleList) {
+        SiteUser user = new SiteUser();
+        user.setUserWarning(false);
+        user.setUserStop(false);
+        user.setUsername(username);
+        user.setPassword(passwordEncoder.encode(username));
+        user.setNickname(username);
+        user.setGender(gender);
+        user.setAge(random.nextInt(30));
+        user.setLiving("서울");
+        user.setHobbyList(hobbyList);
+        user.setTall(random.nextInt(170));
+        user.setBody_type("평범한");
+        user.setSmoking("비흡연");
+        user.setDrinking("가끔");
+        user.setStyleList(styleList);
+        user.setReligion("무교");
+        user.setMbti("INFP");
+        user.setSchool("4년제 졸업");
+        user.setJob("무직");
+        user.setAbout_Me("반갑소");
+        user.setDesired_age("상관없음");
+        user.setDesired_living("서울");
+        user.setDesired_hobby("골프");
+        user.setDesired_tall("상관없음");
+        user.setDesired_body_type("평범한");
+        user.setDesired_smoking("비흡연");
+        user.setDesired_drinking("가끔");
+        user.setDesired_styleList(desiredStyleList);
+        user.setDesired_religion("무교");
+        user.setDesired_mbti("INFP");
+        user.setDesired_school("4년제 졸업");
+        user.setDesired_job("무직");
+
+        return userRepository.save(user);
     }
 
     //회원가입
@@ -86,17 +125,17 @@ public class UserService {
     }
 
     //프로필 설정
-    public SiteUser add_profile(SiteUser user, int age, String living, String hobby, int tall, String bodyType,
-                                String smoking, String drinking, String style, String religion,
+    public SiteUser add_profile(SiteUser user, int age, String living, List<String> hobbyList, int tall, String bodyType,
+                                String smoking, String drinking, List<String> styleList, String religion,
                                 String mbti, String school, String job, String About_Me) {
         user.setAge(age);
         user.setLiving(living);
-        user.setHobby(hobby);
+        user.setHobbyList(hobbyList);
         user.setTall(tall);
         user.setBody_type(bodyType);
         user.setSmoking(smoking);
         user.setDrinking(drinking);
-        user.setStyle(style);
+        user.setStyleList(styleList);
         user.setReligion(religion);
         user.setMbti(mbti);
         user.setSchool(school);
@@ -107,18 +146,17 @@ public class UserService {
     }
 
     //이상형 설정
-    public SiteUser add_desired(SiteUser user, String desiredAge, String desiredLiving, String desiredHobby,
+    public SiteUser add_desired(SiteUser user, String desiredAge, String desiredLiving,
                                 String desiredTall, String desiredBodyType, String desiredSmoking,
-                                String desiredDrinking, String desiredStyle, String desiredReligion,
+                                String desiredDrinking, List<String> desiredStyleList, String desiredReligion,
                                 String desiredMbti, String desiredSchool, String desiredJob) {
         user.setDesired_age(desiredAge);
         user.setDesired_living(desiredLiving);
-        user.setDesired_hobby(desiredHobby);
         user.setDesired_tall(desiredTall);
         user.setDesired_body_type(desiredBodyType);
         user.setDesired_smoking(desiredSmoking);
         user.setDesired_drinking(desiredDrinking);
-        user.setDesired_style(desiredStyle);
+        user.setDesired_styleList(desiredStyleList);
         user.setDesired_religion(desiredReligion);
         user.setDesired_mbti(desiredMbti);
         user.setDesired_school(desiredSchool);
@@ -194,7 +232,7 @@ public class UserService {
         SiteUser user = userRepository.findByUsername(username).orElse(null);
 
         if (user != null) {
-            // 기존 권한 수정
+//             기존 권한 수정
             user.getAuthorities().clear(); // 모든 권한 제거
             userRepository.save(user);
         }
@@ -278,16 +316,11 @@ public class UserService {
         siteUser.setUserWarning(false);
         userRepository.save(siteUser);
     }
-    //사진 수정
-
 
     public List<SiteUser> getDesiredUsers(SiteUser user) {
-
         return userRepository.findByDesired(user.getGender(), user.getDesired_living(), user.getDesired_religion());
-
-
     }
-
+    //사진 수정
     public void photoModify(SiteUser user, MultipartFile file) throws Exception {
         File directory = new File(uploadDir);
         UUID uuid = UUID.randomUUID();
@@ -297,5 +330,13 @@ public class UserService {
         user.setFilename(fileName);
         user.setFilepath("/gen/" + fileName);
         this.userRepository.save(user);
+    }
+
+    public List<Interest> getWishUsers(String username) {
+        List<Interest> wishUsers;
+
+        wishUsers = this.interestRepository.findAllByInterestUser(username);
+
+        return wishUsers;
     }
 }
