@@ -28,4 +28,5 @@ public class Interest {
 
     @ManyToOne
     private SiteUser siteUser;
+
 }

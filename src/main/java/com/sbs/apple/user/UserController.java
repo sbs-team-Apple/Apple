@@ -2,6 +2,8 @@ package com.sbs.apple.user;
 
 
 import com.sbs.apple.board.BoardForm;
+import com.sbs.apple.cybermoney.CyberMoneyTransaction;
+import com.sbs.apple.cybermoney.CyberMoneyTransactionRepository;
 import com.sbs.apple.interest.Interest;
 import com.sbs.apple.interest.InterestService;
 import com.sbs.apple.report.ReportForm;
@@ -27,6 +29,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.security.Principal;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 //회원가입
 @RequiredArgsConstructor
@@ -39,6 +42,7 @@ public class UserController {
     private final ReportService reportService;
     private final UserRepository userRepository;
     private final InterestService interestService;
+    private  final CyberMoneyTransactionRepository cyberMoneyTransactionRepository;
 
     @GetMapping("/signup")
     public String signup1(UserCreateForm userCreateForm) {
@@ -61,6 +65,7 @@ public class UserController {
         SiteUser user = userService.create(false, false, userCreateForm.getFile(), userCreateForm.getUsername(), userCreateForm.getPassword1(),
                 userCreateForm.getNickname(), userCreateForm.getGender());
         redirectAttributes.addAttribute("id", user.getId());
+
         return "redirect:/user/add/" + user.getId();
     }
 
@@ -101,6 +106,7 @@ public class UserController {
                 userDesiredForm.getDesired_drinking(), userDesiredForm.getDesired_style(),
                 userDesiredForm.getDesired_religion(), userDesiredForm.getDesired_mbti(),
                 userDesiredForm.getDesired_school(), userDesiredForm.getDesired_job());
+
         return "redirect:/";
     }
 
@@ -116,10 +122,13 @@ public class UserController {
     public String userMyPage(Model model, Principal principal) {
         String username = principal.getName();
         SiteUser user = userService.getUserbyName(username);
+        String senderUsername = principal.getName();
+
 
         int userCyberMoney = user.getCyberMoney();
         int receivedCyberMoney = user.getReceivedCyberMoney(); // 다른 사용자로부터 받은 사이버머니
 
+        model.addAttribute("senderUsername", senderUsername);
         model.addAttribute("userCyberMoney", userCyberMoney);
         model.addAttribute("receivedCyberMoney", receivedCyberMoney); // 다른 사용자로부터 받은 사이버머니
         model.addAttribute("user", user);
@@ -283,12 +292,12 @@ public class UserController {
     //조회하기
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/detail/{id}")
-    public String paymentPage(Principal principal,Model model, @PathVariable("id") Integer id) {
+    public String paymentPage(Principal principal, Model model, @PathVariable("id") Integer id) {
         SiteUser siteUser = this.userService.getUser(id);
         model.addAttribute("siteUser", siteUser);
         String interest_user = principal.getName();
         boolean isInterested = interestService.isInterested(id, interest_user);
-        model.addAttribute("isInterested",isInterested);
+        model.addAttribute("isInterested", isInterested);
         return "user/profile";
     }
 
@@ -381,6 +390,7 @@ public class UserController {
         model.addAttribute("interestList", interestList);
         return "wish";
     }
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/wished")
     public String showWished(Principal principal, Model model) {
@@ -389,6 +399,7 @@ public class UserController {
         model.addAttribute("interestList", interestList);
         return "wished";
     }
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/exchange")
     public String exchange(Model model, Principal principal) {
@@ -398,5 +409,28 @@ public class UserController {
 
         return "pay/exchange";
     }
+    @GetMapping("/transactions")
+    public String getTransactionHistory(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        Optional<SiteUser> userOptional = userRepository.findByUsername(username);
+        if (userOptional.isPresent()) {
+            SiteUser user = userOptional.get();
+            List<CyberMoneyTransaction> transactions = cyberMoneyTransactionRepository.findByRecipientUser(user);
+            transactions.addAll(cyberMoneyTransactionRepository.findBySenderUser(user));
+
+            // 모델에 데이터를 추가하여 뷰로 전달
+            model.addAttribute("receivedTransactions", transactions); // 받은 거래 정보
+            model.addAttribute("sentTransactions", transactions); // 보낸 거래 정보
+
+            return "transactions"; // 템플릿 이름 (예: transaction-history.html)
+        } else {
+            return "error"; // 오류 페이지 템플릿 이름 (예: error.html)
+        }
+    }
 
 }
+
+
+
