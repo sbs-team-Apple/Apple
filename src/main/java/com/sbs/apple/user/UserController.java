@@ -2,6 +2,8 @@ package com.sbs.apple.user;
 
 
 import com.sbs.apple.board.BoardForm;
+import com.sbs.apple.cybermoney.CyberMoneyTransaction;
+import com.sbs.apple.cybermoney.CyberMoneyTransactionRepository;
 import com.sbs.apple.interest.Interest;
 import com.sbs.apple.interest.InterestService;
 import com.sbs.apple.report.ReportForm;
@@ -27,6 +29,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.security.Principal;
 import java.util.List;
 
+import java.util.Map;
+import java.util.Optional;
+
+
 //회원가입
 @RequiredArgsConstructor
 @Controller
@@ -38,6 +44,8 @@ public class UserController {
     private final ReportService reportService;
     private final UserRepository userRepository;
     private final InterestService interestService;
+    private  final CyberMoneyTransactionRepository cyberMoneyTransactionRepository;
+
 
     @GetMapping("/signup")
     public String signup1(UserCreateForm userCreateForm) {
@@ -389,6 +397,25 @@ public class UserController {
         return "pay/exchange";
     }
 
+    @GetMapping("/transactions")
+    public String getTransactionHistory(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        Optional<SiteUser> userOptional = userRepository.findByUsername(username);
+        if (userOptional.isPresent()) {
+            SiteUser user = userOptional.get();
+            List<CyberMoneyTransaction> transactions = cyberMoneyTransactionRepository.findByRecipientUser(user);
+            transactions.addAll(cyberMoneyTransactionRepository.findBySenderUser(user));
+
+            // 모델에 데이터를 추가하여 뷰로 전달
+            model.addAttribute("receivedTransactions", transactions); // 받은 거래 정보
+            model.addAttribute("sentTransactions", transactions); // 보낸 거래 정보
+
+            return "transactions"; // 템플릿 이름 (예: transaction-history.html)
+        } else {
+            return "error"; // 오류 페이지 템플릿 이름 (예: error.html)
+        }
+    }
+
 }
-
-

@@ -25,6 +25,9 @@ public class UserService {
     private final InterestRepository interestRepository;
     private String uploadDir;
 
+    Random random = new Random();
+
+
     @Value("${file.upload-dir}")
     public void setUploadDir(String uploadDir) {
         this.uploadDir = uploadDir;
@@ -47,6 +50,43 @@ public class UserService {
 
             return null;
         }
+    }
+
+    public SiteUser createUser(String username, String gender, List<String> hobbyList, List<String> styleList, List<String> desiredStyleList) {
+        SiteUser user = new SiteUser();
+        user.setUserWarning(false);
+        user.setUserStop(false);
+        user.setUsername(username);
+        user.setPassword(passwordEncoder.encode(username));
+        user.setNickname(username);
+        user.setGender(gender);
+        user.setAge(random.nextInt(30));
+        user.setLiving("서울");
+        user.setHobbyList(hobbyList);
+        user.setTall(random.nextInt(170));
+        user.setBody_type("평범한");
+        user.setSmoking("비흡연");
+        user.setDrinking("가끔");
+        user.setStyleList(styleList);
+        user.setReligion("무교");
+        user.setMbti("INFP");
+        user.setSchool("4년제 졸업");
+        user.setJob("무직");
+        user.setAbout_Me("반갑소");
+        user.setDesired_age("상관없음");
+        user.setDesired_living("서울");
+        user.setDesired_hobby("골프");
+        user.setDesired_tall("상관없음");
+        user.setDesired_body_type("평범한");
+        user.setDesired_smoking("비흡연");
+        user.setDesired_drinking("가끔");
+        user.setDesired_styleList(desiredStyleList);
+        user.setDesired_religion("무교");
+        user.setDesired_mbti("INFP");
+        user.setDesired_school("4년제 졸업");
+        user.setDesired_job("무직");
+
+        return userRepository.save(user);
     }
 
     //회원가입
