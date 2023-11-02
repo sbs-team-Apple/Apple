@@ -8,42 +8,94 @@
 <div layout:fragment="content" class="container my-3">
 
 
-        <div> 내 채팅방 목록들</div>
+        <div class="all-room-section"> 내 채팅방 목록들
 
-        <div> 내가 초대한 채팅방</div>
-        <div class="flex" th:each="room2 : ${chatRoom2}">
-               <div  th:id="${room2.id}" class="chat-subject room-id" th:text="${room2.siteUser2.nickname}+'님과 채팅방'"    th:data-room-id="${room2.id}">
+<!--        <div> 내가 초대한 채팅방</div>-->
+        <div class="flex all-room-container" th:each="room2 : ${chatRoom2}">
+            <form method="get" th:action="@{|/chat/${room2.id}/room3?userId2=${room2.siteUser2.id}|}">
+                <button type="submit"  class="flex">
+                    <div class="avatar chatRoom-user-img">
+                        <div class="w-24 rounded-full ">
+                            <img th:src="@{|${room2.siteUser2.filepath}|}">
+                        </div>
+                    </div>
+                    <div class="chatRoom-user-message">
+                    <div  th:id="${room2.id}" class="chat-subject room-id" th:text="${room2.siteUser2.nickname}"    th:data-room-id="${room2.id}">
 
-               </div>
-                <div class="last-message"></div>
-                <div>
-                    <form method="get" th:action="@{|/chat/${room2.id}/room3?userId2=${room2.siteUser2.id}|}">
-                    <input type="hidden" name="userId2" th:value="${room2.siteUser2.id}">
-                    <button type="submit" >채팅방 입장</button>
-                    </form>
-                </div>
+                   </div>
+                    <div class="last-message"></div>
+                    <div>
+                        <input type="hidden" name="userId2" th:value="${room2.siteUser2.id}">
+                    </div>
+                    </div>
 
+
+                </button>
+              </form>
         </div>
 
 
-        <div> 내가 초대받은 채팅방</div>
-        <div class="flex"   th:each="room3 : ${chatRoom3}">
-               <div th:text="${room3.siteUser.nickname}+'님과 채팅방'">
+<!--        <div> 내가 초대받은 채팅방</div>-->
+        <div class="flex all-room-container"   th:each="room3 : ${chatRoom3}">
+            <form method="get" th:action="@{|/chat/${room3.id}/room2?userId=${room3.siteUser2.id}|}">
+                <button type="submit" class="flex" >
 
-               </div>
-            <div>
-                <form method="get" th:action="@{|/chat/${room3.id}/room2?userId=${room3.siteUser2.id}|}">
-                <input type="hidden" name="userId" th:value="${room3.siteUser.id}">
-                <button type="submit" >채팅방 입장 </button>
-                 </form>
-             </div>
+                    <div class="avatar chatRoom-user-img">
+                        <div class="w-24 rounded-full ">
+                            <img th:src="@{|${room3.siteUser.filepath}|}">
+                        </div>
+                    </div>
+                    <div class="chatRoom-user-message">
+                        <div  th:id="${room3.id}" class="chat-subject room-id" th:text="${room3.siteUser.nickname}"   th:data-room-id="${room3.id}">
+
+                           </div>
+                        <div class="last-message"></div>
+                        <div>
+                            <input type="hidden" name="userId" th:value="${room3.siteUser.id}">
+
+
+                         </div>
+                    </div>
+                </button>
+            </form>
         </div>
 
 
-
+        </div>
 </div>
 </body>
 </html>
+
+<style>
+    .all-room-section {
+        width:500px;
+        height:700px;
+        margin-left:auto;
+        margin-right:auto;
+
+    }
+
+
+    img {
+        width:100px;
+        height:100px;
+
+    }
+    .all-room-container {
+        margin-bottom:20px;
+    }
+
+
+    .chatRoom-user-img {
+        margin-right:20px;
+    }
+
+    .chat-subject {
+        text-align:start;
+    }
+
+</style>
+
 
 
 <script>
@@ -135,53 +187,4 @@
 
 </script>
 
-
-<script>
-<!--    let Chat__lastLoadedId = 0;-->
-
-<!-- function Chat__loadMore() {-->
-<!--     fetchGet(`/chat/${roomId}/messages`, {-->
-<!--         fromId: Chat__lastLoadedId-->
-<!--     })-->
-<!--         .then(body => {-->
-<!--             Chat__drawMessages(body.data.messages);-->
-<!--         });-->
-<!-- }-->
-
-<!-- const Chat__elMessageUl = document.querySelector('.chat__message-ul');-->
-
-<!-- function Chat__drawMessages(messages) {-->
-<!--     if (messages.length > 0) {-->
-<!--         // 메세지를 그리기 전에 Chat__lastLoadedUuid 변수를 갱신합니다.-->
-<!--         Chat__lastLoadedId = messages[messages.length - 1].id;-->
-<!--     }-->
-
-<!--     messages.forEach((message) => {-->
-
-
-<!--         Chat__elMessageUl-->
-<!--             .insertAdjacentHTML(-->
-<!--                 "beforeBegin",-->
-<!--                 `<li class="chat__message ${alignClass}">${message.authorName} : ${message.content}</li>`-->
-<!--             );-->
-
-
-
-<!-- Chat__loadMore();-->
-
-
-<!-- // SSE 연결-->
-<!--    // SSE는 단방향 무전기-->
-<!--    // 방향 : 서버 -> 클라이언트-->
-<!--    const sse = new EventSource(`/sse/connect/chatRoom__${roomId}`);-->
-
-<!--    // 서버로부터 "chat__messageAdded" 라는 명령이 내려오면 Chat__loadMore 함수를 실행-->
-<!--    sse.addEventListener('chat__messageAdded', e => {-->
-<!--        Chat__loadMore();-->
-<!--    });-->
-
-
-
-
-</script>
 
