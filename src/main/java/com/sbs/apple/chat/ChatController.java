@@ -36,8 +36,8 @@ public class ChatController {
 
 
     //채팅방 만들기
-    @PostMapping("/{roomId}/room")
-    public String showRoom(  @RequestParam("userId") Integer userId2 , @PathVariable Long roomId, Model model, Principal principal) {
+    @PostMapping("/{roomId}/room/{userId}")
+    public String makeRoom(  @PathVariable("userId") Integer userId2 , @PathVariable Long roomId, Model model, Principal principal) {
         System.out.println("채팅방 만들기 실행됨");
 
         SiteUser user =userService.getUserbyName(principal.getName());
@@ -65,8 +65,41 @@ public class ChatController {
         model.addAttribute("user",user);
         return "redirect:/chat/"+room.getId()+"/room3?userId2="+userId2;
     }
+    
+    
+    // 사이버 머니 받고 수락시 넘어올 떄를 위해 만든거
+    @GetMapping("/{roomId}/room/{userId}")
+    public String makeRoom2(  @PathVariable("userId") Integer userId2 , @PathVariable Long roomId, Model model, Principal principal) {
+        System.out.println("채팅방 만들기 실행됨");
 
-//   내가 초대했던 원래 있던 채팅방 들어가기
+        SiteUser user =userService.getUserbyName(principal.getName());
+        SiteUser user2= userService.getUser(userId2);
+
+
+
+        ChatRoom room= chatRoomService.create(user, user2);
+
+
+        String groupKey = "userId_" + userId2;
+        System.out.println(groupKey);
+        SseEmitter emitter = new SseEmitter();
+        sseEmitters.add(groupKey, emitter);
+        sseEmitters.noti(groupKey, "invite_chatRoom");
+
+        // 채팅방 만들었다는 알림 기록 남기기
+        notificationService.create(user2,user,"chatRoom");
+
+
+
+
+
+        model.addAttribute("roomId", room.getId());
+        model.addAttribute("user",user);
+        return "redirect:/chat/"+room.getId()+"/room3?userId2="+userId2;
+    }
+
+
+    //   내가 초대했던 원래 있던 채팅방 들어가기
     @GetMapping("/{roomId}/room3")
     public String showRoom2(  @RequestParam("userId2") Integer userId2 ,Model model, Principal principal) {
         System.out.println("원래 있던 채팅방에 접속");
