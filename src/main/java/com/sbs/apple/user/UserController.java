@@ -2,6 +2,8 @@ package com.sbs.apple.user;
 
 
 import com.sbs.apple.board.BoardForm;
+import com.sbs.apple.chat.ChatRoom;
+import com.sbs.apple.chat.ChatRoomService;
 import com.sbs.apple.cybermoney.CyberMoneyTransaction;
 import com.sbs.apple.cybermoney.CyberMoneyTransactionRepository;
 import com.sbs.apple.interest.Interest;
@@ -27,9 +29,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
-
-import java.util.Map;
 import java.util.Optional;
 
 
@@ -44,7 +45,8 @@ public class UserController {
     private final ReportService reportService;
     private final UserRepository userRepository;
     private final InterestService interestService;
-    private  final CyberMoneyTransactionRepository cyberMoneyTransactionRepository;
+    private final CyberMoneyTransactionRepository cyberMoneyTransactionRepository;
+    private final ChatRoomService chatRoomService;
 
 
     @GetMapping("/signup")
@@ -106,7 +108,7 @@ public class UserController {
                 userDesiredForm.getDesired_tall(), userDesiredForm.getDesired_body_type(),
                 userDesiredForm.getDesired_smoking(), userDesiredForm.getDesired_drinking(),
                 userDesiredForm.getDesired_styleList(), userDesiredForm.getDesired_religion(),
-                userDesiredForm.getDesired_mbti(),userDesiredForm.getDesired_school(),
+                userDesiredForm.getDesired_mbti(), userDesiredForm.getDesired_school(),
                 userDesiredForm.getDesired_job());
         return "redirect:/";
     }
@@ -160,6 +162,7 @@ public class UserController {
         userService.updatePassword(username, newPassword);
         return "redirect:/user/myPage";
     }
+
     //탈퇴 페이지
     @PostMapping("/checkLoginPw")
     public ResponseEntity<String> checkLoginPw(Principal principal, @RequestParam("userPassword") String userPassword) {
@@ -282,12 +285,22 @@ public class UserController {
     //조회하기
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/detail/{id}")
-    public String paymentPage(Principal principal,Model model, @PathVariable("id") Integer id) {
+    public String paymentPage(Principal principal, Model model, @PathVariable("id") Integer id) {
         SiteUser siteUser = this.userService.getUser(id);
         model.addAttribute("siteUser", siteUser);
         String interest_user = principal.getName();
         boolean isInterested = interestService.isInterested(id, interest_user);
-        model.addAttribute("isInterested",isInterested);
+        model.addAttribute("isInterested", isInterested);
+
+        SiteUser loginUser= userService.getUserbyName(principal.getName());
+
+        //로그인한 사용자와 현재 프로필 선택한 유저 사이의 채팅방을 찾는 코드
+        ChatRoom chatRoom=chatRoomService.findRoomByUserIdAndUserId2(siteUser.getId(), loginUser.getId());
+
+        //현재 그유저와 채팅방이 있으면 채팅방 만들기 버튼은 아예 안만들 생각
+        model.addAttribute("chatRoom",chatRoom);
+
+
         return "user/profile";
     }
 
@@ -378,6 +391,7 @@ public class UserController {
         model.addAttribute("interestList", interestList);
         return "wish";
     }
+
     //나에게 관심 있는 사람 조회하기
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/wished")
@@ -387,6 +401,7 @@ public class UserController {
         model.addAttribute("interestList", interestList);
         return "wished";
     }
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/exchange")
     public String exchange(Model model, Principal principal) {
@@ -401,21 +416,102 @@ public class UserController {
     public String getTransactionHistory(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
+        SiteUser user = userService.getUserbyName(username);
 
-        Optional<SiteUser> userOptional = userRepository.findByUsername(username);
-        if (userOptional.isPresent()) {
-            SiteUser user = userOptional.get();
-            List<CyberMoneyTransaction> transactions = cyberMoneyTransactionRepository.findByRecipientUser(user);
-            transactions.addAll(cyberMoneyTransactionRepository.findBySenderUser(user));
+        int userCyberMoney = user.getCyberMoney();
+        int receivedCyberMoney = user.getReceivedCyberMoney(); // 다른 사용자로부터 받은 사이버머니
 
-            // 모델에 데이터를 추가하여 뷰로 전달
-            model.addAttribute("receivedTransactions", transactions); // 받은 거래 정보
-            model.addAttribute("sentTransactions", transactions); // 보낸 거래 정보
+        List<CyberMoneyTransaction> receivedTransactions = cyberMoneyTransactionRepository.findByRecipientUser(user);
+        List<CyberMoneyTransaction> sentTransactions = cyberMoneyTransactionRepository.findBySenderUser(user);
 
-            return "transactions"; // 템플릿 이름 (예: transaction-history.html)
-        } else {
-            return "error"; // 오류 페이지 템플릿 이름 (예: error.html)
+        // 완료된 거래 목록을 생성
+        List<CyberMoneyTransaction> completedTransactions = new ArrayList<>();
+        for (CyberMoneyTransaction transaction : receivedTransactions) {
+            if (transaction.isAccepted() || transaction.isRejected()) {
+                completedTransactions.add(transaction);
+            }
         }
+
+        // receivedTransactions에서 완료된 거래를 제거하고 completedTransactions에 추가
+        receivedTransactions.removeIf(transaction -> transaction.isAccepted() || transaction.isRejected());
+        completedTransactions.addAll(receivedTransactions);
+
+        // 여기에서 sentTransactions에서도 완료된 거래를 필터링하고 추가하는 로직을 추가할 수 있습니다.
+        for (CyberMoneyTransaction transaction : sentTransactions) {
+            if (transaction.isAccepted() || transaction.isRejected()) {
+                completedTransactions.add(transaction);
+            }
+        }
+
+        // 모델에 데이터를 추가하여 뷰로 전달
+        model.addAttribute("receivedTransactions", receivedTransactions); // 받은 거래 정보
+        model.addAttribute("sentTransactions", sentTransactions); // 보낸 거래 정보
+        model.addAttribute("userCyberMoney", userCyberMoney);
+        model.addAttribute("receivedCyberMoney", receivedCyberMoney); // 다른 사용자로부터 받은 사이버머니
+        model.addAttribute("completedTransactions", completedTransactions); // 완료된 거래 정보
+
+        return "transactions"; // 템플릿 이름 (예: transaction-history.html)
+    }
+
+    @PostMapping("/processTransaction")
+    public String processTransaction(
+            @RequestParam("transactionId") Long transactionId,
+            @RequestParam("action") String action,
+            @RequestParam("toUserId") Integer toUserId
+    ) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        Optional<SiteUser> recipientUserOptional = userRepository.findByUsername(username);
+        if (!recipientUserOptional.isPresent()) {
+            return "redirect:/error?message=받는 사용자를 찾을 수 없습니다.";
+        }
+        SiteUser recipientUser = recipientUserOptional.get();
+
+        Optional<CyberMoneyTransaction> transactionOptional = cyberMoneyTransactionRepository.findById(transactionId);
+        if (!transactionOptional.isPresent()) {
+            return "redirect:/error?message=거래를 찾을 수 없습니다.";
+        }
+        CyberMoneyTransaction transaction = transactionOptional.get();
+
+        if ("accept".equals(action) && !transaction.isAccepted() && !transaction.isRejected()) {
+            // 거래가 아직 수락되지 않았을 경우에만 처리
+            transaction.setAccepted(true);
+            cyberMoneyTransactionRepository.save(transaction);
+
+            recipientUser.setReceivedCyberMoney(recipientUser.getReceivedCyberMoney() + transaction.getAmount());
+            userRepository.save(recipientUser);
+        } else if ("reject".equals(action) && !transaction.isAccepted() && !transaction.isRejected()) {
+            // 거래가 아직 수락되지 않았고 거부되지 않았을 경우에만 처리
+            transaction.setRejected(true); // 거부 플래그 설정
+
+            // 보낸 사람에게 사이버머니를 반환하는 로직 구현
+            SiteUser senderUser = transaction.getSenderUser();
+            senderUser.setCyberMoney(senderUser.getCyberMoney() + transaction.getAmount());
+            userRepository.save(senderUser);
+        } else {
+            return "redirect:/error?message=이미 수락 또는 거부된 거래입니다.";
+        }
+
+        // 아래의 코드로 거래를 receivedTransactions에서 삭제하고 completedTransactions로 이동
+        recipientUser.getReceivedTransactions().remove(transaction);
+        recipientUser.getCompletedTransactions().add(transaction);
+        userRepository.save(recipientUser);
+
+        //채팅방 만드는건 여기서부터 구현
+
+        ChatRoom chatRoom= chatRoomService.findLastRoom();
+        //만들어진 채팅 방이 없을시 기본값 채팅방 번호 1 부여
+        int roomId=1;
+
+        if(chatRoom != null){
+        roomId=chatRoom.getId()+1;}
+
+        //사이버 머니 받은 사용자의 id 즉 채팅방 초대받는 유저 인덱스번호
+
+
+
+        return "redirect:/chat/"+roomId+"/room/"+toUserId; // 거래 내역 페이지로 리다이렉트
     }
 
 }
