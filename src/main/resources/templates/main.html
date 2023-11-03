@@ -5,57 +5,114 @@
     <title>메인</title>
 </head>
 <body>
-<div layout:fragment="content" class="container my-3">
+<div layout:fragment="content" class="container m-auto">
+    <div th:unless="${#authorization.expression('isAuthenticated()')}">
+        <div class="underBody">
+            <form th:action="@{/user/login}" method="post" class="login">
+                <div th:if="${param.error}">
+                    <div class="alert alert-danger">
+                        사용자ID 또는 비밀번호를 확인해 주세요.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <input type="text" name="username" id="username" class="form-control" placeholder=" 아이디">
+                </div>
+                <div class="mb-3">
+                    <input type="password" name="password" id="password" class="form-control" placeholder=" 비밀번호">
+                </div>
 
+                <input type="submit" value="로그인" class="btn btn-primary my-2">
+            </form>
+            <div class="mb-3">
+                <a href="#">아이디 찾기</a>
+                <span>|</span>
+                <a href="#">비밀번호 찾기</a>
+                <span>|</span>
+                <a href="/user/signup">회원가입</a>
+            </div>
+            <div class=kakao>
+                <a href="/oauth2/authorization/kakao" class="social-kakao">카카오 로그인</a>
+            </div>
+
+        </div>
+        <style>
+            .container {
+                margin: 0 auto;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .underBody {
+                border-radius: 15px;
+                padding: 30px 15px 15px 15px;
+                border: 1px solid rgb(198, 198, 198);
+                display: flex;
+                flex-direction: column; /* 아래로 요소를 쌓도록 설정 */
+                align-items: center;
+            }
+            .login {
+                margin-bottom: 20px; /* 로그인 폼과 카카오 로그인 버튼 사이의 간격 조정 */
+            }
+            .form-control {
+             border-radius: 10px;
+                width: 308px;
+                height: 40px;
+            }
+            .my-2 {
+                padding: 0 135px;
+                margin: 0;
+            }
+            .kakao {
+                text-align: center;
+            }
+            .alert-danger {
+            padding: 0 0px 0 15px;
+        }
+        </style>
+    </div>
+    <div th:if="${#authorization.expression('isAuthenticated()')}" class="profile m-auto">
+        <div class="profile_in m-auto flex justify-center flex-col items-center"
+             th:each="userList : ${userList}" style="margin-bottom: 20px;">
+
+            <div>
+                <a th:href="@{|/user/detail/${userList.id}|}">
+                    <img class="w-50 h-50" th:src="@{|${userList.filepath}|}" alt="User Image"
+                         style="max-width: 300px; max-height: 300px;">
+                </a>
+            </div>
+            <div>
+                <span th:text="${userList.nickname}"></span>
+                <span> | </span>
+                <span th:text="${userList.age}"></span>
+                <span> | </span>
+                <span th:text="${userList.living}"></span>
+            </div>
+            <div th:text="${userList.About_Me}"></div>
+
+
+        </div>
+    </div>
     <div th:if="${#authorization.expression('isAuthenticated()') and userWarning}">
         <div id="warningMessage" style="color: red; font-weight: bold;">경고합니다</div>
     </div>
     <div th:if="${#authorization.expression('isAuthenticated()') and userWarning}">
         <a th:href="@{/user/okay}">확인했습니다.</a>
     </div>
+
     <div th:if="${siteUsers != null}" th:each="user : ${siteUsers}">
         <div class="flex  ">
-            <div><a  th:value="${user.id}"  name="userId" th:text="${user.nickname}"></a></div>
+            <div><a th:value="${user.id}" name="userId" th:text="${user.nickname}"></a></div>
             <div>
-                <form method="post"  th:action="@{|/chat/${chatRoom != null ? chatRoom.id+1 : 1}/room?userId2=${user.id}|}">
+                <form method="post"
+                      th:action="@{|/chat/${chatRoom != null ? chatRoom.id+1 : 1}/room?userId2=${user.id}|}">
                     <input class="userId_value" type="hidden" name="userId" th:value="${user.id}">
-                    <button type="submit" >님과 채팅방 만들기 </button>
+                    <button type="submit">님과 채팅방 만들기</button>
                 </form>
             </div>
         </div>
 
     </div>
 
-
-
-
-
-
-    <table th:if="${#authorization.expression('isAuthenticated()')}">
-        <thead>
-        <tr>
-            <th>사진</th>
-            <th>닉네임</th>
-            <th>지역</th>
-            <th>나이</th>
-            <th>간단 자기소개</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="userList : ${userList}">
-            <td>
-                <a th:href="@{|/user/detail/${userList.id}|}">
-                    <img class="w-30 h-30" th:src="@{|${userList.filepath}|}" alt="User Image" style="max-width: 300px; max-height: 300px;">
-                </a>
-            </td>
-            <td th:text="${userList.nickname}"></td>
-            <td th:text="${userList.living}"></td>
-            <td th:text="${userList.age}"></td>
-            <td th:text="${userList.About_Me}"></td>
-
-        </tr>
-        </tbody>
-    </table>
 </div>
 
 
