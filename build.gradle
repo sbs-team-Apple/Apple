@@ -39,6 +39,9 @@ dependencies {
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 
+
+	runtimeOnly 'com.h2database:h2'
+
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 
@@ -49,6 +52,7 @@ dependencies {
 
 
 	implementation 'com.vaadin.external.google:android-json:0.0.20131108.vaadin1'
+	implementation 'org.thymeleaf:thymeleaf:3.1.0.RELEASE'
 }
 
 tasks.named('test') {
