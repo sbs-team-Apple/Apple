@@ -291,6 +291,16 @@ public class UserController {
         String interest_user = principal.getName();
         boolean isInterested = interestService.isInterested(id, interest_user);
         model.addAttribute("isInterested", isInterested);
+
+        SiteUser loginUser= userService.getUserbyName(principal.getName());
+
+        //로그인한 사용자와 현재 프로필 선택한 유저 사이의 채팅방을 찾는 코드
+        ChatRoom chatRoom=chatRoomService.findRoomByUserIdAndUserId2(siteUser.getId(), loginUser.getId());
+
+        //현재 그유저와 채팅방이 있으면 채팅방 만들기 버튼은 아예 안만들 생각
+        model.addAttribute("chatRoom",chatRoom);
+
+
         return "user/profile";
     }
 
