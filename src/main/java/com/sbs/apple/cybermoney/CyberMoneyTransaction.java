@@ -27,4 +27,8 @@ public class CyberMoneyTransaction {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date transactionDate;
+
+    private boolean accepted = false;
+
+    private boolean rejected = false;
 }

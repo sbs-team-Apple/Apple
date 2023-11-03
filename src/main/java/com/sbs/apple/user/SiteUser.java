@@ -3,8 +3,9 @@ package com.sbs.apple.user;
 
 import com.sbs.apple.board.Board;
 import com.sbs.apple.chat.ChatRoom;
-import com.sbs.apple.notification.Notification;
+import com.sbs.apple.cybermoney.CyberMoneyTransaction;
 import com.sbs.apple.interest.Interest;
+import com.sbs.apple.notification.Notification;
 import com.sbs.apple.report.Report;
 import jakarta.persistence.*;
 import lombok.*;
@@ -141,5 +142,20 @@ public class SiteUser {
     private List<Board> boardList;
 
 
+    @Getter
+    @OneToMany(mappedBy = "recipientUser", fetch = FetchType.LAZY)
+    private List<CyberMoneyTransaction> receivedTransactions;
 
+    public List<CyberMoneyTransaction> getCompletedTransactions() {
+        List<CyberMoneyTransaction> completedTransactions = new ArrayList<>();
+
+        // 여기에서 완료된 거래 목록을 생성하고 반환합니다.
+        for (CyberMoneyTransaction transaction : receivedTransactions) {
+            if (transaction.isAccepted() || transaction.isRejected()) {
+                completedTransactions.add(transaction);
+            }
+        }
+
+        return completedTransactions;
+    }
 }
