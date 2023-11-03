@@ -2,6 +2,8 @@ package com.sbs.apple.user;
 
 
 import com.sbs.apple.board.BoardForm;
+import com.sbs.apple.chat.ChatRoom;
+import com.sbs.apple.chat.ChatRoomService;
 import com.sbs.apple.cybermoney.CyberMoneyTransaction;
 import com.sbs.apple.cybermoney.CyberMoneyTransactionRepository;
 import com.sbs.apple.interest.Interest;
@@ -44,6 +46,7 @@ public class UserController {
     private final UserRepository userRepository;
     private final InterestService interestService;
     private final CyberMoneyTransactionRepository cyberMoneyTransactionRepository;
+    private final ChatRoomService chatRoomService;
 
 
     @GetMapping("/signup")
@@ -443,7 +446,8 @@ public class UserController {
     @PostMapping("/processTransaction")
     public String processTransaction(
             @RequestParam("transactionId") Long transactionId,
-            @RequestParam("action") String action
+            @RequestParam("action") String action,
+            @RequestParam("toUserId") Integer toUserId
     ) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
@@ -484,7 +488,20 @@ public class UserController {
         recipientUser.getCompletedTransactions().add(transaction);
         userRepository.save(recipientUser);
 
-        return "redirect:/user/transactions"; // 거래 내역 페이지로 리다이렉트
+        //채팅방 만드는건 여기서부터 구현
+
+        ChatRoom chatRoom= chatRoomService.findLastRoom();
+        //만들어진 채팅 방이 없을시 기본값 채팅방 번호 1 부여
+        int roomId=1;
+
+        if(chatRoom != null){
+        roomId=chatRoom.getId()+1;}
+
+        //사이버 머니 받은 사용자의 id 즉 채팅방 초대받는 유저 인덱스번호
+
+
+
+        return "redirect:/chat/"+roomId+"/room/"+toUserId; // 거래 내역 페이지로 리다이렉트
     }
 
 }
