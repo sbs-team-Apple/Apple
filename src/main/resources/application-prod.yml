@@ -12,6 +12,9 @@ spring:
           auth: true
           starttls:
             enable: true
+  thymeleaf:
+    cache: false
+    prefix: classpath:templates/
   datasource:
     url: jdbc:mariadb://172.17.0.1:3306/the_cupid_prod
     username: the-cupidlocal
@@ -34,7 +37,7 @@ spring:
             user-name-attribute: id
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     database-platform: org.hibernate.dialect.MySQLDialect
     properties:
       hibernate:
