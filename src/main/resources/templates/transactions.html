@@ -1,19 +1,85 @@
-
+<!DOCTYPE html>
 <html layout:decorate="~{common/layout}" lang="en">
+<head>
     <!-- 필요한 스타일시트, 스크립트 등을 포함합니다. -->
+    <style>
+        ul li {
+            margin-bottom: 10px; /* 원하는 간격을 설정하세요. */
+            border: 1px solid #000; /* 네모 테두리 스타일 */
+            padding: 10px; /* 네모 내부 여백 */
+        }
+        .tab-button {
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 <div layout:fragment="content" class="container my-3">
-    <h2>받은 거래</h2>
-    <ul>
-        <!-- "receivedTransactions" 모델 속성에서 각 거래를 반복 -->
-        <li th:each="transaction : ${receivedTransactions}">
-            <p th:text="'발신자: ' + ${transaction.senderUser.username}"></p>
-            <p th:text="'금액: ' + ${transaction.amount}"></p>
-            <p th:text="'날짜: ' + ${transaction.transactionDate}"></p>
-        </li>
-    </ul>
-    <div>다른 사용자로부터 받은 사이버머니: <span th:text="${receivedCyberMoney}"></span></div>
+
+    <p>보유 중인 사이버머니: <span th:text="${userCyberMoney}"></span></p>
+    <p>다른 사용자로부터 받은 사이버머니: <span th:text="${receivedCyberMoney}"></span></p>
+
+    <div class="tab-buttons" style="display: flex; justify-content: center;">
+        <div style="text-align: center; flex: 1;">
+            <button class="btn btn-sm" onclick="showTab('receivedTab')">받은 거래</button>
+        </div>
+        <div style="text-align: center; flex: 1;">
+            <button class="btn btn-sm" onclick="showTab('completedTab')">완료된 거래</button>
+        </div>
+    </div>
+
+
+
+
+    <div id="receivedTab" class="tab-content">
+        <ul>
+            <li th:each="transaction : ${receivedTransactions}" style="display: flex; justify-content: space-between;">
+                <div>
+                    <p th:text="${transaction.senderUser.username} +' 님이 ♥ ' + ${transaction.amount} + '개를 보냈습니다'"></p>
+                    <p th:text="'날짜: ' + ${transaction.transactionDate}"></p>
+                </div>
+                <!-- "수락" 버튼 -->
+                <div style="display: flex; align-items: center;">
+                    <form th:action="@{/user/processTransaction}" method="post">
+                        <input type="hidden" name="toUserId" th:value="${transaction.senderUser.id}" />
+                        <input type="hidden" name="transactionId" th:value="${transaction.id}" />
+                        <input type="hidden" name="action" value="accept" /> <!-- 수락 작업 설정 -->
+                        <button class="btn btn-sm" type="submit" th:disabled="${transaction.isAccepted() or transaction.isRejected()}">수락</button>
+                    </form>
+                    <div style="width: 10px;"></div> <!-- 10px 여백 추가 -->
+                    <!-- "거절" 버튼 -->
+                    <form th:action="@{/user/processTransaction}" method="post">
+                        <input type="hidden" name="transactionId" th:value="${transaction.id}" />
+                        <input type="hidden" name="action" value="reject" /> <!-- 거절 작업 설정 -->
+                        <button class="btn btn-sm" type="submit" th:disabled="${transaction.isAccepted() or transaction.isRejected()}">거절</button>
+                    </form>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div id="completedTab" class="tab-content" style="display: none;">
+        <ul>
+            <li th:each="transaction : ${completedTransactions}" th:if="${transaction.isAccepted()} or ${transaction.isRejected()}" style="display: flex; justify-content: space-between;">
+                <div>
+                    <p th:text="${transaction.senderUser.username} +' 님이 ♥ ' + ${transaction.amount} + '개를 보냈습니다'"></p>
+                    <p th:text="'날짜: ' + ${transaction.transactionDate}"></p>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+
+
+    <script>
+        function showTab(tabName) {
+            var tabContents = document.getElementsByClassName('tab-content');
+            for (var i = 0; i < tabContents.length; i++) {
+                tabContents[i].style.display = 'none';
+            }
+            document.getElementById(tabName).style.display = 'block';
+        }
+    </script>
 </div>
 </body>
 </html>
