@@ -1,5 +1,7 @@
 server:
   port: 8080
+file:
+  upload-dir: /tmp/uploads/
 spring:
   mail:
     host: smtp.gmail.com
@@ -37,7 +39,7 @@ spring:
             user-name-attribute: id
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     database-platform: org.hibernate.dialect.MySQLDialect
     properties:
       hibernate:
@@ -55,3 +57,6 @@ custom:
   site:
     name: The Cupid
     baseUrl: "http://118.67.142.168"
+
+    genFile:
+      dirPath: /tmp/uploads/
