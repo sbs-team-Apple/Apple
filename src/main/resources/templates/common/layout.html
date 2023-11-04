@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="ko" data-theme="dark">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title layout:title-pattern="$CONTENT_TITLE | $LAYOUT_TITLE" th:text="사과"></title>
+    <title layout:title-pattern="$LAYOUT_TITLE" th:text="The_Cupid"></title>
 
     <!-- 제이쿼리 불러오기 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -72,7 +72,7 @@
                 </div>
             </div>
             <div class="navbar-center">
-                <a th:href="@{/}" class="btn btn-ghost normal-case text-xl">The cupid</a>
+                <a th:href="@{/}" class="btn btn-ghost normal-case text-xl">The Cupid</a>
             </div>
             <div class="navbar-end">
                 <div  class="userIdDiv" th:if="${@rq.login}" th:text="${@rq.user.id}"></div>
@@ -108,7 +108,7 @@
 
 
     </header>
-    <main class="flex-1 flex flex-col">
+    <main class="min-h-screen flex flex-col">
         <th:block layout:fragment="content"></th:block>
     </main>
 </div>
