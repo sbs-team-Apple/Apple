@@ -3,6 +3,9 @@ server:
 file:
   upload-dir: /tmp/uploads/
 spring:
+  data:
+    redis:
+      host: 172.17.0.1
   mail:
     host: smtp.gmail.com
     port: 587
