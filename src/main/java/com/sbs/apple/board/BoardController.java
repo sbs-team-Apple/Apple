@@ -5,19 +5,16 @@ import com.sbs.apple.user.SiteUser;
 import com.sbs.apple.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
-import org.springframework.boot.Banner;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
-import java.util.UUID;
 
 
 @RequiredArgsConstructor
@@ -30,7 +27,7 @@ public class BoardController {
 
     @GetMapping("/create")
     public String Create(BoardForm boardForm) {
-        return "/board/appeal_board_create";
+        return "board/appeal_board_create";
 
     }
 
@@ -43,7 +40,7 @@ public class BoardController {
               );
 
 
-        return "redirect:/board/appealList";
+        return "redirect:board/appealList";
     }
 
     @GetMapping("/appealList")
@@ -54,7 +51,7 @@ public class BoardController {
         model.addAttribute("board", boards);
 
 
-        return "/board/appeal_board_list";
+        return "board/appeal_board_list";
 
     }
 
@@ -66,7 +63,7 @@ public class BoardController {
         model.addAttribute("board", board);
 
 
-        return "/board/appeal_board_detail";
+        return "board/appeal_board_detail";
 
     }
 
@@ -75,7 +72,7 @@ public class BoardController {
        Board board = boardService.getBoard(id);
        model.addAttribute("board",board);
 
-        return "/board/appeal_board_modify";
+        return "board/appeal_board_modify";
 
     }
 
@@ -88,7 +85,7 @@ public class BoardController {
 
 
 
-        return "redirect:/board/appealList";
+        return "redirect:board/appealList";
     }
 
 
@@ -98,7 +95,7 @@ public class BoardController {
         boardService.doDelete(board);
 
 
-        return "redirect:/board/appealList";
+        return "redirect:board/appealList";
     }
 
 
@@ -111,7 +108,7 @@ public class BoardController {
 
 
 
-        return "/board/my_appeal_board";
+        return "board/my_appeal_board";
     }
 
 
@@ -126,7 +123,7 @@ public class BoardController {
 
 
 
-        return "/board/my_desiredList";
+        return "board/my_desiredList";
     }
 
 
