@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html layout:decorate="~{/common/layout}" lang="en">
+<html layout:decorate="~{common/layout}" lang="en">
 <head>
     <!-- 필요한 스타일시트, 스크립트 등을 포함합니다. -->
     <style>
@@ -41,6 +41,7 @@
                 <!-- "수락" 버튼 -->
                 <div style="display: flex; align-items: center;">
                     <form th:action="@{/user/processTransaction}" method="post">
+                        <input type="hidden" name="toUserId" th:value="${transaction.senderUser.id}" />
                         <input type="hidden" name="transactionId" th:value="${transaction.id}" />
                         <input type="hidden" name="action" value="accept" /> <!-- 수락 작업 설정 -->
                         <button class="btn btn-sm" type="submit" th:disabled="${transaction.isAccepted() or transaction.isRejected()}">수락</button>

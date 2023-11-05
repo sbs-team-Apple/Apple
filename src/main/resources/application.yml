@@ -1,5 +1,5 @@
 server:
-  port: 8090
+  port: 8080
   http2:
     enabled: true
 file:
@@ -51,6 +51,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQLDialect
     properties:
       hibernate:
         default_batch_fetch_size: 100
