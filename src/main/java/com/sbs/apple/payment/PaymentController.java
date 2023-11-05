@@ -46,8 +46,19 @@ public class PaymentController {
         String secretKey = "test_sk_nRQoOaPz8L9X60z0eEG3y47BMw6v:";
 
         if (username != null) {
-            // 결제가 발생한 사용자에게만 사이버 머니 추가
-            paymentService.grantCyberMoneyToUser(username, amount);
+            int cyberMoneyToAdd = 0;
+            if (amount == 5000) {
+                cyberMoneyToAdd = amount / 100;
+            } else if (amount == 10000) {
+                cyberMoneyToAdd = amount / 100 + 10;
+            } else if (amount == 30000) {
+                cyberMoneyToAdd = amount / 100 + 40;
+            } else if (amount == 50000) {
+                cyberMoneyToAdd = amount / 100 + 100;
+            }
+
+            // 결제가 발생한 사용자에게 사이버 머니 추가
+            paymentService.grantCyberMoneyToUser(username, cyberMoneyToAdd);
         }
 
         Base64.Encoder encoder = Base64.getEncoder();
