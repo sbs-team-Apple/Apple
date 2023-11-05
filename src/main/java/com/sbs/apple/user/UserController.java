@@ -398,6 +398,15 @@ public class UserController {
 
         return "pay/exchange";
     }
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/exchange_apply")
+    public String exchange_apply(Model model, Principal principal) {
+        String username = principal.getName();
+        SiteUser siteUser = userService.getUserbyName(username);
+        model.addAttribute("siteUser", siteUser);
+
+        return "pay/exchange_apply";
+    }
 
     @GetMapping("/transactions")
     public String getTransactionHistory(Model model) {
