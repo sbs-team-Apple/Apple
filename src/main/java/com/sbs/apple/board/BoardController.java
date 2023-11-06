@@ -30,7 +30,7 @@ public class BoardController {
 
     @GetMapping("/create")
     public String Create(BoardForm boardForm) {
-        return "/board/appeal_board_create";
+        return "board/appeal_board_create";
 
     }
 
@@ -54,7 +54,7 @@ public class BoardController {
         model.addAttribute("board", boards);
 
 
-        return "/board/appeal_board_list";
+        return "board/appeal_board_list";
 
     }
 
@@ -66,7 +66,7 @@ public class BoardController {
         model.addAttribute("board", board);
 
 
-        return "/board/appeal_board_detail";
+        return "board/appeal_board_detail";
 
     }
 
@@ -75,7 +75,7 @@ public class BoardController {
        Board board = boardService.getBoard(id);
        model.addAttribute("board",board);
 
-        return "/board/appeal_board_modify";
+        return "board/appeal_board_modify";
 
     }
 
@@ -111,7 +111,7 @@ public class BoardController {
 
 
 
-        return "/board/my_appeal_board";
+        return "board/my_appeal_board";
     }
 
 
@@ -126,7 +126,7 @@ public class BoardController {
 
 
 
-        return "/board/my_desiredList";
+        return "board/my_desiredList";
     }
 
 
