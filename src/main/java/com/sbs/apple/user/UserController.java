@@ -461,6 +461,26 @@ public class UserController {
 
         return "redirect:/chat/" + roomId + "/room/" + toUserId; // 거래 내역 페이지로 리다이렉트
     }
-
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/interest")
+    public String interest_all(Principal principal ,Model model) {
+        SiteUser siteUser = this.userService.getUserbyName(principal.getName());
+        model.addAttribute("siteUser", siteUser);
+        return "user/interest_all";
+    }
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/heart")
+    public String heart(Principal principal ,Model model) {
+        SiteUser siteUser = this.userService.getUserbyName(principal.getName());
+        model.addAttribute("siteUser", siteUser);
+        return "user/interest_all";
+    }
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/setting")
+    public String setting(Principal principal ,Model model) {
+        SiteUser siteUser = this.userService.getUserbyName(principal.getName());
+        model.addAttribute("siteUser", siteUser);
+        return "user/setting";
+    }
 }
 
