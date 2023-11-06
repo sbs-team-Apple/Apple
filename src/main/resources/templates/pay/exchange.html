@@ -19,11 +19,15 @@
             margin-bottom: 10px;
         }
         .apply-button {
-        border: 2px solid #000;
-        padding: 10px 20px;
-        background-color: #FFF; /* 배경 색상을 원하는 색상으로 변경하세요 */
-        color: #000; /* 텍스트 색상을 원하는 색상으로 변경하세요 */
-        cursor: pointer;
+            border: 2px solid #000;
+            padding: 10px 20px;
+            background-color: #FFF; /* 배경 색상을 원하는 색상으로 변경하세요 */
+            color: #000; /* 텍스트 색상을 원하는 색상으로 변경하세요 */
+            cursor: pointer;
+        }
+        .error-message {
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -49,22 +53,33 @@
         </div>
         <div class="separator"></div>
         <div>
-            <p>환전 가능한 사이버머니: <span th:text="${receivedCyberMoney}"></span></p>
-            <p>환전 신청할 사이버머니: <input type="text" id="cybermony_exchange" required placeholder="1000개 이상 입력 하세요."></p>
+            <p>환전 가능한 하트개수: <span th:text="${receivedCyberMoney}"></span></p>
+            <p>환전 신청할 하트개수: <input type="text" id="cybermony_exchange" required placeholder="100개 이상 입력하세요."></p>
+            <p class="error-message" id="error-message"></p>
         </div>
         <div class="separator"></div>
-            <button id="exchangeButton" type="button" class="apply-button">환전신청</button>
+        <button id="exchangeButton" type="button" class="apply-button">환전신청</button>
     </div>
-    <script>
-        document.getElementById("exchangeButton").addEventListener("click", function() {
-        // 두 번째 페이지의 URL을 여기에 입력
-        var secondPageURL = "/user/exchange_apply";
+    <!-- Thymeleaf에서 제공하는 방법 -->
+    <script th:inline="javascript">
+        var receivedCyberMoney = /*[[${receivedCyberMoney}]]*/ null; // 서버에서 제공한 값을 가져옵니다.
 
-        // 두 번째 페이지로 이동
-        window.location.href = secondPageURL;
+        document.getElementById("exchangeButton").addEventListener("click", function() {
+            var exchangeInput = document.getElementById("cybermony_exchange").value;
+            var errorMessageElement = document.getElementById("error-message");
+
+            if (isNaN(exchangeInput) || exchangeInput < 100) {
+                errorMessageElement.innerText = "100개 이상 입력해주세요.";
+            } else if (parseInt(exchangeInput) > receivedCyberMoney) {
+                errorMessageElement.innerText = "하트개수가 부족합니다.";
+            } else {
+                // 유효한 입력이면 다음 페이지로 이동
+                var secondPageURL = "/user/exchange_apply   ";
+                window.location.href = secondPageURL;
+            }
         });
     </script>
-</div>
 
+</div>
 </body>
 </html>
