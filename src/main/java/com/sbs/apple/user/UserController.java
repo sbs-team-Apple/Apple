@@ -327,7 +327,7 @@ public class UserController {
     @GetMapping("/grantAuthorityToAdmin")
     public String grantAuthorityForm(Principal principal) {
 
-        return "/admin/grantAuthorityForm";
+        return "admin/grantAuthorityForm";
     }
 
     @PostMapping("/grantAuthorityToAdmin")
@@ -354,7 +354,7 @@ public class UserController {
         SiteUser siteUser = userService.getUser(id);
         model.addAttribute("siteUser", siteUser);
 
-        return "/user/userPhoto_modify";
+        return "user/userPhoto_modify";
 
     }
 
