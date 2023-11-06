@@ -6,7 +6,8 @@ import com.sbs.apple.chat.ChatRoom;
 import com.sbs.apple.chat.ChatRoomService;
 import com.sbs.apple.cybermoney.CyberMoneyTransaction;
 import com.sbs.apple.cybermoney.CyberMoneyTransactionRepository;
-import com.sbs.apple.interest.Interest;
+import com.sbs.apple.exchange.ExchangeRepository;
+import com.sbs.apple.exchange.ExchangeService;
 import com.sbs.apple.interest.InterestService;
 import com.sbs.apple.report.ReportForm;
 import com.sbs.apple.report.ReportService;
@@ -47,6 +48,8 @@ public class UserController {
     private final InterestService interestService;
     private final CyberMoneyTransactionRepository cyberMoneyTransactionRepository;
     private final ChatRoomService chatRoomService;
+    private final ExchangeService exchangeService;
+    private final ExchangeRepository exchangeRepository;
 
 
     @GetMapping("/signup")
@@ -273,15 +276,6 @@ public class UserController {
         return "redirect:/user/myPage";
     }
 
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/payment")
-    public String paymentPage(Model model, Principal principal) {
-        String username = principal.getName();
-        SiteUser user = userService.getUserbyName(username);
-        model.addAttribute("user", user);
-        return "/pay/payment";
-    }
-
     //조회하기
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/detail/{id}")
@@ -364,62 +358,6 @@ public class UserController {
         SiteUser user = userService.getUserbyName(principal.getName());
         userService.photoModify(user, boardForm.getFile());
         return "redirect:/user/myPage";
-    }
-
-    //관심 추가하기
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/add_interest/{id}")
-    public String toggleInterest(Principal principal, @PathVariable Integer id, Model model) {
-        String interest_user = principal.getName();
-        model.addAttribute("userId", id);
-        boolean isInterested = interestService.isInterested(id, interest_user);
-        if (isInterested) {
-            interestService.removeInterest(id, interest_user);
-        } else {
-            interestService.addInterest(id, interest_user);
-        }
-        return "redirect:/user/detail/{id}";
-    }
-
-
-    //내가 관심있는 사람 조회하기
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/wish")
-    public String showWish(Principal principal, Model model) {
-        String username = principal.getName();
-        List<Interest> interestList = interestService.getWishUsers(username);
-        model.addAttribute("interestList", interestList);
-        return "wish";
-    }
-
-    //나에게 관심 있는 사람 조회하기
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/wished")
-    public String showWished(Principal principal, Model model) {
-        String username = principal.getName();
-        List<Interest> interestList = interestService.getWishedUsers(username);
-        model.addAttribute("interestList", interestList);
-        return "wished";
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/exchange")
-    public String exchange(Model model, Principal principal) {
-        String username = principal.getName();
-        SiteUser user = userService.getUserbyName(username);
-        model.addAttribute("user", user);
-
-        return "pay/exchange";
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/exchange_apply")
-    public String exchange_apply(Model model, Principal principal) {
-        String username = principal.getName();
-        SiteUser siteUser = userService.getUserbyName(username);
-        model.addAttribute("siteUser", siteUser);
-
-        return "pay/exchange_apply";
     }
 
     @GetMapping("/transactions")
