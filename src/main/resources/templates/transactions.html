@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html layout:decorate="~{/common/layout}" lang="en">
+<html layout:decorate="~{common/layout}" lang="en">
 <head>
     <!-- 필요한 스타일시트, 스크립트 등을 포함합니다. -->
     <style>
-        ul li {
+        .Transactions_list {
             margin-bottom: 10px; /* 원하는 간격을 설정하세요. */
             border: 1px solid #000; /* 네모 테두리 스타일 */
             padding: 10px; /* 네모 내부 여백 */
@@ -33,7 +33,7 @@
 
     <div id="receivedTab" class="tab-content">
         <ul>
-            <li th:each="transaction : ${receivedTransactions}" style="display: flex; justify-content: space-between;">
+            <li class="Transactions_list" th:each="transaction : ${receivedTransactions}" style="display: flex; justify-content: space-between;">
                 <div>
                     <p th:text="${transaction.senderUser.username} +' 님이 ♥ ' + ${transaction.amount} + '개를 보냈습니다'"></p>
                     <p th:text="'날짜: ' + ${transaction.transactionDate}"></p>

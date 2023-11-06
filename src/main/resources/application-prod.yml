@@ -1,11 +1,11 @@
 server:
-  port: 8090
+  port: 8080
 file:
-  upload-dir: C:/uploads/
+  upload-dir: /tmp/uploads/
 spring:
-  profiles:
-    active: prod
-    include: secret
+  data:
+    redis:
+      host: 172.17.0.1
   mail:
     host: smtp.gmail.com
     port: 587
@@ -19,19 +19,13 @@ spring:
             enable: true
   thymeleaf:
     cache: false
-    prefix: file:src/main/resources/templates/
-  output:
-    ansi:
-      enabled: always
+    prefix: classpath:templates/
   datasource:
-    url: jdbc:mariadb://118.67.142.168:3306/the_cupid_prod
-    username: root
-    password:
+    url: jdbc:mariadb://172.17.0.1:3306/the_cupid_prod
+    username: the-cupidlocal
+    password: 1234
     driver-class-name: org.mariadb.jdbc.Driver
   security:
-    user:
-      name: user
-      password: 1234
     oauth2:
       client:
         registration:
@@ -48,34 +42,24 @@ spring:
             user-name-attribute: id
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQLDialect
     properties:
       hibernate:
         default_batch_fetch_size: 100
-        format_sql: true
-        highlight_sql: true
-        use_sql_comments: true
+        format_sql: false
+        highlight_sql: false
+        use_sql_comments: false
 logging:
   level:
-    org.hibernate.SQL: DEBUG
-    org.hibernate.orm.jdbc.bind: TRACE
-    org.hibernate.orm.jdbc.extract: TRACE
-    org.springframework.transaction.interceptor: TRACE
+    org.hibernate.SQL: INFO
+    org.hibernate.orm.jdbc.bind: INFO
+    org.hibernate.orm.jdbc.extract: INFO
+    org.springframework.transaction.interceptor: INFO
 custom:
   site:
     name: The Cupid
     baseUrl: "http://118.67.142.168"
-  genFile:
 
-    dirPath: c:/uploads/
-
-
-  devtools:
-    livereload:
-      enabled: true
-
-  freemarker:
-    cache: false
-
-  thymeleaf:
-    cache: false
+    genFile:
+      dirPath: /tmp/uploads/
