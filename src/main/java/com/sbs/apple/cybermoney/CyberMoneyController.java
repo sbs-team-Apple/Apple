@@ -17,13 +17,12 @@ import java.util.Optional;
 public class CyberMoneyController {
     private final CyberMoneyService cyberMoneyService;
     private final UserRepository userRepository;
-    private final CyberMoneyTransactionRepository cyberMoneyTransactionRepository;
+
 
 
     public CyberMoneyController(CyberMoneyService cyberMoneyService, UserRepository userRepository, CyberMoneyTransactionRepository cyberMoneyTransactionRepository) {
         this.cyberMoneyService = cyberMoneyService;
         this.userRepository = userRepository;
-        this.cyberMoneyTransactionRepository = cyberMoneyTransactionRepository;
     }
 
 
