@@ -12,7 +12,38 @@
 
 <div class="chat-section">
     <div class="chat-container">
+        <div class="chat-option-box">
+        <div class="chat-option-item" >
+            <div class="dropdown dropdown-bottom dropdown-end chat-option-icon ">
+                <label tabindex="0" class=" m-1 bg-white"><i class="fa-solid fa-gear fa-lg"></i></label>
+                <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-40">
+                    <li><a class="flex justify-end"><button class="btn" onclick="my_modal_5.showModal()">채팅방 나가기</button>
+                        <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
+                            <div class="modal-box">
+                                <h3 class="font-bold text-lg">경고</h3>
+                                <p class="py-4">채팅방을 나가시면 또 하트를 보내야지만 채팅방이 만들어집니다. 채팅방을 나가시겠습니까?</p>
+                                <div class="modal-action">
+
+                                    <form th:action="@{|/chat/${roomId}/delete|}" method="get">
+                                        <button class="btn" type="submit" >예 </button>
+
+
+                                    </form>
+                                    <form method="dialog">
+                                        <!-- if there is a button in form, it will close the modal -->
+
+                                        <button class="btn">아니오</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </dialog></a></li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
         <div class="chat__message-box">
+
 
             <ul class="chat__message-ul">
 
@@ -83,30 +114,6 @@
 </div>
 
 
-    <br>
-    <br>
-    <br>
-    <div>
-        <form th:action="@{|/chat/${roomId}/delete|}" method="get">
-            <button type="submit" >채팅방 나가기 </button>
-
-
-        </form>
-
-    </div>
-
-    <div class="dropdown">
-        <label tabindex="0" class="btn m-1">Click</label>
-        <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-            <li><a>Item 1</a></li>
-            <li><a>Item 2</a></li>
-        </ul>
-    </div>
-
-    <div class="tooltip" data-tip="helddsadlo">
-        <button class="btn">😀</button>
-    </div>
-
 
 </div>
 
@@ -126,6 +133,11 @@
               }
     input:focus {
         outline: none;
+    }
+
+    .dropdown-bottom .dropdown-content {
+
+
     }
 
 
@@ -154,11 +166,31 @@
          overflow-y: scroll; /* 세로 스크롤만 활성화 */
          overflow-x: hidden;
          background-color :#9bbbd4;
+         position:relative;
     }
 
     .chat__message-box::-webkit-scrollbar {
         	display:none /* Chrome , Safari , Opera */
         }
+
+    .chat-option-box {
+        height:50px;
+
+
+    }
+
+    .chat-option-item {
+        display:flex;
+        justify-content:end;
+    }
+
+    .chat-option-icon {
+
+        background-color :white;
+
+        margin-left:auto;
+
+    }
 
 
     .chat-write-box {
@@ -255,6 +287,19 @@
 
 
 </style>
+<script>
+
+    $(document).ready(function () {
+  var chatMessageBox = $(".chat__message-box");
+  var chatOptionBox = $(".chat-option-box");
+
+  chatMessageBox.scroll(function () {
+    var scrollTop = chatMessageBox.scrollTop();
+    chatOptionBox.css("top", scrollTop);
+  });
+});
+</script>
+
 
 <script th:inline="javascript">
     const roomId = [[${roomId}]];
