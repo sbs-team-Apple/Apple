@@ -295,7 +295,8 @@ public class UserController {
         SiteUser loginUser = userService.getUserbyName(principal.getName());
 
         //로그인한 사용자와 현재 프로필 선택한 유저 사이의 채팅방을 찾는 코드
-        ChatRoom chatRoom = chatRoomService.findRoomByUserIdAndUserId2(siteUser.getId(), loginUser.getId());
+        ChatRoom chatRoom = chatRoomService.findRoomByUserIdAndUserId2( loginUser.getId(),siteUser.getId());
+
 
         //현재 그유저와 채팅방이 있으면 채팅방 만들기 버튼은 아예 안만들 생각
         model.addAttribute("chatRoom", chatRoom);
@@ -519,6 +520,7 @@ public class UserController {
         }
 
         //사이버 머니 받은 사용자의 id 즉 채팅방 초대받는 유저 인덱스번호
+
 
 
         return "redirect:/chat/" + roomId + "/room/" + toUserId; // 거래 내역 페이지로 리다이렉트
