@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html layout:decorate="~{/common/layout}" lang="en">
+<html layout:decorate="~{common/layout}" lang="en">
 <head>
     <script>
         function toggleCustomAddress() {
@@ -74,7 +74,7 @@
                 <ul class="detail-list">
                     <li class="detail-item">
                         <span>사용자ID :</span>
-                        <span th:text="${SiteUser.username}"></span>
+                        <span th:text="${siteUser.username}"></span>
                         <span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp이름 :</span>
                         <input type="text" id="Name" required placeholder="이름을 입력하세요.">
                     </li>
