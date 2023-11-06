@@ -67,7 +67,7 @@ logging:
 custom:
   site:
     name: 애플
-    baseUrl: "http://localhost:8090"
+    baseUrl: "http://localhost:8080"
   genFile:
 
     dirPath: c:/uploads/
