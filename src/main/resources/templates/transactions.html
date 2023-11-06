@@ -16,8 +16,8 @@
 <body>
 <div layout:fragment="content" class="container my-3">
 
-    <p>보유 중인 사이버머니: <span th:text="${userCyberMoney}"></span></p>
-    <p>다른 사용자로부터 받은 사이버머니: <span th:text="${receivedCyberMoney}"></span></p>
+    <p>사용 가능한 하트: <span th:text="${userCyberMoney}"></span></p>
+    <p>선물 받은 하트: <span th:text="${receivedCyberMoney}"></span></p>
 
     <div class="tab-buttons" style="display: flex; justify-content: center;">
         <div style="text-align: center; flex: 1;">
@@ -67,6 +67,15 @@
                 </div>
             </li>
         </ul>
+    </div>
+    <div>
+        <span>
+        <a href="/user/payment"><i class="fa-solid fa-user"></i> 결제</a>
+        </span>
+        <span>|</span>
+        <span>
+        <a href="/user/exchange"><i class="fa-solid fa-user"></i> 환전하기</a>
+    </span>
     </div>
 
 
