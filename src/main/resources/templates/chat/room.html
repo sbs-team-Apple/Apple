@@ -15,7 +15,7 @@
         <div class="chat-option-box">
         <div class="chat-option-item" >
             <div class="dropdown dropdown-bottom dropdown-end chat-option-icon ">
-                <label tabindex="0" class=" m-1 bg-white"><i class="fa-solid fa-gear fa-lg"></i></label>
+                <label tabindex="0" class=" m-1 bg-white"><i class="fa-solid fa-gear fa-lg option-icon-img"></i></label>
                 <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-40">
                     <li><a class="flex justify-end"><button class="btn" onclick="my_modal_5.showModal()">채팅방 나가기</button>
                         <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
@@ -145,7 +145,7 @@
         display:block;
 
         width:80%;
-        height:80%;
+
 
         margin-left:auto;
         margin-right:auto;
@@ -160,7 +160,7 @@
 
     .chat__message-box{
 
-          height:300px;
+          height:500px;
 
 
          overflow-y: scroll; /* 세로 스크롤만 활성화 */
@@ -173,8 +173,19 @@
         	display:none /* Chrome , Safari , Opera */
         }
 
+      @media screen and (max-height: 800px) {
+
+                .chat__message-box{
+                        height:300px;
+
+                    }
+
+      }
+
+
     .chat-option-box {
-        height:50px;
+        height:35px;
+         background-color :#9bbbd4;
 
 
     }
@@ -186,11 +197,38 @@
 
     .chat-option-icon {
 
-        background-color :white;
+        margin-right:5px;
+        margin-top:10px;
 
-        margin-left:auto;
+
 
     }
+
+    .fa-cog:before, .fa-gear:before{
+               background-color :#9bbbd4;
+
+    }
+
+    @media screen and (max-width: 350px) {
+
+        .modal[open] .modal-box {
+                    position:absolute;
+                    top:50%;
+                    left:50%;
+                    transform:translate(-50%,-50%);
+
+                  border-bottom-right-radius:  var(--rounded-box, 1rem);
+                border-bottom-left-radius: var(--rounded-box, 1rem);
+
+                width:250px;
+
+        }
+
+
+
+
+    }
+
 
 
     .chat-write-box {
