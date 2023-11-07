@@ -4,9 +4,12 @@ package com.sbs.apple.user;
 import com.sbs.apple.board.BoardForm;
 import com.sbs.apple.chat.ChatRoom;
 import com.sbs.apple.chat.ChatRoomService;
+import com.sbs.apple.cybermoney.CyberMoneyService;
+import com.sbs.apple.cybermoney.CyberMoneyServiceImpl;
 import com.sbs.apple.cybermoney.CyberMoneyTransaction;
 import com.sbs.apple.cybermoney.CyberMoneyTransactionRepository;
-import com.sbs.apple.interest.Interest;
+import com.sbs.apple.exchange.ExchangeRepository;
+import com.sbs.apple.exchange.ExchangeService;
 import com.sbs.apple.interest.InterestService;
 import com.sbs.apple.report.ReportForm;
 import com.sbs.apple.report.ReportService;
@@ -47,6 +50,9 @@ public class UserController {
     private final InterestService interestService;
     private final CyberMoneyTransactionRepository cyberMoneyTransactionRepository;
     private final ChatRoomService chatRoomService;
+    private final ExchangeService exchangeService;
+    private final ExchangeRepository exchangeRepository;
+    private final CyberMoneyServiceImpl cyberMoneyService;
 
 
     @GetMapping("/signup")
@@ -273,15 +279,6 @@ public class UserController {
         return "redirect:/user/myPage";
     }
 
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/payment")
-    public String paymentPage(Model model, Principal principal) {
-        String username = principal.getName();
-        SiteUser user = userService.getUserbyName(username);
-        model.addAttribute("user", user);
-        return "/pay/payment";
-    }
-
     //조회하기
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/detail/{id}")
@@ -294,12 +291,12 @@ public class UserController {
 
         SiteUser loginUser = userService.getUserbyName(principal.getName());
 
-        //로그인한 사용자와 현재 프로필 선택한 유저 사이의 채팅방을 찾는 코드
+        //로그인한 사용자와 현재 프로필 선택한 유저 사이의 채팅방과 사이버 머니 전송 기록을 찾는 코드
         ChatRoom chatRoom = chatRoomService.findRoomByUserIdAndUserId2( loginUser.getId(),siteUser.getId());
-
-
+        CyberMoneyTransaction log =cyberMoneyTransactionRepository.findByUserIdAndUserId2(loginUser.getId(),siteUser.getId());
         //현재 그유저와 채팅방이 있으면 채팅방 만들기 버튼은 아예 안만들 생각
         model.addAttribute("chatRoom", chatRoom);
+        model.addAttribute("log", log);
 
 
         return "user/profile";
@@ -367,62 +364,6 @@ public class UserController {
         return "redirect:/user/myPage";
     }
 
-    //관심 추가하기
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/add_interest/{id}")
-    public String toggleInterest(Principal principal, @PathVariable Integer id, Model model) {
-        String interest_user = principal.getName();
-        model.addAttribute("userId", id);
-        boolean isInterested = interestService.isInterested(id, interest_user);
-        if (isInterested) {
-            interestService.removeInterest(id, interest_user);
-        } else {
-            interestService.addInterest(id, interest_user);
-        }
-        return "redirect:/user/detail/{id}";
-    }
-
-
-    //내가 관심있는 사람 조회하기
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/wish")
-    public String showWish(Principal principal, Model model) {
-        String username = principal.getName();
-        List<Interest> interestList = interestService.getWishUsers(username);
-        model.addAttribute("interestList", interestList);
-        return "wish";
-    }
-
-    //나에게 관심 있는 사람 조회하기
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/wished")
-    public String showWished(Principal principal, Model model) {
-        String username = principal.getName();
-        List<Interest> interestList = interestService.getWishedUsers(username);
-        model.addAttribute("interestList", interestList);
-        return "wished";
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/exchange")
-    public String exchange(Model model, Principal principal) {
-        String username = principal.getName();
-        SiteUser user = userService.getUserbyName(username);
-        model.addAttribute("user", user);
-
-        return "pay/exchange";
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/exchange_apply")
-    public String exchange_apply(Model model, Principal principal) {
-        String username = principal.getName();
-        SiteUser siteUser = userService.getUserbyName(username);
-        model.addAttribute("siteUser", siteUser);
-
-        return "pay/exchange_apply";
-    }
-
     @GetMapping("/transactions")
     public String getTransactionHistory(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -467,8 +408,8 @@ public class UserController {
     @PostMapping("/processTransaction")
     public String processTransaction(
             @RequestParam("transactionId") Long transactionId,
-            @RequestParam("action") String action,
-            @RequestParam("toUserId") Integer toUserId
+            @RequestParam("action") String action
+
     ) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
@@ -500,6 +441,7 @@ public class UserController {
             SiteUser senderUser = transaction.getSenderUser();
             senderUser.setCyberMoney(senderUser.getCyberMoney() + transaction.getAmount());
             userRepository.save(senderUser);
+            return "redirect:/user/transactions";
         } else {
             return "redirect:/error?message=이미 수락 또는 거부된 거래입니다.";
         }
@@ -520,11 +462,32 @@ public class UserController {
         }
 
         //사이버 머니 받은 사용자의 id 즉 채팅방 초대받는 유저 인덱스번호
+       Integer toUserId= transaction.getSenderUser().getId();
 
 
 
         return "redirect:/chat/" + roomId + "/room/" + toUserId; // 거래 내역 페이지로 리다이렉트
     }
-
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/interest")
+    public String interest_all(Principal principal ,Model model) {
+        SiteUser siteUser = this.userService.getUserbyName(principal.getName());
+        model.addAttribute("siteUser", siteUser);
+        return "user/interest_all";
+    }
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/heart")
+    public String heart(Principal principal ,Model model) {
+        SiteUser siteUser = this.userService.getUserbyName(principal.getName());
+        model.addAttribute("siteUser", siteUser);
+        return "user/interest_all";
+    }
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/setting")
+    public String setting(Principal principal ,Model model) {
+        SiteUser siteUser = this.userService.getUserbyName(principal.getName());
+        model.addAttribute("siteUser", siteUser);
+        return "user/setting";
+    }
 }
 

@@ -44,15 +44,17 @@
     <a class="btn btn-primary" th:href="@{'/user/add_interest/' + ${siteUser.id}}">
         <span th:text="${isInterested ? '관심 해제' : '관심 등록'}"></span>
     </a>
+
     <!--    <button id="sendCyberMoneyBtn" class="btn btn-primary" data-toggle="modal" data-target="#cyberMoneyModal" >사이버머니-->
     <!--        보내기-->
     <!--    </button>-->
-    <button th:if="${chatRoom == null}" id="sendCyberMoneyBtn" class="btn btn-primary" data-toggle="modal" data-target="#cyberMoneyModal">채팅방 만들기
+    <button th:if="${chatRoom == null  && log ==null} " id="sendCyberMoneyBtn" class="btn btn-primary" data-toggle="modal" data-target="#cyberMoneyModal">채팅방 만들기
+
+
     </button>
     <a class="nav-link" th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
        th:href="@{'/admin/punish/' + ${siteUser.id}}">제재하기</a>
-    <!-- 모달 다이얼로그 -->
-    <!--    <button id="cyberMoneyModal" onclick="my_modal_5.showModal()">Open Modal</button>-->
+
 
     <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
         <div class="modal-box">
