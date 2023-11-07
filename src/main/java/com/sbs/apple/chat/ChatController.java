@@ -109,6 +109,12 @@ public class ChatController {
 
         model.addAttribute("roomId",room.getId() );
         model.addAttribute("user",user);
+
+        //나랑 채팅하고 있는 사람
+        SiteUser toUser=room.getSiteUser2();
+        model.addAttribute(("toUser"),toUser);
+
+
         return "chat/room";
     }
 
@@ -122,6 +128,11 @@ public class ChatController {
 
         model.addAttribute("roomId",room.getId() );
         model.addAttribute("user",user);
+
+        //나랑 채팅하고 있는 사람
+        SiteUser toUser=room.getSiteUser();
+        model.addAttribute(("toUser"),toUser);
+
 
         return "chat/room";
     }
