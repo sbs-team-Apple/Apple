@@ -1,9 +1,12 @@
 package com.sbs.apple.payment;
 
 
+import com.sbs.apple.user.SiteUser;
+import com.sbs.apple.user.UserService;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -19,6 +22,7 @@ import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.security.Principal;
 import java.util.Base64;
 
 @Controller
@@ -27,6 +31,9 @@ public class PaymentController {
 
     @Autowired
     private PaymentService paymentService;
+    @Autowired // userService 필드에 @Autowired 어노테이션 추가
+    private UserService userService;
+
 
     @GetMapping(value = "success")
     public String paymentResult(
@@ -112,5 +119,13 @@ public class PaymentController {
         }
 
         return "success";
+    }
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/user/payment")
+    public String paymentPage(Model model, Principal principal) {
+        String username = principal.getName();
+        SiteUser user = userService.getUserbyName(username);
+        model.addAttribute("user", user);
+        return "pay/payment";
     }
 }

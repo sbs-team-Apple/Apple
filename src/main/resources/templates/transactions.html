@@ -16,8 +16,8 @@
 <body>
 <div layout:fragment="content" class="container my-3">
 
-    <p>보유 중인 사이버머니: <span th:text="${userCyberMoney}"></span></p>
-    <p>다른 사용자로부터 받은 사이버머니: <span th:text="${receivedCyberMoney}"></span></p>
+    <p>사용 가능한 하트: <span th:text="${userCyberMoney}"></span></p>
+    <p>선물 받은 하트: <span th:text="${receivedCyberMoney}"></span></p>
 
     <div class="tab-buttons" style="display: flex; justify-content: center;">
         <div style="text-align: center; flex: 1;">
@@ -41,7 +41,7 @@
                 <!-- "수락" 버튼 -->
                 <div style="display: flex; align-items: center;">
                     <form th:action="@{/user/processTransaction}" method="post">
-                        <input type="hidden" name="toUserId" th:value="${transaction.senderUser.id}" />
+<!--                        <input type="hidden" name="toUserId" th:value="${transaction.senderUser.id}" />-->
                         <input type="hidden" name="transactionId" th:value="${transaction.id}" />
                         <input type="hidden" name="action" value="accept" /> <!-- 수락 작업 설정 -->
                         <button class="btn btn-sm" type="submit" th:disabled="${transaction.isAccepted() or transaction.isRejected()}">수락</button>
@@ -49,6 +49,7 @@
                     <div style="width: 10px;"></div> <!-- 10px 여백 추가 -->
                     <!-- "거절" 버튼 -->
                     <form th:action="@{/user/processTransaction}" method="post">
+
                         <input type="hidden" name="transactionId" th:value="${transaction.id}" />
                         <input type="hidden" name="action" value="reject" /> <!-- 거절 작업 설정 -->
                         <button class="btn btn-sm" type="submit" th:disabled="${transaction.isAccepted() or transaction.isRejected()}">거절</button>
@@ -67,6 +68,15 @@
                 </div>
             </li>
         </ul>
+    </div>
+    <div>
+        <span>
+        <a href="/user/payment"><i class="fa-solid fa-user"></i> 결제</a>
+        </span>
+        <span>|</span>
+        <span>
+        <a href="/user/exchange"><i class="fa-solid fa-user"></i> 환전하기</a>
+    </span>
     </div>
 
 

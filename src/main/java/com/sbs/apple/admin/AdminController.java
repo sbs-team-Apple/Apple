@@ -1,5 +1,7 @@
 package com.sbs.apple.admin;
 
+import com.sbs.apple.exchange.Exchange;
+import com.sbs.apple.exchange.ExchangeService;
 import com.sbs.apple.report.Report;
 import com.sbs.apple.report.ReportService;
 import com.sbs.apple.user.SiteUser;
@@ -8,7 +10,9 @@ import com.sbs.apple.util.Rq;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -22,6 +26,7 @@ public class AdminController {
     private final UserService userService;
     private final ReportService reportService;
     private final AdminService adminService;
+    private final ExchangeService exchangeService;
     private final Rq rq;
 
 //    @GetMapping("/")
@@ -112,6 +117,13 @@ public class AdminController {
         SiteUser siteUser = this.userService.getUser(id);
         userService.changeUserWarning(siteUser);
         return "redirect:/";
+    }
+
+    @GetMapping("/exchange_list")
+    public String exchange_list(Model model) {
+        List<Exchange> exchangeList = exchangeService.getList();
+        model.addAttribute("exchangeList", exchangeList);
+        return "pay/exchange_list"; // exchange_list.html을 렌더링하는 템플릿 이름
     }
 }
 
