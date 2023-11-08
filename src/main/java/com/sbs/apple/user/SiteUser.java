@@ -158,4 +158,7 @@ public class SiteUser {
 
         return completedTransactions;
     }
+
+    @Column
+    private Integer minHeart = 0; //
 }

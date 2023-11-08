@@ -5,13 +5,13 @@
     <title>메인</title>
 </head>
 <body>
-<div layout:fragment="content" class="container m-0 flex justify-center flex-col items-center">
+<div layout:fragment="content" class="container m-0">
     <div
             th:unless="${#authorization.expression('isAuthenticated()')}">
         <div th:include="user/login.html"></div>
     </div>
 
-    <div th:if="${#authorization.expression('isAuthenticated()')}" class="profile h-screen">
+    <div th:if="${#authorization.expression('isAuthenticated()')}" class="profile">
         <div class="profile_in m-auto flex justify-center flex-col items-center"
              th:each="userList : ${userList}" style="margin-bottom: 20px;">
 
@@ -31,32 +31,35 @@
             <div th:text="${userList.About_Me}"></div>
         </div>
     </div>
-    <div th:include="common/menu.html"></div>
-    <div th:include="common/footer.html" class="static"></div>
+
+    <div>
+        <div th:if="${#authorization.expression('isAuthenticated()') and userWarning}">
+            <div id="warningMessage" style="color: red; font-weight: bold;">경고합니다</div>
+        </div>
+        <div th:if="${#authorization.expression('isAuthenticated()') and userWarning}">
+            <a th:href="@{/user/okay}">확인했습니다.</a>
+        </div>
+    </div>
+    <!--    <div th:if="${siteUsers != null}" th:each="user : ${siteUsers}">-->
+    <!--        <div class="flex  ">-->
+    <!--            <div><a th:value="${user.id}" name="userId" th:text="${user.nickname}"></a></div>-->
+    <!--            <div>-->
+    <!--                <form method="post"-->
+    <!--                      th:action="@{|/chat/${chatRoom != null ? chatRoom.id+1 : 1}/room/${user.id}|}">-->
+    <!--                    <input class="userId_value" type="hidden" name="userId" th:value="${user.id}">-->
+    <!--                    <button type="submit">님과 채팅방 만들기</button>-->
+    <!--                </form>-->
+    <!--            </div>-->
+    <!--        </div>-->
+
+    <!--    </div>-->
+    <div th:if="${#authorization.expression('isAuthenticated()')}">
+        <div th:include="common/menu.html"></div>
+    </div>
+    <!--        <div th:include="common/footer.html"></div>-->
+
+
 </div>
-<!--    <div>-->
-<!--        <div th:if="${#authorization.expression('isAuthenticated()') and userWarning}">-->
-<!--            <div id="warningMessage" style="color: red; font-weight: bold;">경고합니다</div>-->
-<!--        </div>-->
-<!--        <div th:if="${#authorization.expression('isAuthenticated()') and userWarning}">-->
-<!--            <a th:href="@{/user/okay}">확인했습니다.</a>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--    <div th:if="${siteUsers != null}" th:each="user : ${siteUsers}">-->
-<!--        <div class="flex  ">-->
-<!--            <div><a th:value="${user.id}" name="userId" th:text="${user.nickname}"></a></div>-->
-<!--            <div>-->
-<!--                <form method="post"-->
-<!--                      th:action="@{|/chat/${chatRoom != null ? chatRoom.id+1 : 1}/room/${user.id}|}">-->
-<!--                    <input class="userId_value" type="hidden" name="userId" th:value="${user.id}">-->
-<!--                    <button type="submit">님과 채팅방 만들기</button>-->
-<!--                </form>-->
-<!--            </div>-->
-<!--        </div>-->
-
-<!--    </div>-->
-
-
 <style>
     .container {
         margin: 0 auto;
@@ -116,4 +119,3 @@
         // 여기서 SSE 연결을 사용하여 원하는 동작을 수행
     });
 </script>
-
