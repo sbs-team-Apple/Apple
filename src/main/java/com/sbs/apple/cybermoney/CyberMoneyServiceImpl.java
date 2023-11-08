@@ -37,4 +37,16 @@ public class CyberMoneyServiceImpl implements CyberMoneyService {
         }
     }
 
+    @Override
+        public CyberMoneyTransaction findByUserIdAndUserId2(Integer userId, Integer userId2) {
+
+        if(cyberMoneyTransactionRepository.findByUserIdAndUserId2(userId, userId2)==null){
+            return null;
+        }
+        return cyberMoneyTransactionRepository.findByUserIdAndUserId2(userId, userId2);
+
+    }
+
+
+
 }
