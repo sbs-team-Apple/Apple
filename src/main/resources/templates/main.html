@@ -5,13 +5,14 @@
     <title>메인</title>
 </head>
 <body>
-<div layout:fragment="content" class="container m-0">
+<div layout:fragment="content">
+    <div  class="container ">
     <div
             th:unless="${#authorization.expression('isAuthenticated()')}">
         <div th:include="user/login.html"></div>
     </div>
 
-    <div th:if="${#authorization.expression('isAuthenticated()')}" class="profile">
+    <div th:if="${#authorization.expression('isAuthenticated()')}" class="profile  main-container">
         <div class="profile_in m-auto flex justify-center flex-col items-center"
              th:each="userList : ${userList}" style="margin-bottom: 20px;">
 
@@ -30,8 +31,11 @@
             </div>
             <div th:text="${userList.About_Me}"></div>
         </div>
-    </div>
+        <div th:include="common/menu.html"></div>
 
+    </div>
+    </div>
+    <div th:include="common/footer.html" class="dd"></div>
     <div>
         <div th:if="${#authorization.expression('isAuthenticated()') and userWarning}">
             <div id="warningMessage" style="color: red; font-weight: bold;">경고합니다</div>
@@ -53,20 +57,22 @@
     <!--        </div>-->
 
     <!--    </div>-->
-    <div th:if="${#authorization.expression('isAuthenticated()')}">
-        <div th:include="common/menu.html"></div>
-    </div>
-<!--        <div th:include="common/footer.html"></div>-->
+
+    <br>
+
 
 
 </div>
+</body>
 <style>
     .container {
-        margin: 0 auto;
-        display: flex;
+
+         margin: 0 auto;
         justify-content: center;
         align-items: center;
+        display:block;
     }
+
     .underBody {
         border-radius: 15px;
         padding: 30px 15px 15px 15px;
@@ -93,8 +99,19 @@
     .alert-danger {
     padding: 0 0px 0 15px;
     }
+
+
+    .footer{
+        position:absolute;
+    }
+
+    .main-container {
+
+    }
+    .dd {
+    }
 </style>
-</body>
+
 
 </html>
 
