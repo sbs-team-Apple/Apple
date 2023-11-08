@@ -46,38 +46,6 @@
         <a href="/user/desired_modify">나의 이상형 정보 수정</a>
     </div>
 
-    <div class="flex justify-center">
-    <span>
-        <a th:href="@{/user/wish}">보낸 관심 </a>
-    </span>
-        <span> | </span>
-        <span>
-        <a th:href="@{/user/wished}"> 받은 관심</a>
-    </span>
-    </div>
-
-    <div>=============================================================</div>
-    <ul>
-        <div sec:authorize="isAuthenticated()" th:text="${user.nickname}+'님 환영합니다!'"></div>
-        <li><a th:href="@{|/user/detail/${user.id}|}">내 프로필</a></li>
-        <li></li>
-        <li><a href="/user/passwordChange">비밀번호 변경</a></li>
-        <li><a href="/user/profile_modify">프로필 수정</a></li>
-        <li><a href="/user/desired_modify">나의 이상형 정보 수정</a></li>
-        <li><a href="/user/delete">회원 탈퇴</a></li>
-        <li><a th:href="@{/chat/allRoom}">내 채팅방</a></li>
-        <li><a th:href="@{/user/wish}">내가 관심있는 사람</a></li>
-        <li><a th:href="@{/user/wished}">나를 관심있게 생각하는 사람</a></li>
-        <li><a th:href="@{/board/myAppealBoard}">내 어필 게시판</a></li>
-        <li><a th:href="@{/user/transactions}">내 하트 정보</a></li>
-    </ul>
-
-
-    <div>
-        <h2>사이버머니 정보:</h2>
-        <p>보유 중인 하트: <span th:text="${userCyberMoney}"></span></p>
-        <p>이성에게 받은 하트: <span th:text="${receivedCyberMoney}"></span></p>
-    </div>
 
 </div>
 
