@@ -6,6 +6,9 @@
 </head>
 <body>
 <div layout:fragment="content" class="container my-3 w-10/12 m-auto">
+    <div class="board-create-container">
+        <a th:href="@{/board/create}">어필 게시판 작성하기</a>
+    </div>
     <div class="m-auto w-4/12 flex flex-wrap board-container  justify-center">
         <div  class="m-10" th:each="board : ${board}">
             <div class="flex ">
@@ -33,9 +36,7 @@
     </div>
 
     <br>
-    <div>
-        <a th:href="@{/board/create}">어필 게시판 작성하기</a>
-    </div>
+
 
 
 
@@ -44,9 +45,22 @@
 </html>
 
 <style>
+    .navbar {
+        position:fixed;
+    }
+
+    .board-create-container{
+        position:fixed;
+        top:50px;
+        right:0;
+    }
+
 
     .board-container{
-        width:600px;
+        width:300px;
+        margin-top:50px;
+        margin-left:auto;
+        margin-right:auto;
     }
 
     .board-img {
