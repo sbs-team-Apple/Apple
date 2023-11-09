@@ -55,13 +55,14 @@ public class BoardService {
 
 
         }
-        this.imgsService.create(file);
+
 
 
 //        board.setFilename(fileName);
 //        board.setFilepath("/gen/"+fileName);
 
         this.boardRepository.save(board);
+        this.imgsService.create(file,board);
         return board;
     }
 
