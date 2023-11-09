@@ -104,7 +104,7 @@ public class SiteUser {
     @OneToMany(mappedBy = "siteUser", cascade = CascadeType.REMOVE)
     private List<Report> reportList;
 
-    @Column
+
     private int cyberMoney = 5000; // 기본값 0으로 초기화
 
     @Column

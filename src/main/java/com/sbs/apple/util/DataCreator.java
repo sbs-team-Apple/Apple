@@ -11,7 +11,7 @@ import java.util.List;
 
 
 @Service
-public class DataCreator {
+public class    DataCreator {
     private final UserService userService;
     protected Integer userNum = 40;
 
