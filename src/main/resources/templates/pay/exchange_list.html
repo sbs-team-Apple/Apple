@@ -2,25 +2,29 @@
 <html layout:decorate="~{common/layout}" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>환전 리스트</title>
+    <title>Title</title>
 </head>
 <body>
 <div layout:fragment="content" class="container my-3">
+<table class="table">
+    <thead class="table-dark">
+    <tr>
+        <th>사용자ID</th>
+        <th style="width:50%">제목</th>
+        <th>신청일</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="exchange, loop : ${exchangeList}">
+        <td><span th:if="${exchange.siteUser != null}" th:text="${exchange.siteUser.username}"></span></td>
+        <td>
+            <a th:href="@{|/exchange/detail/${exchange.id}|}" th:text="${exchange.subject}"></a>
+        </td>
 
-    <table>
-        <thead>
-        <tr>
-            <th>환전 신청한 사람</th>
-            <th>제목</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="exchange : ${exchangeList}">
-            <td th:text="${exchange.exchange_user}"></td>
-            <!-- 다른 열을 추가하려면 필요에 따라 추가하실 수 있습니다 -->
-        </tr>
-        </tbody>
-    </table>
+        <td th:text="${#temporals.format(exchange.createDate, 'yyyy-MM-dd')}"></td>
+    </tr>
+    </tbody>
+</table>
 </div>
 </body>
 </html>

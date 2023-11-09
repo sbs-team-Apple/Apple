@@ -68,149 +68,147 @@
 </head>
 <body>
     <div layout:fragment="content" class="container my-3">
-        <form method="post" action="/user/exchange_apply">
-<!--        <div class="text">-->
-<!--            <div class="title">개인정보</div>-->
-<!--            <div class="detail">-->
-<!--                <ul class="detail-list">-->
-<!--                    <li class="detail-item">-->
-<!--                        <span>사용자ID :</span>-->
-<!--&lt;!&ndash;                        <span th:text="${siteUser.username}"></span>&ndash;&gt;-->
-<!--                        <span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp이름 :</span>-->
-<!--                        <input type="text" id="Name" required placeholder="이름을 입력하세요.">-->
-<!--                    </li>-->
-<!--                    <li class="detail-item">-->
-<!--                        <span>이메일 :</span>-->
-<!--                        <input type="text" id="email" required placeholder="">-->
-<!--                        <span>&nbsp&nbsp@&nbsp&nbsp</span>-->
-<!--                        <input type="text" id="customAddress" name="customAddress" placeholder="">-->
-<!--                        <select name="address" class="input_adress" onchange="toggleCustomAddress()">-->
-<!--                            <option value="input" selected>직접 입력</option>-->
-<!--                            <option value="naver">naver.com</option>-->
-<!--                            <option value="nate">nate.com</option>-->
-<!--                            <option value="hanmail">hanmail.net</option>-->
-<!--                            <option value="gmail">gmail.com</option>-->
-<!--                            <option value="yahoo">yahoo.com</option>-->
-<!--                        </select>-->
-<!--                        <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp*&nbsp기제하신 이메일로 환전 안내메일이 발송되오니, 정확히 입력해 주시길-->
-<!--                            바랍니다.</p>-->
-<!--                    </li>-->
-<!--                    <li class="detail-item">-->
-<!--                        <span>연락처 :</span>-->
-<!--                        <select name="F_No" class="No">-->
-<!--                            <option value="010">010</option>-->
-<!--                            <option value="011">011</option>-->
-<!--                            <option value="016">016</option>-->
-<!--                            <option value="017">017</option>-->
-<!--                            <option value="019">019</option>-->
-<!--                        </select>-->
-<!--                        <span>-</span>-->
-<!--                        <input type="text" id="phonNo_2" required placeholder="">-->
-<!--                        <span>-</span>-->
-<!--                        <input type="text" id="phonNo_3" required placeholder="">-->
-<!--                    </li>-->
-<!--                    <li class="detail-item">-->
-<!--                        <span>주소 :</span>-->
-<!--                        <input type="text" id="home_adress" required placeholder="주소를 입력해주세요">-->
-<!--                    </li>-->
-<!--                </ul>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="text">-->
-<!--            <div class="title">계좌정보</div>-->
-<!--            <div class="detail">-->
-<!--                <ul class="detail-list">-->
-<!--                    <li class="detail-item">-->
-<!--                        <span>국적 :</span>-->
-<!--                        <input type="radio" name="nationality" value="korea" id="korea" required>-->
-<!--                        <label for="korea">한국</label>-->
-<!--                        <input type="radio" name="nationality" value="usa" id="usa">-->
-<!--                        <label for="usa">미국</label>-->
-<!--                        <input type="radio" name="nationality" value="japan" id="japan">-->
-<!--                        <label for="japan">일본</label>-->
-<!--                        <input type="radio" name="nationality" value="other" id="other">-->
-<!--                        <label for="other">그외 국가</label>-->
-<!--                        <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp*&nbsp마지막 환전 신청시 작성했던 정보가 자동으로 입력됩니다.</p>-->
-<!--                    </li>-->
-<!--                    <li class="detail-item">-->
-<!--                        <span>은행</span>-->
-<!--                        <select name="F_No" class="No">-->
-<!--                            <option value="KB국민은행">KB국민은행</option>-->
-<!--                            <option value="신한은행">신한은행</option>-->
-<!--                            <option value="우리은행">우리은행</option>-->
-<!--                            <option value="하나은행">하나은행</option>-->
-<!--                            <option value="SC제일은행">SC제일은행</option>-->
-<!--                            <option value="한국씨티은행">한국씨티은행</option>-->
-<!--                            <option value="케이뱅크">케이뱅크</option>-->
-<!--                            <option value="카카오뱅크">카카오뱅크</option>-->
-<!--                            <option value="토스뱅크">토스뱅크</option>-->
-<!--                            <option value="한국산업은행">한국산업은행</option>-->
-<!--                            <option value="중소기업은행">중소기업은행</option>-->
-<!--                            <option value="한국수출입은행">한국수출입은행</option>-->
-<!--                            <option value="대구은행">대구은행</option>-->
-<!--                            <option value="부산은행">부산은행</option>-->
-<!--                            <option value="경남은행">경남은행</option>-->
-<!--                            <option value="광주은행">광주은행</option>-->
-<!--                            <option value="전북은행">전북은행</option>-->
-<!--                            <option value="제주은행">제주은행</option>-->
-<!--                        </select>-->
-<!--                    </li>-->
-<!--                    <li class="detail-item">-->
-<!--                        <span>예금주</span>-->
-<!--                        <input type="text" id="Account_Holder" required placeholder="">-->
-<!--                        <span><span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp계좌번호</span>-->
-<!--                        <input type="text" id="Account_number" required placeholder="">-->
-<!--                        <button id="validateButton">검증</button>-->
-<!--                            <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp*&nbsp개인명의의 계좌로만 환전이 가능합니다. (사업자계좌 환전 불가)</p>-->
-<!--                            <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp*&nbsp가입자와 동일한 명의의 계좌가 아니거나, 입력하신 계좌번호가 올바르지 않을 경우</p>-->
-<!--                            <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp*&nbsp환전이 불가하오니 정확히 입력해 주시기 바랍니다.</p>-->
-<!--                            <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp*&nbsp첫 환전 신청시에 계좌 검증 버튼을 눌러 검증을 진행 하시기 바랍니다.</p>-->
-<!--                            <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp*&nbsp계좌 변경이 필요하신 경우 최근 정보 사용 체크 후 직접 변경 하시기 바랍니다.</p>-->
-<!--                            <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp*&nbsp계좌 검증은 은행 점검에 따라 영향을 받을 수 있으니 검증 전 점검 공지를 반드시 확인하시기 바랍니다.</p>-->
-<!--                    </li>-->
-<!--                </ul>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="text">-->
-<!--            <div class="title">신분증</div>-->
-<!--            <div class="detail">-->
-<!--                <ul class="detail-list">-->
-<!--                    <input type="file" id="fileInput">-->
-<!--                    <p>*&nbsp첨부파일은 환전 신청일로부터 100일간 유지되며, 100일 경과 후 신분증 재등록 바랍니다.</p>-->
-<!--                    <p>*&nbsp명의변경이나 개명 등 신분증 변경이 필요한 경우 사이버 머니 환전 시 삭제 후 재등록 바랍니다. </p>-->
-<!--                    <p>&nbsp&nbsp&nbsp미등록시 환전이 거절 될 수 있습니다.</p>-->
-<!--                    <p>*&nbsp신분증이 없으실 경우 본인 확인이 가능한 여권 혹은 정부에서 발행된 신분을 증명할 수 있는</p>-->
-<!--                    <p>&nbsp&nbsp&nbsp서류를 첨부해 주시기 바랍니다.</p>-->
-<!--                    <p>&nbsp&nbsp&nbsp(단, 가입명의자의 13자리 주민등록번호가 확인 되어야 합니다.)</p>-->
-<!--                    <p>*&nbsp신청 시 사진 파일 용량은 20MB 이하로 변돔 부탁을 드리며, 파일명은 JPG로 접수해주시기 바랍니다.</p>-->
-<!--                    <p>*&nbsp외국인 등록증으로 접수를 하실 경우 뒷면 유효기간을 함께 첨부하여주시기 바랍니다.</p>-->
-<!--                </ul>-->
-<!--            </div>-->
+        <form th:object="${applyForm}" method="post" th:action="@{/exchange/exchange_apply}">
+        <div class="text">
+            <div class="title">개인정보</div>
+            <div class="detail">
+                <ul class="detail-list">
+                    <li class="detail-item">
+                        <span>사용자ID :</span>
+                        <span th:text="${siteUser.username}"></span>
+                        <span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp이름 :</span>
+                        <input type="text" name="realname" required placeholder="이름을 입력하세요.">
+                    </li>
+                    <li class="detail-item">
+                        <span>이메일 :</span>
+                        <input type="text" name="email" required placeholder="">
+                        <span>&nbsp&nbsp@&nbsp&nbsp</span>
+                        <select name="address" class="input_adress" onchange="toggleCustomAddress()">
+                            <option value="input" selected>주소 선택</option>
+                            <option value="naver">naver.com</option>
+                            <option value="nate">nate.com</option>
+                            <option value="hanmail">hanmail.net</option>
+                            <option value="gmail">gmail.com</option>
+                            <option value="yahoo">yahoo.com</option>
+                        </select>
+                        <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp*&nbsp기제하신 이메일로 환전 안내메일이 발송되오니, 정확히 입력해 주시길
+                            바랍니다.</p>
+                    </li>
+                    <li class="detail-item">
+                        <span>연락처 :</span>
+                        <select name="f_No" class="No">
+                            <option value="010">010</option>
+                            <option value="011">011</option>
+                            <option value="016">016</option>
+                            <option value="017">017</option>
+                            <option value="019">019</option>
+                        </select>
+                        <span>-</span>
+                        <input type="text" name="phonNo_2" required placeholder="">
+                        <span>-</span>
+                        <input type="text" name="phonNo_3" required placeholder="">
+                    </li>
+                    <li class="detail-item">
+                        <span>주소 :</span>
+                        <input type="text" name="homeAdress" required placeholder="주소를 입력해주세요">
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="text">
+            <div class="title">계좌정보</div>
+            <div class="detail">
+                <ul class="detail-list">
+                    <li class="detail-item">
+                        <span>국적 :</span>
+                        <input type="radio" name="nationality" value="korea" id="korea" required>
+                        <label for="korea">한국</label>
+                        <input type="radio" name="nationality" value="usa" id="usa">
+                        <label for="usa">미국</label>
+                        <input type="radio" name="nationality" value="japan" id="japan">
+                        <label for="japan">일본</label>
+                        <input type="radio" name="nationality" value="other" id="other">
+                        <label for="other">그외 국가</label>
+                        <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp*&nbsp마지막 환전 신청시 작성했던 정보가 자동으로 입력됩니다.</p>
+                    </li>
+                    <li class="detail-item">
+                        <span>은행</span>
+                        <select name="bank" class="No">
+                            <option value="KB국민은행">KB국민은행</option>
+                            <option value="신한은행">신한은행</option>
+                            <option value="우리은행">우리은행</option>
+                            <option value="하나은행">하나은행</option>
+                            <option value="SC제일은행">SC제일은행</option>
+                            <option value="한국씨티은행">한국씨티은행</option>
+                            <option value="케이뱅크">케이뱅크</option>
+                            <option value="카카오뱅크">카카오뱅크</option>
+                            <option value="토스뱅크">토스뱅크</option>
+                            <option value="한국산업은행">한국산업은행</option>
+                            <option value="중소기업은행">중소기업은행</option>
+                            <option value="한국수출입은행">한국수출입은행</option>
+                            <option value="대구은행">대구은행</option>
+                            <option value="부산은행">부산은행</option>
+                            <option value="경남은행">경남은행</option>
+                            <option value="광주은행">광주은행</option>
+                            <option value="전북은행">전북은행</option>
+                            <option value="제주은행">제주은행</option>
+                        </select>
+                    </li>
+                    <li class="detail-item">
+                        <span>예금주</span>
+                        <input type="text" name="accountHolder" required placeholder="">
+                        <span><span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp계좌번호</span>
+                        <input type="text" name="accountNumber" required placeholder="">
+                        <button id="validateButton">검증</button>
+                            <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp*&nbsp개인명의의 계좌로만 환전이 가능합니다. (사업자계좌 환전 불가)</p>
+                            <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp*&nbsp가입자와 동일한 명의의 계좌가 아니거나, 입력하신 계좌번호가 올바르지 않을 경우</p>
+                            <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp*&nbsp환전이 불가하오니 정확히 입력해 주시기 바랍니다.</p>
+                            <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp*&nbsp첫 환전 신청시에 계좌 검증 버튼을 눌러 검증을 진행 하시기 바랍니다.</p>
+                            <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp*&nbsp계좌 변경이 필요하신 경우 최근 정보 사용 체크 후 직접 변경 하시기 바랍니다.</p>
+                            <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp*&nbsp계좌 검증은 은행 점검에 따라 영향을 받을 수 있으니 검증 전 점검 공지를 반드시 확인하시기 바랍니다.</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="text">
+            <div class="title">신분증</div>
+            <div class="detail">
+                <ul class="detail-list">
+                    <input type="file" name="fileInput">
+                    <p>*&nbsp첨부파일은 환전 신청일로부터 100일간 유지되며, 100일 경과 후 신분증 재등록 바랍니다.</p>
+                    <p>*&nbsp명의변경이나 개명 등 신분증 변경이 필요한 경우 사이버 머니 환전 시 삭제 후 재등록 바랍니다. </p>
+                    <p>&nbsp&nbsp&nbsp미등록시 환전이 거절 될 수 있습니다.</p>
+                    <p>*&nbsp신분증이 없으실 경우 본인 확인이 가능한 여권 혹은 정부에서 발행된 신분을 증명할 수 있는</p>
+                    <p>&nbsp&nbsp&nbsp서류를 첨부해 주시기 바랍니다.</p>
+                    <p>&nbsp&nbsp&nbsp(단, 가입명의자의 13자리 주민등록번호가 확인 되어야 합니다.)</p>
+                    <p>*&nbsp신청 시 사진 파일 용량은 20MB 이하로 변돔 부탁을 드리며, 파일명은 JPG로 접수해주시기 바랍니다.</p>
+                    <p>*&nbsp외국인 등록증으로 접수를 하실 경우 뒷면 유효기간을 함께 첨부하여주시기 바랍니다.</p>
+                </ul>
+            </div>
 
-<!--        </div>-->
-<!--        <h1>이용 약관</h1>-->
-<!--        <ul>-->
-<!--            <li class="detail-item">-->
-<!--                <p>제 1조 회원정보의 보호 및 이용</p>-->
+        </div>
+        <h1>이용 약관</h1>
+        <ul>
+            <li class="detail-item">
+                <p>제 1조 회원정보의 보호 및 이용</p>
 
-<!--                <p>① 회사는 사이버 머니 환전의 목적으로 회원의 동의 하에 관계 법령에서 정하는 바에 따라 개인정보를 수집할 수 있습니다.</p>-->
-<!--                <p>&nbsp&nbsp&nbsp&nbsp&nbsp(수집된 개인정보는 담당자 확인 후 폐기처리 됩니다.)</p>-->
-<!--                <p>② 회사는 법률에 특별한 규정이 있는 경우를 제외하고는 회원의 별도 동의 없이 회원의 계정정보를 포함한 일체의</p>-->
-<!--                <p>&nbsp&nbsp&nbsp&nbsp&nbsp개인정보를 제3자에게 공개하거나 제공하지 아니합니다.</p>-->
+                <p>① 회사는 사이버 머니 환전의 목적으로 회원의 동의 하에 관계 법령에서 정하는 바에 따라 개인정보를 수집할 수 있습니다.</p>
+                <p>&nbsp&nbsp&nbsp&nbsp&nbsp(수집된 개인정보는 담당자 확인 후 폐기처리 됩니다.)</p>
+                <p>② 회사는 법률에 특별한 규정이 있는 경우를 제외하고는 회원의 별도 동의 없이 회원의 계정정보를 포함한 일체의</p>
+                <p>&nbsp&nbsp&nbsp&nbsp&nbsp개인정보를 제3자에게 공개하거나 제공하지 아니합니다.</p>
 
-<!--                <p>제 2조 회원의 의무</p>-->
+                <p>제 2조 회원의 의무</p>
 
-<!--                <p>1. 회원은 다음 각 호에 해당하는 행위를 해서는 안됩니다.</p>-->
-<!--                <p>① 환전 신청 또는 회원정보 변경 시 허위내용 등록</p>-->
-<!--                <p>② 타인의 정보도용</p>-->
-<!--            </li>-->
-<!--        </ul>-->
+                <p>1. 회원은 다음 각 호에 해당하는 행위를 해서는 안됩니다.</p>
+                <p>① 환전 신청 또는 회원정보 변경 시 허위내용 등록</p>
+                <p>② 타인의 정보도용</p>
+            </li>
+        </ul>
         <div>
             <a class="btn btn-primary" href="/user/exchange">
                 <span>이전</span>
             </a>
-<!--            <input type="hidden" id="userId" name="userId" value="${siteUser.username}">-->
-            <button type="submit" class="btn btn-primary">신청하기</button>
+            <button type="submit" class="btn btn-primary">신청완료</button>
 
         </div>
         </form>

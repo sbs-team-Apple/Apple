@@ -7,33 +7,33 @@
 <body>
 <div layout:fragment="content">
     <div  class="container ">
-    <div
-            th:unless="${#authorization.expression('isAuthenticated()')}">
-        <div th:include="user/login.html"></div>
-    </div>
-
-    <div th:if="${#authorization.expression('isAuthenticated()')}" class="profile  main-container">
-        <div class="profile_in m-auto flex justify-center flex-col items-center"
-             th:each="userList : ${userList}" style="margin-bottom: 20px;">
-
-            <div>
-                <a th:href="@{|/user/detail/${userList.id}|}">
-                    <img class="w-50 h-50" th:src="@{|${userList.filepath}|}" alt="User Image"
-                         style="max-width: 300px; max-height: 300px;">
-                </a>
-            </div>
-            <div>
-                <span th:text="${userList.nickname}"></span>
-                <span> | </span>
-                <span th:text="${userList.age}"></span>
-                <span> | </span>
-                <span th:text="${userList.living}"></span>
-            </div>
-            <div th:text="${userList.About_Me}"></div>
+        <div
+                th:unless="${#authorization.expression('isAuthenticated()')}">
+            <div th:include="user/login.html"></div>
         </div>
-        <div th:include="common/menu.html"></div>
 
-    </div>
+        <div th:if="${#authorization.expression('isAuthenticated()')}" class="profile  main-container">
+            <div class="profile_in m-auto flex justify-center flex-col items-center"
+                 th:each="userList : ${userList}" style="margin-bottom: 20px;">
+
+                <div>
+                    <a th:href="@{|/user/detail/${userList.id}|}">
+                        <img class="w-50 h-50" th:src="@{|${userList.filepath}|}" alt="User Image"
+                             style="max-width: 300px; max-height: 300px;">
+                    </a>
+                </div>
+                <div>
+                    <span th:text="${userList.nickname}"></span>
+                    <span> | </span>
+                    <span th:text="${userList.age}"></span>
+                    <span> | </span>
+                    <span th:text="${userList.living}"></span>
+                </div>
+                <div th:text="${userList.About_Me}"></div>
+            </div>
+            <div th:include="common/menu.html"></div>
+
+        </div>
     </div>
 
     <div th:include="common/footer.html" class="dd"></div>
@@ -101,6 +101,7 @@
 
 
     .footer{
+    padding : 0 40px;
         position:absolute;
     }
 
@@ -108,6 +109,7 @@
 
     }
     .dd {
+
     }
 </style>
 

@@ -1,9 +1,23 @@
 <html layout:decorate="~{common/layout}" lang="en">
 <head>
+    <style>
+        .Transactions_list {
+            margin-bottom: 10px; /* 원하는 간격을 설정하세요. */
+            border: 1px solid #000; /* 네모 테두리 스타일 */
+            padding: 10px; /* 네모 내부 여백 */
+        }
+        .tab-button {
+            cursor: pointer;
+        }
+        .container {
+            padding: 0 40px;
+        }
+    </style>
     <meta charset="UTF-8"></head>
 <body>
 <div layout:fragment="content" class="container my-3">
-    <table>
+    <div class="overflow-x-auto">
+        <table class="table">
         <thead>
         <tr>
             <th>사진</th>
@@ -26,7 +40,8 @@
             <td th:text="${interestList.siteUser.About_Me}"></td>
         </tr>
         </tbody>
-    </table>
+        </table>
+    </div>
 </div>
 </body>
 </html>
