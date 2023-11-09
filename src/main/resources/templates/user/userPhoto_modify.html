@@ -5,12 +5,11 @@
     <title>사진 변경하기</title>
 </head>
 <body>
-<div layout:fragment="content" class="container my-3">
+<div layout:fragment="content" class="container m-auto flex justify-center flex-col items-center">
     <form enctype="multipart/form-data" th:action="@{|/user/photoModify/${siteUser.id}|}" object="${boardForm}"
           method="post">
-        <div>이미지 넣기</div>
-        <input type="file" name="file" accept="image/**">
-        <button type="submit">변경하기</button>
+        <input type="file" class="file-input file-input-bordered file-input-info w-full max-w-xs" name="file" accept="image/**"/>
+        <button type="submit" class="btn btn-outline btn-info">변경하기</button>
     </form>
 </div>
 </body>
