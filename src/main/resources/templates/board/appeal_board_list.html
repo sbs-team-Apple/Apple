@@ -9,9 +9,19 @@
     <div class="board-create-container">
         <a th:href="@{/board/create}">어필 게시판 작성하기</a>
     </div>
-    <div class="m-auto w-4/12 flex flex-wrap board-container  justify-center">
-        <div  class="m-10" th:each="board : ${board}">
-            <div class="flex ">
+    <div class="m-auto w-4/12 flex flex-col board-container  justify-center">
+        <div  class="mt-10 " th:each="board : ${board}">
+            <div class="flex">
+                <div class="avatar ">
+                    <div class="w-10 rounded-full">
+                        <img th:src="${board.siteUser.filepath}">
+                    </div>
+                </div>
+                <div>
+                    <div th:text="${board.siteUser.nickname}"></div>
+                </div>
+            </div>
+            <div class="flex board-img-box ">
                 <a th:href="@{|/board/detail/${board.id}|}">
                     <img class="w-30 h-30 board-img" th:src="@{|${board.filepath}|}" alt="">
                 </a>
@@ -49,23 +59,36 @@
         position:fixed;
     }
 
+    .container{
+        width:100%;
+    }
+
     .board-create-container{
         position:fixed;
         top:50px;
-        right:0;
+        right:10px;
+        margin:10px 0;
     }
 
-
+    .avatar{
+        z-index:-1;
+    }
     .board-container{
-        width:300px;
+        width:100%;
         margin-top:50px;
         margin-left:auto;
         margin-right:auto;
     }
+    .board-img-box{
+        width:100%;
+        flex-direction: column;
+
+    }
+
 
     .board-img {
-        width:150px;
-        height:150px;
+        width:98%;
+        height:250px;
 
     }
 

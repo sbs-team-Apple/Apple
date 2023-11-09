@@ -4,6 +4,7 @@ import com.sbs.apple.user.SiteUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,6 +18,7 @@ import java.util.UUID;
 public class BoardService {
     private final BoardRepository boardRepository;
     private String uploadDir;
+    private final ImgsService imgsService;
 
     @Value("${file.upload-dir}")
     public void setUploadDir(String uploadDir) {
@@ -25,25 +27,40 @@ public class BoardService {
 
 
 
-    public Board create(MultipartFile file,String subject,String content,  SiteUser user)
+    public Board create(List<MultipartFile> file,String subject,String content,  SiteUser user)
             throws Exception {
         Board board =new Board();
-
+        Imgs imgs =new Imgs();
 
         File directory = new File(uploadDir);
 
         if (!directory.exists()) {
             directory.mkdirs(); // 디렉토리가 없으면 생성
         }
-        UUID uuid = UUID.randomUUID();
-        String fileName =uuid + "_" + file.getOriginalFilename();
-        File saveFile =new File(directory,fileName);
-        file.transferTo(saveFile);
-        board.setFilename(fileName);
-        board.setFilepath("/gen/"+fileName);
+
+
         board.setSubject(subject);
         board.setContent(content);
         board.setSiteUser(user);
+
+
+        UUID uuid = UUID.randomUUID();
+        if(file.get(0).getOriginalFilename().equals("")){
+            System.out.println("사진없음");
+            board.setFilename("곰.jfif");
+            board.setFilepath("/img/곰.jfif");
+
+            this.boardRepository.save(board);
+            return board;
+
+
+        }
+        this.imgsService.create(file);
+
+
+//        board.setFilename(fileName);
+//        board.setFilepath("/gen/"+fileName);
+
         this.boardRepository.save(board);
         return board;
     }
@@ -52,6 +69,14 @@ public class BoardService {
 
         return this.boardRepository.findAll();
     }
+
+
+    public List<Board> getAllBoardDESC(){
+
+        return boardRepository.findAll(Sort.by(Sort.Order.desc("id")));
+    }
+
+
 
     public Board getBoard(Integer id){
         Optional<Board>  board =this.boardRepository.findById(id);

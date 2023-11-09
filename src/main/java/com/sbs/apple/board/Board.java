@@ -25,6 +25,9 @@ public class Board {
     @ManyToOne
     private SiteUser siteUser;
 
+    @OneToMany(mappedBy = "siteUser" , cascade = CascadeType.REMOVE)
+    private Imgs imgs;
+
 
 
 }
