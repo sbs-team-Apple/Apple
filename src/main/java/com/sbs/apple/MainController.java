@@ -85,7 +85,6 @@ public class MainController {
         }
 
         List<Notification> notificationsList = notificationService.getByUserTo(loginUser);
-        System.out.println("사이즈 크기는"+notificationsList.size());
         return "main";
     }
 }
