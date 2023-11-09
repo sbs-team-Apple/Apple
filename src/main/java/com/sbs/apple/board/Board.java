@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Setter
 @Getter
@@ -25,8 +27,8 @@ public class Board {
     @ManyToOne
     private SiteUser siteUser;
 
-    @OneToMany(mappedBy = "siteUser" , cascade = CascadeType.REMOVE)
-    private Imgs imgs;
+    @OneToMany(mappedBy = "board" , cascade = CascadeType.REMOVE)
+    private List<Imgs> imgs;
 
 
 

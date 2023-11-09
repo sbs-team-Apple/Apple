@@ -13,12 +13,8 @@ public class Imgs {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-
-
     @ManyToOne
     private Board board;
-
-
 
     private String filename;
     private String filepath;
