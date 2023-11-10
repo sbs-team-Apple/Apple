@@ -360,7 +360,7 @@ public class UserController {
     public String photoModify2(@Valid BoardForm boardForm, MultipartFile file, Model model, Principal principal,
                                @PathVariable Integer id) throws Exception {
         SiteUser user = userService.getUserbyName(principal.getName());
-        userService.photoModify(user, boardForm.getFile());
+//        userService.photoModify(user, boardForm.getFile());
         return "redirect:/user/myPage";
     }
 
