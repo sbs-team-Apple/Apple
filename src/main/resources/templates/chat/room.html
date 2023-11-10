@@ -10,322 +10,411 @@
 </head>
 <div layout:fragment="content" class="container my-3">
 
-<div class="chat-section">
-    <div class="chat-container">
-        <div class="chat-option-box">
-        <div class="chat-option-item flex  justify-start" >
-            <div >뒤로가기</div>
-            <div th:text="${toUser.nickname}" class="justify-start"> </div>
-            <div class="dropdown dropdown-bottom dropdown-end chat-option-icon text-right  ">
-                <label tabindex="0" class=" m-1 bg-white"><i class="fa-solid fa-gear fa-lg option-icon-img"></i></label>
-                <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-40">
-                    <li><a class="flex justify-end"><button class="btn" onclick="my_modal_5.showModal()">채팅방 나가기</button>
-                        <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
-                            <div class="modal-box">
-                                <h3 class="font-bold text-lg">경고</h3>
-                                <p class="py-4">채팅방을 나가시면 또 하트를 보내야지만 채팅방이 만들어집니다. 채팅방을 나가시겠습니까?</p>
-                                <div class="modal-action">
+    <div class="chat-section">
+        <div class="chat-container">
+            <div class="chat-option-box">
+                <div class="chat-option-item flex  justify-start">
+                    <div>뒤로가기</div>
+                    <div th:text="${toUser.nickname}" class="justify-start"></div>
+                    <div class="dropdown dropdown-bottom dropdown-end chat-option-icon text-right  ">
+                        <label tabindex="0" class=" m-1 bg-white"><i class="fa-solid fa-gear fa-lg option-icon-img"></i></label>
+                        <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-40">
+                            <li>
+                                <a class="flex justify-end">
+                                    <button class="btn btn-outline btn-info" onclick="my_modal_1.showModal()" id="sendCyberMoneyBtn"
+                                            data-toggle="modal" data-target="#cyberMoneyModal">하트 보내기</button>
+                                    <dialog id="my_modal_1" class="modal modal-bottom sm:modal-middle">
+                                        <div class="modal-box">
+                                            <h3 class="modal-title">사이버머니 보내기</h3>
+                                            <div class="modal-body">
+                                                <p>금액을 입력해주세요:</p>
+                                                <input type="number" id="cyberMoneyAmount" class="form-control" required>
 
-                                    <form th:action="@{|/chat/${roomId}/delete|}" method="get">
-                                        <button class="btn" type="submit" >예 </button>
+                                                <p>받는사람:</p>
+                                                <div th:text="${toUser.nickname}" id="recipientUsername" class="form-control"></div>
+                                            </div>
+
+                                            <div class="modal-action">
+                                                <form method="dialog">
+                                                    <button class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                                                    <button class="btn btn-primary" id="sendCyberMoneyConfirmBtn">확인</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </dialog>
+                                </a>
+                            </li>
+                            <li><a class="flex justify-end">
+                                <button class="btn" onclick="my_modal_5.showModal()">채팅방 나가기</button>
+                                <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
+                                    <div class="modal-box">
+                                        <h3 class="font-bold text-lg">경고</h3>
+                                        <p class="py-4">채팅방을 나가시면 또 하트를 보내야지만 채팅방이 만들어집니다. 채팅방을 나가시겠습니까?</p>
+                                        <div class="modal-action">
+
+                                            <form th:action="@{|/chat/${roomId}/delete|}" method="get">
+                                                <button class="btn" type="submit">예</button>
 
 
-                                    </form>
-                                    <form method="dialog">
-                                        <!-- if there is a button in form, it will close the modal -->
+                                            </form>
+                                            <form method="dialog">
+                                                <!-- if there is a button in form, it will close the modal -->
 
-                                        <button class="btn">아니오</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </dialog></a></li>
+                                                <button class="btn">아니오</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </dialog>
+                            </a></li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="chat__message-box">
+
+
+                <ul class="chat__message-ul">
 
                 </ul>
             </div>
-        </div>
-    </div>
-        <div class="chat__message-box">
+            <div class="chat-write-box">
+                <div class="chat-write-box-item  ">
+                    <form class="chat__write-message flex" onsubmit="Chat__writeMessage(this); return false;">
+                        <input type="hidden" name="roomId" th:value="${roomId}">
+
+                        <input class="hidden" type="text" placeholder="작성자" th:value="${user.nickname}"
+                               name="authorName" autocomplete="off">
+                        <div class="emo-button">🙂</div>
+                        <input class="w-11/12  h-10  mt-2 mb-2  chat-content" type="text" placeholder="내용을 입력해주세요."
+                               name="content" autocomplete="off">
+                        <button class="w-20 chat-write-box-item-button" type="submit" value="작성">전송</button>
+                    </form>
+
+                    <div class="emo-box flex flex-wrap" style="display:none;">
+                        <div class="flex emo-kind justify-around">
+                            <div class="face">😀</div>
+                            <div class="symbol">👍</div>
+                            <div class="nature">⛅</div>
+                            <div class="food">🍖</div>
+
+                        </div>
+
+                        <div class="face-emo emo flex flex-wrap">
+                            <p>😀</p>
+                            <p>😁</p>
+                            <p>😃</p>
+                            <p>😄</p>
+                            <p>😅</p>
+                            <p>😆</p>
+                            <p>😉</p>
+                            <p>😋</p>
+                            <p>😊</p>
+                            <p>😎</p>
+                            <p>😍</p>
+                            <p>😘</p>
+                            <p>😗</p>
+                            <p>😴</p>
+                            <p>😛</p>
+                            <p>😓</p>
+                            <p>😓</p>
+                            <p>😓</p>
+                            <p>😓</p>
+                            <p>😓</p>
+                            <p>😓</p>
+                            <p>😓</p>
+                            <p>😓</p>
+                            <p>😓</p>
+                            <p>😓</p>
+                            <p>😓</p>
+                            <p>😓</p>
+                            <p>&#128527;</p>
+
+                        </div>
+                        <div class="symbol-emo emo flex flex-wrap" style="display:none;">
+                            <p>👍</p>
+                            <p>👎</p>
+                            <p>💪</p>
+                            <p>👉</p>
+                            <p>☝</p>
+                            <p>✌</p>
+                            <p>🤞</p>
+                            <p>🖐</p>
+                            <p>✋</p>
+                            <p>👌</p>
+                            <p>👊</p>
+                            <p>🤜</p>
+                            <p>👏</p>
+                            <p>👋</p>
+                            <p>👂</p>
+                            <p>👃</p>
+                            <p>💬</p>
+                            <p>💢</p>
+
+                        </div>
+                        <div class="nature-emo emo flex flex-wrap" style="display:none;">
+                            <p>🌍</p>
+                            <p>🌐</p>
+                            <p>🌗</p>
+                            <p>🌛</p>
+                            <p>☀</p>
+                            <p>🌞</p>
+                            <p>⭐</p>
+                            <p>☁</p>
+                            <p>⛈</p>
+                            <p>🌧</p>
+                            <p>🌩</p>
+                            <p>🌈</p>
+                            <p>⚡</p>
+                            <p>☔</p>
+                            <p>❄</p>
+                            <p>🔥</p>
+                            <p>🎄</p>
+                            <p>🌊</p>
+
+                        </div>
+                        <div class="food-emo emo flex flex-wrap" style="display:none;">
+                            <p>🍇</p>
+                            <p>🍉</p>
+                            <p>🍌</p>
+                            <p>🍎</p>
+                            <p>🍍</p>
+                            <p>🥝</p>
+                            <p>🥥</p>
+                            <p>🍖</p>
+                            <p>🧀</p>
+                            <p>🍕</p>
+                            <p>🍔</p>
+                            <p>🌭</p>
+                            <p>🍨</p>
+                            <p>🍛</p>
+                            <p>🍜</p>
+                            <p>🍮</p>
+                            <p>🍷</p>
+                            <p>🍣</p>
+
+                        </div>
 
 
-            <ul class="chat__message-ul">
-
-            </ul>
-        </div>
-     <div class="chat-write-box">
-        <div class="chat-write-box-item  ">
-            <form class="chat__write-message flex" onsubmit="Chat__writeMessage(this); return false;">
-                <input type="hidden" name="roomId" th:value="${roomId}">
-
-                <input  class ="hidden"  type="text" placeholder="작성자" th:value="${user.nickname}"  name="authorName" autocomplete="off">
-                <div class="emo-button">🙂</div>
-                <input class="w-11/12  h-10  mt-2 mb-2  chat-content" type="text" placeholder="내용을 입력해주세요."  name="content" autocomplete="off">
-                <button class="w-20 chat-write-box-item-button" type="submit" value="작성">전송</button>
-            </form>
-
-            <div class="emo-box flex flex-wrap" style="display:none;">
-                <div class="flex emo-kind justify-around">
-                    <div class="face">😀</div>
-                    <div class="symbol">👍</div>
-                    <div class="nature">⛅</div>
-                    <div class="food">🍖</div>
-
+                    </div>
                 </div>
-
-                <div class="face-emo emo flex flex-wrap">
-                    <p>😀</p> <p>😁</p> <p>😃</p><p>😄</p>
-                    <p>😅</p> <p>😆</p> <p>😉</p> <p>😋</p><p>😊</p><p>😎</p>
-                    <p>😍</p> <p>😘</p><p>😗</p><p>😴</p><p>😛</p><p>😓</p>
-                    <p>😓</p><p>😓</p><p>😓</p><p>😓</p><p>😓</p><p>😓</p>
-                    <p>😓</p><p>😓</p><p>😓</p><p>😓</p><p>😓</p><p>&#128527;</p>
-
-                </div>
-                <div class="symbol-emo emo flex flex-wrap" style="display:none;">
-                    <p>👍</p> <p>👎</p> <p>💪</p><p>👉</p>
-                    <p>☝</p> <p>✌</p> <p>🤞</p> <p>🖐</p><p>✋</p><p>👌</p>
-                    <p>👊</p> <p>🤜</p><p>👏</p><p>👋</p><p>👂</p><p>👃</p>
-                    <p>💬</p><p>💢</p>
-
-                </div>
-                <div class="nature-emo emo flex flex-wrap" style="display:none;">
-                    <p>🌍</p> <p>🌐</p> <p>🌗</p><p>🌛</p>
-                    <p>☀</p> <p>🌞</p> <p>⭐</p> <p>☁</p><p>⛈</p><p>🌧</p>
-                    <p>🌩</p> <p>🌈</p><p>⚡</p><p>☔</p><p>❄</p><p>🔥</p>
-                    <p>🎄</p><p>🌊</p>
-
-                </div>
-                <div class="food-emo emo flex flex-wrap" style="display:none;">
-                    <p>🍇</p> <p>🍉</p> <p>🍌</p><p>🍎</p>
-                    <p>🍍</p> <p>🥝</p> <p>🥥</p> <p>🍖</p><p>🧀</p><p>🍕</p>
-                    <p>🍔</p> <p>🌭</p><p>🍨</p><p>🍛</p><p>🍜</p><p>🍮</p>
-                    <p>🍷</p><p>🍣</p>
-
-                </div>
-
-
-
 
             </div>
+
         </div>
 
-     </div>
 
     </div>
 
 
-
 </div>
-
-
-
-</div>
-
 
 
 </html>
 
 <style>
-        body, ul, li{
-      margin:0;
-      list-style:none;
-      padding:0;
-              }
-    a        {
-      text-decoration:none;
-      color:inherit;
-              }
-    input:focus {
-        outline: none;
+    body, ul, li{
+  margin:0;
+  list-style:none;
+  padding:0;
+          }
+a        {
+  text-decoration:none;
+  color:inherit;
+          }
+input:focus {
+    outline: none;
+}
+
+.dropdown-bottom .dropdown-content {
+
+
+}
+
+
+.chat-section{
+    display:block;
+
+    width:80%;
+
+
+    margin-left:auto;
+    margin-right:auto;
+     position:relative;
+}
+.chat-container{
+
+
+}
+
+
+
+.chat__message-box{
+
+      height:500px;
+
+
+     overflow-y: scroll; /* 세로 스크롤만 활성화 */
+     overflow-x: hidden;
+     background-color :#9bbbd4;
+     position:relative;
+}
+
+.chat__message-box::-webkit-scrollbar {
+        display:none /* Chrome , Safari , Opera */
     }
 
-    .dropdown-bottom .dropdown-content {
+  @media screen and (max-height: 800px) {
+
+            .chat__message-box{
+                    height:300px;
+
+                }
+
+  }
 
 
-    }
+.chat-option-box {
+    height:35px;
+     background-color :#9bbbd4;
+     display:flex;
+      align-items: center;
 
 
-    .chat-section{
-        display:block;
+}
 
-        width:80%;
+.chat-option-item {
+    display:flex;
+    width:100%;
 
+}
 
-        margin-left:auto;
-        margin-right:auto;
-         position:relative;
-    }
-    .chat-container{
+.chat-option-icon {
 
+    margin-right:5px;
+     text-align: right;
+    margin-left:auto;
 
-    }
+}
 
+.fa-cog:before, .fa-gear:before{
+           background-color :#9bbbd4;
 
+}
 
-    .chat__message-box{
+@media screen and (max-width: 450px) {
 
-          height:500px;
+    .modal[open] .modal-box {
+                position:absolute;
+                top:50%;
+                left:50%;
+                transform:translate(-50%,-50%);
 
+              border-bottom-right-radius:  var(--rounded-box, 1rem);
+            border-bottom-left-radius: var(--rounded-box, 1rem);
 
-         overflow-y: scroll; /* 세로 스크롤만 활성화 */
-         overflow-x: hidden;
-         background-color :#9bbbd4;
-         position:relative;
-    }
-
-    .chat__message-box::-webkit-scrollbar {
-        	display:none /* Chrome , Safari , Opera */
-        }
-
-      @media screen and (max-height: 800px) {
-
-                .chat__message-box{
-                        height:300px;
-
-                    }
-
-      }
-
-
-    .chat-option-box {
-        height:35px;
-         background-color :#9bbbd4;
-         display:flex;
-          align-items: center;
-
-
-    }
-
-    .chat-option-item {
-        display:flex;
-        width:100%;
-
-    }
-
-    .chat-option-icon {
-
-        margin-right:5px;
-         text-align: right;
-        margin-left:auto;
-
-    }
-
-    .fa-cog:before, .fa-gear:before{
-               background-color :#9bbbd4;
-
-    }
-
-    @media screen and (max-width: 450px) {
-
-        .modal[open] .modal-box {
-                    position:absolute;
-                    top:50%;
-                    left:50%;
-                    transform:translate(-50%,-50%);
-
-                  border-bottom-right-radius:  var(--rounded-box, 1rem);
-                border-bottom-left-radius: var(--rounded-box, 1rem);
-
-                width:250px;
-
-        }
-
-
-
+            width:250px;
 
     }
 
 
 
-    .chat-write-box {
+
+}
 
 
 
-    }
-    .chat-write-box-item {
-
-       margin-top:10px;
-       border: 1px solid black;
-
-    }
-
-    .chat-write-box-item-button {
-        background-color : #fef01b;
-        margin-left:10px;
-    }
-
-
-    .chat__message{
-        margin-bottom:30px;
-
-         max-width:230px;
-        border-radius:15px;
-        margin-top:20px;
-        padding:5px 15px;
-    }
+.chat-write-box {
 
 
 
+}
+.chat-write-box-item {
 
-    .chat__message.right {
-    text-align: left;
-    background-color: #fef01b; /* 원하는 배경색으로 변경 */
-     clear:both;
-        float:right;
-        margin-right:10px;
+   margin-top:10px;
+   border: 1px solid black;
+
+}
+
+.chat-write-box-item-button {
+    background-color : #fef01b;
+    margin-left:10px;
+}
+
+
+.chat__message{
+    margin-bottom:30px;
+
+     max-width:230px;
+    border-radius:15px;
+    margin-top:20px;
+    padding:5px 15px;
+}
+
+
+
+
+.chat__message.right {
+text-align: left;
+background-color: #fef01b; /* 원하는 배경색으로 변경 */
+ clear:both;
+    float:right;
+    margin-right:10px;
 
 
 }
 
 /* 상대방의 메시지 */
 .chat__message.left {
-    text-align: left;
-    background-color: #ffffff; /* 원하는 배경색으로 변경 */
-    clear:both;
-    float:left;
-        margin-left:10px;
+text-align: left;
+background-color: #ffffff; /* 원하는 배경색으로 변경 */
+clear:both;
+float:left;
+    margin-left:10px;
 
 
 
 }
 
-    .emo-button {
-            line-height: 56px;
-            margin: 0 10px;
+.emo-button {
+        line-height: 56px;
+        margin: 0 10px;
 
+}
+
+
+.emo-box {
+    position:absolute;
+    bottom:0;
+    left:0;
+    width:100%;
+    height:150px;
+    transform:translate(-0,100%);
+
+     overflow-y: scroll; /* 세로 스크롤만 활성화 */
+     overflow-x: hidden;
+     background-color:gray;
+}
+
+
+.emo-box::-webkit-scrollbar {
+        display:none /* Chrome , Safari , Opera */
     }
+  .emo-kind {
+  margin-top:10px;
+  margin-bottom:10px;
+       width: 348px;
+  }
 
 
-    .emo-box {
-        position:absolute;
-        bottom:0;
-        left:0;
-        width:100%;
-        height:150px;
-        transform:translate(-0,100%);
+.emo-kind >div{
+    margin:0 5px;
+}
 
-         overflow-y: scroll; /* 세로 스크롤만 활성화 */
-         overflow-x: hidden;
-         background-color:gray;
-    }
-
-
-    .emo-box::-webkit-scrollbar {
-        	display:none /* Chrome , Safari , Opera */
-        }
-      .emo-kind {
-      margin-top:10px;
-      margin-bottom:10px;
-           width: 348px;
-      }
-
-
-    .emo-kind >div{
-        margin:0 5px;
-    }
-
-    .emo >p{
-        width:22px;
-        height:22px; margin: 10px;
-    }
+.emo >p{
+    width:22px;
+    height:22px; margin: 10px;
+}
 
 
 </style>
@@ -340,6 +429,7 @@
     chatOptionBox.css("top", scrollTop);
   });
 });
+
 </script>
 
 
@@ -405,9 +495,6 @@
     });
 
 
-
-
-
 </script>
 
 
@@ -430,9 +517,7 @@
     });
 
 
-
 </script>
-
 
 
 <script>
@@ -565,8 +650,55 @@
     // 채팅 메시지들 읽기 끝
 
 
+</script>
+<script>
+    $(document).ready(function() {
+        $('#sendCyberMoneyBtn').click(function() {
+            my_modal_1.showModal();
 
+            // 사용자의 username을 HTML에서 가져옵니다.
+           var siteUserUsernameElement = $("#recipientUsername");
+            var recipientUsername = siteUserUsernameElement.text();
 
+            $('#recipientUsername').text(recipientUsername);
 
+            $('#sendCyberMoneyConfirmBtn').click(function() {
+            alert("사이버 머니가 성공적으로 전송 되었습니다.");
+            var amount = $('#cyberMoneyAmount').val();
 
+            var csrfToken = $("meta[name='_csrf']").attr("content");
+            var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+
+                if (amount >= 0) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/user/cybermoney/send',
+                        data: 'recipientUsername=' + recipientUsername + '&amount=' + amount,
+                        beforeSend: function(xhr) {
+                            xhr.setRequestHeader(csrfHeader, csrfToken);
+                        },
+                        success: function() {
+                         location.reload();
+                            $('#cyberMoneyModal').modal('hide'); // 성공 시 모달을 닫음
+                            alert('사이버 머니 전송이 성공했습니다.');
+                            // 사이버 머니 갱신 등의 추가 작업 수행
+
+                        },
+                        error: function(xhr) {
+                            if (xhr.status === 400) {
+                                alert('사이버 머니 전송에 실패했습니다. 요청이 잘못되었습니다.');
+                            } else if (xhr.status === 403) {
+                                alert('사이버 머니 전송에 실패했습니다. 권한이 없습니다.');
+                            } else {
+                                console.log(xhr.status);
+                                alert('사이버 머니 전송에 실패했습니다. 서버 오류가 발생했습니다.');
+                            }
+                        }
+                    });
+                } else {
+                    alert('금액은 0 이상이어야 합니다.');
+                }
+            });
+        });
+    });
 </script>
