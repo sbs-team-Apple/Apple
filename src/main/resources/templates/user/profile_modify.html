@@ -5,7 +5,7 @@
     <title>프로필 수정하기</title>
 </head>
 <body>
-<div layout:fragment="content" class="container my-3">
+<div layout:fragment="content" class="flex-1 flex items-center justify-center">
     <form th:action="@{/user/profile_modify}" th:object="${userAddForm}" method="post" class="flex flex-col gap-6">
         <div class="form-control">
             <label class="label">
