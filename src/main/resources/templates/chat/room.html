@@ -14,7 +14,11 @@
     <div class="chat-container">
         <div class="chat-option-box">
         <div class="chat-option-item flex  justify-start" >
-            <div >뒤로가기</div>
+            <div class="ml-2 mr-4">
+                <a href="/chat/allRoom">
+                <i class="fa-solid fa-right-to-bracket"></i>
+                </a>
+            </div>
             <div th:text="${toUser.nickname}" class="justify-start"> </div>
             <div class="dropdown dropdown-bottom dropdown-end chat-option-icon text-right  ">
                 <label tabindex="0" class=" m-1 bg-white"><i class="fa-solid fa-gear fa-lg option-icon-img"></i></label>

@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8090
   http2:
     enabled: true
 file:
@@ -82,3 +82,8 @@ custom:
 
   thymeleaf:
     cache: false
+
+  servlet:
+    multipart:
+      maxFileSize: 10MB
+      maxRequestSize: 100MB

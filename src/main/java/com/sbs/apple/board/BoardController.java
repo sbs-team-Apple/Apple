@@ -35,6 +35,11 @@ public class BoardController {
     @PostMapping("/create")
     public String Create(@Valid BoardForm boardForm, MultipartFile file, Model model, Principal principal) throws Exception {
         SiteUser user = userService.getUserbyName(principal.getName());
+        if(boardForm.getFile()==null){
+
+
+        }
+
 
         Board board = boardService.create(boardForm.getFile(), boardForm.getSubject(), boardForm.getContent(), user
         );
@@ -46,7 +51,9 @@ public class BoardController {
     @GetMapping("/appealList")
     public String showList(Model model) {
         System.out.println(System.currentTimeMillis());
-        List<Board> boards = this.boardService.getAllBoard();
+
+        List<Board> boards =this.boardService.getAllBoardDESC();
+
 
         model.addAttribute("board", boards);
 
@@ -81,7 +88,10 @@ public class BoardController {
                          @PathVariable Integer id) throws Exception {
         SiteUser user = userService.getUserbyName(principal.getName());
         Board board = boardService.getBoard(id);
-        boardService.modify(boardForm.getFile(), boardForm.getSubject(), boardForm.getContent(), board);
+
+//        boardService.modify( boardForm.getFile(),boardForm.getSubject(), boardForm.getContent(), board);
+
+
 
 
         return "redirect:/board/appealList";

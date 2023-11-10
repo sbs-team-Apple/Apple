@@ -6,7 +6,7 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <div  class="container ">
+    <div  class="container real-container ">
         <div
                 th:unless="${#authorization.expression('isAuthenticated()')}">
             <div th:include="user/login.html"></div>
@@ -45,31 +45,35 @@
             <a th:href="@{/user/okay}">확인했습니다.</a>
         </div>
     </div>
-    <!--    <div th:if="${siteUsers != null}" th:each="user : ${siteUsers}">-->
-    <!--        <div class="flex  ">-->
-    <!--            <div><a th:value="${user.id}" name="userId" th:text="${user.nickname}"></a></div>-->
-    <!--            <div>-->
-    <!--                <form method="post"-->
-    <!--                      th:action="@{|/chat/${chatRoom != null ? chatRoom.id+1 : 1}/room/${user.id}|}">-->
-    <!--                    <input class="userId_value" type="hidden" name="userId" th:value="${user.id}">-->
-    <!--                    <button type="submit">님과 채팅방 만들기</button>-->
-    <!--                </form>-->
-    <!--            </div>-->
-    <!--        </div>-->
+        <div th:if="${siteUsers != null}" th:each="user : ${siteUsers}">
+            <div class="flex  ">
+                <div><a th:value="${user.id}" name="userId" th:text="${user.nickname}"></a></div>
+                <div>
+                    <form method="post"
+                          th:action="@{|/chat/${chatRoom != null ? chatRoom.id+1 : 1}/room/${user.id}|}">
+                        <input class="userId_value" type="hidden" name="userId" th:value="${user.id}">
+                        <button type="submit">님과 채팅방 만들기</button>
+                    </form>
+                </div>
+            </div>
 
-    <!--    </div>-->
+        </div>
 
 
 
 </div>
 </body>
 <style>
+    .real-container{
+             margin: 0 auto;
+
+    }
+
     .container {
 
          margin: 0 auto;
         justify-content: center;
         align-items: center;
-        display:block;
     }
 
     .underBody {
@@ -79,6 +83,7 @@
         display: flex;
         flex-direction: column; /* 아래로 요소를 쌓도록 설정 */
         align-items: center;
+
     }
     .login {
         margin-bottom: 20px; /* 로그인 폼과 카카오 로그인 버튼 사이의 간격 조정 */
