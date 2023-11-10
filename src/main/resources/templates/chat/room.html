@@ -13,39 +13,17 @@
     <div class="chat-section">
         <div class="chat-container">
             <div class="chat-option-box">
-                <div class="chat-option-item flex  justify-start">
-                    <div>뒤로가기</div>
-                    <div th:text="${toUser.nickname}" class="justify-start"></div>
+                <div class="chat-option-item flex  justify-start" >
+                    <div class="ml-2 mr-4">
+                        <a href="/chat/allRoom">
+                            <i class="fa-solid fa-right-to-bracket"></i>
+                        </a>
+                    </div>
+                    <div th:text="${toUser.nickname}" class="justify-start"> </div>
                     <div class="dropdown dropdown-bottom dropdown-end chat-option-icon text-right  ">
                         <label tabindex="0" class=" m-1 bg-white"><i class="fa-solid fa-gear fa-lg option-icon-img"></i></label>
                         <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-40">
-                            <li>
-                                <a class="flex justify-end">
-                                    <button class="btn btn-outline btn-info" onclick="my_modal_1.showModal()" id="sendCyberMoneyBtn"
-                                            data-toggle="modal" data-target="#cyberMoneyModal">하트 보내기</button>
-                                    <dialog id="my_modal_1" class="modal modal-bottom sm:modal-middle">
-                                        <div class="modal-box">
-                                            <h3 class="modal-title">사이버머니 보내기</h3>
-                                            <div class="modal-body">
-                                                <p>금액을 입력해주세요:</p>
-                                                <input type="number" id="cyberMoneyAmount" class="form-control" required>
-
-                                                <p>받는사람:</p>
-                                                <div th:text="${toUser.nickname}" id="recipientUsername" class="form-control"></div>
-                                            </div>
-
-                                            <div class="modal-action">
-                                                <form method="dialog">
-                                                    <button class="btn btn-secondary" data-dismiss="modal">닫기</button>
-                                                    <button class="btn btn-primary" id="sendCyberMoneyConfirmBtn">확인</button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </dialog>
-                                </a>
-                            </li>
-                            <li><a class="flex justify-end">
-                                <button class="btn" onclick="my_modal_5.showModal()">채팅방 나가기</button>
+                            <li><a class="flex justify-end"><button class="btn" onclick="my_modal_5.showModal()">채팅방 나가기</button>
                                 <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
                                     <div class="modal-box">
                                         <h3 class="font-bold text-lg">경고</h3>
@@ -53,7 +31,7 @@
                                         <div class="modal-action">
 
                                             <form th:action="@{|/chat/${roomId}/delete|}" method="get">
-                                                <button class="btn" type="submit">예</button>
+                                                <button class="btn" type="submit" >예 </button>
 
 
                                             </form>
@@ -64,8 +42,7 @@
                                             </form>
                                         </div>
                                     </div>
-                                </dialog>
-                            </a></li>
+                                </dialog></a></li>
 
                         </ul>
                     </div>
@@ -83,11 +60,9 @@
                     <form class="chat__write-message flex" onsubmit="Chat__writeMessage(this); return false;">
                         <input type="hidden" name="roomId" th:value="${roomId}">
 
-                        <input class="hidden" type="text" placeholder="작성자" th:value="${user.nickname}"
-                               name="authorName" autocomplete="off">
+                        <input  class ="hidden"  type="text" placeholder="작성자" th:value="${user.nickname}"  name="authorName" autocomplete="off">
                         <div class="emo-button">🙂</div>
-                        <input class="w-11/12  h-10  mt-2 mb-2  chat-content" type="text" placeholder="내용을 입력해주세요."
-                               name="content" autocomplete="off">
+                        <input class="w-11/12  h-10  mt-2 mb-2  chat-content" type="text" placeholder="내용을 입력해주세요."  name="content" autocomplete="off">
                         <button class="w-20 chat-write-box-item-button" type="submit" value="작성">전송</button>
                     </form>
 
@@ -101,99 +76,36 @@
                         </div>
 
                         <div class="face-emo emo flex flex-wrap">
-                            <p>😀</p>
-                            <p>😁</p>
-                            <p>😃</p>
-                            <p>😄</p>
-                            <p>😅</p>
-                            <p>😆</p>
-                            <p>😉</p>
-                            <p>😋</p>
-                            <p>😊</p>
-                            <p>😎</p>
-                            <p>😍</p>
-                            <p>😘</p>
-                            <p>😗</p>
-                            <p>😴</p>
-                            <p>😛</p>
-                            <p>😓</p>
-                            <p>😓</p>
-                            <p>😓</p>
-                            <p>😓</p>
-                            <p>😓</p>
-                            <p>😓</p>
-                            <p>😓</p>
-                            <p>😓</p>
-                            <p>😓</p>
-                            <p>😓</p>
-                            <p>😓</p>
-                            <p>😓</p>
-                            <p>&#128527;</p>
+                            <p>😀</p> <p>😁</p> <p>😃</p><p>😄</p>
+                            <p>😅</p> <p>😆</p> <p>😉</p> <p>😋</p><p>😊</p><p>😎</p>
+                            <p>😍</p> <p>😘</p><p>😗</p><p>😴</p><p>😛</p><p>😓</p>
+                            <p>😓</p><p>😓</p><p>😓</p><p>😓</p><p>😓</p><p>😓</p>
+                            <p>😓</p><p>😓</p><p>😓</p><p>😓</p><p>😓</p><p>&#128527;</p>
 
                         </div>
                         <div class="symbol-emo emo flex flex-wrap" style="display:none;">
-                            <p>👍</p>
-                            <p>👎</p>
-                            <p>💪</p>
-                            <p>👉</p>
-                            <p>☝</p>
-                            <p>✌</p>
-                            <p>🤞</p>
-                            <p>🖐</p>
-                            <p>✋</p>
-                            <p>👌</p>
-                            <p>👊</p>
-                            <p>🤜</p>
-                            <p>👏</p>
-                            <p>👋</p>
-                            <p>👂</p>
-                            <p>👃</p>
-                            <p>💬</p>
-                            <p>💢</p>
+                            <p>👍</p> <p>👎</p> <p>💪</p><p>👉</p>
+                            <p>☝</p> <p>✌</p> <p>🤞</p> <p>🖐</p><p>✋</p><p>👌</p>
+                            <p>👊</p> <p>🤜</p><p>👏</p><p>👋</p><p>👂</p><p>👃</p>
+                            <p>💬</p><p>💢</p>
 
                         </div>
                         <div class="nature-emo emo flex flex-wrap" style="display:none;">
-                            <p>🌍</p>
-                            <p>🌐</p>
-                            <p>🌗</p>
-                            <p>🌛</p>
-                            <p>☀</p>
-                            <p>🌞</p>
-                            <p>⭐</p>
-                            <p>☁</p>
-                            <p>⛈</p>
-                            <p>🌧</p>
-                            <p>🌩</p>
-                            <p>🌈</p>
-                            <p>⚡</p>
-                            <p>☔</p>
-                            <p>❄</p>
-                            <p>🔥</p>
-                            <p>🎄</p>
-                            <p>🌊</p>
+                            <p>🌍</p> <p>🌐</p> <p>🌗</p><p>🌛</p>
+                            <p>☀</p> <p>🌞</p> <p>⭐</p> <p>☁</p><p>⛈</p><p>🌧</p>
+                            <p>🌩</p> <p>🌈</p><p>⚡</p><p>☔</p><p>❄</p><p>🔥</p>
+                            <p>🎄</p><p>🌊</p>
 
                         </div>
                         <div class="food-emo emo flex flex-wrap" style="display:none;">
-                            <p>🍇</p>
-                            <p>🍉</p>
-                            <p>🍌</p>
-                            <p>🍎</p>
-                            <p>🍍</p>
-                            <p>🥝</p>
-                            <p>🥥</p>
-                            <p>🍖</p>
-                            <p>🧀</p>
-                            <p>🍕</p>
-                            <p>🍔</p>
-                            <p>🌭</p>
-                            <p>🍨</p>
-                            <p>🍛</p>
-                            <p>🍜</p>
-                            <p>🍮</p>
-                            <p>🍷</p>
-                            <p>🍣</p>
+                            <p>🍇</p> <p>🍉</p> <p>🍌</p><p>🍎</p>
+                            <p>🍍</p> <p>🥝</p> <p>🥥</p> <p>🍖</p><p>🧀</p><p>🍕</p>
+                            <p>🍔</p> <p>🌭</p><p>🍨</p><p>🍛</p><p>🍜</p><p>🍮</p>
+                            <p>🍷</p><p>🍣</p>
 
                         </div>
+
+
 
 
                     </div>
@@ -204,10 +116,13 @@
         </div>
 
 
+
     </div>
 
 
+
 </div>
+
 
 
 </html>
@@ -429,7 +344,6 @@ float:left;
     chatOptionBox.css("top", scrollTop);
   });
 });
-
 </script>
 
 
@@ -495,6 +409,9 @@ float:left;
     });
 
 
+
+
+
 </script>
 
 
@@ -517,7 +434,9 @@ float:left;
     });
 
 
+
 </script>
+
 
 
 <script>
@@ -650,55 +569,8 @@ float:left;
     // 채팅 메시지들 읽기 끝
 
 
-</script>
-<script>
-    $(document).ready(function() {
-        $('#sendCyberMoneyBtn').click(function() {
-            my_modal_1.showModal();
 
-            // 사용자의 username을 HTML에서 가져옵니다.
-           var siteUserUsernameElement = $("#recipientUsername");
-            var recipientUsername = siteUserUsernameElement.text();
 
-            $('#recipientUsername').text(recipientUsername);
 
-            $('#sendCyberMoneyConfirmBtn').click(function() {
-            alert("사이버 머니가 성공적으로 전송 되었습니다.");
-            var amount = $('#cyberMoneyAmount').val();
 
-            var csrfToken = $("meta[name='_csrf']").attr("content");
-            var csrfHeader = $("meta[name='_csrf_header']").attr("content");
-
-                if (amount >= 0) {
-                    $.ajax({
-                        type: 'POST',
-                        url: '/user/cybermoney/send',
-                        data: 'recipientUsername=' + recipientUsername + '&amount=' + amount,
-                        beforeSend: function(xhr) {
-                            xhr.setRequestHeader(csrfHeader, csrfToken);
-                        },
-                        success: function() {
-                         location.reload();
-                            $('#cyberMoneyModal').modal('hide'); // 성공 시 모달을 닫음
-                            alert('사이버 머니 전송이 성공했습니다.');
-                            // 사이버 머니 갱신 등의 추가 작업 수행
-
-                        },
-                        error: function(xhr) {
-                            if (xhr.status === 400) {
-                                alert('사이버 머니 전송에 실패했습니다. 요청이 잘못되었습니다.');
-                            } else if (xhr.status === 403) {
-                                alert('사이버 머니 전송에 실패했습니다. 권한이 없습니다.');
-                            } else {
-                                console.log(xhr.status);
-                                alert('사이버 머니 전송에 실패했습니다. 서버 오류가 발생했습니다.');
-                            }
-                        }
-                    });
-                } else {
-                    alert('금액은 0 이상이어야 합니다.');
-                }
-            });
-        });
-    });
 </script>
