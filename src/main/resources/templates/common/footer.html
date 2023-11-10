@@ -32,8 +32,7 @@
     /* 푸터 스타일 */
     .container {
         margin: 0 auto;
-        justify-content: center;
-        align-items: center;
+
     }
     .footer {
       background-color: #333; /* 배경색 지정 */
@@ -54,15 +53,18 @@
     }
     .footer-logo {
       margin-right: 20px; /* 로고와 정보 사이의 간격 조절 */
+      flex: 1;
     }
 
     .footer-info {
       flex: 1; /* 중앙에 배치하기 위해 flex 속성을 사용합니다. */
       text-align: center; /* 텍스트를 중앙 정렬합니다. */
+
     }
 
     .footer-copyright {
-      text-align: right; /* 텍스트를 오른쪽 정렬합니다. */
+        text-align: end;
+           flex: 1;
     }
 
     /* 로고 스타일 */

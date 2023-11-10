@@ -6,14 +6,35 @@
 </head>
 <body>
 <div layout:fragment="content" class="container my-3 w-10/12 m-auto">
-    <div class="m-auto w-4/12 flex flex-wrap board-container  justify-center">
-        <div  class="m-10" th:each="board : ${board}">
-            <div class="flex ">
-                <a th:href="@{|/board/detail/${board.id}|}">
-                    <img class="w-30 h-30 board-img" th:src="@{|${board.filepath}|}" alt="">
-                </a>
+    <div class="board-create-container">
+        <a th:href="@{/board/create}">어필 게시판 작성하기</a>
+    </div>
+    <div class="m-auto w-4/12 flex flex-col board-container  justify-center">
+        <div  class="mt-10 " th:each="board : ${board}">
+            <div class="flex">
+                <div class="avatar ">
+                    <div class="w-10 rounded-full">
+                        <img th:src="${board.siteUser.filepath}">
+                    </div>
+                </div>
+                <div>
+                    <div th:text="${board.siteUser.nickname}"></div>
+                </div>
+            </div>
+
+
+            <div class="flex board-img-box">
+                <div th:each="img : ${board.imgs}" class="slide">
+                    <img class="w-30 h-30 board-img" th:src="@{|${img.filepath}|}" alt="">
+                </div>
+                <button class="prevButton">이전</button>
+                <button class="nextButton">다음</button>
 
             </div>
+
+
+
+
             <div >
                 <div th:text="${board.subject}"></div>
                 <div class="flex">
@@ -33,9 +54,7 @@
     </div>
 
     <br>
-    <div>
-        <a th:href="@{/board/create}">어필 게시판 작성하기</a>
-    </div>
+
 
 
 
@@ -45,21 +64,104 @@
 
 <style>
 
-    .board-container{
-        width:600px;
+    .board-img-box {
+    overflow: hidden;
+    position: relative;
+}
+
+/* 이미지 슬라이더 슬라이드 스타일링 */
+.slide {
+    float: left;
+    display: none;
+}
+
+/* 현재 슬라이드만 표시 */
+.slide.active {
+    display: block;
+}
+
+/* 버튼 스타일링 (선택사항) */
+#prevButton, #nextButton {
+    cursor: pointer;
+}
+
+
+    .navbar {
+        position:fixed;
     }
 
+    .container{
+        width:100%;
+    }
+
+    .board-create-container{
+        position:fixed;
+        top:50px;
+        right:10px;
+        margin:10px 0;
+    }
+
+    .avatar{
+        z-index:-1;
+    }
+    .board-container{
+        width:100%;
+        margin-top:50px;
+        margin-left:auto;
+        margin-right:auto;
+    }
+    .board-img-box{
+        width:100%;
+        flex-direction: column;
+
+    }
+
+
     .board-img {
-        width:150px;
-        height:150px;
+        width:98%;
+        height:250px;
 
     }
 
 </style>
 
 
-<script >
 
+<script>
 
+    $(document).ready(function() {
+    // 각 게시판에 대한 슬라이더를 설정
+    $(".board-img-box").each(function() {
+        var currentSlide = 0;
+        var slides = $(this).find(".slide");
+        var prevButton = $(this).find(".prevButton");
+        console.log(currentSlide);
+        var nextButton = $(this).find(".nextButton");
 
+        showSlide(currentSlide);
+
+        prevButton.click(function() {
+        console.log(123);
+            showSlide(currentSlide - 1);
+        });
+
+        nextButton.click(function() {
+        console.log(123);
+            showSlide(currentSlide + 1);
+        });
+
+        function showSlide(slideIndex) {
+            if (slideIndex < 0) {
+                slideIndex = slides.length - 1;
+            } else if (slideIndex >= slides.length) {
+                slideIndex = 0;
+            }
+
+            slides.eq(currentSlide).removeClass('active');
+            slides.eq(slideIndex).addClass('active');
+            currentSlide = slideIndex;
+        }
+    });
+});
 </script>
+
