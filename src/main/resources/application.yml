@@ -1,5 +1,5 @@
 server:
-  port: 8090
+  port: 8080
   http2:
     enabled: true
 file:
@@ -50,7 +50,7 @@ spring:
             user-name-attribute: id
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     database-platform: org.hibernate.dialect.MySQLDialect
     properties:
       hibernate:
