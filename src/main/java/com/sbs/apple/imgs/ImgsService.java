@@ -1,4 +1,4 @@
-package com.sbs.apple.board;
+package com.sbs.apple.imgs;
 
 
 import org.springframework.beans.factory.annotation.Value;

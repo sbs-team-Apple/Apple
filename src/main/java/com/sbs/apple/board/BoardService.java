@@ -1,8 +1,9 @@
 package com.sbs.apple.board;
 
+import com.sbs.apple.imgs.Imgs;
+import com.sbs.apple.imgs.ImgsService;
 import com.sbs.apple.user.SiteUser;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -47,8 +48,8 @@ public class BoardService {
         UUID uuid = UUID.randomUUID();
         if(file.get(0).getOriginalFilename().equals("")){
             System.out.println("사진없음");
-            board.setFilename("곰.jfif");
-            board.setFilepath("/img/곰.jfif");
+//            board.setFilename("곰.jfif");
+//            board.setFilepath("/img/곰.jfif");
 
             this.boardRepository.save(board);
             return board;
@@ -103,8 +104,8 @@ public class BoardService {
         String fileName =uuid + "_" + file.getOriginalFilename();
         File saveFile =new File(directory,fileName);
         file.transferTo(saveFile);
-        board.setFilename(fileName);
-        board.setFilepath("/gen/"+fileName);
+//        board.setFilename(fileName);
+//        board.setFilepath("/gen/"+fileName);
         board.setSubject(subject);
         board.setContent(content);
 

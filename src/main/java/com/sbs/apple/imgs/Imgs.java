@@ -1,6 +1,7 @@
-package com.sbs.apple.board;
+package com.sbs.apple.imgs;
 
 
+import com.sbs.apple.board.Board;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
