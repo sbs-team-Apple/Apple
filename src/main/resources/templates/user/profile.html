@@ -10,73 +10,78 @@
 </head>
 
 
-<div layout:fragment="content" class="container my-3">
-
-    <div class="user-username" th:text="${siteUser.username}" style="display: none;"></div>
+<div layout:fragment="content" class="container m-auto flex justify-center flex-col items-center">
     <div>
-        <img th:src="@{|${siteUser.filepath}|}" alt="User Image" style="max-width: 300px; max-height: 300px;">
-    </div>
-    <div th:text="'닉네임 : ' + ${siteUser.nickname}"></div>
-    <div th:text="'나이 : ' + ${siteUser.age}"></div>
-    <div th:text="'지역 : ' + ${siteUser.living}"></div>
-    <div th:text="'취미 : ' + ${siteUser.hobbyList}"></div>
-    <div th:text="'키 : ' + ${siteUser.tall}"></div>
-    <div th:text="'체형 : ' + ${siteUser.body_type}"></div>
-    <div th:text="'흡연 : ' + ${siteUser.smoking}"></div>
-    <div th:text="'음주 : ' + ${siteUser.drinking}"></div>
-    <div th:text="'성격 : ' + ${siteUser.styleList}"></div>
-    <div th:text="'종교 : ' + ${siteUser.religion}"></div>
-    <div th:text="'MBTI : ' + ${siteUser.mbti}"></div>
-    <div th:text="'학교 : ' + ${siteUser.school}"></div>
-    <div th:text="'직업 : ' + ${siteUser.job}"></div>
-    <div th:text="'자기소개 : ' + ${siteUser.About_Me}"></div>
-    <h2>원하는 이상형</h2>
-    <div th:text="'선호하는 나이 : ' + ${siteUser.desired_age}"></div>
-    <div th:text="'선호하는 지역 : ' + ${siteUser.desired_living}"></div>
-    <div th:text="'선호하는 이성 키 : ' + ${siteUser.desired_tall}"></div>
-    <div th:text="'선호하는 이성 체형 : ' + ${siteUser.desired_body_type}"></div>
-    <div th:text="'선호하는 이성 흡연 : ' + ${siteUser.desired_smoking}"></div>
-    <div th:text="'선호하는 이성 음주 : ' + ${siteUser.desired_drinking}"></div>
-    <div th:text="'선호하는 이성 성격 : ' + ${siteUser.desired_styleList}"></div>
-    <div th:text="'선호하는 이성 종교 : ' + ${siteUser.desired_religion}"></div>
-    <div th:text="'선호하는 이성 MBTI : ' + ${siteUser.desired_mbti}"></div>
-    <a class="btn btn-primary" th:href="@{'/user/report/' + ${siteUser.id}}">신고하기</a>
-    <a class="btn btn-primary" th:href="@{'/user/add_interest/' + ${siteUser.id}}">
-        <span th:text="${isInterested ? '관심 해제' : '관심 등록'}"></span>
-    </a>
 
-    <!--    <button id="sendCyberMoneyBtn" class="btn btn-primary" data-toggle="modal" data-target="#cyberMoneyModal" >사이버머니-->
-    <!--        보내기-->
-    <!--    </button>-->
-    <button th:if="${chatRoom == null  && log ==null} " id="sendCyberMoneyBtn" class="btn btn-primary" data-toggle="modal" data-target="#cyberMoneyModal">채팅방 만들기
-
-
-    </button>
-    <a class="nav-link" th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
-       th:href="@{'/admin/punish/' + ${siteUser.id}}">제재하기</a>
-
-
-    <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
-        <div class="modal-box">
-            <h3 class="modal-title">사이버머니 보내기</h3>
-            <div class="modal-body">
-                <p>금액을 입력해주세요:</p>
-                <input type="number" id="cyberMoneyAmount" class="form-control" required>
-
-                <p>받는사람:</p>
-                <div th:text="${siteUser.username}" id="recipientUsername" class="form-control"></div>
-            </div>
-
-            <div class="modal-action">
-                <form method="dialog">
-                    <button class="btn btn-secondary" data-dismiss="modal">닫기</button>
-                    <button class="btn btn-primary" id="sendCyberMoneyConfirmBtn">확인</button>
-                </form>
-            </div>
+        <div class="flex justify-center">
+            <img th:src="@{|${siteUser.filepath}|}" alt="User Image" style="max-width: 300px; max-height: 300px;">
         </div>
-    </dialog>
+        <div th:text="'자기소개 : ' + ${siteUser.About_Me}"></div>
+        <div th:text="'닉네임 : ' + ${siteUser.nickname}"></div>
+        <div th:text="'나이 : ' + ${siteUser.age}"></div>
+        <div th:text="'지역 : ' + ${siteUser.living}"></div>
+        <div th:text="'취미 : ' + ${siteUser.hobbyList}"></div>
+        <div th:text="'키 : ' + ${siteUser.tall}"></div>
+        <div th:text="'체형 : ' + ${siteUser.body_type}"></div>
+        <div th:text="'흡연 : ' + ${siteUser.smoking}"></div>
+        <div th:text="'음주 : ' + ${siteUser.drinking}"></div>
+        <div th:text="'성격 : ' + ${siteUser.styleList}"></div>
+        <div th:text="'종교 : ' + ${siteUser.religion}"></div>
+        <div th:text="'MBTI : ' + ${siteUser.mbti}"></div>
+        <div th:text="'학교 : ' + ${siteUser.school}"></div>
+        <div th:text="'직업 : ' + ${siteUser.job}"></div>
+
+        <div class="text-xl flex justify-center">원하는 이상형</div>
+        <div th:text="'선호하는 나이 : ' + ${siteUser.desired_age}"></div>
+        <div th:text="'선호하는 지역 : ' + ${siteUser.desired_living}"></div>
+        <div th:text="'선호하는 이성 키 : ' + ${siteUser.desired_tall}"></div>
+        <div th:text="'선호하는 이성 체형 : ' + ${siteUser.desired_body_type}"></div>
+        <div th:text="'선호하는 이성 흡연 : ' + ${siteUser.desired_smoking}"></div>
+        <div th:text="'선호하는 이성 음주 : ' + ${siteUser.desired_drinking}"></div>
+        <div th:text="'선호하는 이성 성격 : ' + ${siteUser.desired_styleList}"></div>
+        <div th:text="'선호하는 이성 종교 : ' + ${siteUser.desired_religion}"></div>
+        <div th:text="'선호하는 이성 MBTI : ' + ${siteUser.desired_mbti}"></div>
 
 
+        <!--    <button id="sendCyberMoneyBtn" class="btn btn-primary" data-toggle="modal" data-target="#cyberMoneyModal" >사이버머니-->
+        <!--        보내기-->
+        <!--    </button>-->
+
+        <div>
+            <a class="btn btn-outline btn-info" th:href="@{'/user/report/' + ${siteUser.id}}">신고하기</a>
+            <a class="btn btn-outline btn-info" th:href="@{'/user/add_interest/' + ${siteUser.id}}">
+                <span th:text="${isInterested ? '관심 해제' : '관심 등록'}"></span>
+            </a>
+            <button th:if="${chatRoom == null  && log ==null} " id="sendCyberMoneyBtn" class="btn btn-outline btn-info"
+                    data-toggle="modal" data-target="#cyberMoneyModal">채팅방 만들기
+            </button>
+        </div>
+
+
+        <a class="nav-link" th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
+           th:href="@{'/admin/punish/' + ${siteUser.id}}">제재하기</a>
+
+
+        <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
+            <div class="modal-box">
+                <h3 class="modal-title">사이버머니 보내기</h3>
+                <div class="modal-body">
+                    <p>금액을 입력해주세요:</p>
+                    <input type="number" id="cyberMoneyAmount" class="form-control" required>
+
+                    <p>받는사람:</p>
+                    <div th:text="${siteUser.username}" id="recipientUsername" class="form-control"></div>
+                </div>
+
+                <div class="modal-action">
+                    <form method="dialog">
+                        <button class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                        <button class="btn btn-primary" id="sendCyberMoneyConfirmBtn">확인</button>
+                    </form>
+                </div>
+            </div>
+        </dialog>
+    </div>
 </div>
 
 
@@ -89,7 +94,8 @@
             my_modal_5.showModal();
 
             // 사용자의 username을 HTML에서 가져옵니다.
-           var siteUserUsernameElement = $(".user-username");
+           var siteUserUsernameElement = $("#recipientUsername");
+           console.log(recipientUsername);
             var recipientUsername = siteUserUsernameElement.text();
 
             $('#recipientUsername').text(recipientUsername);

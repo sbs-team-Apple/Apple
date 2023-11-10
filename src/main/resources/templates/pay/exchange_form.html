@@ -2,7 +2,7 @@
 <html layout:decorate="~{common/layout}" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>환전하기</title>
+    <title>Title</title>
     <style>
         /* CSS 스타일로 네모난 틀을 만듭니다. */
         .container {
@@ -32,6 +32,13 @@
 </head>
 <body>
 <div layout:fragment="content" class="container my-3">
+<h5 class="my-3 border-bottom pb-2">환전신청</h5>
+<form th:action="@{/exchange/create}" th:object="${exchangeForm}" method="post">
+
+    <div class="mb-3">
+        <input type="text" th:field="*{subject}" class="form-control">
+    </div>
+
     <div class="container">
         <div class="title">사이버 머니 환전신청전에 꼭 읽어주세요!</div>
         <div class="separator"></div>
@@ -54,32 +61,35 @@
         <div class="separator"></div>
         <div>
             <p>환전 가능한 하트개수: <span th:text="${receivedCyberMoney}"></span></p>
-            <p>환전 신청할 하트개수: <input type="text" id="cybermony_exchange" required placeholder="100개 이상 입력하세요."></p>
-            <p class="error-message" id="error-message"></p>
         </div>
-        <div class="separator"></div>
-        <button id="exchangeButton" type="button" class="apply-button">환전신청</button>
+
+    <div class="mb-3">
+        <label for="content" class="form-label">환전 신청할 하트개수</label>
+        <input class="form-control" type="text" th:field="*{content}" id="cybermony_exchange" required placeholder="100개 이상 입력하세요."></p>
+        <p class="error-message" id="error-message"></p>
     </div>
-    <!-- Thymeleaf에서 제공하는 방법 -->
+    <input id="exchangeButton" type="submit" value="신청하러 가기" class="btn btn-primary my-2">
+    </form>
     <script th:inline="javascript">
         var receivedCyberMoney = /*[[${receivedCyberMoney}]]*/ null; // 서버에서 제공한 값을 가져옵니다.
 
-        document.getElementById("exchangeButton").addEventListener("click", function() {
+        document.getElementById("exchangeButton").addEventListener("click", function(e) {
             var exchangeInput = document.getElementById("cybermony_exchange").value;
             var errorMessageElement = document.getElementById("error-message");
 
             if (isNaN(exchangeInput) || exchangeInput < 100) {
                 errorMessageElement.innerText = "100개 이상 입력해주세요.";
+                e.preventDefault(); // 입력이 유효하지 않으면 폼 제출을 막음
             } else if (parseInt(exchangeInput) > receivedCyberMoney) {
                 errorMessageElement.innerText = "하트개수가 부족합니다.";
+                e.preventDefault(); // 입력이 유효하지 않으면 폼 제출을 막음
             } else {
                 // 유효한 입력이면 다음 페이지로 이동
-                var secondPageURL = "/user/exchange_apply   ";
+                var secondPageURL = "/user/exchange_apply";
                 window.location.href = secondPageURL;
             }
         });
     </script>
-
 </div>
 </body>
 </html>

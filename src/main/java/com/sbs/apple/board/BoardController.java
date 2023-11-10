@@ -5,19 +5,16 @@ import com.sbs.apple.user.SiteUser;
 import com.sbs.apple.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
-import org.springframework.boot.Banner;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
-import java.util.UUID;
 
 
 @RequiredArgsConstructor
@@ -36,7 +33,7 @@ public class BoardController {
 
 
     @PostMapping("/create")
-    public String Create(@Valid BoardForm boardForm , MultipartFile file, Model model, Principal principal)throws Exception{
+    public String Create(@Valid BoardForm boardForm, MultipartFile file, Model model, Principal principal) throws Exception {
         SiteUser user = userService.getUserbyName(principal.getName());
         if(boardForm.getFile()==null){
 
@@ -44,8 +41,8 @@ public class BoardController {
         }
 
 
-        Board board= boardService.create(boardForm.getFile(),boardForm.getSubject(),boardForm.getContent(),user
-              );
+        Board board = boardService.create(boardForm.getFile(), boardForm.getSubject(), boardForm.getContent(), user
+        );
 
 
         return "redirect:/board/appealList";
@@ -54,7 +51,9 @@ public class BoardController {
     @GetMapping("/appealList")
     public String showList(Model model) {
         System.out.println(System.currentTimeMillis());
+
         List<Board> boards =this.boardService.getAllBoardDESC();
+
 
         model.addAttribute("board", boards);
 
@@ -66,7 +65,7 @@ public class BoardController {
     @GetMapping("/detail/{id}")
     public String showDetail(@PathVariable Integer id, Model model) {
 
-        Board board =this.boardService.getBoard(id);
+        Board board = this.boardService.getBoard(id);
 
         model.addAttribute("board", board);
 
@@ -76,20 +75,22 @@ public class BoardController {
     }
 
     @GetMapping("/modify/{id}")
-    public String modify2( BoardForm boardForm , MultipartFile file, Model model, Principal principal,@PathVariable Integer id){
-       Board board = boardService.getBoard(id);
-       model.addAttribute("board",board);
+    public String modify2(BoardForm boardForm, MultipartFile file, Model model, Principal principal, @PathVariable Integer id) {
+        Board board = boardService.getBoard(id);
+        model.addAttribute("board", board);
 
         return "board/appeal_board_modify";
 
     }
 
     @PostMapping("/modify/{id}")
-    public String modify(@Valid BoardForm boardForm , MultipartFile file, Model model, Principal principal,
-                         @PathVariable Integer id)throws Exception{
+    public String modify(@Valid BoardForm boardForm, MultipartFile file, Model model, Principal principal,
+                         @PathVariable Integer id) throws Exception {
         SiteUser user = userService.getUserbyName(principal.getName());
         Board board = boardService.getBoard(id);
+
 //        boardService.modify( boardForm.getFile(),boardForm.getSubject(), boardForm.getContent(), board);
+
 
 
 
@@ -98,7 +99,7 @@ public class BoardController {
 
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Integer id){
+    public String delete(@PathVariable Integer id) {
         Board board = boardService.getBoard(id);
         boardService.doDelete(board);
 
@@ -108,12 +109,11 @@ public class BoardController {
 
 
     @GetMapping("/myAppealBoard")
-    public String showMyBoard(Principal principal, Model model){
-        SiteUser user=userService.getUserbyName(principal.getName());
+    public String showMyBoard(Principal principal, Model model) {
+        SiteUser user = userService.getUserbyName(principal.getName());
         List<Board> boards = boardService.getBoardByUserId(user);
 
-        model.addAttribute("board",boards );
-
+        model.addAttribute("board", boards);
 
 
         return "board/my_appeal_board";
@@ -121,19 +121,17 @@ public class BoardController {
 
 
     @GetMapping("/desiredList")
-    public String showMyDreamUsers(Principal principal, Model model){
-        SiteUser user=userService.getUserbyName(principal.getName());
-        List<SiteUser> users=userService.getDesiredUsers(user);
+    public String showMyDreamUsers(Principal principal, Model model) {
+        SiteUser user = userService.getUserbyName(principal.getName());
+        List<SiteUser> users = userService.getDesiredUsers(user);
 
 
-
-        model.addAttribute("users",users);
-
+        model.addAttribute("users", users);
 
 
         return "board/my_desiredList";
     }
 
 
-
 }
+

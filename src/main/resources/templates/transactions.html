@@ -4,30 +4,65 @@
     <!-- 필요한 스타일시트, 스크립트 등을 포함합니다. -->
     <style>
         .Transactions_list {
-            margin-bottom: 10px; /* 원하는 간격을 설정하세요. */
-            border: 1px solid #000; /* 네모 테두리 스타일 */
-            padding: 10px; /* 네모 내부 여백 */
+            margin-bottom: 10px;
+            border: 1px solid #000;
+            padding: 10px;
         }
         .tab-button {
             cursor: pointer;
+        }
+
+        .button-container {
+        text-align: center;
+        padding: 10px;
+        }
+        .spacer {
+        margin: 0 40px;
+        }
+        .container {
+        padding: 0 40px;
+        }
+        .outer-box {
+        position: fixed;
+        bottom: 20px;
+        left: 40px;
+        right: 40px;
+        border: 2px solid #000;
+        padding: 10px;
+        margin: 0 auto;
+
+        }
+        .inner-box {
+        border: 2px solid #000;
+        padding: 10px;
+        }
+        .title {
+        font-size: 24px;
+        border-bottom: 2px solid #000;
+        margin-bottom: 10px;
+
         }
     </style>
 </head>
 <body>
 <div layout:fragment="content" class="container my-3">
+    <div style="height: 50px;"></div>
+    <div class="container_2 my-3">
+        <p class="badge badge-secondary" style="display: inline-block; margin-right: 10px;">사용 가능한 하트: <span th:text="${userCyberMoney}"></span>개</p>
+        <p class="badge badge-secondary" style="display: inline-block;">선물 받은 하트: <span th:text="${receivedCyberMoney}"></span>개</p>
+    </div>
 
-    <p>사용 가능한 하트: <span th:text="${userCyberMoney}"></span></p>
-    <p>선물 받은 하트: <span th:text="${receivedCyberMoney}"></span></p>
+    <div style="height: 20px;"></div>
 
     <div class="tab-buttons" style="display: flex; justify-content: center;">
         <div style="text-align: center; flex: 1;">
-            <button class="btn btn-sm" onclick="showTab('receivedTab')">받은 거래</button>
+            <button class="btn" onclick="showTab('receivedTab')">받은 거래</button>
         </div>
         <div style="text-align: center; flex: 1;">
-            <button class="btn btn-sm" onclick="showTab('completedTab')">완료된 거래</button>
+            <button class="btn" onclick="showTab('completedTab')">완료된 거래</button>
         </div>
     </div>
-
+    <div style="height: 20px;"></div>
 
 
 
@@ -36,12 +71,11 @@
             <li class="Transactions_list" th:each="transaction : ${receivedTransactions}" style="display: flex; justify-content: space-between;">
                 <div>
                     <p th:text="${transaction.senderUser.username} +' 님이 ♥ ' + ${transaction.amount} + '개를 보냈습니다'"></p>
-                    <p th:text="'날짜: ' + ${transaction.transactionDate}"></p>
+                    <p th:text="${transaction.transactionDate}"></p>
                 </div>
                 <!-- "수락" 버튼 -->
                 <div style="display: flex; align-items: center;">
                     <form th:action="@{/user/processTransaction}" method="post">
-<!--                        <input type="hidden" name="toUserId" th:value="${transaction.senderUser.id}" />-->
                         <input type="hidden" name="transactionId" th:value="${transaction.id}" />
                         <input type="hidden" name="action" value="accept" /> <!-- 수락 작업 설정 -->
                         <button class="btn btn-sm" type="submit" th:disabled="${transaction.isAccepted() or transaction.isRejected()}">수락</button>
@@ -61,25 +95,31 @@
 
     <div id="completedTab" class="tab-content" style="display: none;">
         <ul>
-            <li th:each="transaction : ${completedTransactions}" th:if="${transaction.isAccepted()} or ${transaction.isRejected()}" style="display: flex; justify-content: space-between;">
+            <li class="Transactions_list" th:each="transaction : ${completedTransactions}" th:if="${transaction.isAccepted()} or ${transaction.isRejected()}" style="display: flex; justify-content: space-between;">
                 <div>
                     <p th:text="${transaction.senderUser.username} +' 님이 ♥ ' + ${transaction.amount} + '개를 보냈습니다'"></p>
-                    <p th:text="'날짜: ' + ${transaction.transactionDate}"></p>
+                    <p th:text="${transaction.transactionDate}"></p>
                 </div>
+                <div> 승인 완료</div>
             </li>
         </ul>
     </div>
-    <div>
-        <span>
-        <a href="/user/payment"><i class="fa-solid fa-user"></i> 결제</a>
-        </span>
-        <span>|</span>
-        <span>
-        <a href="/user/exchange"><i class="fa-solid fa-user"></i> 환전하기</a>
-    </span>
+    <div class="button-container">
+        <button class="btn btn-sm"><a href="/user/payment"><i class="fa-solid fa-won-sign"></i> 결제하기</a></button>
+        <span class="spacer">|</span>
+        <button class="btn btn-sm"><a href="/exchange/create"><i class="fa-solid fa-sack-dollar"></i> 환전하기</a></button>
     </div>
 
-
+    <div class="outer-box">
+        <div class="inner-box">
+            <p class="title">마음에 드는 이성과 대화 해보세요!</p>
+            <p>"수락"을 누르면 하트를 받고, 해당 이성과의 채팅방이 열립니다.</p>
+            <p>※ 욕설 및 음담패설을 하지 않도록 합니다.</p>
+            <p>※ 억지로 상대방의 정보를 캐내려고 하지 마세요.</p>
+            <p>"거절"을 누르면 하트를 받지 않고, 해당 이성에게 하트를 반송합니다.</p>
+            <p>- 거절해도 상대방에게 알림이 가지 않아요.</p>
+        </div>
+    </div>
 
     <script>
         function showTab(tabName) {

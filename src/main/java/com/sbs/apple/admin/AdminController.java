@@ -13,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -120,10 +119,24 @@ public class AdminController {
     }
 
     @GetMapping("/exchange_list")
-    public String exchange_list(Model model) {
+    public String exchangeList(Model model) {
         List<Exchange> exchangeList = exchangeService.getList();
         model.addAttribute("exchangeList", exchangeList);
-        return "pay/exchange_list"; // exchange_list.html을 렌더링하는 템플릿 이름
+        return "pay/exchange_list"; // 수정: 환전 목록 템플릿 이름
     }
+
+//    @GetMapping("/list")
+//    public String list(Model model) {
+//        List<Exchange> exchangeList = this.exchangeService.getList();
+//        model.addAttribute("exchangeList", exchangeList);
+//        return "exchange_list";
+//    }
+//
+//    @GetMapping(value = "/detail/{id}")
+//    public String detail(Model model, @PathVariable("id") Integer id) {
+//        Exchange exchange = this.exchangeService.getExchange(id);
+//        model.addAttribute("exchange", exchange);
+//        return "exchange_detail";
+//    }
 }
 
