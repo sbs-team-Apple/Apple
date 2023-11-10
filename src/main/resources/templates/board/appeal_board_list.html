@@ -22,10 +22,13 @@
                 </div>
             </div>
             <div class="flex board-img-box ">
-                <a th:href="@{|/board/detail/${board.id}|}">
-                    <img class="w-30 h-30 board-img" th:src="@{|${board.filepath}|}" alt="">
-                </a>
+            <div  th:each="img : ${board.imgs}">
 
+
+                    <img class="w-30 h-30 board-img" th:src="@{|${img.filepath}|}" alt="">
+
+
+            </div>
             </div>
             <div >
                 <div th:text="${board.subject}"></div>
