@@ -1,22 +1,19 @@
 <html layout:decorate="~{common/layout}" lang="en">
 <head>
-    <style>
-        .Transactions_list {
-            margin-bottom: 10px; /* 원하는 간격을 설정하세요. */
-            border: 1px solid #000; /* 네모 테두리 스타일 */
-            padding: 10px; /* 네모 내부 여백 */
-        }
-        .tab-button {
-            cursor: pointer;
-        }
-        .container {
-            padding: 0 40px;
-        }
-    </style>
     <meta charset="UTF-8"></head>
 <body>
 <div layout:fragment="content" class="container my-3">
     <div class="overflow-x-auto">
+
+        <div class="tab-buttons" style="display: flex; justify-content: center;">
+            <div style="text-align: center; flex: 1;">
+                <button class="btn" onclick="showTab('sendTab')">보낸관심</button>
+            </div>
+            <div style="text-align: center; flex: 1;">
+                <button class="btn" onclick="showTab('receivedTab')">받은관심</button>
+            </div>
+        </div>
+
         <table class="table">
         <thead>
         <tr>
@@ -40,8 +37,39 @@
             <td th:text="${interestList.siteUser.About_Me}"></td>
         </tr>
         </tbody>
-        </table>
-    </div>
+
+
+
+        <thead>
+        <tr>
+            <th>사진</th>
+            <th>닉네임</th>
+        </tr>
+        </thead>
+    <tbody>
+
+        <tr th:each="interestList : ${interestList}">
+           <td>
+               <a th:href="@{|/user/detail/${interestList.interestUserId}|}">
+               <img class="w-30 h-30" th:src="@{|${interestList.filepath}|}" alt="User Image" style="max-width: 300px; max-height: 300px;"></a>
+           </td>
+           <td th:text="${interestList.interestUser}"></td>
+        </tr>
+    </tbody>
+
+    </table>
 </div>
+</div>
+
+<script>
+    function showTab(tabName) {
+        var tabContents = document.getElementsByClassName('tab-content');
+        for (var i = 0; i < tabContents.length; i++) {
+            tabContents[i].style.display = 'none';
+        }
+        document.getElementById(tabName).style.display = 'block';
+    }
+</script>
+
 </body>
 </html>
