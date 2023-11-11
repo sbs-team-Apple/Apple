@@ -9,14 +9,15 @@
 
     <form  enctype="multipart/form-data" th:action="@{/board/create}"  object="${boardForm}" method="post" >
         <div>이미지 넣기</div>
+        <div class="current-img"></div>
         <div id="file-input-container">
 
-            <input type="file" name="file" accept="image/*" class="image-file-input">
+<!--            <input type="file" name="file" accept="image/*" class="image-file-input">-->
 
             <button type="button" class="add-file-input">파일 추가</button>
         </div>
         <div class="pre-img">
-            <div class="image-preview"></div>
+
 
         </div>
 
@@ -53,17 +54,30 @@
 </html>
 
 <style>
+    .ex-current-img {
+        width:300px;
+        height:300px;
+
+    }
+
+
    .ex-img {
         width:200px;
         height:200px;
 
+    }
+    .pre-img {
+        position :absolute;
+        top:0;
+        right:0;
     }
 
 </style>
 
 <script>
     $(document).ready(function() {
-
+        var preImgContainer=$(".pre-img");
+        var currentImg=$(".current-img");
       // "파일 추가" 버튼 클릭 이벤트
       $(".add-file-input").click(function() {
             $(".add-file-input").addClass("hidden");
@@ -88,7 +102,13 @@
                         class:"ex-img"
                        }) ;
                       previewImage.attr("src", e.target.result);
+
+                      var previewCurrentImage = $("<img>", {
+                        class:"ex-current-img"
+                       }) ;
+                      previewCurrentImage.attr("src", e.target.result);
                       newImagePreview.empty().append(previewImage);
+                      currentImg.empty().append(previewCurrentImage);
                   };
 
                   reader.readAsDataURL(file);
@@ -101,7 +121,7 @@
           });
 
           newFileInput.insertBefore($(this));
-          newImagePreview.insertAfter(newFileInput);
+          preImgContainer.append(newImagePreview);
       });
 
 
@@ -111,43 +131,43 @@
 
 <script>
 
-    $(document).ready(function() {
-     // 파일 입력 필드와 이미지 미리보기 요소 참조
-     var imageFileInput = $(".image-file-input");
-     var imagePreview = $(".image-preview");
+<!--    $(document).ready(function() {-->
+<!--     // 파일 입력 필드와 이미지 미리보기 요소 참조-->
+<!--     var imageFileInput = $(".image-file-input");-->
+<!--     var imagePreview = $(".image-preview");-->
 
-     $('.add-file-input').addClass("hidden");
+<!--     $('.add-file-input').addClass("hidden");-->
 
-     // 파일 입력 필드의 변경 이벤트 처리
-     imageFileInput.change(function() {
-         var file = imageFileInput[0].files[0];
+<!--     // 파일 입력 필드의 변경 이벤트 처리-->
+<!--     imageFileInput.change(function() {-->
+<!--         var file = imageFileInput[0].files[0];-->
 
-         if (file) {
-             // FileReader 객체를 사용하여 이미지 미리보기 생성
-             var reader = new FileReader();
+<!--         if (file) {-->
+<!--             // FileReader 객체를 사용하여 이미지 미리보기 생성-->
+<!--             var reader = new FileReader();-->
 
-             reader.onload = function(e) {
-                 // 미리보기 이미지 업데이트
-                 var previewImage = $("<img>" , {
-                        class:"ex-img"
-                       });
-                 previewImage.attr("src", e.target.result);
-                 imagePreview.empty().append(previewImage);
-             };
+<!--             reader.onload = function(e) {-->
+<!--                 // 미리보기 이미지 업데이트-->
+<!--                 var previewImage = $("<img>" , {-->
+<!--                        class:"ex-img"-->
+<!--                       });-->
+<!--                 previewImage.attr("src", e.target.result);-->
+<!--                 imagePreview.empty().append(previewImage);-->
+<!--             };-->
 
-             // 파일을 읽고 미리보기 데이터 URL을 생성
-                reader.readAsDataURL(file);
-                     $('.add-file-input').removeClass("hidden");
-                      $(" .image-file-input").addClass("hidden");
-
-
-
-         } else {
-             // 파일이 선택되지 않았을 때 미리보기 제거
-             imagePreview.empty();
+<!--             // 파일을 읽고 미리보기 데이터 URL을 생성-->
+<!--                reader.readAsDataURL(file);-->
+<!--                     $('.add-file-input').removeClass("hidden");-->
+<!--                      $(" .image-file-input").addClass("hidden");-->
 
 
-         }
-     });
- });
+
+<!--         } else {-->
+<!--             // 파일이 선택되지 않았을 때 미리보기 제거-->
+<!--             imagePreview.empty();-->
+
+
+<!--         }-->
+<!--     });-->
+<!-- });-->
 </script>
