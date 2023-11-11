@@ -50,7 +50,7 @@ spring:
             user-name-attribute: id
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     database-platform: org.hibernate.dialect.MySQLDialect
     properties:
       hibernate:
@@ -82,3 +82,8 @@ custom:
 
   thymeleaf:
     cache: false
+
+  servlet:
+    multipart:
+      maxFileSize: 10MB
+      maxRequestSize: 100MB
