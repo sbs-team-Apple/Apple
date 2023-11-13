@@ -161,4 +161,5 @@ public class SiteUser {
 
     @Column
     private Integer minHeart = 0; //
+
 }
