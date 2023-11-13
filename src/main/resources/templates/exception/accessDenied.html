@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>ACCESS_DENIED</title>
+</head>
+<body>
+<h1 th:text="${msg}"></h1>
+<button onclick="history.back()">뒤로가기</button>
+<button sec:authorize="isAnonymous()" onclick="location.href = '/login'">로그인</button>
+<button sec:authorize="isAuthenticated()" onclick="location.href = '/'">메인화면</button>
+<button th:if="${#strings.equals(param.requiredAuthority, 'admin')}" onclick="location.href = '/admin/grantAuthority'">관리자 권한 부여</button>
+
+</body>
+</html>

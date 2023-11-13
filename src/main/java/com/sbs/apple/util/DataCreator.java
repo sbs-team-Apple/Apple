@@ -2,7 +2,7 @@
 package com.sbs.apple.util;
 
 
-import com.sbs.apple.user.UserService;
+import com.sbs.apple.domain.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +11,7 @@ import java.util.List;
 
 
 @Service
-public class DataCreator {
+public class    DataCreator {
     private final UserService userService;
     protected Integer userNum = 40;
 

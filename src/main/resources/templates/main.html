@@ -5,33 +5,38 @@
     <title>메인</title>
 </head>
 <body>
-<div layout:fragment="content" class="container m-0">
-    <div
-            th:unless="${#authorization.expression('isAuthenticated()')}">
-        <div th:include="user/login.html"></div>
-    </div>
+<div layout:fragment="content">
+    <div  class="container real-container ">
+        <div
+                th:unless="${#authorization.expression('isAuthenticated()')}">
+            <div th:include="user/login.html"></div>
+        </div>
 
-    <div th:if="${#authorization.expression('isAuthenticated()')}" class="profile">
-        <div class="profile_in m-auto flex justify-center flex-col items-center"
-             th:each="userList : ${userList}" style="margin-bottom: 20px;">
+        <div th:if="${#authorization.expression('isAuthenticated()')}" class="profile  main-container">
+            <div class="profile_in m-auto flex justify-center flex-col items-center"
+                 th:each="userList : ${userList}" style="margin-bottom: 20px;">
 
-            <div>
-                <a th:href="@{|/user/detail/${userList.id}|}">
-                    <img class="w-50 h-50" th:src="@{|${userList.filepath}|}" alt="User Image"
-                         style="max-width: 300px; max-height: 300px;">
-                </a>
+                <div>
+                    <a th:href="@{|/user/detail/${userList.id}|}">
+                        <img class="w-50 h-50" th:src="@{|${userList.filepath}|}" alt="User Image"
+                             style="max-width: 300px; max-height: 300px;">
+                    </a>
+                </div>
+                <div>
+                    <span th:text="${userList.nickname}"></span>
+                    <span> | </span>
+                    <span th:text="${userList.age}"></span>
+                    <span> | </span>
+                    <span th:text="${userList.living}"></span>
+                </div>
+                <div th:text="${userList.About_Me}"></div>
             </div>
-            <div>
-                <span th:text="${userList.nickname}"></span>
-                <span> | </span>
-                <span th:text="${userList.age}"></span>
-                <span> | </span>
-                <span th:text="${userList.living}"></span>
-            </div>
-            <div th:text="${userList.About_Me}"></div>
+            <div th:include="common/menu.html"></div>
+
         </div>
     </div>
 
+    <div th:include="common/footer.html" class="dd"></div>
     <div>
         <div th:if="${#authorization.expression('isAuthenticated()') and userWarning}">
             <div id="warningMessage" style="color: red; font-weight: bold;">경고합니다</div>
@@ -40,32 +45,36 @@
             <a th:href="@{/user/okay}">확인했습니다.</a>
         </div>
     </div>
-    <!--    <div th:if="${siteUsers != null}" th:each="user : ${siteUsers}">-->
-    <!--        <div class="flex  ">-->
-    <!--            <div><a th:value="${user.id}" name="userId" th:text="${user.nickname}"></a></div>-->
-    <!--            <div>-->
-    <!--                <form method="post"-->
-    <!--                      th:action="@{|/chat/${chatRoom != null ? chatRoom.id+1 : 1}/room/${user.id}|}">-->
-    <!--                    <input class="userId_value" type="hidden" name="userId" th:value="${user.id}">-->
-    <!--                    <button type="submit">님과 채팅방 만들기</button>-->
-    <!--                </form>-->
-    <!--            </div>-->
-    <!--        </div>-->
+        <div th:if="${siteUsers != null}" th:each="user : ${siteUsers}">
+            <div class="flex  ">
+                <div><a th:value="${user.id}" name="userId" th:text="${user.nickname}"></a></div>
+                <div>
+                    <form method="post"
+                          th:action="@{|/chat/${chatRoom != null ? chatRoom.id+1 : 1}/room/${user.id}|}">
+                        <input class="userId_value" type="hidden" name="userId" th:value="${user.id}">
+                        <button type="submit">님과 채팅방 만들기</button>
+                    </form>
+                </div>
+            </div>
 
-    <!--    </div>-->
-    <div th:if="${#authorization.expression('isAuthenticated()')}">
-        <div th:include="common/menu.html"></div>
-    </div>
-    <div th:include="common/footer.html"></div>
+        </div>
+
 
 </div>
+</body>
 <style>
+    .real-container{
+             margin: 0 auto;
+
+    }
+
     .container {
-        margin: 0 auto;
-        display: flex;
+
+         margin: 0 auto;
         justify-content: center;
         align-items: center;
     }
+
     .underBody {
         border-radius: 15px;
         padding: 30px 15px 15px 15px;
@@ -73,6 +82,7 @@
         display: flex;
         flex-direction: column; /* 아래로 요소를 쌓도록 설정 */
         align-items: center;
+
     }
     .login {
         margin-bottom: 20px; /* 로그인 폼과 카카오 로그인 버튼 사이의 간격 조정 */
@@ -92,8 +102,20 @@
     .alert-danger {
     padding: 0 0px 0 15px;
     }
+
+
+    .footer{
+    padding : 0 40px;
+        position:absolute;
+    }
+
+    .main-container {
+
+    }
+    .dd {
+
+    }
 </style>
-</body>
 
 </html>
 
@@ -118,4 +140,3 @@
         // 여기서 SSE 연결을 사용하여 원하는 동작을 수행
     });
 </script>
-

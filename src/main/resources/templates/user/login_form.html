@@ -7,7 +7,7 @@
 <body>
 <div layout:fragment="content" class="container my-3">
     <div class="underBody">
-        <form th:action="@{/user/login}" method="post" class="login">
+        <form th:action="@{/user/login}" th:object="${siteUser}" method="post" class="login">
             <div th:if="${param.error}">
                 <div class="alert alert-danger">
                     사용자ID 또는 비밀번호를 확인해 주세요.
