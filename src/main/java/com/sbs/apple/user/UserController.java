@@ -293,13 +293,11 @@ public class UserController {
         SiteUser loginUser = userService.getUserbyName(principal.getName());
 
         //로그인한 사용자와 현재 프로필 선택한 유저 사이의 채팅방과 사이버 머니 전송 기록을 찾는 코드
-        ChatRoom chatRoom = chatRoomService.findRoomByUserIdAndUserId2( loginUser.getId(),siteUser.getId());
-        CyberMoneyTransaction log =cyberMoneyTransactionRepository.findByUserIdAndUserId2(loginUser.getId(),siteUser.getId());
+        ChatRoom chatRoom = chatRoomService.findRoomByUserIdAndUserId2( loginUser.getId(),receivedSiteUser.getId());
+        CyberMoneyTransaction log =cyberMoneyTransactionRepository.findByUserIdAndUserId2(loginUser.getId(),receivedSiteUser.getId());
         //현재 그유저와 채팅방이 있으면 채팅방 만들기 버튼은 아예 안만들 생각
         model.addAttribute("chatRoom", chatRoom);
         model.addAttribute("log", log);
-
-
         return "user/profile";
     }
 
@@ -352,9 +350,7 @@ public class UserController {
     public String photoModify(UserCreateForm userCreateForm, MultipartFile file, Model model, Principal principal, @PathVariable Integer id) {
         SiteUser siteUser = userService.getUser(id);
         model.addAttribute("siteUser", siteUser);
-
         return "user/userPhoto_modify";
-
     }
 
     @PostMapping("/photoModify/{id}")
