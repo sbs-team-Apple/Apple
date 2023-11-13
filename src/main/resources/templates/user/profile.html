@@ -18,9 +18,11 @@
         </div>
 
         <div class="flex justify-center">
-            <img th:src="@{|${siteUser.filepath}|}" alt="User Image" style="max-width: 300px; max-height: 300px;">
+            <img th:src="@{|${receivedSiteUser.filepath}|}" alt="User Image" style="max-width: 300px; max-height: 300px;">
         </div>
+
         <div th:text="'최소하트 : ' + ${receivedSiteUser.minHeart}"></div>
+
         <div th:text="'자기소개 : ' + ${receivedSiteUser.About_Me}"></div>
         <div th:text="'닉네임 : ' + ${receivedSiteUser.nickname}"></div>
         <div th:text="'나이 : ' + ${receivedSiteUser.age}"></div>
@@ -47,9 +49,10 @@
         <div th:text="'선호하는 이성 종교 : ' + ${receivedSiteUser.desired_religion}"></div>
         <div th:text="'선호하는 이성 MBTI : ' + ${receivedSiteUser.desired_mbti}"></div>
 
+
         <div>
-            <a class="btn btn-outline btn-info" th:href="@{'/user/report/' + ${siteUser.id}}">신고하기</a>
-            <a class="btn btn-outline btn-info" th:href="@{'/user/add_interest/' + ${siteUser.id}}">
+            <a class="btn btn-outline btn-info" th:href="@{'/user/report/' + ${receivedSiteUser.id}}">신고하기</a>
+            <a class="btn btn-outline btn-info" th:href="@{'/user/add_interest/' + ${receivedSiteUser.id}}">
                 <span th:text="${isInterested ? '관심 해제' : '관심 등록'}"></span>
             </a>
             <button th:if="${chatRoom == null  && log ==null} " id="sendCyberMoneyBtn" class="btn btn-outline btn-info"
@@ -59,7 +62,7 @@
 
 
         <a class="nav-link" th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
-           th:href="@{'/admin/punish/' + ${siteUser.id}}">제재하기</a>
+           th:href="@{'/admin/punish/' + ${receivedSiteUser.id}}">제재하기</a>
 
 
         <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
