@@ -92,8 +92,10 @@
               type: "file",
               name: "file",
               accept: "image/**",
-              class: "image-file-input"
+              class:  "image-file-input",
+              currentIndex
           });
+            newFileInput.attr("id","currentIndex"+currentIndex);
           var newImagePreview = $("<div>", { class: "image-preview" });
 
           newFileInput.change(function() {
@@ -108,7 +110,9 @@
                        }) ;
                       previewImage.attr("src", e.target.result);
 
-                      var cancelBtn =$("<div>", {class:"cancelBtn" ,onclick:"hideImagePreview(this)"}  );
+                      var cancelBtn =$("<div>", {class:"cancelBtn",currentIndex   ,onclick:"hideImagePreview(this)"} );
+                       cancelBtn.attr("id","currentIndex"+currentIndex);
+
                       currentIndex++;
 
                       var previewCurrentImage = $("<img>", {
@@ -143,7 +147,16 @@
        // Find the parent .image-preview and hide it
        var imagePreview = btn.closest('.image-preview');
        if (imagePreview) {
+
+
+        // Remove the input with the same ID
+               var btnCurrentIndex = $(btn).attr('currentIndex');
+
+        // Remove the input with the same currentIndex attribute elsewhere in the document
+        $('input[currentIndex="' + btnCurrentIndex + '"]').remove();
+
            imagePreview.remove();
+
        }
    }
 
