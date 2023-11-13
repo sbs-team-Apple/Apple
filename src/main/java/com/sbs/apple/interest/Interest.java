@@ -13,12 +13,12 @@ public class Interest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String interestUser;
-    private Integer interestUserId;
-    private String interestedUser;
-    private String filepath;
-    //
+
+    //관심 주는 사람
     @ManyToOne
     private SiteUser siteUser;
+    //관심 받는 사람
+    @ManyToOne
+    private SiteUser receivedSiteUser;
 
 }
