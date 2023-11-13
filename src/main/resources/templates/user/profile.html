@@ -52,7 +52,7 @@
             <a class="btn btn-outline btn-info" th:href="@{'/user/add_interest/' + ${receivedSiteUser.id}}">
                 <span th:text="${isInterested ? '관심 해제' : '관심 등록'}"></span>
             </a>
-            <button th:if="${chatRoom == null  && log ==null} " id="sendCyberMoneyBtn" class="btn btn-outline btn-info"
+            <button th:if="${chatRoom == null  && log ==null}" id="sendCyberMoneyBtn" class="btn btn-outline btn-info"
                     data-toggle="modal" data-target="#cyberMoneyModal">채팅방 만들기
             </button>
         </div>
