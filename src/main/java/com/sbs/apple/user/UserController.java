@@ -287,6 +287,7 @@ public class UserController {
         model.addAttribute("siteUser", siteUser);
         model.addAttribute("receivedSiteUser", receivedSiteUser);
         String interest_user = principal.getName();
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         SiteUser user = userService.getUserbyName(username);
@@ -294,6 +295,7 @@ public class UserController {
 
         int userCyberMoney = user.getCyberMoney();
         int receivedCyberMoney = user.getReceivedCyberMoney(); // 다른 사용자로부터 받은 사이버머니
+
         boolean isInterested = interestService.isInterested(siteUser,receivedSiteUser);
         model.addAttribute("isInterested", isInterested);
         SiteUser loginUser = userService.getUserbyName(principal.getName());
