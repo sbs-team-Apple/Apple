@@ -6,49 +6,45 @@
     <title>회원탈퇴</title>
 </head>
 <body>
-<div layout:fragment="content" class="container my-3">
+<div layout:fragment="content">
 
-    <form id="deleteForm" th:action="@{/user/delete}" method="post" onsubmit="submitDeleteForm(this); return false;">
-
-        <div>
-            <div class="sece-box flex">
-                <label style="padding: 10px 20px; font-size: 20px; font-weight: 500;">아이디 </label>
-                <div th:text="${siteUser.username}" class="mt-3 ml-16 font-bold"></div>
-                <br><br>
-            </div>
+    <form id="deleteForm" th:action="@{/user/delete}" method="post" onsubmit="submitDeleteForm(this); return false;"
+          class="mt-5">
+        <div class="form-group sece-box d-flex align-items-center">
+            <label class="font-weight-bold mr-3" style="font-size: 20px;">아이디</label>
+            <div th:text="${siteUser.username}" class="font-weight-bold"></div>
         </div>
 
-        <div class="sece-box">
-            <label for="password"
-                   style="padding: 10px 20px; font-size: 20px; font-weight: 500;">비밀번호 입력 </label>
-            <input type="password" id="password" name="password"
-                   style="width: 50%; height: 50px; box-shadow: 0 2px 6px 0 rgba(68, 68, 68, 0.08); border: 1px solid #dadada; border-radius: 5px; padding-left: 15px;">
-            <br><br>
+        <div class="form-group sece-box">
+            <label for="password" class="font-weight-bold" style="font-size: 20px;">비밀번호 입력</label>
+            <input type="password" id="password" name="password" class="form-control" style="height: 50px;">
         </div>
 
         <!-- 오류 메시지 표시 부분 -->
-        <div th:if="${error}">
-            <p class="text-danger" th:text="${error}"></p>
+        <div th:if="${error}" class="text-danger">
+            <p th:text="${error}"></p>
         </div>
 
-        <button class="btn btn-sm btn-outline-secondary"
-                style="color: black; width: 100%; height: 50px; box-shadow: 0 2px 6px 0 rgba(68, 68, 68, 0.08); border: 1px solid #dadada; border-radius: 10px; background-color: #fff; cursor: pointer; margin-top: 30px;">
+        <button type="submit" class="btn btn-primary btn-block mt-4" style="border-radius: 10px;">
             탈퇴하기
         </button>
 
-        <button onclick="window.location.href='/user/myPage'"
-                style="width: 100%; height: 50px; box-shadow: 0 2px 6px 0 rgba(68, 68, 68, 0.08); border: 1px solid #dadada; border-radius: 10px; background-color: #fff; cursor: pointer; margin-top: 30px;">
+        <button onclick="window.location.href='/user/myPage'" class="btn btn-secondary btn-block mt-3"
+                style="border-radius: 10px;">
             취소
         </button>
     </form>
-
     <!-- 모달 창 -->
     <dialog id="confirmationModal" class="modal modal-bottom sm:modal-middle">
         <div class="modal-box">
             <h3 class="modal-title">회원탈퇴 확인</h3>
             <div class="modal-action">
-                <button class="btn btn-secondary" data-dismiss="modal">취소</button>
-                <button class="btn btn-primary" id="confirmDeleteButton">확인</button>
+                <div>
+                    <button class="btn btn-secondary" data-dismiss="modal">취소</button>
+                </div>
+                <div>
+                    <button class="btn btn-primary" id="confirmDeleteButton">확인</button>
+                </div>
             </div>
         </div>
     </dialog>
