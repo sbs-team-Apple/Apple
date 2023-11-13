@@ -50,9 +50,20 @@
     <div class="container_2 my-3">
         <p class="badge badge-secondary" style="display: inline-block; margin-right: 10px;">사용 가능한 하트: <span th:text="${userCyberMoney}"></span>개</p>
         <p class="badge badge-secondary" style="display: inline-block;">선물 받은 하트: <span th:text="${receivedCyberMoney}"></span>개</p>
-        <p></p>
+        <p class="badge badge-secondary" style="display: inline-block;">최소 하트 갯수: <span th:text="${minHeart}"></span>개</p>
     </div>
+    <div class="outer-box">
+        <div class="inner-box">
+            <form action="/user/updateMinHeart" method="post">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
+                <p class="title">최소 하트값 설정</p>
+                <label for="minHeartInput">최소 하트값:</label>
+                <input type="number" name="minHeart" id="minHeartInput" placeholder="최소 하트값 입력" />
+                <button class="btn btn-sm" type="submit">확인</button>
+            </form>
+        </div>
+    </div>
     <div style="height: 20px;"></div>
 
     <div class="tab-buttons" style="display: flex; justify-content: center;">
@@ -111,16 +122,16 @@
         <button class="btn btn-sm"><a href="/exchange/create"><i class="fa-solid fa-sack-dollar"></i> 환전하기</a></button>
     </div>
 
-    <div class="outer-box">
-        <div class="inner-box">
-            <p class="title">마음에 드는 이성과 대화 해보세요!</p>
-            <p>"수락"을 누르면 하트를 받고, 해당 이성과의 채팅방이 열립니다.</p>
-            <p>※ 욕설 및 음담패설을 하지 않도록 합니다.</p>
-            <p>※ 억지로 상대방의 정보를 캐내려고 하지 마세요.</p>
-            <p>"거절"을 누르면 하트를 받지 않고, 해당 이성에게 하트를 반송합니다.</p>
-            <p>- 거절해도 상대방에게 알림이 가지 않아요.</p>
-        </div>
-    </div>
+<!--    <div class="outer-box">-->
+<!--        <div class="inner-box">-->
+<!--            <p class="title">마음에 드는 이성과 대화 해보세요!</p>-->
+<!--            <p>"수락"을 누르면 하트를 받고, 해당 이성과의 채팅방이 열립니다.</p>-->
+<!--            <p>※ 욕설 및 음담패설을 하지 않도록 합니다.</p>-->
+<!--            <p>※ 억지로 상대방의 정보를 캐내려고 하지 마세요.</p>-->
+<!--            <p>"거절"을 누르면 하트를 받지 않고, 해당 이성에게 하트를 반송합니다.</p>-->
+<!--            <p>- 거절해도 상대방에게 알림이 가지 않아요.</p>-->
+<!--        </div>-->
+<!--    </div>-->
 
     <script>
         function showTab(tabName) {
