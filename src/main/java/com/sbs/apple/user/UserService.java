@@ -3,7 +3,6 @@ package com.sbs.apple.user;
 import com.sbs.apple.DataNotFoundException;
 import com.sbs.apple.chat.ChatRoom;
 import com.sbs.apple.chat.ChatRoomService;
-import com.sbs.apple.interest.Interest;
 import com.sbs.apple.interest.InterestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -109,6 +108,7 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(password));
         user.setNickname(nickname);
         user.setGender(gender);
+
         this.userRepository.save(user);
         return user;
     }
@@ -320,6 +320,7 @@ public class UserService {
     public List<SiteUser> getDesiredUsers(SiteUser user) {
         return userRepository.findByDesired(user.getGender(), user.getDesired_living(), user.getDesired_religion());
     }
+
     //사진 수정
     public void photoModify(SiteUser user, MultipartFile file) throws Exception {
         File directory = new File(uploadDir);
@@ -332,13 +333,6 @@ public class UserService {
         this.userRepository.save(user);
     }
 
-    public List<Interest> getWishUsers(String username) {
-        List<Interest> wishUsers;
-
-        wishUsers = this.interestRepository.findAllByInterestUser(username);
-
-        return wishUsers;
-    }
 
     public SiteUser getUser(String username) {
         Optional<SiteUser> siteUser = this.userRepository.findByUsername(username);
@@ -347,5 +341,20 @@ public class UserService {
         } else {
             throw new DataNotFoundException("siteuser not found");
         }
+    }
+
+
+    public void updateMinHeart(String username, Integer minHeart) {
+        SiteUser user = getUserbyName(username);
+        user.setMinHeart(minHeart);
+        updateUser(user);
+    }
+
+    public void updateUser(SiteUser user) {
+        userRepository.save(user);
+    }
+
+    public boolean isUsernameAlreadyExists(String username) {
+        return userRepository.existsByUsername(username);
     }
 }

@@ -4,7 +4,6 @@ package com.sbs.apple.user;
 import com.sbs.apple.board.BoardForm;
 import com.sbs.apple.chat.ChatRoom;
 import com.sbs.apple.chat.ChatRoomService;
-import com.sbs.apple.cybermoney.CyberMoneyService;
 import com.sbs.apple.cybermoney.CyberMoneyServiceImpl;
 import com.sbs.apple.cybermoney.CyberMoneyTransaction;
 import com.sbs.apple.cybermoney.CyberMoneyTransactionRepository;
@@ -283,12 +282,20 @@ public class UserController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/detail/{id}")
     public String paymentPage(Principal principal, Model model, @PathVariable("id") Integer id) {
-        SiteUser siteUser = this.userService.getUser(id);
+        SiteUser siteUser = this.userService.getUserbyName(principal.getName());
+        SiteUser receivedSiteUser = this.userService.getUser(id);
         model.addAttribute("siteUser", siteUser);
+        model.addAttribute("receivedSiteUser", receivedSiteUser);
         String interest_user = principal.getName();
-        boolean isInterested = interestService.isInterested(id, interest_user);
-        model.addAttribute("isInterested", isInterested);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        SiteUser user = userService.getUserbyName(username);
 
+
+        int userCyberMoney = user.getCyberMoney();
+        int receivedCyberMoney = user.getReceivedCyberMoney(); // 다른 사용자로부터 받은 사이버머니
+        boolean isInterested = interestService.isInterested(siteUser,receivedSiteUser);
+        model.addAttribute("isInterested", isInterested);
         SiteUser loginUser = userService.getUserbyName(principal.getName());
 
         //로그인한 사용자와 현재 프로필 선택한 유저 사이의 채팅방과 사이버 머니 전송 기록을 찾는 코드
@@ -297,6 +304,8 @@ public class UserController {
         //현재 그유저와 채팅방이 있으면 채팅방 만들기 버튼은 아예 안만들 생각
         model.addAttribute("chatRoom", chatRoom);
         model.addAttribute("log", log);
+        model.addAttribute("userCyberMoney", userCyberMoney);
+        model.addAttribute("receivedCyberMoney", receivedCyberMoney); // 다른 사용자로부터 받은 사이버머니
 
 
         return "user/profile";
@@ -395,6 +404,9 @@ public class UserController {
             }
         }
 
+        int minHeart = user.getMinHeart();
+        model.addAttribute("minHeart", minHeart);
+
         // 모델에 데이터를 추가하여 뷰로 전달
         model.addAttribute("receivedTransactions", receivedTransactions); // 받은 거래 정보
         model.addAttribute("sentTransactions", sentTransactions); // 보낸 거래 정보
@@ -404,6 +416,19 @@ public class UserController {
 
         return "transactions"; // 템플릿 이름 (예: transaction-history.html)
     }
+
+    @PostMapping("/updateMinHeart")
+    public String updateMinHeart(@RequestParam("minHeart") Integer minHeart, Principal principal) {
+        try {
+            String username = principal.getName();
+            userService.updateMinHeart(username, minHeart);
+            return "redirect:/user/transactions"; // 최신 정보를 반영하도록 리다이렉트
+        } catch (Exception e) {
+            // 예외 처리 로직 추가
+            return "error"; // 예외 발생 시 에러 페이지로 이동하거나 다른 적절한 처리를 수행할 수 있습니다.
+        }
+    }
+
 
     @PostMapping("/processTransaction")
     public String processTransaction(
@@ -462,7 +487,7 @@ public class UserController {
         }
 
         //사이버 머니 받은 사용자의 id 즉 채팅방 초대받는 유저 인덱스번호
-       Integer toUserId= transaction.getSenderUser().getId();
+        Integer toUserId= transaction.getSenderUser().getId();
 
 
 
@@ -490,4 +515,3 @@ public class UserController {
         return "user/setting";
     }
 }
-
