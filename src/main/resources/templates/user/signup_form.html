@@ -60,19 +60,22 @@
             }
         </script>
 
-        <form enctype="multipart/form-data" th:action="@{/user/signup}" th:object="${userCreateForm}" method="post" onsubmit="submitJoinForm(this); return false;" class="flex flex-col gap-6">
+        <form enctype="multipart/form-data" th:action="@{/user/signup}" th:object="${userCreateForm}"
+              method="post" onsubmit="submitJoinForm(this); return false;" class="flex flex-col gap-6">
             <div class="form-control">
                 <label class="label">
                     <span class="label-text">프로필 이미지</span>
                 </label>
-                <input type="file" name="file" class="file-input file-input-bordered"
-                       accept="image/**">
+                <input type="file" name="file" id="image" class="file-input file-input-bordered"
+                       accept="image/**" onchange="previewImage(this)">
+                <div id="image-preview"></div>
             </div>
             <div class="form-control">
                 <label class="label">
                     <span class="label-text">아이디</span>
                 </label>
-                <input type="text" name="username" placeholder="아이디" class="input input-bordered" autofocus maxlength="30">
+                <input type="text" name="username" placeholder="아이디" class="input input-bordered" autofocus
+                       maxlength="30">
                 <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" style="color: red;"></p>
             </div>
 
@@ -87,7 +90,8 @@
                 <label class="label">
                     <span class="label-text">비밀번호 확인</span>
                 </label>
-                <input type="password" name="password2" placeholder="비밀번호 확인" class="input input-bordered" maxlength="30">
+                <input type="password" name="password2" placeholder="비밀번호 확인" class="input input-bordered"
+                       maxlength="30">
             </div>
 
             <div class="form-control">
@@ -121,7 +125,34 @@
             </div>
         </form>
     </div>
+    <style>
+        #image-preview {
+            max-width: 300px;
+            max-height: 300px;
+            margin-top: 10px;
+        }
+    </style>
+    <script>
+        function previewImage(input) {
+        var preview = document.getElementById('image-preview');
+        preview.innerHTML = '';
 
+        if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+        var img = document.createElement('img');
+        img.src = e.target.result;
+        img.style.width = '270px';
+        img.style.height = '270px';
+        img.style.objectFit = 'cover';
+        preview.appendChild(img);
+        };
+
+        reader.readAsDataURL(input.files[0]);
+        }
+        }
+    </script>
 </div>
 </body>
 </html>

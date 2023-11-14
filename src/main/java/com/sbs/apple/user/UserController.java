@@ -11,7 +11,6 @@ import com.sbs.apple.cybermoney.CyberMoneyTransaction;
 import com.sbs.apple.cybermoney.CyberMoneyTransactionRepository;
 import com.sbs.apple.exchange.ExchangeRepository;
 import com.sbs.apple.exchange.ExchangeService;
-import com.sbs.apple.interest.Interest;
 import com.sbs.apple.interest.InterestService;
 import com.sbs.apple.report.ReportForm;
 import com.sbs.apple.report.ReportService;
@@ -19,6 +18,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -122,9 +123,6 @@ public class UserController {
                 userDesiredForm.getDesired_styleList(), userDesiredForm.getDesired_religion(),
                 userDesiredForm.getDesired_mbti(), userDesiredForm.getDesired_school(),
                 userDesiredForm.getDesired_job());
-        if (joinRs.isFail()) {
-            return "redirect:/usr/member/join?failMsg=" + Ut.url.encode(joinRs.getMsg());
-        }
         return "redirect:/?msg=" + Ut.url.encode(joinRs.getMsg());
     }
 
@@ -376,11 +374,17 @@ public class UserController {
         return "user/userPhoto_modify";
     }
 
+//    private MultipartFile file;
+    @Getter
+    @AllArgsConstructor
+    public static class PhotoForm  {
+    private MultipartFile file;
+    }
     @PostMapping("/photoModify/{id}")
-    public String photoModify2(@Valid BoardForm boardForm, MultipartFile file, Model model, Principal principal,
+    public String photoModify2(@Valid PhotoForm photoForm, MultipartFile file, Model model, Principal principal,
                                @PathVariable Integer id) throws Exception {
         SiteUser user = userService.getUserbyName(principal.getName());
-//        userService.photoModify(user, boardForm.getFile());
+        userService.photoModify(user, photoForm.getFile());
         return "redirect:/user/myPage";
     }
 
