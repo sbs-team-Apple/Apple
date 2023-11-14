@@ -15,35 +15,26 @@ public class NotificationDTO {
 
 
     public NotificationDTO(Notification notification) {
-
-        this.id= notification.getId();
-        this.kind= notification.getKind();
-        this.userTo=new SiteUserDTO(notification.getSiteUser());
-        this.userFrom=new SiteUserDTO(notification.getSiteUserFrom());
-
-
-
-
+        this.id = notification.getId();
+        this.kind = notification.getKind();
+        this.userTo = new SiteUserDTO(notification.getSiteUser());
+        this.userFrom = new SiteUserDTO(notification.getSiteUserFrom());
     }
 
 
+    @Getter
+    public static class SiteUserDTO {
 
-        @Getter
-        public static class SiteUserDTO {
-
-            private Integer id;
-            private String nickname;
+        private Integer id;
+        private String nickname;
 
 
-            public SiteUserDTO(SiteUser siteUser){
+        public SiteUserDTO(SiteUser siteUser) {
 
-                this.id= siteUser.getId();
-                this.nickname= siteUser.getNickname();
-
-            }
+            this.id = siteUser.getId();
+            this.nickname = siteUser.getNickname();
 
         }
 
-
-
+    }
 }
