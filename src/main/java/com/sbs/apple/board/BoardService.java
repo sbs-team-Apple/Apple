@@ -81,9 +81,9 @@ public class BoardService {
 
 
     public Board getBoard(Integer id){
-        Optional<Board>  board =this.boardRepository.findById(id);
-        if(board.isPresent()){
-            return board.get();
+        Optional<Board> boards =this.boardRepository.findById(id);
+        if(boards.isPresent()){
+            return boards.get();
         }else return null;
     }
 
