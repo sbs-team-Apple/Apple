@@ -12,7 +12,7 @@ public class UserCreateForm {
 
     private MultipartFile file;
 
-    @Size(min = 3, max = 25)
+    @Size(min = 3, max = 12)
     @NotEmpty(message = "ID는 필수항목입니다.")
     private String username;
 
@@ -22,6 +22,7 @@ public class UserCreateForm {
     @NotEmpty(message = "비밀번호 확인은 필수항목입니다.")
     private String password2;
 
+    @Size(min = 3, max = 8)
     @NotEmpty(message = "닉네임은 필수항목입니다.")
     private String nickname;
 
