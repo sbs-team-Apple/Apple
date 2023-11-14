@@ -62,23 +62,24 @@ public class BoardController {
 
     }
 
-    @GetMapping("/detail/{id}")
-    public String showDetail(@PathVariable Integer id, Model model) {
-
-        Board board = this.boardService.getBoard(id);
-
-        model.addAttribute("board", board);
-
-
-        return "board/appeal_board_detail";
-
-    }
+//    @GetMapping("/detail/{id}")
+//    public String showDetail(@PathVariable Integer id, Model model) {
+//
+//        Board board = this.boardService.getBoard(id);
+//
+//        model.addAttribute("board", board);
+//
+//
+//        return "board/appeal_board_detail";
+//
+//    }
 
     @GetMapping("/modify/{id}")
     public String modify2(BoardForm boardForm, MultipartFile file, Model model, Principal principal, @PathVariable Integer id) {
-        Board board = boardService.getBoard(id);
+         Board board = boardService.getBoard(id);
         model.addAttribute("board", board);
 
+        System.out.println(board.getImgs().get(0).getFilepath());
         return "board/appeal_board_modify";
 
     }
@@ -87,7 +88,7 @@ public class BoardController {
     public String modify(@Valid BoardForm boardForm, MultipartFile file, Model model, Principal principal,
                          @PathVariable Integer id) throws Exception {
         SiteUser user = userService.getUserbyName(principal.getName());
-        Board board = boardService.getBoard(id);
+//        Board board = boardService.getBoard(id);
 
 //        boardService.modify( boardForm.getFile(),boardForm.getSubject(), boardForm.getContent(), board);
 
@@ -100,8 +101,8 @@ public class BoardController {
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Integer id) {
-        Board board = boardService.getBoard(id);
-        boardService.doDelete(board);
+//        Board board = boardService.getBoard(id);
+//        boardService.doDelete(board);
 
 
         return "redirect:/board/appealList";
