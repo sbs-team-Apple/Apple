@@ -111,6 +111,7 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(password));
         user.setNickname(nickname);
         user.setGender(gender);
+
         this.userRepository.save(user);
         user = userRepository.save(user);
         return RsData.of("S-1", "회원가입이 완료되었습니다.", user);
@@ -337,6 +338,7 @@ public class UserService {
     public List<SiteUser> getDesiredUsers(SiteUser user) {
         return userRepository.findByDesired(user.getGender(), user.getDesired_living(), user.getDesired_religion());
     }
+
     //사진 수정
     public void photoModify(SiteUser user, MultipartFile file) throws Exception {
         File directory = new File(uploadDir);
@@ -357,5 +359,20 @@ public class UserService {
         } else {
             throw new DataNotFoundException("siteuser not found");
         }
+    }
+
+
+    public void updateMinHeart(String username, Integer minHeart) {
+        SiteUser user = getUserbyName(username);
+        user.setMinHeart(minHeart);
+        updateUser(user);
+    }
+
+    public void updateUser(SiteUser user) {
+        userRepository.save(user);
+    }
+
+    public boolean isUsernameAlreadyExists(String username) {
+        return userRepository.existsByUsername(username);
     }
 }
