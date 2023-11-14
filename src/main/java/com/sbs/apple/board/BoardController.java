@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -85,19 +86,23 @@ public class BoardController {
     }
 
     @PostMapping("/modify/{id}")
-    public String modify( Model model, Principal principal,
+    public String modify(@Valid BoardForm boardForm, Model model, Principal principal,
                          @PathVariable Integer id,@RequestParam("myArray") String myArray)throws Exception {
         SiteUser user = userService.getUserbyName(principal.getName());
-//        Board board = boardService.getBoard(id);
-        List<Imgs> imgs=imgsService.getImg(id);
+        Board board = boardService.getBoard(id);
+        List<Imgs> imgs=imgsService.getImgsByBoard(board);
         List<Integer> currentIndex= imgsService.getCurrentIndex(myArray);
-        System.out.println("인덱스 리스트의 크기 "+currentIndex.size());
+
         for(int i = 0; i <currentIndex.size() ; i++) {
             System.out.println(currentIndex.get(i));
         }
-        System.out.println("끝!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
-//        boardService.modify( boardForm.getFile(),boardForm.getSubject(), boardForm.getContent(), board);
+        imgs=imgsService.modifyImgIndex(imgs,currentIndex,board);
+
+
+
+
+        boardService.modify( boardForm.getContent(), board,imgs);
 
 
 
@@ -122,7 +127,6 @@ public class BoardController {
         List<Board> boards = boardService.getBoardByUserId(user);
 
         model.addAttribute("board", boards);
-
 
         return "board/my_appeal_board";
     }

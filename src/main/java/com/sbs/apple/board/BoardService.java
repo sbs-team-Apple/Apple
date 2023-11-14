@@ -88,28 +88,20 @@ public class BoardService {
     }
 
 
-    public Board modify(MultipartFile file, String subject, String content, Board board)
+    public Board modify(  String content, Board board, List<Imgs> imgs)
             throws Exception {
-        if (file.isEmpty()) {
-            board.setSubject(subject);
-            board.setContent(content);
+//        if (file.isEmpty()) {
+//            board.setSubject(subject);
+//            board.setContent(content);
+//
+//            this.boardRepository.save(board);
+//            return board;
+//
+//        }
 
-            this.boardRepository.save(board);
-            return board;
 
-        }
-
-        File directory = new File(uploadDir);
-
-        UUID uuid = UUID.randomUUID();
-        String fileName = uuid + "_" + file.getOriginalFilename();
-        File saveFile = new File(directory, fileName);
-        file.transferTo(saveFile);
-//        board.setFilename(fileName);
-//        board.setFilepath("/gen/"+fileName);
-        board.setSubject(subject);
         board.setContent(content);
-
+        board.setImgs(imgs);
         this.boardRepository.save(board);
         return board;
     }
