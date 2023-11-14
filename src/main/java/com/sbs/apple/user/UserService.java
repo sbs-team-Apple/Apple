@@ -162,9 +162,6 @@ public class UserService {
                                         String desiredTall, String desiredBodyType, String desiredSmoking,
                                         String desiredDrinking, List<String> desiredStyleList, String desiredReligion,
                                         String desiredMbti, String desiredSchool, String desiredJob) {
-        String username =user.getUsername();
-        if (findByUsername(username).isPresent())
-            return RsData.of("F-1", "%s(은)는 사용중인 아이디입니다.".formatted(username));
 
         user.setDesired_age(desiredAge);
         user.setDesired_living(desiredLiving);
