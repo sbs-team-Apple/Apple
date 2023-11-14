@@ -88,15 +88,16 @@ public class ImgsService {
     public List<Imgs> modifyImgIndex(List<Imgs> imgs, List<Integer> currentIndex, Board board) {
 
         List<Integer> imgIndex=new ArrayList<>();
-        for (int i = 0; i < imgs.size(); i++) {
-            imgIndex.add(imgs.get(i).getIndexA());
-        }
+
         if(!imgIndex.equals(currentIndex)){
             System.out.println("수정사항 있음");
             for (int i = 0; i < currentIndex.size(); i++) {
-                System.out.println(imgs.get(i).getFilename());
-                imgs.get(i).setIndexA( currentIndex.get(i));
-                imgsRepository.save(imgs.get(i));
+                for (int j = 0; j < currentIndex.size(); j++) {
+                    if(imgs.get(i).getIndexA()== currentIndex.get(j)){
+                        imgs.get(i).setIndexA(j+1);
+                        imgsRepository.save(imgs.get(i));
+                    }
+                }
             }
         }
         return imgs;

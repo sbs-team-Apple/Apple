@@ -91,6 +91,10 @@ public class BoardController {
         SiteUser user = userService.getUserbyName(principal.getName());
         Board board = boardService.getBoard(id);
         List<Imgs> imgs=imgsService.getImgsByBoard(board);
+        System.out.println("현재 이미지 순서 !!!!!!!!!!!!!!!!!!");
+        for (int i = 0; i < imgs.size(); i++) {
+            imgs.get(i).getIndexA();
+        }
         List<Integer> currentIndex= imgsService.getCurrentIndex(myArray);
 
         for(int i = 0; i <currentIndex.size() ; i++) {
