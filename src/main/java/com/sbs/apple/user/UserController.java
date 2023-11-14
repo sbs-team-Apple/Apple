@@ -1,6 +1,8 @@
 package com.sbs.apple.user;
 
 
+import com.sbs.apple.RsData;
+import com.sbs.apple.Ut;
 import com.sbs.apple.board.BoardForm;
 import com.sbs.apple.chat.ChatRoom;
 import com.sbs.apple.chat.ChatRoomService;
@@ -63,21 +65,24 @@ public class UserController {
 
     @PostMapping("/signup")
     public String signup2(@Valid UserCreateForm userCreateForm, BindingResult bindingResult,
-                          RedirectAttributes redirectAttributes, Model model, MultipartFile file)
+                          RedirectAttributes redirectAttributes, Model model, MultipartFile file, HttpServletRequest req)
             throws Exception {
         if (bindingResult.hasErrors()) {
             return "user/signup_form";
         }
 
-        if (!userCreateForm.getPassword1().equals(userCreateForm.getPassword2())) {
-            bindingResult.rejectValue("password2", "passwordInCorrect",
-                    "2개의 패스워드가 일치하지 않습니다.");
-            return "user/signup_form";
-        }
-        SiteUser user = userService.create(false, false, userCreateForm.getFile(), userCreateForm.getUsername(), userCreateForm.getPassword1(),
+        RsData<SiteUser> joinRs = userService.create(false, false, userCreateForm.getFile(), userCreateForm.getUsername(), userCreateForm.getPassword1(),
                 userCreateForm.getNickname(), userCreateForm.getGender());
-        redirectAttributes.addAttribute("id", user.getId());
-        return "redirect:/user/add/" + user.getId();
+        if (joinRs.getResultCode().equals("F-1")) {
+            req.setAttribute("msg", joinRs.getMsg());
+            return "common/js";
+        }
+        if (joinRs.getResultCode().equals("F-2")) {
+            req.setAttribute("msg", joinRs.getMsg());
+            return "common/js";
+        }
+        redirectAttributes.addAttribute("id", joinRs.getData().getId());
+        return "redirect:/user/add/" + joinRs.getData().getId();
     }
 
 
@@ -111,13 +116,16 @@ public class UserController {
             return "user/desired_form";
         }
         SiteUser user = this.userService.getUser(id);
-        userService.add_desired(user, userDesiredForm.getDesired_age(), userDesiredForm.getDesired_living(),
+        RsData<SiteUser> joinRs = userService.add_desired(user, userDesiredForm.getDesired_age(), userDesiredForm.getDesired_living(),
                 userDesiredForm.getDesired_tall(), userDesiredForm.getDesired_body_type(),
                 userDesiredForm.getDesired_smoking(), userDesiredForm.getDesired_drinking(),
                 userDesiredForm.getDesired_styleList(), userDesiredForm.getDesired_religion(),
                 userDesiredForm.getDesired_mbti(), userDesiredForm.getDesired_school(),
                 userDesiredForm.getDesired_job());
-        return "redirect:/";
+        if (joinRs.isFail()) {
+            return "redirect:/usr/member/join?failMsg=" + Ut.url.encode(joinRs.getMsg());
+        }
+        return "redirect:/?msg=" + Ut.url.encode(joinRs.getMsg());
     }
 
     //로그인
@@ -313,7 +321,6 @@ public class UserController {
         model.addAttribute("userCyberMoney", userCyberMoney);
         model.addAttribute("receivedCyberMoney", receivedCyberMoney); // 다른 사용자로부터 받은 사이버머니
 
-
         return "user/profile";
     }
 
@@ -366,9 +373,7 @@ public class UserController {
     public String photoModify(UserCreateForm userCreateForm, MultipartFile file, Model model, Principal principal, @PathVariable Integer id) {
         SiteUser siteUser = userService.getUser(id);
         model.addAttribute("siteUser", siteUser);
-
         return "user/userPhoto_modify";
-
     }
 
     @PostMapping("/photoModify/{id}")
@@ -499,23 +504,26 @@ public class UserController {
 
         return "redirect:/chat/" + roomId + "/room/" + toUserId; // 거래 내역 페이지로 리다이렉트
     }
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/interest")
-    public String interest_all(Principal principal ,Model model) {
+    public String interest_all(Principal principal, Model model) {
         SiteUser siteUser = this.userService.getUserbyName(principal.getName());
         model.addAttribute("siteUser", siteUser);
         return "user/interest_all";
     }
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/heart")
-    public String heart(Principal principal ,Model model) {
+    public String heart(Principal principal, Model model) {
         SiteUser siteUser = this.userService.getUserbyName(principal.getName());
         model.addAttribute("siteUser", siteUser);
         return "user/interest_all";
     }
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/setting")
-    public String setting(Principal principal ,Model model) {
+    public String setting(Principal principal, Model model) {
         SiteUser siteUser = this.userService.getUserbyName(principal.getName());
         model.addAttribute("siteUser", siteUser);
         return "user/setting";

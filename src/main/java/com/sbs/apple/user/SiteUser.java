@@ -163,5 +163,4 @@ public class SiteUser {
     private Integer minHeart = 200;
 
 
-
 }

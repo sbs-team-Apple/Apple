@@ -1,9 +1,9 @@
 package com.sbs.apple.user;
 
 import com.sbs.apple.DataNotFoundException;
+import com.sbs.apple.RsData;
 import com.sbs.apple.chat.ChatRoom;
 import com.sbs.apple.chat.ChatRoomService;
-import com.sbs.apple.interest.InterestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,7 +21,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ChatRoomService chatRoomService;
-    private final InterestRepository interestRepository;
     private String uploadDir;
 
     Random random = new Random();
@@ -89,8 +88,12 @@ public class UserService {
     }
 
     //회원가입
-    public SiteUser create(boolean userStop, boolean userWarning, MultipartFile file, String username, String password, String nickname, String gender)
+    public RsData<SiteUser>  create(boolean userStop, boolean userWarning, MultipartFile file, String username, String password, String nickname, String gender)
             throws Exception {
+        if (findByUsername(username).isPresent())
+            return RsData.of("F-1", "%s(은)는 사용중인 아이디입니다.".formatted(username));
+        if (findByNickname(nickname).isPresent())
+            return RsData.of("F-2", "%s(은)는 사용중인 닉네임입니다.".formatted(nickname));
         SiteUser user = new SiteUser();
         File directory = new File(uploadDir);
         if (!directory.exists()) {
@@ -110,7 +113,16 @@ public class UserService {
         user.setGender(gender);
 
         this.userRepository.save(user);
-        return user;
+        user = userRepository.save(user);
+        return RsData.of("S-1", "회원가입이 완료되었습니다.", user);
+    }
+    //닉네임 있는지 찾기
+    private Optional<SiteUser> findByNickname(String nickname) {
+        return userRepository.findByNickname(nickname);
+    }
+    //아이디 있는지 찾기
+    public Optional<SiteUser> findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 
     //회원가입
@@ -146,10 +158,14 @@ public class UserService {
     }
 
     //이상형 설정
-    public SiteUser add_desired(SiteUser user, String desiredAge, String desiredLiving,
-                                String desiredTall, String desiredBodyType, String desiredSmoking,
-                                String desiredDrinking, List<String> desiredStyleList, String desiredReligion,
-                                String desiredMbti, String desiredSchool, String desiredJob) {
+    public RsData<SiteUser> add_desired(SiteUser user, String desiredAge, String desiredLiving,
+                                        String desiredTall, String desiredBodyType, String desiredSmoking,
+                                        String desiredDrinking, List<String> desiredStyleList, String desiredReligion,
+                                        String desiredMbti, String desiredSchool, String desiredJob) {
+        String username =user.getUsername();
+        if (findByUsername(username).isPresent())
+            return RsData.of("F-1", "%s(은)는 사용중인 아이디입니다.".formatted(username));
+
         user.setDesired_age(desiredAge);
         user.setDesired_living(desiredLiving);
         user.setDesired_tall(desiredTall);
@@ -162,8 +178,10 @@ public class UserService {
         user.setDesired_school(desiredSchool);
         user.setDesired_job(desiredJob);
         this.userRepository.save(user);
-        return user;
+        user = userRepository.save(user);
+        return RsData.of("S-1", "회원가입이 완료되었습니다.", user);
     }
+
 
     public boolean isCorrectPassword(String username, String password) {
         SiteUser user = getUserbyName(username);
