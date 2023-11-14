@@ -9,6 +9,7 @@ import com.sbs.apple.cybermoney.CyberMoneyTransaction;
 import com.sbs.apple.cybermoney.CyberMoneyTransactionRepository;
 import com.sbs.apple.exchange.ExchangeRepository;
 import com.sbs.apple.exchange.ExchangeService;
+import com.sbs.apple.interest.Interest;
 import com.sbs.apple.interest.InterestService;
 import com.sbs.apple.report.ReportForm;
 import com.sbs.apple.report.ReportService;
@@ -52,6 +53,7 @@ public class UserController {
     private final ExchangeService exchangeService;
     private final ExchangeRepository exchangeRepository;
     private final CyberMoneyServiceImpl cyberMoneyService;
+
 
 
     @GetMapping("/signup")
@@ -288,6 +290,8 @@ public class UserController {
         model.addAttribute("receivedSiteUser", receivedSiteUser);
         String interest_user = principal.getName();
 
+        model.addAttribute("receivedSiteUser", receivedSiteUser);
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         SiteUser user = userService.getUserbyName(username);
@@ -301,8 +305,8 @@ public class UserController {
         SiteUser loginUser = userService.getUserbyName(principal.getName());
 
         //로그인한 사용자와 현재 프로필 선택한 유저 사이의 채팅방과 사이버 머니 전송 기록을 찾는 코드
-        ChatRoom chatRoom = chatRoomService.findRoomByUserIdAndUserId2( loginUser.getId(),siteUser.getId());
-        CyberMoneyTransaction log =cyberMoneyTransactionRepository.findByUserIdAndUserId2(loginUser.getId(),siteUser.getId());
+        ChatRoom chatRoom = chatRoomService.findRoomByUserIdAndUserId2( loginUser.getId(),receivedSiteUser.getId());
+        CyberMoneyTransaction log =cyberMoneyTransactionRepository.findByUserIdAndUserId2(loginUser.getId(),receivedSiteUser.getId());
         //현재 그유저와 채팅방이 있으면 채팅방 만들기 버튼은 아예 안만들 생각
         model.addAttribute("chatRoom", chatRoom);
         model.addAttribute("log", log);

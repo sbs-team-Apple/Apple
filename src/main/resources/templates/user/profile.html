@@ -86,72 +86,71 @@
         </dialog>
     </div>
 </div>
-
-
-
 </html>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script>
     $(document).ready(function () {
-        $('#sendCyberMoneyBtn').click(function () {
-            my_modal_5.showModal();
+    var isSending = false;
 
-            // 사용자의 username을 HTML에서 가져옵니다.
-            var siteUserUsernameElement = $("#recipientUsername");
-            console.log(recipientUsername);
-            var recipientUsername = siteUserUsernameElement.text();
+    $('#sendCyberMoneyBtn').click(function () {
+        if (isSending) return;
+        isSending = true;
 
-            $('#recipientUsername').text(recipientUsername);
+        my_modal_5.showModal();
 
-            $('#sendCyberMoneyConfirmBtn').click(function () {
-                var amount = $('#cyberMoneyAmount').val();
-                var minHeart = parseInt([[${receivedSiteUser.minHeart}]]);
-                var userCyberMoney = parseInt([[${userCyberMoney}]]);
+        var siteUserUsernameElement = $("#recipientUsername");
+        var recipientUsername = siteUserUsernameElement.text();
 
-                if (amount < minHeart) {
-                    alert("최소하트보다 작습니다.");
-                    $('#cyberMoneyModal').modal('hide');
-                    return;
-                }
+        // 이벤트 핸들러 등록 전에 기존 핸들러 삭제
+        $('#sendCyberMoneyConfirmBtn').off('click');
 
-                if (amount > userCyberMoney) {
-                    alert("하트가 부족합니다.");
-                    $('#cyberMoneyModal').modal('hide');
-                    return;
-                }
+        // 이벤트 핸들러 등록
+        $('#sendCyberMoneyConfirmBtn').click(function () {
+            var amount = $('#cyberMoneyAmount').val();
+            var minHeart = parseInt([[${receivedSiteUser.minHeart}]]);
+            var userCyberMoney = parseInt([[${userCyberMoney}]]);
 
+            if (amount < minHeart) {
+                alert("최소하트보다 작습니다.");
+                $('#cyberMoneyModal').modal('hide');
+                isSending = false;
+                return;
+            }
+
+            if (amount > userCyberMoney) {
+                alert("하트가 부족합니다.");
+                $('#cyberMoneyModal').modal('hide');
+                isSending = false;
+                return;
+            }
+
+
+            var csrfToken = $("meta[name='_csrf']").attr("content");
+            var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+
+            $.ajax({
+                type: 'POST',
+                url: '/user/cybermoney/send',
+                data: 'recipientUsername=' + recipientUsername + '&amount=' + amount,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                },
+                success: function () {
                 alert("사이버 머니가 성공적으로 전송 되었습니다.");
+                    location.reload();
+                    $('#cyberMoneyModal').modal('hide');
 
-                var csrfToken = $("meta[name='_csrf']").attr("content");
-                var csrfHeader = $("meta[name='_csrf_header']").attr("content");
-
-                if (amount >= 0) {
-                    $.ajax({
-                        type: 'POST',
-                        url: '/user/cybermoney/send',
-                        data: 'recipientUsername=' + recipientUsername + '&amount=' + amount,
-                        beforeSend: function (xhr) {
-                            xhr.setRequestHeader(csrfHeader, csrfToken);
-                        },
-                        success: function () {
-                            location.reload();
-                            $('#cyberMoneyModal').modal('hide');
-                            alert('사이버 머니 전송이 성공했습니다.');
-                        },
-                        error: function (xhr) {
-                            if (xhr.status === 400) {
-                                alert('사이버 머니 전송에 실패했습니다. 요청이 잘못되었습니다.');
-                            } else if (xhr.status === 403) {
-                                alert('사이버 머니 전송에 실패했습니다. 권한이 없습니다.');
-                            } else {
-                                console.log(xhr.status);
-                                alert('사이버 머니 전송에 실패했습니다. 서버 오류가 발생했습니다.');
-                            }
-                        }
-                    });
-                } else {
-                    alert('금액은 0 이상이어야 합니다.');
+                },
+                error: function (error) {
+                    alert("Error: " + error.responseText);
+                },
+                complete: function () {
+                    isSending = false;
                 }
             });
         });
     });
+});
+
 </script>
