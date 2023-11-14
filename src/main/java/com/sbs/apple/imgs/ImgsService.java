@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -82,5 +83,41 @@ public class ImgsService {
             return null;
         }
 
+    }
+
+    public List<Imgs> modifyImgIndex(List<Imgs> imgs, List<Integer> currentIndex, Board board) {
+
+        List<Integer> imgIndex=new ArrayList<>();
+        for (int i = 0; i < imgs.size(); i++) {
+            imgIndex.add(imgs.get(i).getIndexA());
+        }
+        if(!imgIndex.equals(currentIndex)){
+            System.out.println("수정사항 있음");
+            for (int i = 0; i < currentIndex.size(); i++) {
+                System.out.println(imgs.get(i).getFilename());
+                imgs.get(i).setIndexA( currentIndex.get(i));
+                imgsRepository.save(imgs.get(i));
+            }
+        }
+        return imgs;
+    }
+
+
+
+    public List<Imgs> getImgsByBoard(Board board){
+        List<Imgs> imgs = imgsRepository.findByBoardIdOrderByIndexAAsc(board.getId());
+        if(imgs==null){
+            return null;
+        }
+        return imgs;
+
+    }
+
+
+    //indexA 로 이미지 찾기 현재 순서대로 찾은다음에 수정된 번호 대입시켜야 되서
+    public Imgs getImgsByIndexA(Integer num, Board board){
+        Imgs img = imgsRepository.findByBoardIdAndIndexA(board,num);
+
+        return img;
     }
 }

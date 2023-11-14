@@ -27,7 +27,7 @@
 
 
             <div class="flex board-img-box">
-                <div th:each="img : ${board.imgs}" class="slide">
+                <div th:each="img : ${@rq.getImgs(board)}" class="slide">
                     <img class="w-30 h-30 board-img" th:src="@{|${img.filepath}|}" alt="">
                 </div>
                 <button class="prevButton">이전</button>
