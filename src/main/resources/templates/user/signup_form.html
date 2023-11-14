@@ -73,6 +73,7 @@
                     <span class="label-text">아이디</span>
                 </label>
                 <input type="text" name="username" placeholder="아이디" class="input input-bordered" autofocus maxlength="30">
+                <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" style="color: red;"></p>
             </div>
 
             <div class="form-control">
@@ -120,6 +121,7 @@
             </div>
         </form>
     </div>
+
 </div>
 </body>
 </html>

@@ -57,7 +57,7 @@
                             <a href="/user/myPage"><i class="fa-solid fa-user"></i>마이 페이지</a>
                         </li>
                         <li class="nav-item" sec:authorize="isAuthenticated()">
-                            <a href="/user/interest"><i class="fa-solid fa-star"></i>관심</a>
+                            <a href="/user/wish"><i class="fa-solid fa-star"></i>관심</a>
                         </li>
                         <li class="nav-item" sec:authorize="isAuthenticated()">
                             <a th:href="@{/user/transactions}"><i class="fa-solid fa-heart"></i>하트</a>
@@ -74,9 +74,9 @@
                             <a class="nav-link" th:href="@{/admin/exchange_list}">환전 게시판</a>
                         </li>
 
-<!--                        <li th:if="${#authorization.expression('isAuthenticated()')}">-->
-<!--                            <a href="/user/grantAuthorityToAdmin" class="nav-domain" hx-boost="true">관리자</a>-->
-<!--                        </li>-->
+                        <!--                        <li th:if="${#authorization.expression('isAuthenticated()')}">-->
+                        <!--                            <a href="/user/grantAuthorityToAdmin" class="nav-domain" hx-boost="true">관리자</a>-->
+                        <!--                        </li>-->
                     </ul>
                 </div>
             </div>
@@ -84,7 +84,7 @@
                 <a th:href="@{/}" class="btn btn-ghost normal-case text-xl">The Cupid</a>
             </div>
             <div class="navbar-end">
-                <div  class="userIdDiv" th:if="${@rq.login}" th:text="${@rq.user.id}"></div>
+                <!--                <div  class="userIdDiv" th:if="${@rq.login}" th:text="${@rq.user.id}"></div>-->
                 <button class="btn btn-ghost btn-circle btn-bell">
                     <div class="indicator">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
@@ -177,40 +177,41 @@
 
 <script>
 
-            function getNewNotifications() {
-          $.ajax({
-            url: '/getNewNotifications',
-            type: 'GET',
-            success: function(data) {
-              // 서버에서 받은 데이터를 처리하여 페이지에 추가
-              addNewNotifications(data);
-            }
-          });
-        }
-
-            function addNewNotifications(data) {
-            console.log("알림 추가 기능 실행됨");
-          var ul = $('.notification-box'); // 이 부분은 실제로 페이지의 요소에 맞게 수정해야 합니다.
-
-          data.forEach(function(notification) {
-            var li = $('<li>' + notification.userFrom.nickname + '님이 채팅방에 초대했습니다.</li>');
-            ul.append(li);
-             openModal(notification.userFrom.nickname + '님이 채팅방에 초대했습니다.');
-          });
-        }
-
-
-
-
-
-   const userId = $(".userIdDiv").text();
-   const sse2 = new EventSource(`/sse/connect/userId_${userId}`);
-
-  sse2.addEventListener('invite_chatRoom', e => {
-     alert("채팅방에 초대됨");
-
-     getNewNotifications()
+    function getNewNotifications() {
+  $.ajax({
+    url: '/getNewNotifications',
+    type: 'GET',
+    success: function(data) {
+      // 서버에서 받은 데이터를 처리하여 페이지에 추가
+      addNewNotifications(data);
+    }
   });
+}
+
+    function addNewNotifications(data) {
+    console.log("알림 추가 기능 실행됨");
+  var ul = $('.notification-box'); // 이 부분은 실제로 페이지의 요소에 맞게 수정해야 합니다.
+
+  data.forEach(function(notification) {
+    var li = $('<li>' + notification.userFrom.nickname + '님이 채팅방에 초대했습니다.</li>');
+    ul.append(li);
+     openModal(notification.userFrom.nickname + '님이 채팅방에 초대했습니다.');
+  });
+}
+
+
+
+
+
+const userId = $(".userIdDiv").text();
+const sse2 = new EventSource(`/sse/connect/userId_${userId}`);
+
+// 서버로부터 "chat__messageAdded" 라는 명령이 내려오면 아래 함수를 실행
+sse2.addEventListener('invite_chatRoom', e => {
+alert("채팅방에 초대됨");
+
+getNewNotifications()
+});
 
 
 
