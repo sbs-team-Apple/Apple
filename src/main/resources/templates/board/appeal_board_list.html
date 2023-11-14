@@ -20,6 +20,9 @@
                 <div>
                     <div th:text="${board.siteUser.nickname}"></div>
                 </div>
+                <div>
+                    <a th:href="@{|/board/modify/${board.id}|}">수정하기</a>
+                </div>
             </div>
 
 

@@ -8,6 +8,7 @@
 
 <div layout:fragment="content" class="container m-auto flex justify-center flex-col items-center">
     <div class="myPage">
+
         <div class="flex justify-center">
             <img th:src="@{|${user.filepath}|}" alt="User Image" style="max-width: 300px; max-height: 300px;">
         </div>
@@ -44,12 +45,15 @@
         <div class="text-right">
             <a href="/user/desired_modify" class="btn btn-outline btn-info">나의 이상형 정보 수정</a>
         </div>
-
     </div>
-
-
+    <div th:include="common/menu.html" class="tap_bar"></div>
+    <style>
+        .tap_bar {
+                position: fixed;
+                width: 100%;
+                bottom : 0;
+            }
+    </style>
 </div>
-
-
 </body>
 </html>

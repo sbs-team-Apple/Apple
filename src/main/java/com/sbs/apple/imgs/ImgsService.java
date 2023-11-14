@@ -1,6 +1,8 @@
 package com.sbs.apple.imgs;
 
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sbs.apple.board.Board;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,6 +43,7 @@ public class ImgsService {
             file.get(i).transferTo(saveFile);
             imgs.setFilename(fileName);
             imgs.setFilepath("/gen/"+fileName);
+            imgs.setIndexA(i+1);
             this.imgsRepository.save(imgs);
 
         }
@@ -49,4 +52,35 @@ public class ImgsService {
 
     }
 
+    public List<Imgs> getImg(Integer id){
+        if(imgsRepository.findByBoardId(id) == null ){
+            return null;
+        }
+        return imgsRepository.findByBoardId(id);
+
+
+    }
+
+    public List<Integer> getCurrentIndex(String myArray) {
+        // ObjectMapper 생성
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            // JSON 문자열을 List<Integer>로 변환
+            List<Integer> myList = objectMapper.readValue(myArray, new TypeReference<List<Integer>>() {
+            });
+
+            // 변환된 리스트 사용
+            for (Integer number : myList) {
+                System.out.println(number);
+            }
+            return myList;
+            // 추가적인 로직 구현
+        } catch (Exception e) {
+            // 예외 처리
+            e.printStackTrace();
+            return null;
+        }
+
+    }
 }

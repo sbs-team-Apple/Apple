@@ -119,34 +119,32 @@
     }
 </style>
 
-
 <script>
 
-    console.log("213");
-
-</script>
 
 
-<script>
-    $(document).ready(function () {
-        $("#myLink").click(function () {
-            var valueToSend = "exampleValue"; // 보낼 값
-            var url = "/chat/" + roomId + "?paramName=" + valueToSend;
 
-            $.get(url, function (data) {
-                // 서버 응답을 처리
-                console.log(data);
 
-            });
+$(document).ready(function () {
+    $("#myLink").click(function () {
+        var valueToSend = "exampleValue"; // 보낼 값
+        var url = "/chat/" + roomId + "?paramName=" + valueToSend;
+
+        $.get(url, function (data) {
+            // 서버 응답을 처리
+            console.log(data);
+
+
         });
+    });
 
 
-          $('form').submit(function(event) {
+      $('form').submit(function(event) {
 
-            const userId = $('.userId_value').val();
-            const sse2 = new EventSource(`/sse/connect/userId_${userId}`);
-            // 여기서 SSE 연결을 사용하여 원하는 동작을 수행
-        });
+        const userId = $('.userId_value').val();
+        const sse2 = new EventSource(`/sse/connect/userId_${userId}`);
+        // 여기서 SSE 연결을 사용하여 원하는 동작을 수행
+    });
     </script>
 </div>
 </body>
