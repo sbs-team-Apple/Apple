@@ -160,6 +160,7 @@ public class SiteUser {
     }
 
     @Column
-    private Integer minHeart = 0; //
+    private Integer minHeart = 200;
+
 
 }
