@@ -11,6 +11,14 @@
         <input type="file" class="file-input file-input-bordered file-input-info w-full max-w-xs" name="file" accept="image/**"/>
         <button type="submit" class="btn btn-outline btn-info">변경하기</button>
     </form>
+    <div th:include="common/menu.html" class="tap_bar"></div>
+    <style>
+        .tap_bar {
+                position: fixed;
+                width: 100%;
+                bottom : 0;
+            }
+    </style>
 </div>
 </body>
 </html>

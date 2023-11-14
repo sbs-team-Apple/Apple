@@ -341,11 +341,17 @@
             </div>
         <input type="submit" value="수정하기" class="btn btn-primary my-2">
     </form>
+    <div th:include="common/menu.html" class="tap_bar"></div>
     <style>
         input:checked + label {
     color: blue;
     font-weight: bold;
 }
+        .tap_bar {
+            position: fixed;
+            width: 100%;
+            bottom : 0;
+        }
     </style>
 </div>
 </body>
