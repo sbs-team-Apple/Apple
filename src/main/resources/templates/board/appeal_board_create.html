@@ -6,37 +6,34 @@
 </head>
 <body>
 <div layout:fragment="content" class="container my-3">
+    <div class="ml-auto mr-auto w-60 ">
+            <form  enctype="multipart/form-data" th:action="@{/board/create}"  object="${boardForm}" method="post" >
 
-    <form  enctype="multipart/form-data" th:action="@{/board/create}"  object="${boardForm}" method="post" >
-        <div>이미지 넣기</div>
-        <div id="file-input-container">
-            <input type="file" name="file" accept="image/*" class="image-file-input">
-            <div class="image-preview"></div>
+                <div class="current-img"></div>
+                <div id="file-input-container">
 
-        <button type="button" class="add-file-input">파일 추가</button>
-        <div>제목</div>
-        <input type="text" name="subject">
-        <div>내용</div>
-        <input type="text" name="content">
+        <!--            <input type="file" name="file" accept="image/*" class="image-file-input">-->
 
-        <button type="submit">작성 완료</button>
+                    <button type="button" class="add-file-input">사진 추가</button>
+                </div>
+                <div class="pre-img">
 
 
+                </div>
 
-    </form>
-<!--    <form enctype="multipart/form-data" th:action="@{/board/create}" object="${boardForm}" method="post">-->
-<!--        <div>이미지 넣기</div>-->
-<!--        <input type="file" name="file" accept="image/*" multiple>-->
-<!--        &lt;!&ndash; 'multiple' 속성을 추가하여 여러 파일 선택 가능 &ndash;&gt;-->
 
-<!--        <div>제목</div>-->
-<!--        <input type="text" name="subject">-->
-<!--        <div>내용</div>-->
-<!--        <input type="text" name="content">-->
+                <div>제목</div>
+                <input type="text" name="subject">
+                <div>내용</div>
+                <input type="text" name="content">
 
-<!--        <button type="submit">작성 완료</button>-->
-<!--    </form>-->
+                <button type="submit">작성 완료</button>
 
+
+
+            </form>
+
+    </div>
 
 
 
@@ -45,98 +42,154 @@
 </body>
 </html>
 
-<script >
+<style>
+    .ex-current-img {
+        width:300px;
+        height:300px;
+
+    }
 
 
-</script>
+   .ex-img {
+        width:80px;
+        height:80px;
 
-<script>
-    $(document).ready(function() {
-      // "파일 추가" 버튼 클릭 이벤트
-      $(".add-file-input").click(function() {
-          var fileInputContainer = $(this).prev(".image-file-input");
-          var newFileInput = $("<input>", {
-              type: "file",
-              name: "file",
-              accept: "image/**",
-              class: "image-file-input"
-          });
-          var newImagePreview = $("<div>", { class: "image-preview" });
+    }
+    .pre-img {
+        position :absolute;
+        top:50px;
+        right:0;
+    }
 
-          newFileInput.change(function() {
-              var file = newFileInput[0].files[0];
+    .image-preview {
+        position:relative;
 
-              if (file) {
-                  var reader = new FileReader();
+    }
 
-                  reader.onload = function(e) {
-                      var previewImage = $("<img>");
-                      previewImage.attr("src", e.target.result);
-                      newImagePreview.empty().append(previewImage);
-                  };
+    .cancelBtn {
+        position:absolute;
+        top:0;
+        right:0;
+        background-color:red;
+        width:20px;
+        height:20px;
 
-                  reader.readAsDataURL(file);
-                   $(" .image-file-input").addClass("hidden");
-              } else {
-                  newImagePreview.empty();
-              }
-          });
 
-          newFileInput.insertBefore($(this));
-          newImagePreview.insertAfter(newFileInput);
-      });
-
-      // 페이지 로드 시 이미 선택된 파일이 있는지 확인
-      $(".image-file-input").each(function() {
-          var fileInput = $(this);
-          var imagePreview = fileInput.next(".image-preview");
-          var file = fileInput[0].files[0];
-
-          if (file) {
-              var reader = new FileReader();
-
-              reader.onload = function(e) {
-                  var previewImage = $("<img>");
-                  previewImage.attr("src", e.target.result);
-                  imagePreview.empty().append(previewImage);
-              };
-
-              reader.readAsDataURL(file);
-          }
-      });
-  });
-
-</script>
+    }
+</style>
 
 <script>
+    var currentIndex=1;
+    var exImgs = $(".ex-img");
+   $(document).ready(function() {
 
-    $(document).ready(function() {
-     // 파일 입력 필드와 이미지 미리보기 요소 참조
-     var imageFileInput = $(".image-file-input");
-     var imagePreview = $(".image-preview");
+       var preImgContainer=$(".pre-img");
+       var currentImg=$(".current-img");
 
-     // 파일 입력 필드의 변경 이벤트 처리
-     imageFileInput.change(function() {
-         var file = imageFileInput[0].files[0];
+     // "파일 추가" 버튼 클릭 이벤트
+     $(".add-file-input").click(function() {
+           $(".add-file-input").addClass("hidden");
 
-         if (file) {
-             // FileReader 객체를 사용하여 이미지 미리보기 생성
-             var reader = new FileReader();
+         var fileInputContainer = $(this).prev(".image-file-input");
+         var newFileInput = $("<input>", {
+             type: "file",
+             name: "file",
+             accept: "image/**",
+             class:  "image-file-input",
+             currentIndex
+         });
+         var newImagePreview = $("<div>", { class: "image-preview" });
 
-             reader.onload = function(e) {
-                 // 미리보기 이미지 업데이트
-                 var previewImage = $("<img>");
-                 previewImage.attr("src", e.target.result);
-                 imagePreview.empty().append(previewImage);
-             };
+         newFileInput.change(function() {
+             var file = newFileInput[0].files[0];
 
-             // 파일을 읽고 미리보기 데이터 URL을 생성
-             reader.readAsDataURL(file);
-               $(" .image-file-input").addClass("hidden");
-         } else {
-             // 파일이 선택되지 않았을 때 미리보기 제거
-             imagePreview.empty();
-         }
+             if (file) {
+                 var reader = new FileReader();
+
+                 reader.onload = function(e) {
+                     var previewImage = $("<img>", {
+                       class:"ex-img" , onclick:"changeCurrentImg(this)"
+                      }) ;
+                     previewImage.attr("src", e.target.result);
+
+                     var cancelBtn =$("<div>", {class:"cancelBtn",currentIndex   ,onclick:"hideImagePreview(this)"} );
+
+                     currentIndex++;
+
+                     var previewCurrentImage = $("<img>", {
+                       class:"ex-current-img"
+                      }) ;
+                     previewCurrentImage.attr("src", e.target.result);
+                     newImagePreview.empty().append(previewImage);
+                     newImagePreview.append(cancelBtn);
+                     currentImg.empty().append(previewCurrentImage);
+                     exImgs = $(".ex-img");
+                     console.log(exImgs);
+                 };
+
+                 reader.readAsDataURL(file);
+                  $(" .image-file-input").addClass("hidden");
+                     $(".add-file-input").removeClass("hidden");
+             } else {
+                 newImagePreview.empty();
+
+             }
+         });
+
+         newFileInput.insertBefore($(this));
+         preImgContainer.append(newImagePreview);
+
+
      });
+
+
  });
+
 </script>
+
+<script>
+
+
+            function hideImagePreview(btn) {
+                console.log(btn);
+               var imagePreview = btn.closest('.image-preview');
+                var exImg2 = imagePreview.find('.cancelBtn');
+                console.log(exImg);
+                let indexOfB = exImgs.indexOf(exImg);
+               if (imagePreview) {
+
+                      var btnCurrentIndex = $(btn).attr('currentIndex');
+
+                    $('input[currentIndex="' + btnCurrentIndex + '"]').remove();
+
+                       imagePreview.remove();
+                       currentIndex--;
+                        exImgs = $(".ex-img");
+                        console.log(indexOfB);
+
+
+                     }
+                 }
+
+
+</script>
+
+<script>
+    function changeCurrentImg(btn){
+          var imgContent= $(btn).attr('src');
+
+
+           $('.ex-current-img').attr('src',imgContent);
+
+
+
+    }
+</script>
+
+<script>
+
+
+
+
+</script>
+
