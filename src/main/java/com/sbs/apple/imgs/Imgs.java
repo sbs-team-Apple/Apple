@@ -20,6 +20,8 @@ public class Imgs {
     private String filename;
     private String filepath;
 
+    private Integer indexA;
+
 
 
 

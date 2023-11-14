@@ -12,10 +12,17 @@
 
 <div layout:fragment="content" class="container m-auto flex justify-center flex-col items-center">
     <div>
+        <div style="display: none;">
+            <p class="badge badge-secondary" style="display: inline-block; margin-right: 10px;">사용 가능한 하트: <span th:text="${userCyberMoney}"></span>개</p>
+            <p class="badge badge-secondary" style="display: inline-block;">선물 받은 하트: <span th:text="${receivedCyberMoney}"></span>개</p>
+        </div>
 
         <div class="flex justify-center">
             <img th:src="@{|${receivedSiteUser.filepath}|}" alt="User Image" style="max-width: 300px; max-height: 300px;">
         </div>
+
+        <div th:text="'최소하트 : ' + ${receivedSiteUser.minHeart}"></div>
+
         <div th:text="'자기소개 : ' + ${receivedSiteUser.About_Me}"></div>
         <div th:text="'닉네임 : ' + ${receivedSiteUser.nickname}"></div>
         <div th:text="'나이 : ' + ${receivedSiteUser.age}"></div>
@@ -43,16 +50,12 @@
         <div th:text="'선호하는 이성 MBTI : ' + ${receivedSiteUser.desired_mbti}"></div>
 
 
-<!--            <button id="sendCyberMoneyBtn" class="btn btn-primary" data-toggle="modal" data-target="#cyberMoneyModal" >사이버머니-->
-<!--                보내기-->
-<!--            </button>-->
-
         <div>
             <a class="btn btn-outline btn-info" th:href="@{'/user/report/' + ${receivedSiteUser.id}}">신고하기</a>
             <a class="btn btn-outline btn-info" th:href="@{'/user/add_interest/' + ${receivedSiteUser.id}}">
                 <span th:text="${isInterested ? '관심 해제' : '관심 등록'}"></span>
             </a>
-            <button th:if="${chatRoom == null  && log ==null} " id="sendCyberMoneyBtn" class="btn btn-outline btn-info"
+            <button th:if="${chatRoom == null  && log ==null}" id="sendCyberMoneyBtn" class="btn btn-outline btn-info"
                     data-toggle="modal" data-target="#cyberMoneyModal">채팅방 만들기
             </button>
         </div>
@@ -82,61 +85,80 @@
             </div>
         </dialog>
     </div>
+    <div th:include="common/menu.html" class="tap_bar"></div>
+    <style>
+        .tap_bar {
+                position: fixed;
+                width: 100%;
+                bottom : 0;
+            }
+    </style>
 </div>
-
-
 </html>
-
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script>
-    $(document).ready(function() {
-        $('#sendCyberMoneyBtn').click(function() {
-            my_modal_5.showModal();
+    $(document).ready(function () {
+    var isSending = false;
 
-            // 사용자의 username을 HTML에서 가져옵니다.
-           var siteUserUsernameElement = $("#recipientUsername");
-           console.log(recipientUsername);
-            var recipientUsername = siteUserUsernameElement.text();
+    $('#sendCyberMoneyBtn').click(function () {
+        if (isSending) return;
+        isSending = true;
 
-            $('#recipientUsername').text(recipientUsername);
+        my_modal_5.showModal();
 
-            $('#sendCyberMoneyConfirmBtn').click(function() {
-            alert("사이버 머니가 성공적으로 전송 되었습니다.");
+        var siteUserUsernameElement = $("#recipientUsername");
+        var recipientUsername = siteUserUsernameElement.text();
+
+        // 이벤트 핸들러 등록 전에 기존 핸들러 삭제
+        $('#sendCyberMoneyConfirmBtn').off('click');
+
+        // 이벤트 핸들러 등록
+        $('#sendCyberMoneyConfirmBtn').click(function () {
             var amount = $('#cyberMoneyAmount').val();
+            var minHeart = parseInt([[${receivedSiteUser.minHeart}]]);
+            var userCyberMoney = parseInt([[${userCyberMoney}]]);
+
+            if (amount < minHeart) {
+                alert("최소하트보다 작습니다.");
+                $('#cyberMoneyModal').modal('hide');
+                isSending = false;
+                return;
+            }
+
+            if (amount > userCyberMoney) {
+                alert("하트가 부족합니다.");
+                $('#cyberMoneyModal').modal('hide');
+                isSending = false;
+                return;
+            }
+
 
             var csrfToken = $("meta[name='_csrf']").attr("content");
             var csrfHeader = $("meta[name='_csrf_header']").attr("content");
 
-                if (amount >= 0) {
-                    $.ajax({
-                        type: 'POST',
-                        url: '/user/cybermoney/send',
-                        data: 'recipientUsername=' + recipientUsername + '&amount=' + amount,
-                        beforeSend: function(xhr) {
-                            xhr.setRequestHeader(csrfHeader, csrfToken);
-                        },
-                        success: function() {
-                         location.reload();
-                            $('#cyberMoneyModal').modal('hide'); // 성공 시 모달을 닫음
-                            alert('사이버 머니 전송이 성공했습니다.');
-                            // 사이버 머니 갱신 등의 추가 작업 수행
+            $.ajax({
+                type: 'POST',
+                url: '/user/cybermoney/send',
+                data: 'recipientUsername=' + recipientUsername + '&amount=' + amount,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                },
+                success: function () {
+                alert("사이버 머니가 성공적으로 전송 되었습니다.");
+                    location.reload();
+                    $('#cyberMoneyModal').modal('hide');
 
-                        },
-                        error: function(xhr) {
-                            if (xhr.status === 400) {
-                                alert('사이버 머니 전송에 실패했습니다. 요청이 잘못되었습니다.');
-                            } else if (xhr.status === 403) {
-                                alert('사이버 머니 전송에 실패했습니다. 권한이 없습니다.');
-                            } else {
-                                console.log(xhr.status);
-                                alert('사이버 머니 전송에 실패했습니다. 서버 오류가 발생했습니다.');
-                            }
-                        }
-                    });
-                } else {
-                    alert('금액은 0 이상이어야 합니다.');
+                },
+                error: function (error) {
+                    alert("Error: " + error.responseText);
+                },
+                complete: function () {
+                    isSending = false;
                 }
             });
         });
     });
+});
+
 </script>

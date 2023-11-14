@@ -1,9 +1,12 @@
 package com.sbs.apple.board;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sbs.apple.imgs.Imgs;
 import com.sbs.apple.imgs.ImgsService;
 import com.sbs.apple.user.SiteUser;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONStringer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -27,11 +30,10 @@ public class BoardService {
     }
 
 
-
-    public Board create(List<MultipartFile> file,String subject,String content,  SiteUser user)
+    public Board create(List<MultipartFile> file, String subject, String content, SiteUser user)
             throws Exception {
-        Board board =new Board();
-        Imgs imgs =new Imgs();
+        Board board = new Board();
+        Imgs imgs = new Imgs();
 
         File directory = new File(uploadDir);
 
@@ -46,7 +48,7 @@ public class BoardService {
 
 
         UUID uuid = UUID.randomUUID();
-        if(file.get(0).getOriginalFilename().equals("")){
+        if (file.get(0).getOriginalFilename().equals("")) {
             System.out.println("사진없음");
 //            board.setFilename("곰.jfif");
 //            board.setFilepath("/img/곰.jfif");
@@ -58,39 +60,37 @@ public class BoardService {
         }
 
 
-
 //        board.setFilename(fileName);
 //        board.setFilepath("/gen/"+fileName);
 
         this.boardRepository.save(board);
-        this.imgsService.create(file,board);
+        this.imgsService.create(file, board);
         return board;
     }
 
-    public List<Board> getAllBoard(){
+    public List<Board> getAllBoard() {
 
         return this.boardRepository.findAll();
     }
 
 
-    public List<Board> getAllBoardDESC(){
+    public List<Board> getAllBoardDESC() {
 
         return boardRepository.findAll(Sort.by(Sort.Order.desc("id")));
     }
 
 
-
-    public Board getBoard(Integer id){
-        Optional<Board>  board =this.boardRepository.findById(id);
-        if(board.isPresent()){
-            return board.get();
-        }else return null;
+    public Board getBoard(Integer id) {
+        Optional<Board> boards = this.boardRepository.findById(id);
+        if (boards.isPresent()) {
+            return boards.get();
+        } else return null;
     }
 
 
-    public Board modify(MultipartFile file, String subject, String content,Board board)
+    public Board modify(MultipartFile file, String subject, String content, Board board)
             throws Exception {
-        if(file.isEmpty()){
+        if (file.isEmpty()) {
             board.setSubject(subject);
             board.setContent(content);
 
@@ -102,8 +102,8 @@ public class BoardService {
         File directory = new File(uploadDir);
 
         UUID uuid = UUID.randomUUID();
-        String fileName =uuid + "_" + file.getOriginalFilename();
-        File saveFile =new File(directory,fileName);
+        String fileName = uuid + "_" + file.getOriginalFilename();
+        File saveFile = new File(directory, fileName);
         file.transferTo(saveFile);
 //        board.setFilename(fileName);
 //        board.setFilepath("/gen/"+fileName);
@@ -120,11 +120,14 @@ public class BoardService {
     }
 
     public List<Board> getBoardByUserId(SiteUser user) {
-        List<Board> boards=this.boardRepository.findByUserId(user);
-        if(boards==null){
+        List<Board> boards = this.boardRepository.findByUserId(user);
+        if (boards == null) {
             return null;
 
         }
         return boards;
     }
+
+
+
 }
