@@ -4,7 +4,6 @@ package com.sbs.apple.user;
 import com.sbs.apple.board.BoardForm;
 import com.sbs.apple.chat.ChatRoom;
 import com.sbs.apple.chat.ChatRoomService;
-import com.sbs.apple.cybermoney.CyberMoneyService;
 import com.sbs.apple.cybermoney.CyberMoneyServiceImpl;
 import com.sbs.apple.cybermoney.CyberMoneyTransaction;
 import com.sbs.apple.cybermoney.CyberMoneyTransactionRepository;
@@ -283,12 +282,14 @@ public class UserController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/detail/{id}")
     public String paymentPage(Principal principal, Model model, @PathVariable("id") Integer id) {
-        SiteUser siteUser = this.userService.getUser(id);
+        SiteUser siteUser = this.userService.getUserbyName(principal.getName());
+        SiteUser receivedSiteUser = this.userService.getUser(id);
         model.addAttribute("siteUser", siteUser);
+        model.addAttribute("receivedSiteUser", receivedSiteUser);
         String interest_user = principal.getName();
-        boolean isInterested = interestService.isInterested(id, interest_user);
-        model.addAttribute("isInterested", isInterested);
 
+        boolean isInterested = interestService.isInterested(siteUser,receivedSiteUser);
+        model.addAttribute("isInterested", isInterested);
         SiteUser loginUser = userService.getUserbyName(principal.getName());
 
         //로그인한 사용자와 현재 프로필 선택한 유저 사이의 채팅방과 사이버 머니 전송 기록을 찾는 코드

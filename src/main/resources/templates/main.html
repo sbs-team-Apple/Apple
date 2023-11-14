@@ -6,16 +6,16 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <div  class="container real-container ">
+    <div class="container flex justify-center">
         <div
                 th:unless="${#authorization.expression('isAuthenticated()')}">
             <div th:include="user/login.html"></div>
         </div>
 
-        <div th:if="${#authorization.expression('isAuthenticated()')}" class="profile  main-container">
-            <div class="profile_in m-auto flex justify-center flex-col items-center"
+        <div th:if="${#authorization.expression('isAuthenticated()')}"
+             class="profile profile_wrap main-container h-screen">
+            <div class="profile_in m-auto flex justify-center flex-col items-center border border-gray-300"
                  th:each="userList : ${userList}" style="margin-bottom: 20px;">
-
                 <div>
                     <a th:href="@{|/user/detail/${userList.id}|}">
                         <img class="w-50 h-50" th:src="@{|${userList.filepath}|}" alt="User Image"
@@ -31,9 +31,9 @@
                 </div>
                 <div th:text="${userList.About_Me}"></div>
             </div>
-            <div th:include="common/menu.html"></div>
 
         </div>
+        <div th:include="common/menu.html" class="tap_bar"></div>
     </div>
 
     <div th:include="common/footer.html" class="dd"></div>
@@ -59,15 +59,16 @@
 
         </div>
 
+    <style>
+        .tap_bar {
+            position: fixed;
+            width: 100%;
+            bottom : 0;
+        }
 
 
-</div>
-</body>
-<style>
-    .real-container{
-             margin: 0 auto;
 
-    }
+
 
     .container {
 
@@ -118,7 +119,7 @@
     }
 </style>
 
-</html>
+
 <script>
 
     console.log("213");
@@ -135,15 +136,18 @@
             $.get(url, function (data) {
                 // 서버 응답을 처리
                 console.log(data);
+
             });
         });
-    });
 
 
-      $('form').submit(function(event) {
+          $('form').submit(function(event) {
 
-        const userId = $('.userId_value').val();
-        const sse2 = new EventSource(`/sse/connect/userId_${userId}`);
-        // 여기서 SSE 연결을 사용하여 원하는 동작을 수행
-    });
-</script>
+            const userId = $('.userId_value').val();
+            const sse2 = new EventSource(`/sse/connect/userId_${userId}`);
+            // 여기서 SSE 연결을 사용하여 원하는 동작을 수행
+        });
+    </script>
+</div>
+</body>
+</html>
