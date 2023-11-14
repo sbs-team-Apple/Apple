@@ -6,31 +6,295 @@
 </head>
 <body>
 <div layout:fragment="content" class="container my-3">
+    <div class="ml-auto mr-auto w-60 ">
+        <form  class="imgForm" enctype="multipart/form-data" th:action="@{/board/create}"  object="${boardForm}" method="post" >
 
-    <form  enctype="multipart/form-data" th:action="@{|/board/modify/${board.id}|}"  object="${boardForm}" method="post" >
-        <div>이미지 넣기</div>
-        <input type="file" name="file" accept="image/**">
-        <div>제목</div>
-        <input type="text" name="subject" th:value="${board.subject}">
-        <div>내용</div>
-        <input type="text" name="content"  th:value="${board.content}">
+            <div class="current-img"></div>
+            <div id="file-input-container">
 
-        <button type="submit">작성 완료</button>
+                <!--            <input type="file" name="file" accept="image/*" class="image-file-input">-->
+
+                <button type="button" class="add-file-input">사진 추가</button>
+                <input type="file" name="file">
+            </div>
+            <div class="column">
+
+                <div class="image-preview"  th:each="img, currentindex : ${board.imgs}">
+
+                        <img class="ex-img" th:currentindex="${currentindex.count}" onclick="changeCurrentImg(this)" th:src="${img.filepath}" alt="">
+                        <div class="cancelBtn"  onclick="hideImagePreview(this)"></div>
 
 
 
-    </form>
+                </div>
+
+            </div>
+
+
+            <div>제목</div>
+            <input type="text" name="subject">
+            <div>내용</div>
+            <input type="text" name="content">
+
+            <button  class="end-function" type="submit" onclick="onSubmitClick()">작성 완료</button>
 
 
 
+        </form>
 
+    </div>
+
+
+    <button onclick="SubmitClick()">dd</button>
 
 </div>
 </body>
 </html>
 
-<script >
+<style>
+    .ex-current-img {
+        width:300px;
+        height:300px;
 
+    }
+
+
+
+    .pre-img {
+        position :absolute;
+        top:50px;
+        right:0;
+    }
+
+     .column {
+        position :absolute;
+        top:50px;
+        right:0;
+    }
+
+
+    .image-preview {
+          position:relative;
+
+    }
+    .ex-img {
+             width:80px;
+                height:80px;
+
+            position:relative;
+
+    }
+
+    .cancelBtn {
+        position:absolute;
+        top:0;
+        right:0;
+        background-color:red;
+        width:20px;
+        height:20px;
+        z-index:100;
+
+
+    }
+</style>
+
+<script>
+    function SubmitClick(){
+        indexExImgs();
+
+        reorderInputsByIndex();
+
+
+    }
+
+</script>
+
+<script>
+
+    var indexImg = [];
+
+     function indexExImgs() {
+     indexImg = [];
+    var imgArrays = $(".ex-img");
+
+    imgArrays.each(function () {
+     var currentIndex = $(this).attr('currentindex');
+      console.log(currentIndex);
+      indexImg.push(currentIndex);
+    });
+
+console.log(indexImg);
+}
+
+</script>
+
+
+
+<script >
+    var inputToMove ;
+    function reorderInputsByIndex() {
+
+  // currentIndex를 기준으로 정렬된 input 요소들을 저장할 배열
+  var sortedInputs = [];
+
+  // currentIndexArray에 따라 순서를 정렬
+  indexImg.forEach(function (currentIndex, index) {
+    // 현재 currentIndex에 해당하는 input 요소를 찾아서 배열에 추가
+     inputToMove = $('input[currentindex="' + currentIndex + '"]');
+    console.log("현재 요소"+inputToMove.attr('currentindex'));
+        sortedInputs.push(inputToMove);
+
+
+  });
+    $("#file-input-container").empty();
+
+     $("#file-input-container").append(sortedInputs);
+
+
+    }
+</script>
+
+<script>
+    function onSubmitClick() {
+     // 여기에 전송 전에 실행하고자 하는 로직을 추가하세요
+        indexExImgs();
+
+        reorderInputsByIndex();
+
+
+
+     alert('작성 완료 버튼 클릭됨!');
+
+     // 폼을 서버로 제출
+    $('end-function').submit();
+   }
 
 
 </script>
+
+
+<script>
+    var currentIndex=1;
+    var exImgs = $(".ex-img");
+   $(document).ready(function() {
+
+       var preImgContainer=$(".column");
+       var currentImg=$(".current-img");
+
+     // "파일 추가" 버튼 클릭 이벤트
+     $(".add-file-input").click(function() {
+           $(".add-file-input").addClass("hidden");
+
+         var fileInputContainer = $(this).prev(".image-file-input");
+         var newFileInput = $("<input>", {
+             type: "file",
+             name: "file",
+             accept: "image/**",
+             class:  "image-file-input",
+             currentIndex
+         });
+         var newImagePreview = $("<div>", { class: "image-preview" });
+
+         newFileInput.change(function() {
+             var file = newFileInput[0].files[0];
+
+             if (file) {
+                 var reader = new FileReader();
+
+                 reader.onload = function(e) {
+                     var previewImage = $("<img>", {
+                       class:"ex-img" , onclick:"changeCurrentImg(this)" , draggable:"true", currentIndex
+                      }) ;
+                     previewImage.attr("src", e.target.result);
+
+                     var cancelBtn =$("<div>", {class:"cancelBtn",currentIndex   ,onclick:"hideImagePreview(this)"} );
+
+                     currentIndex++;
+
+                     var previewCurrentImage = $("<img>", {
+                       class:"ex-current-img"
+                      }) ;
+                     previewCurrentImage.attr("src", e.target.result);
+                     newImagePreview.empty().append(previewImage);
+                     newImagePreview.append(cancelBtn);
+                     currentImg.empty().append(previewCurrentImage);
+                     exImgs = $(".ex-img");
+                     console.log(exImgs);
+                 };
+
+                 reader.readAsDataURL(file);
+                  $(" .image-file-input").addClass("hidden");
+                     $(".add-file-input").removeClass("hidden");
+             } else {
+                 newImagePreview.empty();
+
+             }
+         });
+
+         newFileInput.insertBefore($(this));
+         preImgContainer.append(newImagePreview);
+
+
+     });
+
+
+ });
+
+</script>
+
+<script>
+
+
+    function hideImagePreview(btn) {
+       var imagePreview = btn.closest('.image-preview');
+<!--                var exImg =  btn.nextElementSibling('.ex-img');-->
+            indexExImgs();
+<!--                let indexOfB = exImgs.indexOf(exImg);-->
+       if (imagePreview) {
+
+              var btnCurrentIndex = $(btn).attr('currentIndex');
+
+            $('input[currentindex="' + btnCurrentIndex + '"]').remove();
+
+               imagePreview.remove();
+                exImgs = $(".ex-img");
+<!--                        console.log(indexOfB);-->
+
+
+             }
+         }
+
+
+</script>
+
+
+<script>
+
+    const columns = document.querySelectorAll(".column");
+
+    columns.forEach((column) => {
+        new Sortable(column, {
+            group: "shared",
+            animation: 150,
+            ghostClass: "blue-background-class"
+
+        });console.log("asd");
+    });
+
+
+</script>
+
+
+<script>
+    function changeCurrentImg(btn){
+          var imgContent= $(btn).attr('src');
+
+
+           $('.ex-current-img').attr('src',imgContent);
+
+
+
+    }
+</script>
+
+
