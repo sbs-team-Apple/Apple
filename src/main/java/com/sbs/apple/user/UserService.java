@@ -3,7 +3,6 @@ package com.sbs.apple.user;
 import com.sbs.apple.DataNotFoundException;
 import com.sbs.apple.chat.ChatRoom;
 import com.sbs.apple.chat.ChatRoomService;
-import com.sbs.apple.interest.Interest;
 import com.sbs.apple.interest.InterestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -332,13 +331,6 @@ public class UserService {
         this.userRepository.save(user);
     }
 
-    public List<Interest> getWishUsers(String username) {
-        List<Interest> wishUsers;
-
-        wishUsers = this.interestRepository.findAllByInterestUser(username);
-
-        return wishUsers;
-    }
 
     public SiteUser getUser(String username) {
         Optional<SiteUser> siteUser = this.userRepository.findByUsername(username);

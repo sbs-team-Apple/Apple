@@ -1,12 +1,14 @@
 package com.sbs.apple.interest;
 
+import com.sbs.apple.user.SiteUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
 public interface InterestRepository extends JpaRepository<Interest, Integer> {
-    List<Interest> findAllByInterestUser(String interestUser);
-    List<Interest> findAllByInterestedUser(String interestedUser);
+    List<Interest> findAllBySiteUser(SiteUser siteUser);
+    List<Interest> findAllByReceivedSiteUser(SiteUser receivedSiteUser);
 
-    List<Interest> findAllBySiteUser_IdAndInterestUser(Integer siteUserId, String interestUser);
+    List<Interest> findAllBySiteUserAndReceivedSiteUser(SiteUser siteUser, SiteUser receivedSiteUser);
+
 }
