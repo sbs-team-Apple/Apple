@@ -7,7 +7,7 @@
 <body>
 <div layout:fragment="content" class="container my-3">
     <div class="ml-auto mr-auto w-60 ">
-        <form  class="imgForm" enctype="multipart/form-data" th:action="@{/board/create}"  object="${boardForm}" method="post" >
+        <form  class="imgForm" enctype="multipart/form-data" th:action="@{|/board/modify/${board.id}|}"  object="${boardForm}" method="post" >
 
             <div class="current-img"></div>
             <div id="file-input-container">
@@ -15,11 +15,15 @@
                 <!--            <input type="file" name="file" accept="image/*" class="image-file-input">-->
 
                 <button type="button" class="add-file-input">사진 추가</button>
-                <input type="file" name="file">
+<!--                <input type="file" name="file">-->
+                <input type="hidden" name="myArray" id="myArrayInput">
+                <input type="hidden" name="myAddArray" id="myAddArrayInput">
+
+
             </div>
             <div class="column">
 
-                <div class="image-preview"  th:each="img, currentindex : ${board.imgs}">
+                <div class="image-preview"  th:each="img, currentindex : ${@rq.getImgs(board)}">
 
                         <img class="ex-img" th:currentindex="${currentindex.count}" onclick="changeCurrentImg(this)" th:src="${img.filepath}" alt="">
                         <div class="cancelBtn"  onclick="hideImagePreview(this)"></div>
@@ -99,13 +103,32 @@
 </style>
 
 <script>
+<!--   테스트 용-->
     function SubmitClick(){
         indexExImgs();
 
-        reorderInputsByIndex();
+
 
 
     }
+
+</script>
+
+<script>
+    var addImg = [];
+
+     function indexExaddImgs() {
+
+    var imgArrays = $(".image-file-input");
+
+    imgArrays.each(function () {
+     var currentIndex = $(this).attr('currentindex');
+      console.log(currentIndex);
+      addImg.push(currentIndex);
+    });
+
+console.log(addImg);
+}
 
 </script>
 
@@ -159,7 +182,15 @@ console.log(indexImg);
      // 여기에 전송 전에 실행하고자 하는 로직을 추가하세요
         indexExImgs();
 
-        reorderInputsByIndex();
+        indexExaddImgs();
+
+         const jsonData = JSON.stringify(indexImg);
+         const jsonData2 = JSON.stringify(addImg);
+
+    // hidden input 필드에 JSON 데이터 설정
+    document.getElementById('myArrayInput').value = jsonData;
+     document.getElementById('myAddArrayInput').value = jsonData2;
+
 
 
 
@@ -174,71 +205,71 @@ console.log(indexImg);
 
 
 <script>
-    var currentIndex=1;
-    var exImgs = $(".ex-img");
-   $(document).ready(function() {
+    var currentIndex = $('.ex-img').length+1;
+     var exImgs = $(".ex-img");
+    $(document).ready(function() {
 
-       var preImgContainer=$(".column");
-       var currentImg=$(".current-img");
+        var preImgContainer=$(".column");
+        var currentImg=$(".current-img");
 
-     // "파일 추가" 버튼 클릭 이벤트
-     $(".add-file-input").click(function() {
-           $(".add-file-input").addClass("hidden");
+      // "파일 추가" 버튼 클릭 이벤트
+      $(".add-file-input").click(function() {
+            $(".add-file-input").addClass("hidden");
 
-         var fileInputContainer = $(this).prev(".image-file-input");
-         var newFileInput = $("<input>", {
-             type: "file",
-             name: "file",
-             accept: "image/**",
-             class:  "image-file-input",
-             currentIndex
-         });
-         var newImagePreview = $("<div>", { class: "image-preview" });
+          var fileInputContainer = $(this).prev(".image-file-input");
+          var newFileInput = $("<input>", {
+              type: "file",
+              name: "file",
+              accept: "image/**",
+              class:  "image-file-input",
+              currentIndex
+          });
+          var newImagePreview = $("<div>", { class: "image-preview" });
 
-         newFileInput.change(function() {
-             var file = newFileInput[0].files[0];
+          newFileInput.change(function() {
+              var file = newFileInput[0].files[0];
 
-             if (file) {
-                 var reader = new FileReader();
+              if (file) {
+                  var reader = new FileReader();
 
-                 reader.onload = function(e) {
-                     var previewImage = $("<img>", {
-                       class:"ex-img" , onclick:"changeCurrentImg(this)" , draggable:"true", currentIndex
-                      }) ;
-                     previewImage.attr("src", e.target.result);
+                  reader.onload = function(e) {
+                      var previewImage = $("<img>", {
+                        class:"ex-img" , onclick:"changeCurrentImg(this)" , draggable:"true", currentIndex
+                       }) ;
+                      previewImage.attr("src", e.target.result);
 
-                     var cancelBtn =$("<div>", {class:"cancelBtn",currentIndex   ,onclick:"hideImagePreview(this)"} );
+                      var cancelBtn =$("<div>", {class:"cancelBtn",currentIndex   ,onclick:"hideImagePreview(this)"} );
 
-                     currentIndex++;
+                      currentIndex++;
 
-                     var previewCurrentImage = $("<img>", {
-                       class:"ex-current-img"
-                      }) ;
-                     previewCurrentImage.attr("src", e.target.result);
-                     newImagePreview.empty().append(previewImage);
-                     newImagePreview.append(cancelBtn);
-                     currentImg.empty().append(previewCurrentImage);
-                     exImgs = $(".ex-img");
-                     console.log(exImgs);
-                 };
+                      var previewCurrentImage = $("<img>", {
+                        class:"ex-current-img"
+                       }) ;
+                      previewCurrentImage.attr("src", e.target.result);
+                      newImagePreview.empty().append(previewImage);
+                      newImagePreview.append(cancelBtn);
+                      currentImg.empty().append(previewCurrentImage);
+                      exImgs = $(".ex-img");
+                      console.log(exImgs);
+                  };
 
-                 reader.readAsDataURL(file);
-                  $(" .image-file-input").addClass("hidden");
-                     $(".add-file-input").removeClass("hidden");
-             } else {
-                 newImagePreview.empty();
+                  reader.readAsDataURL(file);
+                   $(" .image-file-input").addClass("hidden");
+                      $(".add-file-input").removeClass("hidden");
+              } else {
+                  newImagePreview.empty();
 
-             }
-         });
+              }
+          });
 
-         newFileInput.insertBefore($(this));
-         preImgContainer.append(newImagePreview);
-
-
-     });
+          newFileInput.insertBefore($(this));
+          preImgContainer.append(newImagePreview);
 
 
- });
+      });
+
+
+  });
 
 </script>
 
