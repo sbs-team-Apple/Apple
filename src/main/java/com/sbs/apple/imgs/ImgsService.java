@@ -64,20 +64,22 @@ public class ImgsService {
         }
 
 
-        for(int i = 0; i < file.size(); i++) {
-            Imgs imgs =new Imgs();
-            imgs.setBoard(board);
 
-            UUID uuid = UUID.randomUUID();
-            String fileName =uuid + "_" + file.get(i).getOriginalFilename();
-            File saveFile =new File(directory,fileName);
-            file.get(i).transferTo(saveFile);
-            imgs.setFilename(fileName);
-            imgs.setFilepath("/gen/"+fileName);
-            imgs.setIndexA(addIndex.get(i));
-            this.imgsRepository.save(imgs);
 
-        }
+            for (int i = 0; i < file.size(); i++) {
+                Imgs imgs = new Imgs();
+                imgs.setBoard(board);
+
+                UUID uuid = UUID.randomUUID();
+                String fileName = uuid + "_" + file.get(i).getOriginalFilename();
+                File saveFile = new File(directory, fileName);
+                file.get(i).transferTo(saveFile);
+                imgs.setFilename(fileName);
+                imgs.setFilepath("/gen/" + fileName);
+                imgs.setIndexA(addIndex.get(i));
+                this.imgsRepository.save(imgs);
+
+            }
 
 
 

@@ -85,16 +85,17 @@ public class BoardService {
 
 
         UUID uuid = UUID.randomUUID();
-        if (file.get(0).getOriginalFilename().equals("")) {
-            System.out.println("사진없음");
-//            board.setFilename("곰.jfif");
-//            board.setFilepath("/img/곰.jfif");
 
-            this.boardRepository.save(board);
-            return board;
-
-
-        }
+//        if (file.get(0).getOriginalFilename().equals("")) {
+//            System.out.println("사진없음");
+////            board.setFilename("곰.jfif");
+////            board.setFilepath("/img/곰.jfif");
+//
+//            this.boardRepository.save(board);
+//            return board;
+//
+//
+//        }
 
 
 //        board.setFilename(fileName);
