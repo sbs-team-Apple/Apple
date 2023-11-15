@@ -79,7 +79,11 @@ public class BoardController {
     public String modify2(BoardForm boardForm, MultipartFile file, Model model, Principal principal, @PathVariable Integer id) {
          Board board = boardService.getBoard(id);
         model.addAttribute("board", board);
-
+        List<Imgs> imgs=imgsService.getImgsByBoard(board);
+        System.out.println("현재 이미지 순서 !!!!!!!!!!!!!!!!!!");
+        for (int i = 0; i < imgs.size(); i++) {
+            System.out.println(imgs.get(i).getIndexA());
+        }
 
         return "board/appeal_board_modify";
 
@@ -91,12 +95,16 @@ public class BoardController {
         SiteUser user = userService.getUserbyName(principal.getName());
         Board board = boardService.getBoard(id);
         List<Imgs> imgs=imgsService.getImgsByBoard(board);
+        System.out.println("이미지 크기 !!!!!!!!!!!!!!!!!" +imgs.size());
         System.out.println("현재 이미지 순서 !!!!!!!!!!!!!!!!!!");
+
         for (int i = 0; i < imgs.size(); i++) {
-            imgs.get(i).getIndexA();
+            System.out.println(imgs.get(i).getIndexA());
         }
         List<Integer> currentIndex= imgsService.getCurrentIndex(myArray);
 
+
+        System.out.println("바껴진 순서 번호!!!!!!!!!!!!!!");
         for(int i = 0; i <currentIndex.size() ; i++) {
             System.out.println(currentIndex.get(i));
         }

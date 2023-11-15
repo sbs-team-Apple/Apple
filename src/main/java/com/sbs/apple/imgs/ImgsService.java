@@ -91,13 +91,20 @@ public class ImgsService {
 
         if(!imgIndex.equals(currentIndex)){
             System.out.println("수정사항 있음");
+            int outerIndex = 0;
+
+            outerLoop:
             for (int i = 0; i < currentIndex.size(); i++) {
                 for (int j = 0; j < currentIndex.size(); j++) {
-                    if(imgs.get(i).getIndexA()== currentIndex.get(j)){
+                    if (imgs.get(i).getIndexA()==currentIndex.get(j)){
                         imgs.get(i).setIndexA(j+1);
                         imgsRepository.save(imgs.get(i));
+                        System.out.println("i 는" + i);
+                        System.out.println("currenIndex 는 "+currentIndex.get(j));
+                        continue outerLoop; // Continue from the next iteration of the outer loop
                     }
                 }
+
             }
         }
         return imgs;
