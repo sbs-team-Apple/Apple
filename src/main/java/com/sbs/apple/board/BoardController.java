@@ -129,6 +129,9 @@ public class BoardController {
 
         imgsService.deleteImgs(board,deleteIndex);
 
+        //삭제되었으니까 남아있는걸로 다시 불러와주기
+        imgs=imgsService.getImgsByBoard(board);
+
 
         //순서 변경해주기
         imgs=imgsService.modifyImgIndex(imgs,currentIndex,board);
