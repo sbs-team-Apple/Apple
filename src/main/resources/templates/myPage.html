@@ -10,7 +10,7 @@
     <div class="myPage">
 
         <div class="flex justify-center">
-            <img th:src="@{|${user.filepath}|}" alt="User Image" style="max-width: 300px; max-height: 300px;">
+            <img th:src="@{|${user.filepath}|}" alt="User Image" style="width: 270px; height: 270px; object-fit: cover;">
         </div>
         <div th:text="'자기소개 : ' + ${user.About_Me}"></div>
         <div class="text-right">

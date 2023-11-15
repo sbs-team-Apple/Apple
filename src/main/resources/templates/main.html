@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <title>메인</title>
 </head>
-<body>
+<body  style="position: relative">
 <div layout:fragment="content">
-    <div class="container flex justify-center">
+    <div class="container flex justify-center" >
         <div
                 th:unless="${#authorization.expression('isAuthenticated()')}">
             <div th:include="user/login.html"></div>
@@ -14,21 +14,24 @@
 
         <div th:if="${#authorization.expression('isAuthenticated()')}"
              class="profile profile_wrap main-container h-screen">
-            <div class="profile_in m-auto flex justify-center flex-col items-center border border-pink-300 rounded-md"
-                 th:each="userList : ${userList}" style="margin-bottom: 20px; background-color: #f08dac;">
+            <div class="profile_in m-auto flex justify-center flex-col items-center"
+                 th:each="userList : ${userList}" style="margin-bottom: 20px; border-radius:20px; border: 2px solid pink;">
                 <a th:href="@{|/user/detail/${userList.id}|}">
-                    <div id="myImage" style="max-width: 270px; max-height: 270px; object-fit: cover;">
-                        <img th:src="@{|${userList.filepath}|}" alt="User Image">
+                    <div id="myImage">
+                        <img style="width: 270px; height: 270px; object-fit: cover; border-top-left-radius: 20px; border-top-right-radius: 20px;" th:src="@{|${userList.filepath}|}" alt="User Image">
+                    </div>
+                    <div style="background-color: #f08dac; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;">
+                        <div class="text-center">
+                            <span th:text="${userList.nickname}"></span>
+                            <span> | </span>
+                            <span th:text="${userList.age}"></span>
+                            <span> | </span>
+                            <span th:text="${userList.living}"></span>
+                        </div>
+                        <div class="text-center" th:text="${userList.About_Me}"></div>
                     </div>
 
-                    <div class="text-center">
-                        <span th:text="${userList.nickname}"></span>
-                        <span> | </span>
-                        <span th:text="${userList.age}"></span>
-                        <span> | </span>
-                        <span th:text="${userList.living}"></span>
-                    </div>
-                    <div class="text-center" th:text="${userList.About_Me}"></div>
+
                 </a>
             </div>
 
@@ -109,6 +112,7 @@
     .footer{
     padding : 0 40px;
         position:absolute;
+        bottom:0;
     }
 
     .main-container {

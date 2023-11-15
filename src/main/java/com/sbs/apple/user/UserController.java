@@ -3,7 +3,6 @@ package com.sbs.apple.user;
 
 import com.sbs.apple.RsData;
 import com.sbs.apple.Ut;
-import com.sbs.apple.board.BoardForm;
 import com.sbs.apple.chat.ChatRoom;
 import com.sbs.apple.chat.ChatRoomService;
 import com.sbs.apple.cybermoney.CyberMoneyServiceImpl;
@@ -68,9 +67,6 @@ public class UserController {
     public String signup2(@Valid UserCreateForm userCreateForm, BindingResult bindingResult,
                           RedirectAttributes redirectAttributes, Model model, MultipartFile file, HttpServletRequest req)
             throws Exception {
-        if (bindingResult.hasErrors()) {
-            return "user/signup_form";
-        }
 
         RsData<SiteUser> joinRs = userService.create(false, false, userCreateForm.getFile(), userCreateForm.getUsername(), userCreateForm.getPassword1(),
                 userCreateForm.getNickname(), userCreateForm.getGender());
