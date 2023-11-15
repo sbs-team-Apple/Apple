@@ -68,6 +68,42 @@ public class BoardService {
         return board;
     }
 
+
+    //수정 할때 추가되는 이미지 용 크레이트 함수
+    public Board create2(List<MultipartFile> file, String subject, String content, SiteUser user, List<Integer> addIndex, Board board)
+            throws Exception {
+
+        Imgs imgs = new Imgs();
+
+        File directory = new File(uploadDir);
+
+        if (!directory.exists()) {
+            directory.mkdirs(); // 디렉토리가 없으면 생성
+        }
+
+
+
+
+        UUID uuid = UUID.randomUUID();
+        if (file.get(0).getOriginalFilename().equals("")) {
+            System.out.println("사진없음");
+//            board.setFilename("곰.jfif");
+//            board.setFilepath("/img/곰.jfif");
+
+            this.boardRepository.save(board);
+            return board;
+
+
+        }
+
+
+//        board.setFilename(fileName);
+//        board.setFilepath("/gen/"+fileName);
+
+        this.imgsService.create2(file, board, addIndex);
+        return board;
+    }
+
     public List<Board> getAllBoard() {
 
         return this.boardRepository.findAll();
