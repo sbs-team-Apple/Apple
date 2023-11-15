@@ -1,19 +1,19 @@
 package com.sbs.apple.board;
 
 
+import com.sbs.apple.imgs.Imgs;
+import com.sbs.apple.imgs.ImgsService;
 import com.sbs.apple.user.SiteUser;
 import com.sbs.apple.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -23,6 +23,7 @@ import java.util.List;
 public class BoardController {
     private final UserService userService;
     private final BoardService boardService;
+    private final ImgsService imgsService;
 
 
     @GetMapping("/create")
@@ -78,19 +79,96 @@ public class BoardController {
     public String modify2(BoardForm boardForm, MultipartFile file, Model model, Principal principal, @PathVariable Integer id) {
          Board board = boardService.getBoard(id);
         model.addAttribute("board", board);
+        List<Imgs> imgs=imgsService.getImgsByBoard(board);
+        System.out.println("현재 이미지 순서 !!!!!!!!!!!!!!!!!!");
+        for (int i = 0; i < imgs.size(); i++) {
+            System.out.println(imgs.get(i).getIndexA());
+        }
 
-        System.out.println(board.getImgs().get(0).getFilepath());
         return "board/appeal_board_modify";
 
     }
 
     @PostMapping("/modify/{id}")
-    public String modify(@Valid BoardForm boardForm, MultipartFile file, Model model, Principal principal,
-                         @PathVariable Integer id) throws Exception {
+    public String modify(@Valid BoardForm boardForm ,MultipartFile file, Model model, Principal principal,
+                         @PathVariable Integer id,@RequestParam("myArray") String myArray,@RequestParam("myAddArray") String myAddArray)throws Exception {
         SiteUser user = userService.getUserbyName(principal.getName());
-//        Board board = boardService.getBoard(id);
+        Board board = boardService.getBoard(id);
+        List<Imgs> imgs=imgsService.getImgsByBoard(board);
 
-//        boardService.modify( boardForm.getFile(),boardForm.getSubject(), boardForm.getContent(), board);
+        //삭제할 번호를 둘 리스트에 일단 현재 이미지 인덱스 번호 넣기
+        List<Integer> deleteIndex = new ArrayList<>();
+        for (int i = 0; i < imgs.size(); i++) {
+            deleteIndex.add(imgs.get(i).getIndexA());
+        }
+
+
+        System.out.println("이미지 크기 !!!!!!!!!!!!!!!!!" +imgs.size());
+        System.out.println("현재 이미지 순서 !!!!!!!!!!!!!!!!!!");
+
+        for (int i = 0; i < imgs.size(); i++) {
+            System.out.println(imgs.get(i).getIndexA());
+        }
+        List<Integer> currentIndex= imgsService.getCurrentIndex(myArray);
+        List<Integer> addIndex= imgsService.getCurrentIndex(myAddArray);
+
+        System.out.println("받아온 순서랑 추가된 이미지 번호들 !!!!!!!!!!!!!!!!!");
+        for (int i = 0; i < currentIndex.size(); i++) {
+            System.out.println(currentIndex.get(i));
+        }
+
+
+        System.out.println("더헤야되는 인덱스 번호들 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+        for (int i = 0; i < addIndex.size(); i++) {
+            System.out.println(addIndex.get(i));
+        }
+
+
+        //현재 있던 번호에서 수정된 번호만큼 빼주기
+        deleteIndex.removeAll(currentIndex);
+        //더해야하는 인덱스번호도 지워지면 안되니까 빼주기
+        deleteIndex.removeAll(addIndex);
+
+        System.out.println("삭제할 인덱스 번호들!!!!!!!!!!!!!!!!");
+        for (int i = 0; i < deleteIndex.size(); i++) {
+            System.out.println(deleteIndex.get(i));
+        }
+
+
+        System.out.println("바껴진 순서 번호!!!!!!!!!!!!!!");
+        for(int i = 0; i <currentIndex.size() ; i++) {
+            System.out.println(currentIndex.get(i));
+        }
+        // 먼저 커렌트 인덱스번호에서 없는 것들 이미지 삭제 해주기
+
+
+        imgsService.deleteImgs(board,deleteIndex);
+
+
+        imgs=imgsService.getImgsByBoard(board);
+
+
+        System.out.println("삭제후 남은 이미지 갯수 구하기 !!!!!!!!!!!!!!!!!!!!!!!");
+        System.out.println(imgs.size());
+
+
+        if (file != null && !file.isEmpty()) {
+            Board board2 = boardService.create2(boardForm.getFile(), boardForm.getSubject(), boardForm.getContent(), user, addIndex, board);
+        }
+
+
+        //삭제되었으니까 남아있는걸로 다시 불러와주기
+        imgs=imgsService.getImgsByBoard(board);
+
+
+        //순서 변경해주기
+        imgs=imgsService.modifyImgIndex(imgs,currentIndex,board);
+
+
+
+
+        boardService.modify( boardForm.getContent(), board,imgs);
 
 
 
@@ -115,7 +193,6 @@ public class BoardController {
         List<Board> boards = boardService.getBoardByUserId(user);
 
         model.addAttribute("board", boards);
-
 
         return "board/my_appeal_board";
     }
