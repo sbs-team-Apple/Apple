@@ -6,7 +6,7 @@
 </head>
 <body>
 <div layout:fragment="content" class="container m-auto flex justify-center flex-col items-center">
-    <form enctype="multipart/form-data" th:action="@{|/user/photoModify/${siteUser.id}|}" object="${boardForm}"
+    <form enctype="multipart/form-data" th:action="@{|/user/photoModify/${siteUser.id}|}" object="${photoForm}"
           method="post">
         <input type="file" class="file-input file-input-bordered file-input-info w-full max-w-xs" name="file" accept="image/**"/>
         <button type="submit" class="btn btn-outline btn-info">변경하기</button>
