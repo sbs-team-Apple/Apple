@@ -9,93 +9,81 @@
         .tab-button {
             cursor: pointer;
         }
-        .container {
-            padding: 0 40px;
-        }
+
     </style>
     <meta charset="UTF-8">
 </head>
 <body>
-<div layout:fragment="content" class="container my-3">
-
-    <div class="tab-buttons" style="display: flex; justify-content: center;">
-        <div style="text-align: center; flex: 1;">
-            <button class="btn" onclick="showTab('sendTab')">보낸관심</button>
+<div layout:fragment="content" class="container m-auto flex justify-center flex-col items-center mt-0">
+    <div class="mt-16">
+    <div class="tab-buttons border-b-2 border-solid border-black" style="display: flex; justify-content: center;">
+        <div class="p-10" style="text-align: center; flex: 1;">
+            <button class="btn btn-outline btn-info" onclick="showTab('sendTab')">보낸관심</button>
         </div>
-        <div style="text-align: center; flex: 1;">
-            <button class="btn" onclick="showTab('receivedTab')">받은관심</button>
+        <div class="p-10" style="text-align: center; flex: 1;">
+            <button class="btn btn-outline btn-info" onclick="showTab('receivedTab')">받은관심</button>
         </div>
     </div>
-    <div id="sendTab" class="tab-content">
-        <div class="overflow-x-auto">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>사진</th>
-                    <th>닉네임</th>
-                    <th>지역</th>
-                    <th>나이</th>
-                    <th>간단 자기소개</th>
-                </tr>
-                </thead>
+        <div class="title" style="height: 40px;"></div>
+    <div id="sendTab" class="tab-content" >
+        <div class="overflow-x-auto" >
+            <table class="table" style="display:grid; grid-template-columns: repeat(2, 1fr); grid-gap: 10px;">
                 <tbody th:if="${#lists.isEmpty(siteUserList)}">
                 <tr>
                     <td colspan="2">보낸 관심이 없습니다.</td>
                 </tr>
                 </tbody>
-                <tbody>
-                <tr th:each="siteUserList : ${siteUserList}">
+                <tbody class="border" th:each="siteUserList : ${siteUserList}">
+                <tr>
                     <td>
                         <a th:href="@{|/user/detail/${siteUserList.receivedSiteUser.id}|}">
                             <img class="w-30 h-30" th:src="@{|${siteUserList.receivedSiteUser.filepath}|}" alt="User Image"
                                  style="max-width: 300px; max-height: 300px;">
                         </a>
                     </td>
-                    <td th:text="${siteUserList.receivedSiteUser.nickname}"></td>
-                    <td th:text="${siteUserList.receivedSiteUser.living}"></td>
-                    <td th:text="${siteUserList.receivedSiteUser.age}"></td>
-                    <td th:text="${siteUserList.receivedSiteUser.About_Me}"></td>
                 </tr>
+                <td>
+                    <span th:text="${siteUserList.receivedSiteUser.nickname}"></span>
+                    <span> | </span>
+                    <span th:text="${siteUserList.receivedSiteUser.living}"></span>
+                    <span> | </span>
+                    <span th:text="${siteUserList.receivedSiteUser.age}"></span>
+                    <p th:text="${siteUserList.receivedSiteUser.About_Me}"></p>
+                </td>
                 </tbody>
             </table>
         </div>
     </div>
     <div id="receivedTab" class="tab-content" style="display: none;">
         <div class="overflow-x-auto">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>사진</th>
-                    <th>닉네임</th>
-                    <th>지역</th>
-                    <th>나이</th>
-                    <th>간단 자기소개</th>
-                </tr>
-                </thead>
+            <table class="table" style="display:grid; grid-template-columns: repeat(2, 1fr); grid-gap: 10px;">
                 <tbody th:if="${#lists.isEmpty(receivedSiteUserList)}">
                 <tr>
                     <td colspan="2">받은 관심이 없습니다.</td>
                 </tr>
                 </tbody>
-                <tbody th:unless="${#lists.isEmpty(receivedSiteUserList)}">
-                <tr th:each="receivedSiteUserList : ${receivedSiteUserList}">
+                <tbody th:each="receivedSiteUserList : ${receivedSiteUserList}">
+                <tr>
                     <td>
                         <a th:href="@{|/user/detail/${receivedSiteUserList.SiteUser.id}|}">
-                            <a th:href="@{|/user/detail/${receivedSiteUserList.SiteUser.Id}|}">
                                 <img class="w-30 h-30" th:src="@{|${receivedSiteUserList.SiteUser.filepath}|}" alt="User Image"
                                      style="max-width: 300px; max-height: 300px;">
                             </a>
                     </td>
-                    <td th:text="${receivedSiteUserList.SiteUser.nickname}"></td>
-                    <td th:text="${receivedSiteUserList.SiteUser.living}"></td>
-                    <td th:text="${receivedSiteUserList.SiteUser.age}"></td>
-                    <td th:text="${receivedSiteUserList.SiteUser.About_Me}"></td>
                 </tr>
+                <td>
+                    <span th:text="${receivedSiteUserList.SiteUser.nickname}"></span>
+                    <span> | </span>
+                    <span th:text="${receivedSiteUserList.SiteUser.living}"></span>
+                    <span> | </span>
+                    <span th:text="${receivedSiteUserList.SiteUser.age}"></span>
+                    <p th:text="${receivedSiteUserList.SiteUser.About_Me}"></p>
+                </td>
                 </tbody>
             </table>
         </div>
     </div>
-
+</div>
     <script>
         function showTab(tabName) {
             var tabContents = document.getElementsByClassName('tab-content');
