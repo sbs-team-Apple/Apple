@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <title>메인</title>
 </head>
-<body>
+<body  style="position: relative">
 <div layout:fragment="content">
-    <div class="container flex justify-center">
+    <div class="container flex justify-center" >
         <div
                 th:unless="${#authorization.expression('isAuthenticated()')}">
             <div th:include="user/login.html"></div>
@@ -14,22 +14,25 @@
 
         <div th:if="${#authorization.expression('isAuthenticated()')}"
              class="profile profile_wrap main-container h-screen">
-            <div class="profile_in m-auto flex justify-center flex-col items-center border border-gray-300"
-                 th:each="userList : ${userList}" style="margin-bottom: 20px;">
-                <div>
-                    <a th:href="@{|/user/detail/${userList.id}|}">
-                        <img class="w-50 h-50" th:src="@{|${userList.filepath}|}" alt="User Image"
-                             style="max-width: 300px; max-height: 300px;">
-                    </a>
-                </div>
-                <div>
-                    <span th:text="${userList.nickname}"></span>
-                    <span> | </span>
-                    <span th:text="${userList.age}"></span>
-                    <span> | </span>
-                    <span th:text="${userList.living}"></span>
-                </div>
-                <div th:text="${userList.About_Me}"></div>
+            <div class="profile_in m-auto flex justify-center flex-col items-center"
+                 th:each="userList : ${userList}" style="margin-bottom: 20px; border-radius:20px; border: 2px solid pink;">
+                <a th:href="@{|/user/detail/${userList.id}|}">
+                    <div id="myImage">
+                        <img style="width: 270px; height: 270px; object-fit: cover; border-top-left-radius: 20px; border-top-right-radius: 20px;" th:src="@{|${userList.filepath}|}" alt="User Image">
+                    </div>
+                    <div style="background-color: #f08dac; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;">
+                        <div class="text-center">
+                            <span th:text="${userList.nickname}"></span>
+                            <span> | </span>
+                            <span th:text="${userList.age}"></span>
+                            <span> | </span>
+                            <span th:text="${userList.living}"></span>
+                        </div>
+                        <div class="text-center" th:text="${userList.About_Me}"></div>
+                    </div>
+
+
+                </a>
             </div>
 
         </div>
@@ -45,19 +48,19 @@
             <a th:href="@{/user/okay}">확인했습니다.</a>
         </div>
     </div>
-        <div th:if="${siteUsers != null}" th:each="user : ${siteUsers}">
-            <div class="flex  ">
-                <div><a th:value="${user.id}" name="userId" th:text="${user.nickname}"></a></div>
-                <div>
-                    <form method="post"
-                          th:action="@{|/chat/${chatRoom != null ? chatRoom.id+1 : 1}/room/${user.id}|}">
-                        <input class="userId_value" type="hidden" name="userId" th:value="${user.id}">
-                        <button type="submit">님과 채팅방 만들기</button>
-                    </form>
-                </div>
+    <div th:if="${siteUsers != null}" th:each="user : ${siteUsers}">
+        <div class="flex  ">
+            <div><a th:value="${user.id}" name="userId" th:text="${user.nickname}"></a></div>
+            <div>
+                <form method="post"
+                      th:action="@{|/chat/${chatRoom != null ? chatRoom.id+1 : 1}/room/${user.id}|}">
+                    <input class="userId_value" type="hidden" name="userId" th:value="${user.id}">
+                    <button type="submit">님과 채팅방 만들기</button>
+                </form>
             </div>
-
         </div>
+
+    </div>
 
     <style>
         .tap_bar {
@@ -109,6 +112,7 @@
     .footer{
     padding : 0 40px;
         position:absolute;
+        bottom:0;
     }
 
     .main-container {
@@ -117,32 +121,10 @@
     .dd {
 
     }
-</style>
-
-
-<script>
-
-
-
-$(document).ready(function () {
-    $("#myLink").click(function () {
-        var valueToSend = "exampleValue"; // 보낼 값
-        var url = "/chat/" + roomId + "?paramName=" + valueToSend;
-
-        $.get(url, function (data) {
-            // 서버 응답을 처리
-            console.log(data);
-
-        });
-    });
-
-
-      $('form').submit(function(event) {
-
-        const userId = $('.userId_value').val();
-        const sse2 = new EventSource(`/sse/connect/userId_${userId}`);
-        // 여기서 SSE 연결을 사용하여 원하는 동작을 수행
-    });
+    </style>
+    <script>
+        var img = document.getElementById('myImage');
+        img.classList.add('object-cover');
     </script>
 </div>
 </body>

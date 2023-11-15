@@ -7,7 +7,7 @@
 <body>
 <div layout:fragment="content" class="container my-3">
     <div class="ml-auto mr-auto w-60 ">
-            <form  enctype="multipart/form-data" th:action="@{/board/create}"  object="${boardForm}" method="post" >
+            <form  class="imgForm" enctype="multipart/form-data" th:action="@{/board/create}"  object="${boardForm}" method="post" >
 
                 <div class="current-img"></div>
                 <div id="file-input-container">
@@ -16,7 +16,7 @@
 
                     <button type="button" class="add-file-input">사진 추가</button>
                 </div>
-                <div class="pre-img">
+                <div class="column">
 
 
                 </div>
@@ -27,7 +27,7 @@
                 <div>내용</div>
                 <input type="text" name="content">
 
-                <button type="submit">작성 완료</button>
+                <button  class="end-function" type="submit" onclick="onSubmitClick()">작성 완료</button>
 
 
 
@@ -36,7 +36,7 @@
     </div>
 
 
-
+    <button onclick="SubmitClick()">dd</button>
 
 </div>
 </body>
@@ -50,19 +50,29 @@
     }
 
 
-   .ex-img {
-        width:80px;
-        height:80px;
 
-    }
     .pre-img {
         position :absolute;
         top:50px;
         right:0;
     }
 
+     .column {
+        position :absolute;
+        top:50px;
+        right:0;
+    }
+
+
     .image-preview {
-        position:relative;
+                    position:relative;
+
+    }
+    .ex-img {
+             width:80px;
+                height:80px;
+
+            position:relative;
 
     }
 
@@ -79,11 +89,86 @@
 </style>
 
 <script>
+    function SubmitClick(){
+        indexExImgs();
+
+        reorderInputsByIndex();
+
+
+    }
+
+</script>
+
+<script>
+
+    var indexImg = [];
+
+     function indexExImgs() {
+     indexImg = [];
+    var imgArrays = $(".ex-img");
+
+    imgArrays.each(function () {
+     var currentIndex = $(this).attr('currentindex');
+      console.log(currentIndex);
+      indexImg.push(currentIndex);
+    });
+
+console.log(indexImg);
+}
+
+</script>
+
+
+
+<script >
+    var inputToMove ;
+    function reorderInputsByIndex() {
+
+  // currentIndex를 기준으로 정렬된 input 요소들을 저장할 배열
+  var sortedInputs = [];
+
+  // currentIndexArray에 따라 순서를 정렬
+  indexImg.forEach(function (currentIndex, index) {
+    // 현재 currentIndex에 해당하는 input 요소를 찾아서 배열에 추가
+     inputToMove = $('input[currentindex="' + currentIndex + '"]');
+    console.log("현재 요소"+inputToMove.attr('currentindex'));
+        sortedInputs.push(inputToMove);
+
+
+  });
+    $("#file-input-container").empty();
+
+     $("#file-input-container").append(sortedInputs);
+
+
+    }
+</script>
+
+<script>
+    function onSubmitClick() {
+     // 여기에 전송 전에 실행하고자 하는 로직을 추가하세요
+        indexExImgs();
+
+        reorderInputsByIndex();
+
+
+
+     alert('작성 완료 버튼 클릭됨!');
+
+     // 폼을 서버로 제출
+    $('end-function').submit();
+   }
+
+
+</script>
+
+
+<script>
     var currentIndex=1;
     var exImgs = $(".ex-img");
    $(document).ready(function() {
 
-       var preImgContainer=$(".pre-img");
+       var preImgContainer=$(".column");
        var currentImg=$(".current-img");
 
      // "파일 추가" 버튼 클릭 이벤트
@@ -108,7 +193,7 @@
 
                  reader.onload = function(e) {
                      var previewImage = $("<img>", {
-                       class:"ex-img" , onclick:"changeCurrentImg(this)"
+                       class:"ex-img" , onclick:"changeCurrentImg(this)" , draggable:"true", currentIndex
                       }) ;
                      previewImage.attr("src", e.target.result);
 
@@ -151,21 +236,19 @@
 
 
             function hideImagePreview(btn) {
-                console.log(btn);
                var imagePreview = btn.closest('.image-preview');
-                var exImg2 = imagePreview.find('.cancelBtn');
-                console.log(exImg);
-                let indexOfB = exImgs.indexOf(exImg);
+<!--                var exImg =  btn.nextElementSibling('.ex-img');-->
+                    indexExImgs();
+<!--                let indexOfB = exImgs.indexOf(exImg);-->
                if (imagePreview) {
 
                       var btnCurrentIndex = $(btn).attr('currentIndex');
 
-                    $('input[currentIndex="' + btnCurrentIndex + '"]').remove();
+                    $('input[currentindex="' + btnCurrentIndex + '"]').remove();
 
                        imagePreview.remove();
-                       currentIndex--;
                         exImgs = $(".ex-img");
-                        console.log(indexOfB);
+<!--                        console.log(indexOfB);-->
 
 
                      }
@@ -173,6 +256,24 @@
 
 
 </script>
+
+
+<script>
+
+    const columns = document.querySelectorAll(".column");
+
+    columns.forEach((column) => {
+        new Sortable(column, {
+            group: "shared",
+            animation: 150,
+            ghostClass: "blue-background-class"
+
+        });console.log("asd");
+    });
+
+
+</script>
+
 
 <script>
     function changeCurrentImg(btn){
@@ -186,10 +287,4 @@
     }
 </script>
 
-<script>
-
-
-
-
-</script>
 
