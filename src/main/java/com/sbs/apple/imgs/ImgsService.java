@@ -72,9 +72,7 @@ public class ImgsService {
             });
 
             // 변환된 리스트 사용
-            for (Integer number : myList) {
-                System.out.println(number);
-            }
+
             return myList;
             // 추가적인 로직 구현
         } catch (Exception e) {
@@ -91,7 +89,7 @@ public class ImgsService {
 
         if(!imgIndex.equals(currentIndex)){
             System.out.println("수정사항 있음");
-            int outerIndex = 0;
+
 
             outerLoop:
             for (int i = 0; i < currentIndex.size(); i++) {
@@ -99,8 +97,7 @@ public class ImgsService {
                     if (imgs.get(i).getIndexA()==currentIndex.get(j)){
                         imgs.get(i).setIndexA(j+1);
                         imgsRepository.save(imgs.get(i));
-                        System.out.println("i 는" + i);
-                        System.out.println("currenIndex 는 "+currentIndex.get(j));
+
                         continue outerLoop; // Continue from the next iteration of the outer loop
                     }
                 }
@@ -127,5 +124,10 @@ public class ImgsService {
         Imgs img = imgsRepository.findByBoardIdAndIndexA(board,num);
 
         return img;
+    }
+
+    public void deleteImgs(Board board,List<Integer> deleteIndex  ){
+        imgsRepository.deleteByBoardAndIndexA(board, deleteIndex);
+
     }
 }

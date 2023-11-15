@@ -95,6 +95,14 @@ public class BoardController {
         SiteUser user = userService.getUserbyName(principal.getName());
         Board board = boardService.getBoard(id);
         List<Imgs> imgs=imgsService.getImgsByBoard(board);
+
+        //삭제할 번호를 둘 리스트에 일단 현재 이미지 인덱스 번호 넣기
+        List<Integer> deleteIndex = new ArrayList<>();
+        for (int i = 0; i < imgs.size(); i++) {
+            deleteIndex.add(imgs.get(i).getIndexA());
+        }
+
+
         System.out.println("이미지 크기 !!!!!!!!!!!!!!!!!" +imgs.size());
         System.out.println("현재 이미지 순서 !!!!!!!!!!!!!!!!!!");
 
@@ -103,12 +111,26 @@ public class BoardController {
         }
         List<Integer> currentIndex= imgsService.getCurrentIndex(myArray);
 
+        //현재 있던 번호에서 수정된 번호만큼 빼주기
+        deleteIndex.removeAll(currentIndex);
+
+        System.out.println("삭제할 인덱스 번호들!!!!!!!!!!!!!!!!");
+        for (int i = 0; i < deleteIndex.size(); i++) {
+            System.out.println(deleteIndex.get(i));
+        }
+
 
         System.out.println("바껴진 순서 번호!!!!!!!!!!!!!!");
         for(int i = 0; i <currentIndex.size() ; i++) {
             System.out.println(currentIndex.get(i));
         }
+        // 먼저 커렌트 인덱스번호에서 없는 것들 이미지 삭제 해주기
 
+
+        imgsService.deleteImgs(board,deleteIndex);
+
+
+        //순서 변경해주기
         imgs=imgsService.modifyImgIndex(imgs,currentIndex,board);
 
 
