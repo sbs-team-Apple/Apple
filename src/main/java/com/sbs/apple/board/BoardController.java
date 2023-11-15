@@ -90,7 +90,7 @@ public class BoardController {
     }
 
     @PostMapping("/modify/{id}")
-    public String modify(@Valid BoardForm boardForm,MultipartFile file, Model model, Principal principal,
+    public String modify(@Valid BoardForm boardForm ,MultipartFile file, Model model, Principal principal,
                          @PathVariable Integer id,@RequestParam("myArray") String myArray,@RequestParam("myAddArray") String myAddArray)throws Exception {
         SiteUser user = userService.getUserbyName(principal.getName());
         Board board = boardService.getBoard(id);
@@ -153,9 +153,9 @@ public class BoardController {
         System.out.println(imgs.size());
 
 
-
-        Board board2 = boardService.create2(boardForm.getFile(), boardForm.getSubject(), boardForm.getContent(), user, addIndex,board);
-
+        if (file != null && !file.isEmpty()) {
+            Board board2 = boardService.create2(boardForm.getFile(), boardForm.getSubject(), boardForm.getContent(), user, addIndex, board);
+        }
 
 
         //삭제되었으니까 남아있는걸로 다시 불러와주기
