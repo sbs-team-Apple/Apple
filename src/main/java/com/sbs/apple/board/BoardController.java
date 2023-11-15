@@ -90,8 +90,8 @@ public class BoardController {
     }
 
     @PostMapping("/modify/{id}")
-    public String modify(@Valid BoardForm boardForm, Model model, Principal principal,
-                         @PathVariable Integer id,@RequestParam("myArray") String myArray)throws Exception {
+    public String modify(@Valid BoardForm boardForm,MultipartFile file, Model model, Principal principal,
+                         @PathVariable Integer id,@RequestParam("myArray") String myArray,@RequestParam("myAddArray") String myAddArray)throws Exception {
         SiteUser user = userService.getUserbyName(principal.getName());
         Board board = boardService.getBoard(id);
         List<Imgs> imgs=imgsService.getImgsByBoard(board);
@@ -110,9 +110,25 @@ public class BoardController {
             System.out.println(imgs.get(i).getIndexA());
         }
         List<Integer> currentIndex= imgsService.getCurrentIndex(myArray);
+        List<Integer> addIndex= imgsService.getCurrentIndex(myAddArray);
+
+        System.out.println("받아온 순서랑 추가된 이미지 번호들 !!!!!!!!!!!!!!!!!");
+        for (int i = 0; i < currentIndex.size(); i++) {
+            System.out.println(currentIndex.get(i));
+        }
+
+
+        System.out.println("더헤야되는 인덱스 번호들 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+        for (int i = 0; i < addIndex.size(); i++) {
+            System.out.println(addIndex.get(i));
+        }
+
 
         //현재 있던 번호에서 수정된 번호만큼 빼주기
         deleteIndex.removeAll(currentIndex);
+        //더해야하는 인덱스번호도 지워지면 안되니까 빼주기
+        deleteIndex.removeAll(addIndex);
 
         System.out.println("삭제할 인덱스 번호들!!!!!!!!!!!!!!!!");
         for (int i = 0; i < deleteIndex.size(); i++) {
@@ -128,6 +144,19 @@ public class BoardController {
 
 
         imgsService.deleteImgs(board,deleteIndex);
+
+
+        imgs=imgsService.getImgsByBoard(board);
+
+
+        System.out.println("삭제후 남은 이미지 갯수 구하기 !!!!!!!!!!!!!!!!!!!!!!!");
+        System.out.println(imgs.size());
+
+
+
+        Board board2 = boardService.create2(boardForm.getFile(), boardForm.getSubject(), boardForm.getContent(), user, addIndex,board);
+
+
 
         //삭제되었으니까 남아있는걸로 다시 불러와주기
         imgs=imgsService.getImgsByBoard(board);
