@@ -22,16 +22,27 @@
                 <div th:text="${receivedSiteUser.nickname + ', ' + receivedSiteUser.age}" class="ml-2"
                 style="font-size: 25px; font-weight: bold;"></div>
                 <div class="ml-2" th:text="${receivedSiteUser.About_Me}"></div>
-                <div th:text="${receivedSiteUser.living} +', '+ ${receivedSiteUser.job}" class="ml-2"
-                     style="font-size: 16px;"></div>
+
+                <div class="ml-2 mr-2">
+                    <i class="fa-solid fa-location-dot mr-1"></i><span class="mr-8" th:text="${receivedSiteUser.living}"></span>
+                    <span>|</span>
+                    <i class="fa-solid fa-briefcase ml-1 mr-1"></i><span class="ml-2" th:text="${receivedSiteUser.job}"></span>
+                </div>
+
                 <div th:text="${receivedSiteUser.tall}+'cm'+', '+${receivedSiteUser.body_type}+', '+ ${receivedSiteUser.mbti} " class="ml-2"
                      style="font-size: 16px;"></div>
                 <div class="ml-2" th:text="'성격 : ' + ${receivedSiteUser.styleList}"></div>
                 <div class="ml-2" th:text="'취미 : ' + ${receivedSiteUser.hobbyList}"></div>
-                <div class="ml-2" th:text="'흡연 : ' + ${receivedSiteUser.smoking}"></div>
-                <div class="ml-2" th:text="'음주 : ' + ${receivedSiteUser.drinking}"></div>
-                <div class="ml-2" th:text="'종교 : ' + ${receivedSiteUser.religion}"></div>
-                <div class="ml-2" th:text="'학교 : ' + ${receivedSiteUser.school}"></div>
+                <div class="ml-2 mr-2">
+                    <i class="fa-solid fa-beer-mug-empty mr-1"></i><span class="mr-8" th:text="${receivedSiteUser.drinking}"></span>
+                    <span>|</span>
+                    <i class="fa-solid fa-smoking  ml-2 mr-1"></i><span th:text="${receivedSiteUser.smoking}"></span>
+                </div>
+                <div class="ml-2 mr-2">
+                    <i class="fa-solid fa-school mr-1"></i><span class="mr-8" th:text="${receivedSiteUser.school}"></span>
+                    <span>|</span>
+                    <span class= "ml-2" th:text="'종교:  ' + ${receivedSiteUser.religion}"></span>
+                </div>
             </div>
 
             <div>
@@ -47,7 +58,6 @@
                 <div th:text="'선호하는 이성 MBTI : ' + ${receivedSiteUser.desired_mbti}"></div>
                 <div th:text="'최소하트 : ' + ${receivedSiteUser.minHeart}"></div>
             </div>
-
 
             <div>
                 <a class="btn btn-outline btn-info" th:href="@{'/user/report/' + ${receivedSiteUser.id}}">신고하기</a>
