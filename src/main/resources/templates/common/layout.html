@@ -6,6 +6,10 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title layout:title-pattern="$LAYOUT_TITLE" th:text="The_Cupid"></title>
+<!--드로그앤 드롭 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js" integrity="sha512-zYXldzJsDrNKV+odAwFYiDXV2Cy37cwizT+NkuiPGsa9X1dOz04eHvUWVuxaJ299GvcJT31ug2zO4itXBjFx4w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
 
     <!-- 제이쿼리 불러오기 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -80,9 +84,7 @@
                 <a th:href="@{/}" class="btn btn-ghost normal-case text-xl">The Cupid</a>
             </div>
             <div class="navbar-end">
-
-                <div  class="userIdDiv" th:if="${@rq.login}" th:text="${@rq.user.id}"></div>
-
+                                <div  class="userIdDiv" th:if="${@rq.login}" th:text="${@rq.user.id}"></div>
                 <button class="btn btn-ghost btn-circle btn-bell">
                     <div class="indicator">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
@@ -175,7 +177,6 @@
 
 <script>
 
-<<<<<<< HEAD
     function getNewNotifications() {
   $.ajax({
     url: '/getNewNotifications',
@@ -184,41 +185,6 @@
       // 서버에서 받은 데이터를 처리하여 페이지에 추가
       addNewNotifications(data);
     }
-=======
-            function getNewNotifications() {
-          $.ajax({
-            url: '/getNewNotifications',
-            type: 'GET',
-            success: function(data) {
-              // 서버에서 받은 데이터를 처리하여 페이지에 추가
-              addNewNotifications(data);
-            }
-          });
-        }
-
-            function addNewNotifications(data) {
-            console.log("알림 추가 기능 실행됨");
-          var ul = $('.notification-box'); // 이 부분은 실제로 페이지의 요소에 맞게 수정해야 합니다.
-
-          data.forEach(function(notification) {
-            var li = $('<li>' + notification.userFrom.nickname + '님이 채팅방에 초대했습니다.</li>');
-            ul.append(li);
-             openModal(notification.userFrom.nickname + '님이 채팅방에 초대했습니다.');
-          });
-        }
-
-
-
-
-
-   const userId = $(".userIdDiv").text();
-   const sse2 = new EventSource(`/sse/connect/userId_${userId}`);
-
-  sse2.addEventListener('invite_chatRoom', e => {
-     alert("채팅방에 초대됨");
-
-     getNewNotifications()
->>>>>>> c8b56e415e882be1ddffffac030186bbf1708054
   });
 }
 

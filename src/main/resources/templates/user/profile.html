@@ -11,55 +11,61 @@
 
 
 <div layout:fragment="content" class="container m-auto flex justify-center flex-col items-center">
-    <div>
-        <div style="display: none;">
-            <p class="badge badge-secondary" style="display: inline-block; margin-right: 10px;">사용 가능한 하트: <span th:text="${userCyberMoney}"></span>개</p>
-            <p class="badge badge-secondary" style="display: inline-block;">선물 받은 하트: <span th:text="${receivedCyberMoney}"></span>개</p>
-        </div>
-
-        <div class="flex justify-center">
-            <img th:src="@{|${receivedSiteUser.filepath}|}" alt="User Image" style="max-width: 300px; max-height: 300px;">
-        </div>
-
-        <div th:text="'최소하트 : ' + ${receivedSiteUser.minHeart}"></div>
-
-        <div th:text="'자기소개 : ' + ${receivedSiteUser.About_Me}"></div>
-        <div th:text="'닉네임 : ' + ${receivedSiteUser.nickname}"></div>
-        <div th:text="'나이 : ' + ${receivedSiteUser.age}"></div>
-        <div th:text="'지역 : ' + ${receivedSiteUser.living}"></div>
-        <div th:text="'취미 : ' + ${receivedSiteUser.hobbyList}"></div>
-        <div th:text="'키 : ' + ${receivedSiteUser.tall}"></div>
-        <div th:text="'체형 : ' + ${receivedSiteUser.body_type}"></div>
-        <div th:text="'흡연 : ' + ${receivedSiteUser.smoking}"></div>
-        <div th:text="'음주 : ' + ${receivedSiteUser.drinking}"></div>
-        <div th:text="'성격 : ' + ${receivedSiteUser.styleList}"></div>
-        <div th:text="'종교 : ' + ${receivedSiteUser.religion}"></div>
-        <div th:text="'MBTI : ' + ${receivedSiteUser.mbti}"></div>
-        <div th:text="'학교 : ' + ${receivedSiteUser.school}"></div>
-        <div th:text="'직업 : ' + ${receivedSiteUser.job}"></div>
-
-        <div class="text-xl flex justify-center">원하는 이상형</div>
-        <div th:text="'선호하는 나이 : ' + ${receivedSiteUser.desired_age}"></div>
-        <div th:text="'선호하는 지역 : ' + ${receivedSiteUser.desired_living}"></div>
-        <div th:text="'선호하는 이성 키 : ' + ${receivedSiteUser.desired_tall}"></div>
-        <div th:text="'선호하는 이성 체형 : ' + ${receivedSiteUser.desired_body_type}"></div>
-        <div th:text="'선호하는 이성 흡연 : ' + ${receivedSiteUser.desired_smoking}"></div>
-        <div th:text="'선호하는 이성 음주 : ' + ${receivedSiteUser.desired_drinking}"></div>
-        <div th:text="'선호하는 이성 성격 : ' + ${receivedSiteUser.desired_styleList}"></div>
-        <div th:text="'선호하는 이성 종교 : ' + ${receivedSiteUser.desired_religion}"></div>
-        <div th:text="'선호하는 이성 MBTI : ' + ${receivedSiteUser.desired_mbti}"></div>
-
-
+    <div class="mb-10 mt-5"
+         style="width: 270px; border-radius: 20px; box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.5);">
         <div>
-            <a class="btn btn-outline btn-info" th:href="@{'/user/report/' + ${receivedSiteUser.id}}">신고하기</a>
-            <a class="btn btn-outline btn-info" th:href="@{'/user/add_interest/' + ${receivedSiteUser.id}}">
-                <span th:text="${isInterested ? '관심 해제' : '관심 등록'}"></span>
-            </a>
-            <button th:if="${chatRoom == null  && log ==null}" id="sendCyberMoneyBtn" class="btn btn-outline btn-info"
-                    data-toggle="modal" data-target="#cyberMoneyModal">채팅방 만들기
-            </button>
-        </div>
+            <div>
+                <div class="flex justify-center" style="border-bottom: 2px solid #ccc;">
+                    <img th:src="@{|${receivedSiteUser.filepath}|}" alt="User Image"
+                         style="width: 270px; height: 270px; object-fit: cover;border-top-left-radius: 20px; border-top-right-radius: 20px;">
+                </div>
+                <div th:text="${receivedSiteUser.nickname + ', ' + receivedSiteUser.age}" class="ml-2"
+                style="font-size: 25px; font-weight: bold;"></div>
+                <div class="ml-2" th:text="${receivedSiteUser.About_Me}"></div>
+                <div th:text="${receivedSiteUser.living} +', '+ ${receivedSiteUser.job}" class="ml-2"
+                     style="font-size: 16px;"></div>
+                <div th:text="${receivedSiteUser.tall}+'cm'+', '+${receivedSiteUser.body_type}+', '+ ${receivedSiteUser.mbti} " class="ml-2"
+                     style="font-size: 16px;"></div>
+                <div class="ml-2" th:text="'성격 : ' + ${receivedSiteUser.styleList}"></div>
+                <div class="ml-2" th:text="'취미 : ' + ${receivedSiteUser.hobbyList}"></div>
+                <div class="ml-2" th:text="'흡연 : ' + ${receivedSiteUser.smoking}"></div>
+                <div class="ml-2" th:text="'음주 : ' + ${receivedSiteUser.drinking}"></div>
+                <div class="ml-2" th:text="'종교 : ' + ${receivedSiteUser.religion}"></div>
+                <div class="ml-2" th:text="'학교 : ' + ${receivedSiteUser.school}"></div>
+            </div>
 
+            <div>
+                <div class="text-xl flex justify-center">원하는 이상형</div>
+                <div th:text="'선호하는 나이 : ' + ${receivedSiteUser.desired_age}"></div>
+                <div th:text="'선호하는 지역 : ' + ${receivedSiteUser.desired_living}"></div>
+                <div th:text="'선호하는 이성 키 : ' + ${receivedSiteUser.desired_tall}"></div>
+                <div th:text="'선호하는 이성 체형 : ' + ${receivedSiteUser.desired_body_type}"></div>
+                <div th:text="'선호하는 이성 흡연 : ' + ${receivedSiteUser.desired_smoking}"></div>
+                <div th:text="'선호하는 이성 음주 : ' + ${receivedSiteUser.desired_drinking}"></div>
+                <div th:text="'선호하는 이성 성격 : ' + ${receivedSiteUser.desired_styleList}"></div>
+                <div th:text="'선호하는 이성 종교 : ' + ${receivedSiteUser.desired_religion}"></div>
+                <div th:text="'선호하는 이성 MBTI : ' + ${receivedSiteUser.desired_mbti}"></div>
+                <div th:text="'최소하트 : ' + ${receivedSiteUser.minHeart}"></div>
+            </div>
+
+
+            <div>
+                <a class="btn btn-outline btn-info" th:href="@{'/user/report/' + ${receivedSiteUser.id}}">신고하기</a>
+                <a class="btn btn-outline btn-info" th:href="@{'/user/add_interest/' + ${receivedSiteUser.id}}">
+                    <span th:text="${isInterested ? '관심 해제' : '관심 등록'}"></span>
+                </a>
+                <button th:if="${chatRoom == null  && log ==null}" id="sendCyberMoneyBtn"
+                        class="btn btn-outline btn-info"
+                        data-toggle="modal" data-target="#cyberMoneyModal">채팅방 만들기
+                </button>
+            </div>
+        </div>
+        <div style="display: none;">
+            <p class="badge badge-secondary" style="display: inline-block; margin-right: 10px;">사용 가능한 하트: <span
+                    th:text="${userCyberMoney}"></span>개</p>
+            <p class="badge badge-secondary" style="display: inline-block;">선물 받은 하트: <span
+                    th:text="${receivedCyberMoney}"></span>개</p>
+        </div>
 
         <a class="nav-link" th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
            th:href="@{'/admin/punish/' + ${receivedSiteUser.id}}">제재하기</a>
@@ -85,6 +91,14 @@
             </div>
         </dialog>
     </div>
+    <div th:include="common/menu.html" class="tap_bar"></div>
+    <style>
+        .tap_bar {
+                position: fixed;
+                width: 100%;
+                bottom : 0;
+            }
+    </style>
 </div>
 </html>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
