@@ -383,9 +383,9 @@ public class UserController {
         userService.photoModify(user, photoForm.getFile());
         return "redirect:/user/myPage";
     }
-
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/transactions")
-    public String getTransactionHistory(Model model) {
+    public String getTransactionHistory(Model model, Principal principal) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         SiteUser user = userService.getUserbyName(username);
@@ -419,6 +419,7 @@ public class UserController {
         model.addAttribute("minHeart", minHeart);
 
         // 모델에 데이터를 추가하여 뷰로 전달
+        model.addAttribute("user", user);
         model.addAttribute("receivedTransactions", receivedTransactions); // 받은 거래 정보
         model.addAttribute("sentTransactions", sentTransactions); // 보낸 거래 정보
         model.addAttribute("userCyberMoney", userCyberMoney);
