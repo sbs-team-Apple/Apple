@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -23,7 +24,7 @@ public class Board {
 //    private String filename;
 //    private String filepath;
 
-    private String subject;
+
     private String content;
 
     @ManyToOne
@@ -32,6 +33,8 @@ public class Board {
 
     @OneToMany(mappedBy = "board" , cascade = CascadeType.REMOVE)
     private List<Imgs> imgs;
+
+    private LocalDateTime createDate;
 
 
 

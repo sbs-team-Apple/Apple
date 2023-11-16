@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -30,7 +31,7 @@ public class BoardService {
     }
 
 
-    public Board create(List<MultipartFile> file, String subject, String content, SiteUser user)
+    public Board create(List<MultipartFile> file,  String content, SiteUser user)
             throws Exception {
         Board board = new Board();
         Imgs imgs = new Imgs();
@@ -42,9 +43,9 @@ public class BoardService {
         }
 
 
-        board.setSubject(subject);
         board.setContent(content);
         board.setSiteUser(user);
+        board.setCreateDate(LocalDateTime.now());
 
 
         UUID uuid = UUID.randomUUID();
@@ -70,7 +71,7 @@ public class BoardService {
 
 
     //수정 할때 추가되는 이미지 용 크레이트 함수
-    public Board create2(List<MultipartFile> file, String subject, String content, SiteUser user, List<Integer> addIndex, Board board)
+    public Board create2(List<MultipartFile> file,  String content, SiteUser user, List<Integer> addIndex, Board board)
             throws Exception {
 
         Imgs imgs = new Imgs();
