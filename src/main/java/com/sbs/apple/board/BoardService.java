@@ -34,35 +34,11 @@ public class BoardService {
     public Board create(List<MultipartFile> file,  String content, SiteUser user)
             throws Exception {
         Board board = new Board();
-        Imgs imgs = new Imgs();
-
-        File directory = new File(uploadDir);
-
-        if (!directory.exists()) {
-            directory.mkdirs(); // 디렉토리가 없으면 생성
-        }
-
 
         board.setContent(content);
         board.setSiteUser(user);
         board.setCreateDate(LocalDateTime.now());
 
-
-        UUID uuid = UUID.randomUUID();
-        if (file.get(0).getOriginalFilename().equals("")) {
-            System.out.println("사진없음");
-//            board.setFilename("곰.jfif");
-//            board.setFilepath("/img/곰.jfif");
-
-            this.boardRepository.save(board);
-            return board;
-
-
-        }
-
-
-//        board.setFilename(fileName);
-//        board.setFilepath("/gen/"+fileName);
 
         this.boardRepository.save(board);
         this.imgsService.create(file, board);
@@ -74,33 +50,6 @@ public class BoardService {
     public Board create2(List<MultipartFile> file,  String content, SiteUser user, List<Integer> addIndex, Board board)
             throws Exception {
 
-        Imgs imgs = new Imgs();
-
-        File directory = new File(uploadDir);
-
-        if (!directory.exists()) {
-            directory.mkdirs(); // 디렉토리가 없으면 생성
-        }
-
-
-
-
-        UUID uuid = UUID.randomUUID();
-
-//        if (file.get(0).getOriginalFilename().equals("")) {
-//            System.out.println("사진없음");
-////            board.setFilename("곰.jfif");
-////            board.setFilepath("/img/곰.jfif");
-//
-//            this.boardRepository.save(board);
-//            return board;
-//
-//
-//        }
-
-
-//        board.setFilename(fileName);
-//        board.setFilepath("/gen/"+fileName);
 
         this.imgsService.create2(file, board, addIndex);
         return board;
