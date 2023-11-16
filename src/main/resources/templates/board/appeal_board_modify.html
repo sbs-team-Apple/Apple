@@ -28,17 +28,12 @@
                         <img class="ex-img" th:currentindex="${currentindex.count}" onclick="changeCurrentImg(this)" th:src="${img.filepath}" alt="">
                         <div class="cancelBtn"  onclick="hideImagePreview(this)"></div>
 
-
-
                 </div>
 
             </div>
 
-
-            <div>제목</div>
-            <input type="text" name="subject">
             <div>내용</div>
-            <input type="text" name="content">
+            <input type="text" name="content" th:value="${board.content}">
 
             <button  class="end-function" type="submit" onclick="onSubmitClick()">작성 완료</button>
 
