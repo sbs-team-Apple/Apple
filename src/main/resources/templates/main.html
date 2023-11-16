@@ -7,15 +7,14 @@
 <body  style="position: relative">
 <div layout:fragment="content">
     <div class="container flex justify-center" >
-        <div
-                th:unless="${#authorization.expression('isAuthenticated()')}">
+        <div th:unless="${#authorization.expression('isAuthenticated()')}">
             <div th:include="user/login.html"></div>
         </div>
 
         <div th:if="${#authorization.expression('isAuthenticated()')}"
              class="profile profile_wrap main-container h-screen">
             <div class="profile_in m-auto flex justify-center flex-col items-center"
-                 th:each="userList : ${userList}" style="margin-bottom: 20px; border-radius:20px; border: 2px solid pink;">
+                 th:each="userList : ${userList}" style="margin-bottom: 20px; border-radius:20px; border: 2px solid pink; box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.3);">
                 <a th:href="@{|/user/detail/${userList.id}|}">
                     <div id="myImage">
                         <img style="width: 270px; height: 270px; object-fit: cover; border-top-left-radius: 20px; border-top-right-radius: 20px;" th:src="@{|${userList.filepath}|}" alt="User Image">
@@ -39,7 +38,7 @@
         <div th:include="common/menu.html" class="tap_bar"></div>
     </div>
 
-    <div th:include="common/footer.html" class="dd"></div>
+    <div th:include="common/footer.html"></div>
     <div>
         <div th:if="${#authorization.expression('isAuthenticated()') and userWarning}">
             <div id="warningMessage" style="color: red; font-weight: bold;">경고합니다</div>
@@ -69,58 +68,18 @@
             bottom : 0;
         }
 
-
-
-
-
     .container {
 
          margin: 0 auto;
         justify-content: center;
         align-items: center;
     }
-
-    .underBody {
-        border-radius: 15px;
-        padding: 30px 15px 15px 15px;
-        border: 1px solid rgb(198, 198, 198);
-        display: flex;
-        flex-direction: column; /* 아래로 요소를 쌓도록 설정 */
-        align-items: center;
-
-    }
-    .login {
-        margin-bottom: 20px; /* 로그인 폼과 카카오 로그인 버튼 사이의 간격 조정 */
-    }
-    .form-control {
-     border-radius: 10px;
-        width: 308px;
-        height: 40px;
-    }
-    .my-2 {
-        padding: 0 135px;
-        margin: 0;
-    }
-    .kakao {
-        text-align: center;
-    }
-    .alert-danger {
-    padding: 0 0px 0 15px;
-    }
-
-
     .footer{
     padding : 0 40px;
         position:absolute;
         bottom:0;
     }
 
-    .main-container {
-
-    }
-    .dd {
-
-    }
     </style>
     <script>
         var img = document.getElementById('myImage');

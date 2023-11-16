@@ -7,7 +7,7 @@
 <body>
 <div layout:fragment="content" class="flex-1 flex items-center justify-center">
     <div class="max-w-2xl w-full px-4">
-        <h1 class="mb-4">
+        <h1 class="mb-4"  style="font-size: 21px; font-weight: bold;">
             <i class="fa-solid fa-user-plus"></i>
             회원가입
         </h1>
@@ -59,69 +59,63 @@
                 submitJoinFormDone = true;
             }
         </script>
-
         <form enctype="multipart/form-data" th:action="@{/user/signup}" th:object="${userCreateForm}"
-              method="post" onsubmit="submitJoinForm(this); return false;" class="flex flex-col gap-6">
-            <div class="form-control">
+              method="post" onsubmit="submitJoinForm(this); return false;" class="flex flex-col gap-6" style="margin-bottom:40px;">
+            <div class="form-control" style="text-align: center;">
                 <label class="label">
-                    <span class="label-text">프로필 이미지</span>
+                    <span class="label-text" style="font-size: 18px; font-weight: bold;">프로필 이미지</span>
                 </label>
-                <input type="file" name="file" id="image" class="file-input file-input-bordered"
-                       accept="image/**" onchange="previewImage(this)">
-                <div id="image-preview"></div>
+                <input type="file" name="file" id="image" class="file-input file-input-bordered file-input-secondary"
+                accept="image/**" onchange="previewImage(this)" style="margin-bottom :15px; padding: 0; ">
+                <div id="image-preview" style="margin: auto; border-radius:20px; border: 2px solid #f08dac;"></div>
             </div>
             <div class="form-control">
-                <label class="label">
-                    <span class="label-text">아이디</span>
+                <label class="label" style="padding :0 4px 8px 4px;">
+                    <span class="label-text" style="font-size: 18px; font-weight: bold;">아이디</span>
                 </label>
-                <input type="text" name="username" placeholder="아이디" class="input input-bordered" autofocus
+                <input type="text" name="username" placeholder="아이디" class="input input-bordered input-secondary" autofocus
                        maxlength="30">
                 <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" style="color: red;"></p>
             </div>
 
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text">비밀번호</span>
+                    <span class="label-text" style="font-size: 18px; font-weight: bold;">비밀번호</span>
                 </label>
-                <input type="password" name="password1" placeholder="비밀번호" class="input input-bordered" maxlength="30">
+                <input type="password" name="password1" placeholder="비밀번호" class="input input-bordered input-secondary" maxlength="30">
             </div>
 
             <div class="form-control">
-                <label class="label">
+                <label class="label" style="font-size: 18px; font-weight: bold;">
                     <span class="label-text">비밀번호 확인</span>
                 </label>
-                <input type="password" name="password2" placeholder="비밀번호 확인" class="input input-bordered"
+                <input type="password" name="password2" placeholder="비밀번호 확인" class="input input-bordered input-secondary"
                        maxlength="30">
             </div>
 
             <div class="form-control">
-                <label class="label">
+                <label class="label" style="font-size: 18px; font-weight: bold;">
                     <span class="label-text">닉네임</span>
                 </label>
-                <input type="text" name="nickname" placeholder="닉네임" class="input input-bordered" maxlength="30">
+                <input type="text" name="nickname" placeholder="닉네임" class="input input-bordered input-secondary" maxlength="30">
             </div>
 
             <div class="form-control">
-                <label class="label">
+                <label class="label" style="font-size: 18px; font-weight: bold;">
                     <span class="label-text">성별</span>
                 </label>
-                <select name="gender" class="input input-bordered">
+                <select name="gender" class="input input-bordered input-secondary">
                     <option value="남">남</option>
                     <option value="여">여</option>
                 </select>
             </div>
 
             <div>
-                <button class="btn btn-block btn-primary gap-1">
+                <button class="btn" style="padding:0 145px; border-radius:10px; border :1px solid #f08dac; background-color :#f08dac">
                     <i class="fa-solid fa-user-plus"></i>
                     <span>다음</span>
                 </button>
 
-                <div class="text-center">
-                    <button class="btn btn-link">로그인</button>
-                    <button class="btn btn-link">아이디 찾기</button>
-                    <button class="btn btn-link">비밀번호 찾기</button>
-                </div>
             </div>
         </form>
     </div>
@@ -146,6 +140,7 @@
         img.style.width = '270px';
         img.style.height = '270px';
         img.style.objectFit = 'cover';
+        img.style.borderRadius = '20px';
         preview.appendChild(img);
         };
 
