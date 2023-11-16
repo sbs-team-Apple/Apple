@@ -14,29 +14,28 @@
 
         <!--            <input type="file" name="file" accept="image/*" class="image-file-input">-->
 
-                    <button type="button" class="add-file-input">사진 추가</button>
+                    <button type="button" class="add-file-input mb-2 mt-2"><i class="fa-solid fa-file-circle-plus fa-2xl"></i></button>
                 </div>
-                <div class="column">
+                <div class="column mt-4">
 
 
                 </div>
 
 
-                <div>제목</div>
-                <input type="text" name="subject">
-                <div>내용</div>
-                <input type="text" name="content">
+                <textarea type="text" name="content" class="textarea textarea-secondary" placeholder="내용을 입력하세요"></textarea>
 
-                <button  class="end-function" type="submit" onclick="onSubmitClick()">작성 완료</button>
+                <button type="submit" class="btn end-function"  onclick="onSubmitClick()"
+                        style="margin-left:auto; border-radius:10px; border :1px solid #f08dac; background-color :#f08dac">
+                    <span>작성</span>
+                </button>
 
 
 
             </form>
-
     </div>
 
 
-    <button onclick="SubmitClick()">dd</button>
+<!--    <button onclick="SubmitClick()">dd</button>-->
 
 </div>
 </body>
@@ -44,7 +43,7 @@
 
 <style>
     .ex-current-img {
-        width:300px;
+        width:240px;
         height:300px;
 
     }
@@ -80,10 +79,14 @@
         position:absolute;
         top:0;
         right:0;
-        background-color:red;
         width:20px;
         height:20px;
 
+
+    }
+
+    .textarea{
+       width:240px;
 
     }
 </style>
@@ -153,7 +156,7 @@ console.log(indexImg);
 
 
 
-     alert('작성 완료 버튼 클릭됨!');
+
 
      // 폼을 서버로 제출
     $('end-function').submit();
@@ -197,7 +200,7 @@ console.log(indexImg);
                       }) ;
                      previewImage.attr("src", e.target.result);
 
-                     var cancelBtn =$("<div>", {class:"cancelBtn",currentIndex   ,onclick:"hideImagePreview(this)"} );
+                     var cancelBtn =$("<div>", {class:"cancelBtn fa-solid fa-xmark",currentIndex   ,onclick:"hideImagePreview(this)"} );
 
                      currentIndex++;
 

@@ -152,6 +152,7 @@ public class BoardController {
         System.out.println(imgs.size());
 
 
+
         if (file != null && !file.isEmpty()) {
             Board board2 = boardService.create2(boardForm.getFile(),  boardForm.getContent(), user, addIndex, board);
         }
