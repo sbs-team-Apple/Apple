@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -77,6 +78,7 @@ public class ImgsService {
                 imgs.setFilename(fileName);
                 imgs.setFilepath("/gen/" + fileName);
                 imgs.setIndexA(addIndex.get(i));
+                imgs.setCreateDate(LocalDateTime.now());
                 this.imgsRepository.save(imgs);
 
             }
