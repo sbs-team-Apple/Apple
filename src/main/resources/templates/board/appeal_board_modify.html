@@ -26,18 +26,18 @@
                 <div class="image-preview"  th:each="img, currentindex : ${@rq.getImgs(board)}">
 
                         <img class="ex-img" th:currentindex="${currentindex.count}" onclick="changeCurrentImg(this)" th:src="${img.filepath}" alt="">
-                        <div class="cancelBtn"  onclick="hideImagePreview(this)"></div>
+                        <div class="cancelBtn fa-solid fa-xmark"  onclick="hideImagePreview(this)"></div>
 
                 </div>
 
             </div>
 
-            <div>내용</div>
-            <input type="text" name="content" th:value="${board.content}">
+            <textarea type="text" name="content" class="textarea textarea-secondary" placeholder="내용을 입력하세요"></textarea>
 
-            <button  class="end-function" type="submit" onclick="onSubmitClick()">작성 완료</button>
-
-
+            <button type="submit" class="btn end-function"  onclick="onSubmitClick()"
+                    style="margin-left:auto; border-radius:10px; border :1px solid #f08dac; background-color :#f08dac">
+                <span>작성</span>
+            </button>
 
         </form>
 
@@ -84,17 +84,24 @@
 
     }
 
-    .cancelBtn {
+      .cancelBtn {
         position:absolute;
         top:0;
         right:0;
-        background-color:red;
         width:20px;
         height:20px;
-        z-index:100;
+        z-index:5;
 
 
     }
+
+    .textarea{
+       width:240px;
+
+    }
+
+
+
 </style>
 
 <script>
@@ -232,7 +239,7 @@ console.log(indexImg);
                        }) ;
                       previewImage.attr("src", e.target.result);
 
-                      var cancelBtn =$("<div>", {class:"cancelBtn",currentIndex   ,onclick:"hideImagePreview(this)"} );
+                      var cancelBtn =$("<div>", {class:"cancelBtn fa-solid fa-xmark",currentIndex   ,onclick:"hideImagePreview(this)"} );
 
                       currentIndex++;
 
