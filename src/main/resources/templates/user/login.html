@@ -1,38 +1,37 @@
-<div class="underBody flex flex-col items-center p-30 pt-15 pr-15 pb-15 pl-15">
-    <div class="border border-solid border-gray-300 rounded-lg p-4">
+<div class="underBody flex flex-col items-center"
+style="border: 1px solid rgb(198, 198, 198); padding: 20px 15px 15px 15px; border-radius: 15px; flex-direction: column; align-items: center;" >
+    <div>
         <form th:action="@{/user/login}" method="post" class="login">
-            <div th:if="${param.error}">
-                <div class="alert alert-danger">
-                    사용자ID 또는 비밀번호를 확인해 주세요.
-                </div>
+            <div class="mb-2">
+                <input type="text" name="username" id="username" class="border border-solid border-gray-300"
+                       style="border-radius: 10px; width: 300px; height: 50px;" placeholder=" 아이디">
+            </div>
+            <div class="mb-10">
+                <input type="password" name="password" id="password" class="border border-solid border-gray-300"
+                       style="border-radius: 10px; width: 300px; height: 50px;" placeholder=" 비밀번호">
             </div>
             <div class="mb-3">
-                <input type="text" name="username" id="username" class="form-control
-                 border border-solid border-gray-300 rounded-lg w-full h-10" placeholder=" 아이디">
+                <input type="submit" value="로그인" class="btn btn-outline btn-info" style="padding: 0 131px; margin: 0;">
             </div>
-            <div class="mb-3">
-                <input type="password" name="password" id="password" class="form-control
-                 border border-solid border-gray-300 rounded-lg w-full h-10" placeholder=" 비밀번호">
+            <div class="mb-8 text-center rounded-lg">
+            <span>
+                <a href="/user/signup" class="social-kakao">회원가입</a>
+            </span>
+                <span> | </span>
+                <span>
+                <a href="#">아이디 찾기</a>
+            </span>
+                <span> | </span>
+                <span>
+                <a href="#">비밀번호 찾기</a>
+            </span>
             </div>
-            <div class="mb-3">
-            <input type="submit" value="로그인" class="btn btn-primary my-2">
-            </div>
+
+
         </form>
         <div class="kakao border border-solid border-gray-300 text-center rounded-lg">
-            <a href="/oauth2/authorization/kakao" class="social-kakao">카카오 로그인</a>
+            <a href="/oauth2/authorization/kakao">카카오 로그인</a>
         </div>
+
     </div>
 </div>
-<style>
-    .my-2 {
-        padding: 0 135px;
-        margin: 0;
-    }
-
-    .dd {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        }
-</style>

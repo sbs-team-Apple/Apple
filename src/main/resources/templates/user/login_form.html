@@ -5,62 +5,8 @@
     <title>Title</title>
 </head>
 <body>
-<div layout:fragment="content" class="container my-3">
-    <div class="underBody">
-        <form th:action="@{/user/login}" method="post" class="login">
-            <div th:if="${param.error}">
-                <div class="alert alert-danger">
-                    사용자ID 또는 비밀번호를 확인해 주세요.
-                </div>
-            </div>
-            <div class="mb-3">
-                <input type="text" name="username" id="username" class="form-control" placeholder=" 아이디">
-            </div>
-            <div class="mb-3">
-                <input type="password" name="password" id="password" class="form-control" placeholder=" 비밀번호">
-            </div>
-
-            <input type="submit" value="로그인" class="btn btn-primary my-2">
-        </form>
-        <div class=kakao>
-            <a href="/oauth2/authorization/kakao" class="social-kakao">카카오 로그인</a>
-        </div>
-
-    </div>
-    <style>
-        .container {
-            margin: 0 auto;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .underBody {
-            border-radius: 15px;
-            padding: 30px 15px 15px 15px;
-            border: 1px solid rgb(198, 198, 198);
-            display: flex;
-            flex-direction: column; /* 아래로 요소를 쌓도록 설정 */
-            align-items: center;
-        }
-        .login {
-            margin-bottom: 20px; /* 로그인 폼과 카카오 로그인 버튼 사이의 간격 조정 */
-        }
-        .form-control {
-         border-radius: 10px;
-            width: 308px;
-            height: 40px;
-        }
-        .my-2 {
-            padding: 0 135px;
-            margin: 0;
-        }
-        .kakao {
-            text-align: center;
-        }
-        .alert-danger {
-        padding: 0 0px 0 15px;
-    }
-    </style>
+<div layout:fragment="content" class="container flex justify-center">
+        <div th:include="user/login.html"></div>
 </div>
 </body>
 
