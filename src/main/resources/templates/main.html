@@ -14,7 +14,7 @@
         <div th:if="${#authorization.expression('isAuthenticated()')}"
              class="profile profile_wrap main-container h-screen">
             <div class="profile_in m-auto flex justify-center flex-col items-center"
-                 th:each="userList : ${userList}" style="margin-bottom: 20px; border-radius:20px; border: 2px solid pink;">
+                 th:each="userList : ${userList}" style="margin-bottom: 20px; border-radius:20px; border: 2px solid pink; box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.3);">
                 <a th:href="@{|/user/detail/${userList.id}|}">
                     <div id="myImage">
                         <img style="width: 270px; height: 270px; object-fit: cover; border-top-left-radius: 20px; border-top-right-radius: 20px;" th:src="@{|${userList.filepath}|}" alt="User Image">
