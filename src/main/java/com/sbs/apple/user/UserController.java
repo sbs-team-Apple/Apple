@@ -3,7 +3,6 @@ package com.sbs.apple.user;
 
 import com.sbs.apple.RsData;
 import com.sbs.apple.Ut;
-import com.sbs.apple.board.BoardForm;
 import com.sbs.apple.chat.ChatRoom;
 import com.sbs.apple.chat.ChatRoomService;
 import com.sbs.apple.cybermoney.CyberMoneyServiceImpl;
@@ -11,7 +10,6 @@ import com.sbs.apple.cybermoney.CyberMoneyTransaction;
 import com.sbs.apple.cybermoney.CyberMoneyTransactionRepository;
 import com.sbs.apple.exchange.ExchangeRepository;
 import com.sbs.apple.exchange.ExchangeService;
-import com.sbs.apple.interest.Interest;
 import com.sbs.apple.interest.InterestService;
 import com.sbs.apple.report.ReportForm;
 import com.sbs.apple.report.ReportService;
@@ -19,6 +17,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -67,9 +67,6 @@ public class UserController {
     public String signup2(@Valid UserCreateForm userCreateForm, BindingResult bindingResult,
                           RedirectAttributes redirectAttributes, Model model, MultipartFile file, HttpServletRequest req)
             throws Exception {
-        if (bindingResult.hasErrors()) {
-            return "user/signup_form";
-        }
 
         RsData<SiteUser> joinRs = userService.create(false, false, userCreateForm.getFile(), userCreateForm.getUsername(), userCreateForm.getPassword1(),
                 userCreateForm.getNickname(), userCreateForm.getGender());
@@ -122,9 +119,6 @@ public class UserController {
                 userDesiredForm.getDesired_styleList(), userDesiredForm.getDesired_religion(),
                 userDesiredForm.getDesired_mbti(), userDesiredForm.getDesired_school(),
                 userDesiredForm.getDesired_job());
-        if (joinRs.isFail()) {
-            return "redirect:/usr/member/join?failMsg=" + Ut.url.encode(joinRs.getMsg());
-        }
         return "redirect:/?msg=" + Ut.url.encode(joinRs.getMsg());
     }
 
@@ -376,16 +370,22 @@ public class UserController {
         return "user/userPhoto_modify";
     }
 
+//    private MultipartFile file;
+    @Getter
+    @AllArgsConstructor
+    public static class PhotoForm  {
+    private MultipartFile file;
+    }
     @PostMapping("/photoModify/{id}")
-    public String photoModify2(@Valid BoardForm boardForm, MultipartFile file, Model model, Principal principal,
+    public String photoModify2(@Valid PhotoForm photoForm, MultipartFile file, Model model, Principal principal,
                                @PathVariable Integer id) throws Exception {
         SiteUser user = userService.getUserbyName(principal.getName());
-//        userService.photoModify(user, boardForm.getFile());
+        userService.photoModify(user, photoForm.getFile());
         return "redirect:/user/myPage";
     }
-
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/transactions")
-    public String getTransactionHistory(Model model) {
+    public String getTransactionHistory(Model model, Principal principal) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         SiteUser user = userService.getUserbyName(username);
@@ -419,6 +419,7 @@ public class UserController {
         model.addAttribute("minHeart", minHeart);
 
         // 모델에 데이터를 추가하여 뷰로 전달
+        model.addAttribute("user", user);
         model.addAttribute("receivedTransactions", receivedTransactions); // 받은 거래 정보
         model.addAttribute("sentTransactions", sentTransactions); // 보낸 거래 정보
         model.addAttribute("userCyberMoney", userCyberMoney);
