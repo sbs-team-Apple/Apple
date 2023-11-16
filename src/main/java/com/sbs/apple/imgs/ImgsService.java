@@ -34,22 +34,30 @@ public class ImgsService {
             directory.mkdirs(); // 디렉토리가 없으면 생성
         }
 
-
-        for(int i = 0; i < file.size(); i++) {
+        if (file ==null) {
             Imgs imgs =new Imgs();
             imgs.setBoard(board);
-
-            UUID uuid = UUID.randomUUID();
-            String fileName =uuid + "_" + file.get(i).getOriginalFilename();
-            File saveFile =new File(directory,fileName);
-            file.get(i).transferTo(saveFile);
-            imgs.setFilename(fileName);
-            imgs.setFilepath("/gen/"+fileName);
-            imgs.setIndexA(i+1);
+            System.out.println("사진없음");
+            imgs.setFilename("white.png");
+            imgs.setFilepath("/img/white.png");
             this.imgsRepository.save(imgs);
-
         }
+            else {
+            for (int i = 0; i < file.size(); i++) {
+                Imgs imgs = new Imgs();
+                imgs.setBoard(board);
 
+                UUID uuid = UUID.randomUUID();
+                String fileName = uuid + "_" + file.get(i).getOriginalFilename();
+                File saveFile = new File(directory, fileName);
+                file.get(i).transferTo(saveFile);
+                imgs.setFilename(fileName);
+                imgs.setFilepath("/gen/" + fileName);
+                imgs.setIndexA(i + 1);
+                this.imgsRepository.save(imgs);
+
+                    }
+                }
 
 
     }
