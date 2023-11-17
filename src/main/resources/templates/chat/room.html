@@ -118,7 +118,8 @@
 
 
     </div>
-
+    <div class="toUser-img-src" th:text="${toUser.filepath}" style="display:none;"></div>
+    <div class="toUser-id" th:text="${'user/detail/'+toUser.id}" style="display:none;"></div>
 
 
 </div>
@@ -171,7 +172,8 @@ input:focus {
 
      overflow-y: scroll; /* 세로 스크롤만 활성화 */
      overflow-x: hidden;
-     background-color :#9bbbd4;
+     background-color :#f08dac
+;
      position:relative;
 }
 
@@ -191,7 +193,7 @@ input:focus {
 
 .chat-option-box {
     height:35px;
-     background-color :#9bbbd4;
+     background-color :#f0bddb;
      display:flex;
       align-items: center;
 
@@ -201,6 +203,7 @@ input:focus {
 .chat-option-item {
     display:flex;
     width:100%;
+
 
 }
 
@@ -213,7 +216,7 @@ input:focus {
 }
 
 .fa-cog:before, .fa-gear:before{
-           background-color :#9bbbd4;
+           background-color :#f0bddb;
 
 }
 
@@ -252,7 +255,7 @@ input:focus {
 }
 
 .chat-write-box-item-button {
-    background-color : #fef01b;
+    background-color : #f0bddb;
     margin-left:10px;
 }
 
@@ -271,7 +274,7 @@ input:focus {
 
 .chat__message.right {
 text-align: left;
-background-color: #fef01b; /* 원하는 배경색으로 변경 */
+background-color: #f0bddb; /* 원하는 배경색으로 변경 */
  clear:both;
     float:right;
     margin-right:10px;
@@ -282,14 +285,25 @@ background-color: #fef01b; /* 원하는 배경색으로 변경 */
 /* 상대방의 메시지 */
 .chat__message.left {
 text-align: left;
-background-color: #ffffff; /* 원하는 배경색으로 변경 */
+background-color: white; /* 원하는 배경색으로 변경 */
 clear:both;
 float:left;
-    margin-left:10px;
+    margin-left:50px;
 
-
+    position:relative;
 
 }
+
+.left-div {
+    position:absolute;
+    top:-10px;
+    left:-45px;
+    border:1px solid black;
+     border-radius: 50%;
+
+}
+
+
 
 .emo-button {
         line-height: 56px;
@@ -482,6 +496,10 @@ float:left;
 
 <script>
     // 채팅 메세지 작성 시작
+    var toUserImgSrc=$(".toUser-img-src").text();
+    var toUserDetail=$(".toUser-id").text();
+    console.log("asda"+toUserImgSrc);
+
     function Chat__writeMessage(form) {
         form.authorName.value = form.authorName.value.trim();
 
@@ -546,7 +564,17 @@ float:left;
                     "beforeBegin",
                     `<li class="chat__message ${alignClass}">${message.authorName} : ${message.content}</li>`
                 );
+            if (alignClass === 'left') {
+            const divElement = $('<div class="avatar left-div">' +
+    '<div class="w-10 rounded-full">' +
+    '<a href=/' + toUserDetail + '>' +
+    '<img src="' + toUserImgSrc + '">' +
+    '</a>' +
+    '</div>' +
+    '</div></li>');
 
+        $(".left").append( divElement);
+     }
 
         // 스크롤 컨테이너의 스크롤 위치를 가장 아래로 이동
         const scrollContainer = document.querySelector(".chat__message-box"); // 스크롤 컨테이너의 선택자를 적절히 변경
