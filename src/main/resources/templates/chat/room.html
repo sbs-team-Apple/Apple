@@ -167,14 +167,13 @@ input:focus {
 
 
 .chat__message-box{
-
+        padding-top:20px;
       height:500px;
 
 
      overflow-y: scroll; /* 세로 스크롤만 활성화 */
      overflow-x: hidden;
-     background-color :#f08dac
-;
+     background-color :#f08dac;
      position:relative;
 }
 
@@ -572,7 +571,7 @@ float:left;
             Chat__elMessageUl
                 .insertAdjacentHTML(
                     "beforeBegin",
-                    `<li class="chat__message ${alignClass}">${message.authorName} : ${message.content}</li>`
+                    `<li class="chat__message ${alignClass}"> ${message.content}</li>`
                 );
             if (alignClass === 'left') {
             const imgDiv = $('<div class="avatar left-div">' +
@@ -586,13 +585,8 @@ float:left;
       const toUserName = $('<div class="left-div-name"></div>').text(toUserNickname);
 
 
-
-            $(".left").append(imgDiv);
-
-
-
-            $(".left").append(toUserName);
-
+        $(".left:last").append(imgDiv);
+        $(".left:last").append(toUserName);
 
      }
 
