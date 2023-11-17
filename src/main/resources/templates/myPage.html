@@ -9,15 +9,15 @@
     <div class="mb-5 mt-5" style="margin-bottom:40px; width: 270px; border-radius: 20px;
     border: 2px solid #f08dac; box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.4);">
         <div class="all">
-            <div class="photo">
+            <div class="photo" style="position: relative;">
                 <div class="flex justify-center">
                     <img th:src="@{|${user.filepath}|}" alt="User Image" style="width: 270px; height: 270px;
-                     object-fit: cover; border-top-left-radius: 20px; border-top-right-radius: 20px;">
+             object-fit: cover; border-top-left-radius: 20px; border-top-right-radius: 20px;">
                 </div>
-                <div class="text-right">
+                <div class="text-right" style="position: absolute; bottom: 5px; right: 0px;">
                     <a th:href="@{|/user/photoModify/${user.id}|}"
-                       style="padding:4px 25px; border-radius:6px; border :1px solid #f08dac; background-color :#f08dac">사진
-                        수정하기</a>
+                       style="padding:4px 20px; border-radius:6px; border :1px solid purple">
+                    사진 수정하기</a>
                 </div>
             </div>
 
@@ -26,35 +26,30 @@
                      style="font-size: 27px; font-weight: bold;"></div>
                 <div class="ml-2" th:text="${user.About_Me}"></div>
 
-                <div class="ml-2 mr-2">
-                    <i class="fa-solid fa-location-dot mr-1"></i><span class="mr-8" th:text="${user.living}"></span>
-                    <span>|</span>
-                    <i class="fa-solid fa-briefcase ml-1 mr-1"></i><span class="ml-2" th:text="${user.job}"></span>
+
+                <div class="ml-2 mr-2 info_wrap">
+                    <span><i class="fa-solid fa-location-dot"></i><span
+                            th:text="${user.living}"></span></span>
+                    <span><i class="fa-solid fa-briefcase"></i><span th:text="${user.job}"></span></span>
                 </div>
-                <div class="ml-2 mr-2">
-                    <span>
-                    <i class="fa-solid fa-tape mr-1"></i><span class="mr-8" th:text="${user.tall}+'cm'"></span>
-                    </span>
-                    <span>|</span>
-                    <span>
-                    <i class="fa-solid fa-person  ml-1 mr-1"></i><span th:text="${user.body_type}"></span>
-                    </span>
+
+                <div class="ml-2 mr-2 info_wrap">
+                    <span><i class="fa-solid fa-tape"></i><span th:text="${user.tall}+'cm'"></span></span>
+                    <span><i class="fa-solid fa-person"></i><span th:text="${user.body_type}"></span></span>
                 </div>
-                <div class="ml-2 mr-2">
-                    <i class="fa-solid fa-beer-mug-empty mr-1"></i><span class="mr-8" th:text="${user.drinking}"></span>
-                    <span>|</span>
-                    <i class="fa-solid fa-smoking  ml-2 mr-1"></i><span th:text="${user.smoking}"></span>
+                <div class="ml-2 mr-2 info_wrap">
+                    <span><i class="fa-solid fa-beer-mug-empty"></i><span th:text="${user.drinking}"></span></span>
+                    <span><i class="fa-solid fa-smoking"></i><span th:text="${user.smoking}"></span></span>
                 </div>
-                <div class="ml-2 mr-2">
-                    <i class="fa-solid fa-school mr-1"></i><span class="mr-8" th:text="${user.school}"></span>
-                    <span>|</span>
-                    <span class="ml-2" th:text="'종교:  ' + ${user.religion}"></span>
+                <div class="ml-2 mr-2 mb-3 info_wrap">
+                    <span><i class="fa-solid fa-school"></i><span th:text="${user.school}"></span></span>
+                    <span><span th:text="'종교:  ' + ${user.religion}"></span></span>
                 </div>
                 <div class="ml-2" th:text="'성격 : ' + ${user.styleList}"></div>
                 <div class="ml-2" th:text="'취미 : ' + ${user.hobbyList}"></div>
                 <div class="text-right">
                     <a href="/user/profile_modify" style="padding:4px 30px; border-radius:6px;
-                    border :1px solid #f08dac; background-color :#f08dac">프로필 수정</a>
+                    border :1px solid #f08dac;">프로필 수정</a>
                 </div>
             </div>
             <div class="last" style="margin-bottom :20px;">
@@ -72,7 +67,7 @@
                 <div class="ml-2" th:text="'선호하는 이성 MBTI : ' + ${user.desired_mbti}"></div>
                 <div class="text-right">
                     <a href="/user/desired_modify" style="padding:4px 30px; border-radius:6px;
-                    border :1px solid #f08dac; background-color :#f08dac">나의 이상형 정보 수정</a>
+                    border :1px solid #f08dac;">나의 이상형 정보 수정</a>
                 </div>
             </div>
         </div>
@@ -80,6 +75,14 @@
 
     <div th:include="common/menu.html" class="tap_bar"></div>
     <style>
+        .info_wrap {
+        display: flex;
+        }
+
+        .info_wrap > span {
+            width: calc(100% / 2);
+            display: block;
+        }
         .tap_bar {
                 position: fixed;
                 width: 100%;

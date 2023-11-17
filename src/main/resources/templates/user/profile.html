@@ -15,38 +15,48 @@
          style="width: 270px; border-radius: 20px;border: 2px solid #f08dac; box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.3);">
         <div>
             <div>
-                <div class="flex justify-center" style="border-bottom: 2px solid #ccc;">
-                    <img th:src="@{|${receivedSiteUser.filepath}|}" alt="User Image"
-                         style="width: 270px; height: 270px; object-fit: cover;border-top-left-radius: 20px; border-top-right-radius: 20px;">
+                <div class="photo" style="position: relative;">
+                    <div class="flex justify-center" style="border-bottom: 2px solid #ccc;">
+                        <img th:src="@{|${receivedSiteUser.filepath}|}" alt="User Image"
+                             style="width: 270px; height: 270px; object-fit: cover;border-top-left-radius: 20px; border-top-right-radius: 20px;">
+                    </div>
+                    <div style="position: absolute; bottom: 5px; right: 0px;">
+                        <button th:if="${chatRoom == null  && log ==null}" id="sendCyberMoneyBtn"
+                                style="padding :5px 15px; border-radius:10px; border :1px solid purple;"
+                                data-toggle="modal" data-target="#cyberMoneyModal">채팅방 만들기
+                        </button>
+                    </div>
+                    <div style="position: absolute; top: 10px; right: 10px;">
+                        <a th:href="@{'/user/add_interest/' + ${receivedSiteUser.id}}">
+                            <span th:if="${isInterested}">
+            <span><i class="fa-solid fa-star fa-2xl" style="color: yellow;"></i></span></span>
+                            <span th:unless="${isInterested}">
+            <span><i class="fa-regular fa-star fa-2xl" style="color: black;"></i></span></span>
+                        </a>
+                    </div>
                 </div>
-                <div th:text="${receivedSiteUser.nickname + ', ' + receivedSiteUser.age}+', '+${receivedSiteUser.mbti}" class="ml-2"
-                style="font-size: 27px; font-weight: bold;"></div>
+                <div th:text="${receivedSiteUser.nickname + ', ' + receivedSiteUser.age}+', '+${receivedSiteUser.mbti}"
+                     class="ml-2"
+                     style="font-size: 27px; font-weight: bold;"></div>
                 <div class="ml-2" th:text="${receivedSiteUser.About_Me}"></div>
 
-                <div class="ml-2 mr-2">
-                    <i class="fa-solid fa-location-dot mr-1"></i><span class="mr-8" th:text="${receivedSiteUser.living}"></span>
-                    <span>|</span>
-                    <i class="fa-solid fa-briefcase ml-1 mr-1"></i><span class="ml-2" th:text="${receivedSiteUser.job}"></span>
+                <div class="ml-2 mr-2 info_wrap">
+                    <span><i class="fa-solid fa-location-dot"></i><span
+                            th:text="${receivedSiteUser.living}"></span></span>
+                    <span><i class="fa-solid fa-briefcase"></i><span th:text="${receivedSiteUser.job}"></span></span>
+                </div>
+                <div class="ml-2 mr-2 info_wrap">
+                    <span><i class="fa-solid fa-tape"></i><span th:text="${receivedSiteUser.tall}+'cm'"></span></span>
+                    <span><i class="fa-solid fa-person"></i><span th:text="${receivedSiteUser.body_type}"></span></span>
+                </div>
+                <div class="ml-2 mr-2 info_wrap">
+                    <span><i class="fa-solid fa-beer-mug-empty"></i><span th:text="${receivedSiteUser.drinking}"></span></span>
+                    <span><i class="fa-solid fa-smoking"></i><span th:text="${receivedSiteUser.smoking}"></span></span>
                 </div>
 
-                <div class="ml-2 mr-2">
-                    <span>
-                    <i class="fa-solid fa-tape mr-1"></i><span class="mr-8" th:text="${receivedSiteUser.tall}+'cm'"></span>
-                    </span>
-                    <span>|</span>
-                    <span>
-                    <i class="fa-solid fa-person  ml-1 mr-1"></i><span th:text="${receivedSiteUser.body_type}"></span>
-                    </span>
-                </div>
-                <div class="ml-2 mr-2">
-                    <i class="fa-solid fa-beer-mug-empty mr-1"></i><span class="mr-8" th:text="${receivedSiteUser.drinking}"></span>
-                    <span>|</span>
-                    <i class="fa-solid fa-smoking  ml-2 mr-1"></i><span th:text="${receivedSiteUser.smoking}"></span>
-                </div>
-                <div class="ml-2 mr-2">
-                    <i class="fa-solid fa-school mr-1"></i><span class="mr-8" th:text="${receivedSiteUser.school}"></span>
-                    <span>|</span>
-                    <span class= "ml-2" th:text="'종교:  ' + ${receivedSiteUser.religion}"></span>
+                <div class="ml-2 mr-2 mb-3 info_wrap">
+                    <span><i class="fa-solid fa-school"></i><span th:text="${receivedSiteUser.school}"></span></span>
+                    <span><span th:text="'종교:  ' + ${receivedSiteUser.religion}"></span></span>
                 </div>
                 <div class="ml-2" th:text="'성격 : ' + ${receivedSiteUser.styleList}"></div>
                 <div class="ml-2" th:text="'취미 : ' + ${receivedSiteUser.hobbyList}"></div>
@@ -54,7 +64,8 @@
 
             <div>
                 <div class="text-xl flex justify-center">
-                    <span style="border : 1px solid black; border-radius: 10px; padding : 0 10px; margin : 10px 0;">원하는 이상형</span></div>
+                    <span style="border : 1px solid black; border-radius: 10px; padding : 0 10px; margin : 10px 0;">원하는 이상형</span>
+                </div>
                 <div class="ml-2" th:text="'선호하는 나이 : ' + ${receivedSiteUser.desired_age}"></div>
                 <div class="ml-2" th:text="'선호하는 지역 : ' + ${receivedSiteUser.desired_living}"></div>
                 <div class="ml-2" th:text="'선호하는 이성 키 : ' + ${receivedSiteUser.desired_tall}"></div>
@@ -100,17 +111,23 @@
         </dialog>
     </div>
     <div style="margin-bottom:80px;">
-        <a class="btn btn-outline btn-info" th:href="@{'/user/report/' + ${receivedSiteUser.id}}">신고하기</a>
-        <a class="btn btn-outline btn-info" th:href="@{'/user/add_interest/' + ${receivedSiteUser.id}}">
-            <span th:text="${isInterested ? '관심 해제' : '관심 등록'}"></span>
-        </a>
-        <button th:if="${chatRoom == null  && log ==null}" id="sendCyberMoneyBtn"
-                class="btn btn-outline btn-info"
-                data-toggle="modal" data-target="#cyberMoneyModal">채팅방 만들기
-        </button>
+        <a style="padding:0 30px; border-radius:10px; border :1px solid #f08dac;"
+           class="btn" th:href="@{'/user/report/' + ${receivedSiteUser.id}}">신고하기</a>
+
+
     </div>
     <div th:include="common/menu.html" class="tap_bar"></div>
     <style>
+        .info_wrap {
+        display: flex;
+        }
+
+        .info_wrap > span {
+            width: calc(100% / 2);
+            display: block;
+        }
+
+
         .tap_bar {
                 position: fixed;
                 width: 100%;
