@@ -18,7 +18,6 @@ public class BoardForm {
     private String content;
 
 
-    private String subject;
 
 
 
