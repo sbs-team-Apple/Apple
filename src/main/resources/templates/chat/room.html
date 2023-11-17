@@ -120,6 +120,7 @@
     </div>
     <div class="toUser-img-src" th:text="${toUser.filepath}" style="display:none;"></div>
     <div class="toUser-id" th:text="${'user/detail/'+toUser.id}" style="display:none;"></div>
+    <div class="toUser-nickname" th:text="${toUser.nickname}" style="display:none;"></div>
 
 
 </div>
@@ -288,7 +289,7 @@ text-align: left;
 background-color: white; /* 원하는 배경색으로 변경 */
 clear:both;
 float:left;
-    margin-left:50px;
+    margin-left:55px;
 
     position:relative;
 
@@ -296,12 +297,20 @@ float:left;
 
 .left-div {
     position:absolute;
-    top:-10px;
-    left:-45px;
-    border:1px solid black;
+    top:-30px;
+    left:-50px;
+    border:1px solid #bcc0c4;
      border-radius: 50%;
 
 }
+
+.left-div-name{
+         position:absolute;
+    top:-30px;
+    left:0px;
+
+}
+
 
 
 
@@ -498,6 +507,7 @@ float:left;
     // 채팅 메세지 작성 시작
     var toUserImgSrc=$(".toUser-img-src").text();
     var toUserDetail=$(".toUser-id").text();
+    var toUserNickname=$(".toUser-nickname").text();
     console.log("asda"+toUserImgSrc);
 
     function Chat__writeMessage(form) {
@@ -565,15 +575,25 @@ float:left;
                     `<li class="chat__message ${alignClass}">${message.authorName} : ${message.content}</li>`
                 );
             if (alignClass === 'left') {
-            const divElement = $('<div class="avatar left-div">' +
+            const imgDiv = $('<div class="avatar left-div">' +
     '<div class="w-10 rounded-full">' +
     '<a href=/' + toUserDetail + '>' +
     '<img src="' + toUserImgSrc + '">' +
     '</a>' +
     '</div>' +
-    '</div></li>');
+    '</div>');
 
-        $(".left").append( divElement);
+      const toUserName = $('<div class="left-div-name"></div>').text(toUserNickname);
+
+
+
+            $(".left").append(imgDiv);
+
+
+
+            $(".left").append(toUserName);
+
+
      }
 
         // 스크롤 컨테이너의 스크롤 위치를 가장 아래로 이동
