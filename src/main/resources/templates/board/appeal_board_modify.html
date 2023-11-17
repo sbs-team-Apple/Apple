@@ -8,33 +8,37 @@
 <div layout:fragment="content" class="container my-3">
     <div class="ml-auto mr-auto w-60 ">
         <form  class="imgForm" enctype="multipart/form-data" th:action="@{|/board/modify/${board.id}|}"  object="${boardForm}" method="post" >
+            <button type="button" class="add-file-input mb-2 mt-2"><i class="fa-solid fa-file-circle-plus fa-2xl"></i></button>
 
-            <div class="current-img"></div>
+            <div class="current-img">
+                <img  class="ex-current-img" th:src=" ${@rq.getImgs(board).get(0).filepath}" alt="">
+            </div>
             <div id="file-input-container">
 
                 <!--            <input type="file" name="file" accept="image/*" class="image-file-input">-->
 
-                <button type="button" class="add-file-input">사진 추가</button>
 <!--                <input type="file" name="file">-->
                 <input type="hidden" name="myArray" id="myArrayInput">
                 <input type="hidden" name="myAddArray" id="myAddArrayInput">
 
 
             </div>
-            <div class="column">
+            <div class="image-preview-container" >
+                <div class="column mt-4">
 
-                <div class="image-preview"  th:each="img, currentindex : ${@rq.getImgs(board)}">
+                    <div class="image-preview"  th:each="img, currentindex : ${@rq.getImgs(board)}">
 
-                        <img class="ex-img" th:currentindex="${currentindex.count}" onclick="changeCurrentImg(this)" th:src="${img.filepath}" alt="">
-                        <div class="cancelBtn fa-solid fa-xmark"  onclick="hideImagePreview(this)"></div>
+                            <img class="ex-img" th:currentindex="${currentindex.count}" onclick="changeCurrentImg(this)" th:src="${img.filepath}" alt="">
+                            <div class="cancelBtn fa-solid fa-xmark"  onclick="hideImagePreview(this)"></div>
 
+                    </div>
                 </div>
+                <div class="scroll-btn-left scroll-btn" id="scroll-left"><i class="fa-solid fa-angle-up fa-rotate-270 fa-2xl"></i></div>   <div  class="scroll-btn scroll-btn-right" id="scroll-right"><i class="fa-solid fa-angle-up fa-rotate-90 fa-2xl"></i></div>
 
             </div>
+            <textarea type="text" name="content" class="textarea textarea-secondary" placeholder="내용을 입력하세요" th:text="${board.content}"></textarea>
 
-            <textarea type="text" name="content" class="textarea textarea-secondary" placeholder="내용을 입력하세요"></textarea>
-
-            <button type="submit" class="btn end-function"  onclick="onSubmitClick()"
+            <button type="submit" class="btn end-function block ml-auto"  onclick="onSubmitClick()"
                     style="margin-left:auto; border-radius:10px; border :1px solid #f08dac; background-color :#f08dac">
                 <span>작성</span>
             </button>
@@ -65,15 +69,42 @@
         right:0;
     }
 
+
+    .image-preview-container {
+          width: calc(100%);
+                  position:relative;
+
+    }
+
      .column {
-        position :absolute;
-        top:50px;
-        right:0;
+       display:flex;
+       border:1px solid black;
+        border-radius:10px;
+         overflow-x: auto;
+
+            scrollbar-width: auto;
     }
 
 
+    .column::-webkit-scrollbar {
+    width: 2px; /* Adjust scrollbar width */
+      height: 10px;
+}
+
+.column::-webkit-scrollbar-thumb {
+    background-color: #888; /* Scrollbar thumb color */
+    border-radius: 5px; /* Rounded corners */
+}
+
+.column::-webkit-scrollbar-track {
+    background-color: #f1f1f1; /* Scrollbar track color */
+    border-radius: 8px; /* Rounded track */
+}
+
     .image-preview {
           position:relative;
+
+            flex: 0 0 auto;
 
     }
     .ex-img {
@@ -81,7 +112,8 @@
                 height:80px;
 
             position:relative;
-
+              border-radius:10px;
+              border:1px solid black;
     }
 
       .cancelBtn {
@@ -96,7 +128,29 @@
     }
 
     .textarea{
+
+        margin-top:20px;
        width:240px;
+
+    }
+
+    .scroll-btn-left{
+        position:absolute;
+        top:50%;
+
+        left:-40px;
+        transform:translate(0,-50%);
+          padding:10px;
+
+    }
+    .scroll-btn-right{
+        position:absolute;
+        top:50%;
+        right:-40px;
+          transform:translate(0,-50%);
+          padding:10px;
+
+
 
     }
 
@@ -329,4 +383,18 @@ console.log(indexImg);
     }
 </script>
 
+<script>
+    $(document).ready(function() {
+        $('#scroll-left').on('click', function() {
+            $('.column').animate({
+                scrollLeft: '-=100' // Adjust the scroll amount as needed
+            }, 'slow');
+        });
 
+        $('#scroll-right').on('click', function() {
+            $('.column').animate({
+                scrollLeft: '+=100' // Adjust the scroll amount as needed
+            }, 'slow');
+        });
+    });
+</script>
