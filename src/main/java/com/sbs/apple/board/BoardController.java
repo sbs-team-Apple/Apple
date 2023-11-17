@@ -42,8 +42,7 @@ public class BoardController {
         }
 
 
-        Board board = boardService.create(boardForm.getFile(), boardForm.getSubject(), boardForm.getContent(), user
-        );
+        Board board = boardService.create(boardForm.getFile(),boardForm.getContent(), user);
 
 
         return "redirect:/board/appealList";
@@ -153,8 +152,9 @@ public class BoardController {
         System.out.println(imgs.size());
 
 
+
         if (file != null && !file.isEmpty()) {
-            Board board2 = boardService.create2(boardForm.getFile(), boardForm.getSubject(), boardForm.getContent(), user, addIndex, board);
+            Board board2 = boardService.create2(boardForm.getFile(),  boardForm.getContent(), user, addIndex, board);
         }
 
 
@@ -179,9 +179,10 @@ public class BoardController {
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Integer id) {
-//        Board board = boardService.getBoard(id);
-//        boardService.doDelete(board);
+        Board board = boardService.getBoard(id);
 
+        boardService.doDelete(board);
+        System.out.println("삭제 실행됨~!!!!!!!!!!!!!!!!!!!!!!");
 
         return "redirect:/board/appealList";
     }
