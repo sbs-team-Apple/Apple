@@ -13,6 +13,7 @@
 
         <div th:if="${#authorization.expression('isAuthenticated()')}"
              class="profile profile_wrap main-container h-screen">
+
             <div class="profile_in m-auto flex justify-center flex-col items-center"
                  th:each="userList : ${userList}" style="margin-bottom: 20px; border-radius:20px; border: 2px solid pink; box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.3);">
                 <a th:href="@{|/user/detail/${userList.id}|}">
@@ -29,8 +30,6 @@
                         </div>
                         <div class="text-center" th:text="${userList.About_Me}"></div>
                     </div>
-
-
                 </a>
             </div>
 
