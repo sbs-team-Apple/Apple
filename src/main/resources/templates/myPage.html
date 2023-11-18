@@ -4,58 +4,107 @@
     <meta charset="UTF-8">
     <title>마이 페이지</title>
 </head>
-<body>
 
 <div layout:fragment="content" class="container m-auto flex justify-center flex-col items-center">
-    <div class="myPage" style="margin-bottom:40px;">
+    <div class="mb-5 mt-5" style="margin-bottom:40px; width: 270px; border-radius: 20px;
+    border: 2px solid #f08dac; box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.4);">
         <div class="all">
-            <div class="photo">
+            <div class="photo" style="position: relative;">
                 <div class="flex justify-center">
-                    <img th:src="@{|${user.filepath}|}" alt="User Image" style="width: 270px; height: 270px; object-fit: cover; border: 2px solid #f08dac;
-            border-top-left-radius: 20px; border-top-right-radius: 20px;">
+                    <img th:src="@{|${user.filepath}|}" alt="User Image" style="width: 270px; height: 270px;
+             object-fit: cover; border-top-left-radius: 20px; border-top-right-radius: 20px;">
                 </div>
-                <div th:text="'자기소개 : ' + ${user.About_Me}"></div>
-                <div class="text-right">
-                    <a th:href="@{|/user/photoModify/${user.id}|}" class="btn btn-outline btn-info">사진 수정하기</a>
+                <div class="text-right" style="position: absolute; bottom: 5px; right: 0px;">
+                    <a th:href="@{|/user/photoModify/${user.id}|}"
+                       style="padding:4px 20px; border-radius:6px; border :1px solid purple">
+                        사진 수정하기</a>
                 </div>
             </div>
+
             <div class="profile">
-                <div th:text="'닉네임 : ' + ${user.nickname}"></div>
-                <div th:text="'나이 : ' + ${user.age}"></div>
-                <div th:text="'지역 : ' + ${user.living}"></div>
-                <div th:text="'취미 : ' + ${user.hobbyList}"></div>
-                <div th:text="'키 : ' + ${user.tall}"></div>
-                <div th:text="'체형 : ' + ${user.body_type}"></div>
-                <div th:text="'흡연 : ' + ${user.smoking}"></div>
-                <div th:text="'음주 : ' + ${user.drinking}"></div>
-                <div th:text="'성격 : ' + ${user.styleList}"></div>
-                <div th:text="'종교 : ' + ${user.religion}"></div>
-                <div th:text="'MBTI : ' + ${user.mbti}"></div>
-                <div th:text="'학교 : ' + ${user.school}"></div>
-                <div th:text="'직업 : ' + ${user.job}"></div>
+                <div th:text="${user.nickname + ', ' + user.age}+', '+${user.mbti}" class="ml-2"
+                     style="font-size: 27px; font-weight: bold;"></div>
+                <div class="ml-2" th:text="${user.About_Me}"></div>
+
+
+                <div class="ml-2 mr-2 info_wrap">
+                    <span><i class="fa-solid fa-location-dot"></i><span
+                            th:text="${user.living}"></span></span>
+                    <span><i class="fa-solid fa-briefcase"></i><span th:text="${user.job}"></span></span>
+                </div>
+
+                <div class="ml-2 mr-2 info_wrap">
+                    <span><i class="fa-solid fa-tape"></i><span th:text="${user.tall}+'cm'"></span></span>
+                    <span><i class="fa-solid fa-person"></i><span th:text="${user.body_type}"></span></span>
+                </div>
+                <div class="ml-2 mr-2 info_wrap">
+                    <span><i class="fa-solid fa-beer-mug-empty"></i><span th:text="${user.drinking}"></span></span>
+                    <span><i class="fa-solid fa-smoking"></i><span th:text="${user.smoking}"></span></span>
+                </div>
+                <div class="ml-2 mr-2 mb-3 info_wrap">
+                    <span><i class="fa-solid fa-school"></i><span th:text="${user.school}"></span></span>
+                    <span><span th:text="'종교:  ' + ${user.religion}"></span></span>
+                </div>
+                <div class="ml-2" th:text="'성격 : ' + ${user.styleList}"></div>
+                <div class="ml-2" th:text="'취미 : ' + ${user.hobbyList}"></div>
                 <div class="text-right">
-                    <a href="/user/profile_modify" class="btn btn-outline btn-info">프로필 수정</a>
+                    <a href="/user/profile_modify" style="padding:4px 30px; border-radius:6px;
+                    border :1px solid #f08dac;">프로필 수정</a>
                 </div>
             </div>
-            <div class="desired">
-                <h2>원하는 이상형</h2>
-                <div th:text="'선호하는 나이 : ' + ${user.desired_age}"></div>
-                <div th:text="'선호하는 지역 : ' + ${user.desired_living}"></div>
-                <div th:text="'선호하는 이성 키 : ' + ${user.desired_tall}"></div>
-                <div th:text="'선호하는 이성 체형 : ' + ${user.desired_body_type}"></div>
-                <div th:text="'선호하는 이성 흡연 : ' + ${user.desired_smoking}"></div>
-                <div th:text="'선호하는 이성 음주 : ' + ${user.desired_drinking}"></div>
-                <div th:text="'선호하는 이성 성격 : ' + ${user.desired_styleList}"></div>
-                <div th:text="'선호하는 이성 종교 : ' + ${user.desired_religion}"></div>
-                <div th:text="'선호하는 이성 MBTI : ' + ${user.desired_mbti}"></div>
-                <div class="text-right">
-                    <a href="/user/desired_modify" class="btn btn-outline btn-info">나의 이상형 정보 수정</a>
+            <div class="last" style="margin-bottom :20px;">
+                <div class="text-xl flex justify-left ml-2">
+                    <button onclick="show_desired()" id="up_down"
+                            style="border: 1px solid black; border-radius: 10px; padding: 0 10px; margin: 10px 0;">
+                        <span>이상형</span><i id="icon" class="fa-solid fa-caret-down ml-1"></i>
+                    </button>
+                </div>
+                <div style="display:none;" id="all">
+                    <div class="ml-2" th:text="'선호하는 나이 : ' + ${user.desired_age}"></div>
+                    <div class="ml-2" th:text="'선호하는 지역 : ' + ${user.desired_living}"></div>
+                    <div class="ml-2" th:text="'선호하는 이성 키 : ' + ${user.desired_tall}"></div>
+                    <div class="ml-2" th:text="'선호하는 이성 체형 : ' + ${user.desired_body_type}"></div>
+                    <div class="ml-2" th:text="'선호하는 이성 흡연 : ' + ${user.desired_smoking}"></div>
+                    <div class="ml-2" th:text="'선호하는 이성 음주 : ' + ${user.desired_drinking}"></div>
+                    <div class="ml-2" th:text="'선호하는 이성 성격 : ' + ${user.desired_styleList}"></div>
+                    <div class="ml-2" th:text="'선호하는 이성 종교 : ' + ${user.desired_religion}"></div>
+                    <div class="ml-2" th:text="'선호하는 이성 MBTI : ' + ${user.desired_mbti}"></div>
+                    <div class="text-right">
+                        <a href="/user/desired_modify" style="padding:4px 30px; border-radius:6px;
+                    border :1px solid #f08dac;">나의 이상형 정보 수정</a>
+                    </div>
                 </div>
             </div>
+            <script>
+                var isUp = false;
+                function show_desired(){
+                var iconElement = document.getElementById("icon");
+                var contentElement = document.getElementById("all");
+                if (isUp) {
+                iconElement.classList.remove("fa-caret-up");
+                iconElement.classList.add("fa-caret-down");
+                contentElement.style.display = "none"; // 숨김
+                } else {
+                iconElement.classList.remove("fa-caret-down");
+                iconElement.classList.add("fa-caret-up");
+                contentElement.style.display = "block"; // 보임
+                    }
+                isUp = !isUp;
+                }
+            </script>
         </div>
     </div>
+
     <div th:include="common/menu.html" class="tap_bar"></div>
     <style>
+        .info_wrap {
+        display: flex;
+        }
+
+        .info_wrap > span {
+            width: calc(100% / 2);
+            display: block;
+        }
         .tap_bar {
                 position: fixed;
                 width: 100%;
@@ -63,5 +112,4 @@
             }
     </style>
 </div>
-</body>
 </html>
