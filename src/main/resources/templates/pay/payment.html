@@ -1,63 +1,55 @@
 <!DOCTYPE html>
 <html layout:decorate="~{common/layout}" lang="en">
 <head>
-    <style>
-
-        .payment-page {
-        text-align: center;
-        }
-        .amount_manu {
-        border: 2px solid #000;
-        display: flex;
-        align-items: center;
-        margin-right :30%;
-        margin-left :30%;
-        }
-
-        h2 {
-        margin: 0;
-        padding-right: 30px;
-        display: inline-block;
-        vertical-align: middle;
-        }
-
-        .amount {
-        border-left: 1px solid #000;
-        padding-left: 30px;
-        }
-    </style>
     <meta charset="UTF-8">
     <title>payment</title>
 </head>
 <body>
-<div layout:fragment="content" class="container my-3">
-    <div class="amount_manu">
+<div layout:fragment="content" class="container m-auto flex justify-center flex-col items-center -mt-16 min-h-screen pl-20 pr-20">
+    <div class="amount_manu m-10 " style="border: 4px solid #f08dac; width: 100%;">
+
+        <div class="m-5 text-xl text-center">
         <h2>구매할 하트 선택</h2>
-        <section class="amount">
-            <div>
-                <input type="radio" name="payment-option" id="payment-option-1" value="5000"
+        </div>
+        <div style="border-bottom: 1px solid #f08dac"></div>
+        <section class="amount pl-10">
+            <div class="m-5 flex items-center">
+                <input class="radio radio-secondary mr-2" type="radio" name="payment-option" id="payment-option-1" value="5000"
                        onclick="showPaymentPage(5000)">
-                <label for="payment-option-1">하트 50개 (5,000원)</label>
+                <label for="payment-option-1" class="flex items-center">
+                    <i class="fa-solid fa-heart text-red-500 mr-1"></i> <!-- 아이콘 크기 조정 -->
+                    <span class="text-base">50개 (5,000원)</span> <!-- 텍스트 크기 조정 -->
+                </label>
             </div>
-            <div>
-                <input type="radio" name="payment-option" id="payment-option-2" value="10000"
+            <div class="m-5 flex items-center">
+                <input class="radio radio-secondary mr-2" type="radio" name="payment-option" id="payment-option-2" value="10000"
                        onclick="showPaymentPage(10000)">
-                <label for="payment-option-2">하트 110개 (10,000원)</label>
+                <label for="payment-option-2" class="flex items-center">
+                    <i class="fa-solid fa-heart text-red-500 mr-1"></i>
+                    <span class="text-base">100개 (10,000원)</span>
+                </label>
             </div>
-            <div>
-                <input type="radio" name="payment-option" id="payment-option-3" value="30000"
+            <div class="m-5 flex items-center">
+                <input class="radio radio-secondary mr-2" type="radio" name="payment-option" id="payment-option-3" value="30000"
                        onclick="showPaymentPage(30000)">
-                <label for="payment-option-3">하트 340개 (30,000원)</label>
+                <label for="payment-option-3" class="flex items-center">
+                    <i class="fa-solid fa-heart text-red-500 mr-1"></i>
+                    <span class="text-base">300개 (30,000원)</span>
+                </label>
             </div>
-            <div>
-                <input type="radio" name="payment-option" id="payment-option-4" value="50000"
+            <div class="m-5 flex items-center">
+                <input class="radio radio-secondary mr-2" type="radio" name="payment-option" id="payment-option-4" value="50000"
                        onclick="showPaymentPage(50000)">
-                <label for="payment-option-4">하트 600개 (50,000원)</label>
+                <label for="payment-option-4" class="flex items-center">
+                    <i class="fa-solid fa-heart text-red-500 mr-1"></i>
+                    <span class="text-base">500개 (50,000원)</span>
+                </label>
             </div>
+
         </section>
     </div>
-    <div class="payment-page" id="payment-page">
-        <p id="selected-amount">결제하실 금액: <span id="amount-label"></span></p>
+    <div class="payment-page m-10 w-full" id="payment-page">
+        <p class="text-xl mb-5" id="selected-amount">결제하실 금액: <span id="amount-label"></span></p>
         <h2>결제할 방식을 선택하세요.</h2>
         <div>
             <title>구매하기</title>
@@ -68,20 +60,21 @@
             <script src="https://js.tosspayments.com/v1"></script>
         </div>
 
-        <section class="section_box ">
-            <div class="pay_container">
-                <button class="btn btn-outline" id="card-button" onclick="pay('카드', jsons.card);">카드결제</button>
-                <button class="btn btn-outline" id="transfer-button" onclick="pay('계좌이체', jsons.transfer);">계좌이체
-                </button>
-                <button class="btn btn-outline" id="phone-button" onclick="pay('휴대폰', jsons.phone);">휴대폰</button>
-                <button class="btn btn-outline" id="certificate-button" onclick="pay('문화상품권', jsons.certificate);">
-                    문화상품권
-                </button>
+        <section class="section_box">
+            <div class="pay_container flex justify-between ">
+                <button type="submit" class="btn flex-grow mr-3 " style= " border-radius:10px; border:1px solid #f08dac; background-color:#f08dac;" id="card-button" onclick="pay('카드', jsons.card);">카드결제</button>
+                <button type="submit" class="btn flex-grow" style="border-radius:10px; border:1px solid #f08dac; background-color:#f08dac;" id="transfer-button" onclick="pay('계좌이체', jsons.transfer);">계좌이체</button>
+            </div>
+                <div class="pay_container flex justify-between mt-3">
+                <button type="submit" class="btn flex-grow mr-3" style="border-radius:10px; border:1px solid #f08dac; background-color:#f08dac;" id="phone-button" onclick="pay('휴대폰', jsons.phone);">휴대폰</button>
+                <button type="submit" class="btn flex-grow" style="border-radius:10px; border:1px solid #f08dac; background-color:#f08dac;" id="certificate-button" onclick="pay('문화상품권', jsons.certificate);">상품권</button>
             </div>
         </section>
+
     </div>
 
-    <button onclick="goBack()">뒤로가기</button>
+<!--    <button type="submit" class="btn btn-sm"-->
+<!--            style="border-radius:10px; border :1px solid #f08dac;" onclick="goBack()">뒤로가기</button>-->
 
     <script>
         let selectedAmount = null;
