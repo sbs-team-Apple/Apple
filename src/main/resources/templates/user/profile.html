@@ -55,7 +55,7 @@
                 <div th:text="${receivedSiteUser.nickname + ', ' + receivedSiteUser.age}+', '+${receivedSiteUser.mbti}"
                      class="ml-2 mr-2"
                      style="font-size: 25px; font-weight: bold;"></div>
-                <div class="ml-2" th:text="${receivedSiteUser.About_Me}"></div>
+                <div class="ml-2 mr-2 mb-2" th:text="${receivedSiteUser.About_Me}" style="max-width: 250px; word-wrap: break-word;"></div>
 
                 <div class="ml-2 mr-2 info_wrap">
                     <span><i class="fa-solid fa-location-dot"></i><span
