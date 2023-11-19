@@ -57,11 +57,11 @@ public class PaymentController {
             if (amount == 5000) {
                 cyberMoneyToAdd = amount / 100;
             } else if (amount == 10000) {
-                cyberMoneyToAdd = amount / 100 + 10;
+                cyberMoneyToAdd = amount / 100;
             } else if (amount == 30000) {
-                cyberMoneyToAdd = amount / 100 + 40;
+                cyberMoneyToAdd = amount / 100;
             } else if (amount == 50000) {
-                cyberMoneyToAdd = amount / 100 + 100;
+                cyberMoneyToAdd = amount / 100;
             }
 
             // 결제가 발생한 사용자에게 사이버 머니 추가

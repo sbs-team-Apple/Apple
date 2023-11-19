@@ -5,8 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-import java.io.IOException;
-
 @EnableJpaAuditing
 @EnableScheduling
 @SpringBootApplication
@@ -19,9 +17,8 @@ public class AppleApplication {
 		try {
 			String tokenResponse = tokenRequest.requestToken();
 			System.out.println("Token Response: " + tokenResponse);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
 }

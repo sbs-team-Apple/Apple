@@ -35,9 +35,9 @@
     <div class="mt-16">
     <div style="height: 50px;"></div>
     <div class="container_2 my-3">
-        <p class="badge badge-accent badge-outline" style="display: inline-block; margin-right: 10px;">보유한 하트: <span th:text="${userCyberMoney}"></span>개</p>
-        <p class="badge badge-accent badge-outline" style="display: inline-block; margin-right: 10px;">받은 하트: <span th:text="${receivedCyberMoney}"></span>개</p>
-        <p class="badge badge-accent badge-outline" style="display: inline-block; margin-right: 10px;">최소 하트: <span th:text="${minHeart}"></span>개</p>
+        <p class="badge badge-secondary badge-outline" style="display: inline-block; margin-right: 10px;">보유한 하트: <span th:text="${userCyberMoney}"></span>개</p>
+        <p class="badge badge-secondary badge-outline" style="display: inline-block; margin-right: 10px;">받은 하트: <span th:text="${receivedCyberMoney}"></span>개</p>
+        <p class="badge badge-secondary badge-outline" style="display: inline-block; margin-right: 10px;">최소 하트: <span th:text="${minHeart}"></span>개</p>
     </div>
 
 
@@ -45,10 +45,12 @@
 
     <div class="tab-buttons" style="display: flex; justify-content: center;">
         <div style="text-align: center; flex: 1;">
-            <button class="btn btn-outline btn-info" onclick="showTab('receivedTab')">받은 거래</button>
+            <button type="submit" class="btn"
+                    style="border-radius:10px; border :1px solid #f08dac; background-color :#f08dac" onclick="showTab('receivedTab')">누군가 하트를 보냈어요!</button>
         </div>
         <div style="text-align: center; flex: 1;">
-            <button class="btn btn-outline btn-info" onclick="showTab('completedTab')">완료된 거래</button>
+            <button type="submit" class="btn"
+                    style="border-radius:10px; border :1px solid #f08dac; background-color :#f08dac" onclick="showTab('completedTab')">지금까지 승인한 하트에요!</button>
         </div>
     </div>
     <div class="title" style="height: 20px;"></div>
@@ -105,9 +107,11 @@
     </div>
     <div class="flex-grow"></div>
     <div class="button-container">
-        <button class="btn-sm btn btn-outline btn-info"><a href="/user/payment"><i class="fa-solid fa-won-sign"></i> 결제하기</a></button>
+        <button type="submit" class="btn btn-sm"
+                style="border-radius:10px; border :1px solid #f08dac; background-color :#f08dac"><a href="/user/payment"><i class="fa-solid fa-won-sign"></i> 결제하기</a></button>
         <span class="spacer">|</span>
-        <button class="btn-sm btn btn-outline btn-info"><a href="/exchange/create"><i class="fa-solid fa-sack-dollar"></i> 환전하기</a></button>
+        <button type="submit" class="btn btn-sm"
+                style="border-radius:10px; border :1px solid #f08dac; background-color :#f08dac"><a href="/exchange/create"><i class="fa-solid fa-sack-dollar"></i> 환전하기</a></button>
     </div>
     <div style="height: 20px;"></div>
     <div class="outer-box" >
@@ -117,7 +121,8 @@
                 <p class="title text-lg border-b border-black">최소 하트값 설정</p>
                 <label for="minHeartInput">최소 하트값:</label>
                 <input type="number" name="minHeart" id="minHeartInput" placeholder="최소 하트값 입력" />
-                <button class="btn-sm btn btn-outline btn-info" type="submit">확인</button>
+                <button type="submit" class="btn btn-sm"
+                        style="border-radius:10px; border :1px solid #f08dac; background-color :#f08dac">확인</button>
             </form>
     </div>
 

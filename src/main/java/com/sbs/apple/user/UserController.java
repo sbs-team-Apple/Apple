@@ -529,4 +529,12 @@ public class UserController {
         model.addAttribute("siteUser", siteUser);
         return "user/setting";
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/test")
+    public String test(Principal principal, Model model) {
+        SiteUser siteUser = this.userService.getUserbyName(principal.getName());
+        model.addAttribute("siteUser", siteUser);
+        return "/test";
+    }
 }
