@@ -1,5 +1,7 @@
 package com.sbs.apple.interest;
 
+import com.sbs.apple.user.SiteUser;
+import com.sbs.apple.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -13,17 +15,22 @@ import java.util.List;
 public class InterestController {
     @Autowired
     private InterestService interestService;
+    @Autowired
+    private UserService userService;
 
+    //관심있는 사람 추가하기
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/user/add_interest/{id}")
     public String toggleInterest(Principal principal, @PathVariable Integer id, Model model) {
-        String interest_user = principal.getName();
+        String username = principal.getName();
+        SiteUser siteUser = userService.getUserbyName(username);
+        SiteUser receivedSiteUser =userService.getUser(id);
         model.addAttribute("userId", id);
-        boolean isInterested = interestService.isInterested(id, interest_user);
+        boolean isInterested = interestService.isInterested(siteUser,receivedSiteUser);
         if (isInterested) {
-            interestService.removeInterest(id, interest_user);
+            interestService.removeInterest(siteUser,receivedSiteUser);
         } else {
-            interestService.addInterest(id, interest_user);
+            interestService.addInterest(siteUser,receivedSiteUser);
         }
         return "redirect:/user/detail/{id}";
     }
@@ -34,18 +41,15 @@ public class InterestController {
     @GetMapping("/user/wish")
     public String showWish(Principal principal, Model model) {
         String username = principal.getName();
-        List<Interest> interestList = interestService.getWishUsers(username);
-        model.addAttribute("interestList", interestList);
+        SiteUser siteUser = userService.getUserbyName(username);
+
+        List<Interest> siteUserList = interestService.getSiteUser(siteUser);
+        model.addAttribute("siteUserList", siteUserList);
+
+        List<Interest> receivedSiteUserList = interestService.getReceivedSiteUser(siteUser);
+        model.addAttribute("receivedSiteUserList", receivedSiteUserList);
         return "wish";
     }
 
-    //나에게 관심 있는 사람 조회하기
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/user/wished")
-    public String showWished(Principal principal, Model model) {
-        String username = principal.getName();
-        List<Interest> interestList = interestService.getWishedUsers(username);
-        model.addAttribute("interestList", interestList);
-        return "wished";
-    }
 }
+

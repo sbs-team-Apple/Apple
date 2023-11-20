@@ -1,0 +1,38 @@
+<div class="underBody flex flex-col items-center"
+style="border: 1px solid rgb(198, 198, 198); padding: 20px 15px 15px 15px; border-radius: 15px; flex-direction: column; align-items: center;" >
+    <div>
+        <form th:action="@{/user/login}" method="post" class="login">
+            <div class="mb-2">
+                <input type="text" name="username" id="username" class="border border-solid border-gray-300"
+                       style="border-radius: 10px; width: 300px; height: 50px;" placeholder=" 아이디">
+            </div>
+            <div class="mb-10">
+                <input type="password" name="password" id="password" class="border border-solid border-gray-300"
+                       style="border-radius: 10px; width: 300px; height: 50px;" placeholder=" 비밀번호">
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="로그인" class="btn" style="padding: 0 131px; margin: 0;
+                border-radius:10px; border :1px solid #f08dac; background-color :#f08dac">
+            </div>
+            <div class="mb-8 text-center rounded-lg">
+            <span>
+                <a href="/user/signup" class="social-kakao">회원가입</a>
+            </span>
+                <span> | </span>
+                <span>
+                <a href="#">아이디 찾기</a>
+            </span>
+                <span> | </span>
+                <span>
+                <a href="#">비밀번호 찾기</a>
+            </span>
+            </div>
+
+
+        </form>
+        <div class="kakao border border-solid border-gray-300 text-center rounded-lg">
+            <a href="/oauth2/authorization/kakao">카카오 로그인</a>
+        </div>
+
+    </div>
+</div>

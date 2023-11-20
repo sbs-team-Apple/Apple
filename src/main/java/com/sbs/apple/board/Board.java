@@ -1,10 +1,15 @@
 package com.sbs.apple.board;
 
 
+import com.sbs.apple.imgs.Imgs;
+import com.sbs.apple.imgs.Imgs;
 import com.sbs.apple.user.SiteUser;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Setter
@@ -16,14 +21,20 @@ public class Board {
 
 
 
-    private String filename;
-    private String filepath;
+//    private String filename;
+//    private String filepath;
 
-    private String subject;
+
     private String content;
 
     @ManyToOne
     private SiteUser siteUser;
+
+
+    @OneToMany(mappedBy = "board" , cascade = CascadeType.REMOVE)
+    private List<Imgs> imgs;
+
+    private LocalDateTime createDate;
 
 
 

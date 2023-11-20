@@ -1,6 +1,9 @@
 package com.sbs.apple.util;
 
 
+import com.sbs.apple.board.Board;
+import com.sbs.apple.imgs.Imgs;
+import com.sbs.apple.imgs.ImgsService;
 import com.sbs.apple.notification.Notification;
 import com.sbs.apple.notification.NotificationService;
 import com.sbs.apple.user.SiteUser;
@@ -12,8 +15,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.Getter;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -43,9 +44,10 @@ public class Rq {
     private final UserService userService;
     private User user;
     private final NotificationService notificationService;
+    private final ImgsService imgsService;
 
 
-    public Rq(UserService userService ,NotificationService notificationService) {
+    public Rq(UserService userService ,NotificationService notificationService,ImgsService imgsService) {
         ServletRequestAttributes sessionAttributes = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes()));
         HttpServletRequest request = sessionAttributes.getRequest();
         HttpServletResponse response = sessionAttributes.getResponse();
@@ -54,6 +56,7 @@ public class Rq {
         this.session = request.getSession();
         this.userService=userService;
         this.notificationService=notificationService;
+        this.imgsService=imgsService;
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -167,6 +170,11 @@ public class Rq {
 
 
         return notificationList;
+    }
+
+    public List<Imgs> getImgs(Board board){
+        imgsService.getImgsByBoard(board);
+        return imgsService.getImgsByBoard(board);
     }
 }
 

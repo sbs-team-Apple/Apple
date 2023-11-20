@@ -51,6 +51,10 @@ public class ChatRoomService {
 
 
     public ChatRoom findRoomByUserIdAndUserId2(Integer userId, Integer userId2) {
+
+        if(chatRoomRepository.findRoomByUserIdAndUserId2(userId, userId2)==null){
+            return null;
+        }
         return chatRoomRepository.findRoomByUserIdAndUserId2(userId, userId2);
 
     }
