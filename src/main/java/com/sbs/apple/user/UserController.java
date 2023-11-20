@@ -522,11 +522,11 @@ public class UserController {
         return "user/interest_all";
     }
 
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/setting")
-    public String setting(Principal principal, Model model) {
-        SiteUser siteUser = this.userService.getUserbyName(principal.getName());
-        model.addAttribute("siteUser", siteUser);
-        return "user/setting";
-    }
+//    @PreAuthorize("isAuthenticated()")
+//    @GetMapping("/setting")
+//    public String setting(Principal principal, Model model) {
+//        SiteUser siteUser = this.userService.getUserbyName(principal.getName());
+//        model.addAttribute("siteUser", siteUser);
+//        return "user/setting";
+//    }
 }
