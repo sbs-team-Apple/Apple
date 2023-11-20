@@ -13,11 +13,13 @@
     <div class="m-auto  w-4/12 flex flex-col board-container  justify-center items-center">
         <div  class="mt-2 appeal-img-container " th:each="board : ${board}"  th:id="${board.id}">
             <div class="flex mb-2">
-                <div class="avatar ">
-                    <div class="w-10 rounded-full">
-                        <img th:src="${board.siteUser.filepath}">
+                <a th:href="@{|/user/detail/${board.siteUser.id}|}">
+                    <div class="avatar ">
+                        <div class="w-10 rounded-full">
+                            <img th:src="${board.siteUser.filepath}">
+                        </div>
                     </div>
-                </div>
+                </a>
                 <div class="ml-2" style="display:flex; align-items:center;">
                     <div th:text="${board.siteUser.nickname}"></div>
                 </div>
@@ -145,7 +147,10 @@
         margin-left:auto;
         margin-right:auto;
     }
-        .board-container div:first-child {
+
+
+
+    .board-container div:first-child {
             padding-top:0px;
         }
 
