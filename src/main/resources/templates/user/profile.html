@@ -83,13 +83,15 @@
 
         <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
             <div class="modal-box">
-                <h3 class="modal-title">사이버머니 보내기</h3>
+                <p>받는사람:</p>
+                <div th:text="${receivedSiteUser.username}" id="recipientUsername" class="form-control"></div>
                 <div class="modal-body">
-                    <p>금액을 입력해주세요:</p>
-                    <input type="number" id="cyberMoneyAmount" class="form-control" required>
+                    <p class="badge badge-secondary badge-outline" style="display: inline-block; margin-right: 10px;">보유중인 하트개수 : <span th:text="${userCyberMoney}"></span>개</p>
 
-                    <p>받는사람:</p>
-                    <div th:text="${receivedSiteUser.username}" id="recipientUsername" class="form-control"></div>
+                    <div th:text="'하트갯수를 입력해주세요. (최소하트 : ' + ${receivedSiteUser.minHeart} + '개)'"></div>
+                    <input type="number" id="cyberMoneyAmount" class="input input-sm input-bordered input-warning" required>
+
+
                 </div>
 
                 <div class="modal-action">
@@ -171,7 +173,7 @@
                     xhr.setRequestHeader(csrfHeader, csrfToken);
                 },
                 success: function () {
-                alert("사이버 머니가 성공적으로 전송 되었습니다.");
+                alert("하트가 성공적으로 전송 되었습니다.");
                     location.reload();
                     $('#cyberMoneyModal').modal('hide');
 

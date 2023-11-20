@@ -87,3 +87,7 @@ custom:
     multipart:
       maxFileSize: 10MB
       maxRequestSize: 100MB
+
+  app:
+    clientId: ${secret.clientId}
+    clientSecret: ${secret.clientSecret}
