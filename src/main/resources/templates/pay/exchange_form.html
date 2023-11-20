@@ -32,11 +32,13 @@
 </head>
 <body>
 <div layout:fragment="content" class="container my-3">
-<h5 class="my-3 border-bottom pb-2">환전신청</h5>
 <form th:action="@{/exchange/create}" th:object="${exchangeForm}" method="post">
 
     <div class="mb-3">
-        <input type="text" th:field="*{subject}" class="form-control">
+
+        <select type="text" th:field="*{subject}" class="form-control"onchange="toggleCustomAddress()">
+            <option value="input" selected>환전신청</option>
+        </select>
     </div>
 
     <div class="container">
@@ -68,8 +70,9 @@
         <input class="form-control" type="text" th:field="*{content}" id="cybermony_exchange" required placeholder="100개 이상 입력하세요."></p>
         <p class="error-message" id="error-message"></p>
     </div>
-    <input id="exchangeButton" type="submit" value="신청하러 가기" class="btn btn-primary my-2">
-    </form>
+    <input id="exchangeButton" type="submit" value="신청하러 가기" class="btn"
+           style="border-radius:10px; border :1px solid #f08dac; background-color :#f08dac">
+        </form>
     <script th:inline="javascript">
         var receivedCyberMoney = /*[[${receivedCyberMoney}]]*/ null; // 서버에서 제공한 값을 가져옵니다.
 

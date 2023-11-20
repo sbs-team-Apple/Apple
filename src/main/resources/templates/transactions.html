@@ -3,6 +3,15 @@
 <head>
     <!-- 필요한 스타일시트, 스크립트 등을 포함합니다. -->
     <style>
+        .bottom {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: #ffffff; /* 배경색 설정 */
+        padding: 20px; /* 필요한 경우 여백 설정 */
+        box-sizing: border-box;
+    }
         .Transactions_list {
             margin-bottom: 10px;
             border: 1px solid #000;
@@ -31,9 +40,8 @@
 </head>
 <body>
 
-<div layout:fragment="content" class="container m-auto flex justify-center flex-col items-center -mt-16 min-h-screen">
-    <div class="mt-16">
-    <div style="height: 50px;"></div>
+<div layout:fragment="content" class="pl-20 pr-20" style="padding-top:20px; padding-bottom:200px;">
+
     <div class="container_2 my-3">
         <p class="badge badge-secondary badge-outline" style="display: inline-block; margin-right: 10px;">보유한 하트: <span th:text="${userCyberMoney}"></span>개</p>
         <p class="badge badge-secondary badge-outline" style="display: inline-block; margin-right: 10px;">받은 하트: <span th:text="${receivedCyberMoney}"></span>개</p>
@@ -86,26 +94,23 @@
         </div>
 
 
-        <div id="completedTab" class="tab-content " style="display: none;">
-            <ul>
-                <li class="Transactions_list" th:each="transaction : ${completedTransactions}" th:if="${transaction.isAccepted()} or ${transaction.isRejected()}" style="display: flex; justify-content: space-between;"
-                    th:unless="${transaction.senderUser.username eq user.username}" th:remove="tag">
-                    <div>
+    <div id="completedTab" class="tab-content" style="display: none;">
+        <ul>
+            <li class="Transactions_list" th:each="transaction : ${completedTransactions}" th:if="${transaction.isAccepted()} or ${transaction.isRejected()}" style="display: flex; justify-content: space-between;" th:unless="${transaction.senderUser.username eq user.username}" th:remove="tag">
+                <div style="border: 1px solid #000; padding: 10px; margin-bottom:10px; display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                    <div style="display: flex; flex-direction: column;">
                         <p th:text="${transaction.senderUser.username} +' 님이 ♥ ' + ${transaction.amount} + '개를 보냈습니다'"></p>
-                        <p th:text="${transaction.transactionDate}"></p>
+                        <p style="margin: 0;" th:text="${transaction.transactionDate}"></p>
                     </div>
-                    <div> 승인 완료</div>
-                </li>
-            </ul>
-        </div>
-
-
-
-
-
-
+                    <div style="margin-left: auto;"> 승인 완료</div>
+                </div>
+            </li>
+        </ul>
     </div>
-    <div class="flex-grow"></div>
+
+
+
+<div class="bottom pr-20 pl-20">
     <div class="button-container">
         <button type="submit" class="btn btn-sm"
                 style="border-radius:10px; border :1px solid #f08dac; background-color :#f08dac"><a href="/user/payment"><i class="fa-solid fa-won-sign"></i> 결제하기</a></button>
@@ -125,7 +130,7 @@
                         style="border-radius:10px; border :1px solid #f08dac; background-color :#f08dac">확인</button>
             </form>
     </div>
-
+</div>
 <!--    <div class="outer-box">-->
 <!--        <div class="inner-box">-->
 <!--            <p class="title">마음에 드는 이성과 대화 해보세요!</p>-->

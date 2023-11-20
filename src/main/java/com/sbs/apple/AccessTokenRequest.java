@@ -7,18 +7,24 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 
-
+@Component
 public class AccessTokenRequest {
+
+    @Value("${secret.clientId}")
+    private String clientId;
+
+    @Value("${secret.clientSecret}")
+    private String clientSecret;
 
     public String requestToken() throws Exception {
         HttpClient httpClient = HttpClientBuilder.create().build();
 
-        String clientID = "445795d2-e19e-4da7-af8a-7634a6e68e67";
-        String clientSecret = "3be8754bbb31422e1a5f7b8c97f7f7cc";
-        String credentials = clientID + ":" + clientSecret;
+        String credentials = clientId + ":" + clientSecret;
         String base64Credentials = java.util.Base64.getEncoder().encodeToString(credentials.getBytes());
 
         HttpPost request = new HttpPost("http://svc.niceapi.co.kr:22001/digital/niceid/oauth/oauth/token");
