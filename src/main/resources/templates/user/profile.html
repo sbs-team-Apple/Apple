@@ -48,7 +48,7 @@
                     <button th:if="${chatRoom == null && log == null}" id="sendCyberMoneyBtn"
                             style="padding:5px 15px; border-radius:10px; border:3px solid purple;"
                             data-toggle="modal" data-target="#cyberMoneyModal">
-                        <i class="fa-solid fa-comment mr-1"></i>채팅방 만들기
+                        <i class="fa-solid fa-comment mr-1"></i>하트 보내기
                     </button>
                 </div>
 
@@ -82,11 +82,11 @@
             <div>
                 <div class="text-xl flex justify-center">
                     <button onclick="show_desired()" id="up_down"
-                            style="border: 1px solid black; border-radius: 10px; padding: 0 10px; margin: 10px 0;">
+                            style="border: 1px solid black; border-radius: 10px; padding: 0 90px; margin: 10px 0;">
                         <span>이상형</span><i id="icon" class="fa-solid fa-caret-down ml-1"></i>
                     </button>
                 </div>
-                <div style="display:none;" id="all">
+                <div class="mb-3" style="display:none;" id="all">
                     <div class="ml-2" th:text="'선호하는 나이 : ' + ${receivedSiteUser.desired_age}"></div>
                     <div class="ml-2" th:text="'선호하는 지역 : ' + ${receivedSiteUser.desired_living}"></div>
                     <div class="ml-2" th:text="'선호하는 이성 키 : ' + ${receivedSiteUser.desired_tall}"></div>
