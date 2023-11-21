@@ -11,6 +11,8 @@ import com.sbs.apple.cybermoney.CyberMoneyTransactionRepository;
 import com.sbs.apple.exchange.ExchangeRepository;
 import com.sbs.apple.exchange.ExchangeService;
 import com.sbs.apple.interest.InterestService;
+import com.sbs.apple.notification.Notification;
+import com.sbs.apple.notification.NotificationService;
 import com.sbs.apple.report.ReportForm;
 import com.sbs.apple.report.ReportService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -55,6 +57,8 @@ public class UserController {
     private final ExchangeService exchangeService;
     private final ExchangeRepository exchangeRepository;
     private final CyberMoneyServiceImpl cyberMoneyService;
+    private final NotificationService notificationService;
+
 
 
 
@@ -470,6 +474,12 @@ public class UserController {
 
             recipientUser.setReceivedCyberMoney(recipientUser.getReceivedCyberMoney() + transaction.getAmount());
             userRepository.save(recipientUser);
+            SiteUser senderUser = transaction.getSenderUser();
+
+            Notification notification=notificationService.findByUsers(senderUser,recipientUser);
+            if(notification != null ) {
+                notificationService.delete(notification);
+            }
         } else if ("reject".equals(action) && !transaction.isAccepted() && !transaction.isRejected()) {
             // 거래가 아직 수락되지 않았고 거부되지 않았을 경우에만 처리
             transaction.setRejected(true); // 거부 플래그 설정
@@ -478,6 +488,14 @@ public class UserController {
             SiteUser senderUser = transaction.getSenderUser();
             senderUser.setCyberMoney(senderUser.getCyberMoney() + transaction.getAmount());
             userRepository.save(senderUser);
+            Notification notification=notificationService.findByUsers(senderUser,recipientUser);
+            if(notification != null ) {
+                notificationService.delete(notification);
+            }
+
+
+
+
             return "redirect:/user/transactions";
         } else {
             return "redirect:/error?message=이미 수락 또는 거부된 거래입니다.";
