@@ -22,6 +22,23 @@
                     <div class="dropdown dropdown-bottom dropdown-end chat-option-icon text-right  ">
                         <label tabindex="0" class=" m-1 bg-white"><i class="fa-solid fa-gear fa-lg option-icon-img"></i></label>
                         <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-40">
+                            <li><a class="flex justify-end"><button class="btn" onclick="my_modal_6.showModal()">하트 보내기</button>
+                                <dialog id="my_modal_6" class="modal modal-bottom sm:modal-middle">
+                                    <div class="modal-box">
+                                        <h3 class="font-bold text-lg">경고</h3>
+                                        <p class="py-4">채팅방을 나가시면 또 하트를 보내야지만 채팅방이 만들어집니다. 채팅방을 나가시겠습니까?</p>
+                                        <div class="modal-action">
+
+                                            <form th:action="@{|/chat/${roomId}/delete|}" method="get">
+                                                <button class="btn" type="submit" >예 </button>
+                                            </form>
+                                            <form method="dialog">
+                                                <button class="btn">아니오</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </dialog>
+                            </a></li>
                             <li><a class="flex justify-end"><button class="btn" onclick="my_modal_5.showModal()">채팅방 나가기</button>
                                 <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
                                     <div class="modal-box">
