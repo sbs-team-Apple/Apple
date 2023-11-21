@@ -111,7 +111,8 @@
                             <div class="  content-end" style="text-align: right;"> 알림 없음 </div>
                         </div>
                         <div class="flex notification-item" th:each="notification : ${@rq.notification}">
-                            <div class="notification-text" th:text="${notification.siteUserFrom.nickname}+'님이 채팅방에 초대했습니다.'"></div>
+                            <div th:if="${notification.kind == 'chatRoom'}" class="notification-text" th:text="${notification.siteUserFrom.nickname}+'님이 채팅방을 만드는 것을 수락했습니다.'"></div>
+                            <div th:if="${notification.kind == 'money'}" class="notification-text" th:text="${notification.siteUserFrom.nickname}+'님이 하트를 보냈습니다.'"></div>
                             <button class="notification-cancel-btn" th:data-notification-id="${notification.id}">x</button>
                         </div>
 
@@ -220,7 +221,7 @@
       if(notification.kind=="chatRoom"){
      openModal(notification.userFrom.nickname + '님이 채팅방 초대를 수락했습니다.');
      }else {
-         openModal(notification.userFrom.nickname + '님이 1대1 채팅 초대했습니다.');
+         openModal(notification.userFrom.nickname + '님이 하트를 보내서 1대1 채팅에 초대했습니다.');
      }
   });
 }
@@ -358,8 +359,13 @@ getNewNotifications()
 }
 
     #notificationText{
-        margin-top:50px;
+       position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
         color:black;
+        text-align:center;
+        width:70%;
     }
 
 
