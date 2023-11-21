@@ -9,22 +9,26 @@
         .tab-button {
             cursor: pointer;
         }
-
+        .overflow-x-auto {
+        flex-wrap: wrap;
+        justify-content: space-around; /* 중앙 정렬을 위해 사용 */
+        gap: 20px; /* 각 요소 간의 간격 */
+    }
     </style>
     <meta charset="UTF-8">
 </head>
 <body>
-<div class="pl-20 pr-20" layout:fragment="content">
+<div layout:fragment="content" class="container m-auto flex justify-center flex-col items-center -mt-16">
     <div class="mt-16">
         <div class="tab-buttons border-b-2 border-solid border-black" style="display: flex; justify-content: center;">
             <div class="p-10" style="text-align: center; flex: 1;">
-                <button type="submit" class="btn w-full"
+                <button type="submit" class="btn"
                         style="border-radius:10px; border :1px solid #f08dac; background-color :#f08dac"
                         onclick="showTab('sendTab')">보낸관심
                 </button>
             </div>
             <div class="p-10" style="text-align: center; flex: 1;">
-                <button type="submit" class="btn w-full"
+                <button type="submit" class="btn"
                         style="border-radius:10px; border :1px solid #f08dac; background-color :#f08dac"
                         onclick="showTab('receivedTab')">받은관심
                 </button>
@@ -34,7 +38,7 @@
 
         <div class="title" style="height: 40px;"></div>
         <div id="sendTab" class="tab-content">
-            <div class="overflow-x-auto flex flex-wrap ">
+            <div class="overflow-x-auto flex">
                 <table class="table">
                     <tbody th:if="${#lists.isEmpty(siteUserList)}">
                     <tr>
@@ -43,8 +47,8 @@
                     </tbody>
 
 
-                    <div class="w-1/4 p-4  flex justify-center flex-col items-center"
-                         th:each="siteUserList : ${siteUserList}">
+                    <div class="profile_in" th:each="siteUserList : ${siteUserList}"
+                         style="margin-bottom:  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.3);">
                         <a th:href="@{|/user/detail/${siteUserList.receivedSiteUser.id}|}">
                             <div id="myImage">
                                 <img style="20px; border-radius-top:20px; border: 2px solid pink; width: 270px; height: 270px; object-fit: cover; border-top-left-radius: 20px; border-top-right-radius: 20px;"
@@ -68,32 +72,35 @@
 
 
         <div id="receivedTab" class="tab-content" style="display: none;">
-            <div class="overflow-x-auto flex flex-wrap ">
-                <table class="table" style="display:grid; grid-template-columns: repeat(2, 1fr); grid-gap: 10px;">
+            <div class="overflow-x-auto flex">
+                <table class="table">
                     <tbody th:if="${#lists.isEmpty(receivedSiteUserList)}">
                     <tr>
                         <td colspan="2">받은 관심이 없습니다.</td>
                     </tr>
                     </tbody>
-                    <div class="w-1/4 p-4  flex justify-center flex-col items-center"
-                         th:each="receivedSiteUserList : ${receivedSiteUserList}">
-                            <a th:href="@{|/user/detail/${receivedSiteUserList.SiteUser.id}|}">
-                                <div id="myImage2">
+
+
+                    <div class="profile_in" th:each="receivedSiteUserList : ${receivedSiteUserList}"
+                         style="margin-bottom:  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.3);">
+                        <a th:href="@{|/user/detail/${receivedSiteUserList.SiteUser.id}|}">
+                            <div id="myImage2">
                                 <img style="20px; border-radius-top:20px; border: 2px solid pink; width: 270px; height: 270px; object-fit: cover; border-top-left-radius: 20px; border-top-right-radius: 20px;"
-                                     th:src="@{|${receivedSiteUserList.SiteUser.filepath}|}" alt="User Image">
-                        </div>
-                        <div style="background-color: #f08dac; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;">
-                            <div class="text-center">
-                                <span th:text="${receivedSiteUserList.SiteUser.nickname}"></span>
-                                <span> | </span>
-                                <span th:text="${receivedSiteUserList.SiteUser.living}"></span>
-                                <span> | </span>
-                                <span th:text="${receivedSiteUserList.SiteUser.age}"></span>
+                                     th:src="@{|${receivedSiteUserList.SiteUser.filepath}|}"
+                                     alt="User Image">
+                            </div>
+                            <div style="background-color: #f08dac; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;">
+                                <div class="text-center">
+                                    <span th:text="${receivedSiteUserList.SiteUser.nickname}"></span>
+                                    <span> | </span>
+                                    <span th:text="${receivedSiteUserList.SiteUser.living}"></span>
+                                    <span> | </span>
+                                    <span th:text="${receivedSiteUserList.SiteUser.age}"></span>
                                 </div>
                                 <div th:text="${receivedSiteUserList.SiteUser.About_Me}"></div>
                             </div>
-                            </a>
-                        </div>
+                        </a>
+                    </div>
                 </table>
             </div>
         </div>
