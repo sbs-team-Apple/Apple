@@ -107,6 +107,9 @@
                     class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-59 btn-bell-box" style="display:none">
 
                     <ul class="notification-box" th:if="${@rq.login}">
+                        <div class="w-59 ml-auto" style="width:240px;" th:if="${@rq.notification.size()==0}">
+                            <div class="  content-end" style="text-align: right;"> 알림 없음 </div>
+                        </div>
                         <div class="flex notification-item" th:each="notification : ${@rq.notification}">
                             <div class="notification-text" th:text="${notification.siteUserFrom.nickname}+'님이 채팅방에 초대했습니다.'"></div>
                             <button class="notification-cancel-btn" th:data-notification-id="${notification.id}">x</button>
@@ -130,49 +133,6 @@
     </main>
 </div>
 
-<script>
-
-   document.addEventListener('DOMContentLoaded', function() {
-    // Select all x buttons.
-    var cancelButtons = document.querySelectorAll('.notification-cancel-btn');
-
-    // Add an event listener to each x button.
-    cancelButtons.forEach(function(button) {
-        button.addEventListener('click', function(event) {
-            // Find the parent element of the clicked x button.
-            var parentElement = event.target.parentElement;
-
-            // Find the sibling element with the class '.notification-text'.
-                var notificationId = event.target.dataset.notificationId;
-              console.log(notificationId+"asdsADASD" );
-
-
-              var csrfToken = document.querySelector("meta[name='_csrf']").getAttribute("content");
-            var csrfHeader = document.querySelector("meta[name='_csrf_header']").getAttribute("content");
-
-            var headers = new Headers();
-            headers.append(csrfHeader, csrfToken);
-            headers.append('Content-Type', 'application/json');
-
-                fetch('/delete/notification', {
-               method: 'POST',
-               headers: headers,
-               body: JSON.stringify({ 'notificationId': parseInt(notificationId, 10) })
-           })
-           .then(response => {
-               // Handle the response, if needed
-           })
-           .catch(error => {
-               // Handle errors, if any
-           });
-
-            if (parentElement) {
-                parentElement.remove(); // Delete that specific notification.
-            }
-        });
-    });
-});
-</script>
 
 
 
@@ -236,7 +196,7 @@
     type: 'GET',
     success: function(data) {
       // 서버에서 받은 데이터를 처리하여 페이지에 추가
-      addNewNotifications(data);
+     addNewNotifications(data);
     }
   });
 }
@@ -246,9 +206,22 @@
   var ul = $('.notification-box'); // 이 부분은 실제로 페이지의 요소에 맞게 수정해야 합니다.
 
   data.forEach(function(notification) {
-    var li = $('<li>' + notification.userFrom.nickname + '님이 채팅방에 초대했습니다.</li>');
-    ul.append(li);
-     openModal(notification.userFrom.nickname + '님이 채팅방에 초대했습니다.');
+    var notificationItem = $('<div/>' , { 'class': 'flex notification-item' });
+<!--    var li = $('<li>' + notification.userFrom.nickname + '님이 채팅방에 초대를 수락했습니다.</li>');-->
+    var li =$('<div/>', {'class' : 'notification-text',
+    text :  notification.userFrom.nickname+'님이 채팅방 초대를 수락했습니다.' });
+    var button = $('<button/>', {
+        'class': 'notification-cancel-btn',
+        'data-notification-id': notification.id,
+        text: 'X' // You can set the text content here if needed
+    });
+     <!-- ul.append(notificationItem); notificationItem.append(li); notificationItem.append(button); -->
+
+      if(notification.kind=="chatRoom"){
+     openModal(notification.userFrom.nickname + '님이 채팅방 초대를 수락했습니다.');
+     }else {
+         openModal(notification.userFrom.nickname + '님이 1대1 채팅 초대했습니다.');
+     }
   });
 }
 
@@ -271,6 +244,16 @@ getNewNotifications()
 </script>
 
 <script>
+    sse2.addEventListener('give_money', e => {
+
+       getNewNotifications();
+
+});
+
+
+</script>
+
+<script>
     const bell = $(".btn-bell");
     const bellBox=$(".btn-bell-box");
 
@@ -281,6 +264,51 @@ getNewNotifications()
 });
 
 </script>
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+     // Select all x buttons.
+     var cancelButtons = document.querySelectorAll('.notification-cancel-btn');
+
+     // Add an event listener to each x button.
+     cancelButtons.forEach(function(button) {
+         button.addEventListener('click', function(event) {
+             // Find the parent element of the clicked x button.
+             var parentElement = event.target.parentElement;
+
+             // Find the sibling element with the class '.notification-text'.
+                 var notificationId = event.target.dataset.notificationId;
+               console.log(notificationId+"asdsADASD" );
+
+
+               var csrfToken = document.querySelector("meta[name='_csrf']").getAttribute("content");
+             var csrfHeader = document.querySelector("meta[name='_csrf_header']").getAttribute("content");
+
+             var headers = new Headers();
+             headers.append(csrfHeader, csrfToken);
+             headers.append('Content-Type', 'application/json');
+
+                 fetch('/delete/notification', {
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify({ 'notificationId': parseInt(notificationId, 10) })
+            })
+            .then(response => {
+                // Handle the response, if needed
+            })
+            .catch(error => {
+                // Handle errors, if any
+            });
+
+             if (parentElement) {
+                 parentElement.remove(); // Delete that specific notification.
+             }
+         });
+     });
+ });
+</script>
+
 
 </body>
 
