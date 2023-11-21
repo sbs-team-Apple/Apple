@@ -11,6 +11,13 @@
     </div>
     <br><br>
     <div class=" w-12/12 flex flex-wrap  board-container  items-center">
+        <div th:if="${board.size()==0}">
+            <div>
+                게시물이 없습니다
+                <img src="/img/카메라2.jpg" alt="">
+            </div>
+        </div>
+        <img src="/img/pink.png" alt="">
         <div  class="appeal-img-container w-4/12 " th:each="board : ${board}">
             <a class="" th:href="@{|/board/myAppealBoardList#${board.id}|}">
                 <img  class="ex-current-img  " th:src=" ${@rq.getImgs(board).get(0).filepath}" alt="">
