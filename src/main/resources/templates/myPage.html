@@ -20,17 +20,31 @@
                 <span>
                     <a th:href="@{|/user/photoModify/${user.id}|}"
                        style="padding:2px 10px; border-radius:6px; border :1px solid purple">
-                        사진 수정</a>
+                        사진 변경</a>
             </span>
                 <span class="ml-1 mr-1">
                     <a href="/user/profile_modify" style="padding:2px 10px; border-radius:6px;
-                    border :1px solid #f08dac;">프로필 수정</a>
+                    border :1px solid #f08dac;">프로필 변경</a>
                 </span>
                 <span>
                     <a href="/user/desired_modify" style="padding:2px 10px; border-radius:6px;
-                    border : 1px solid #f08dac;">이상형 수정</a>
+                    border : 1px solid #f08dac;">이상형 변경</a>
                 </span>
             </div>
+
+            <div class="dropdown w-full">
+              <div class=" flex justify-end mr-2">
+                <label tabindex="0" class="btn">
+                    <i class="fa-solid fa-gear"></i>
+                </label>
+              </div>
+                <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                    <li><a>Homepage</a></li>
+                    <li><a>Portfolio</a></li>
+                    <li><a>About</a></li>
+                </ul>
+            </div>
+
 
             <div class="profile">
                 <div th:text="${user.nickname + ', ' + user.age}+', '+${user.mbti}" class="ml-2"
