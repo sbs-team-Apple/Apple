@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="ko" >
 <head>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -102,11 +104,12 @@
                 </button>
                 <br>
                 <ul tabindex="0"
-                    class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 btn-bell-box" style="display:none">
+                    class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-59 btn-bell-box" style="display:none">
 
                     <ul class="notification-box" th:if="${@rq.login}">
-                        <div th:each="notification : ${@rq.notification}">
-                            <div th:text="${notification.siteUserFrom.nickname}+'님이 채팅방에 초대했습니다.'"></div>
+                        <div class="flex notification-item" th:each="notification : ${@rq.notification}">
+                            <div class="notification-text" th:text="${notification.siteUserFrom.nickname}+'님이 채팅방에 초대했습니다.'"></div>
+                            <button class="notification-cancel-btn" th:data-notification-id="${notification.id}">x</button>
                         </div>
 
                     </ul>
@@ -126,6 +129,51 @@
         <th:block layout:fragment="content"></th:block>
     </main>
 </div>
+
+<script>
+
+   document.addEventListener('DOMContentLoaded', function() {
+    // Select all x buttons.
+    var cancelButtons = document.querySelectorAll('.notification-cancel-btn');
+
+    // Add an event listener to each x button.
+    cancelButtons.forEach(function(button) {
+        button.addEventListener('click', function(event) {
+            // Find the parent element of the clicked x button.
+            var parentElement = event.target.parentElement;
+
+            // Find the sibling element with the class '.notification-text'.
+                var notificationId = event.target.dataset.notificationId;
+              console.log(notificationId+"asdsADASD" );
+
+
+              var csrfToken = document.querySelector("meta[name='_csrf']").getAttribute("content");
+            var csrfHeader = document.querySelector("meta[name='_csrf_header']").getAttribute("content");
+
+            var headers = new Headers();
+            headers.append(csrfHeader, csrfToken);
+            headers.append('Content-Type', 'application/json');
+
+                fetch('/delete/notification', {
+               method: 'POST',
+               headers: headers,
+               body: JSON.stringify({ 'notificationId': parseInt(notificationId, 10) })
+           })
+           .then(response => {
+               // Handle the response, if needed
+           })
+           .catch(error => {
+               // Handle errors, if any
+           });
+
+            if (parentElement) {
+                parentElement.remove(); // Delete that specific notification.
+            }
+        });
+    });
+});
+</script>
+
 
 
 <script>
