@@ -14,6 +14,7 @@ public class NotificationDTO {
     private SiteUserDTO userFrom;
 
 
+
     public NotificationDTO(Notification notification) {
         this.id = notification.getId();
         this.kind = notification.getKind();
