@@ -213,7 +213,7 @@ const sse2 = new EventSource(`/sse/connect/userId_${userId}`);
 
 // 서버로부터 "chat__messageAdded" 라는 명령이 내려오면 아래 함수를 실행
 sse2.addEventListener('invite_chatRoom', e => {
-alert("채팅방에 초대됨");
+
 
 getNewNotifications()
 });

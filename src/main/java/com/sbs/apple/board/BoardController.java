@@ -198,6 +198,17 @@ public class BoardController {
         return "board/my_appeal_board";
     }
 
+    @GetMapping("/myAppealBoardList")
+    public String showMyBoardList(Principal principal, Model model) {
+        SiteUser user = userService.getUserbyName(principal.getName());
+        List<Board> boards = boardService.getBoardByUserId(user);
+
+        model.addAttribute("board", boards);
+
+        return "board/my_appeal_board_list";
+    }
+
+
 
     @GetMapping("/desiredList")
     public String showMyDreamUsers(Principal principal, Model model) {
