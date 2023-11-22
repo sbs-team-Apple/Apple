@@ -372,4 +372,13 @@ public class UserService {
     public boolean isUsernameAlreadyExists(String username) {
         return userRepository.existsByUsername(username);
     }
+
+    public RsData checkUsernameDup(String username) {
+        if (findByUsername(username).isPresent()) return RsData.of("F-1", "%s(은)는 사용중인 아이디입니다.".formatted(username));
+        return RsData.of("S-1", "%s(은)는 사용 가능한 아이디입니다.".formatted(username));
+    }
+    public RsData checkNicknameDup(String nickname) {
+        if (findByNickname(nickname).isPresent()) return RsData.of("F-1", "%s(은)는 사용중인 닉네임입니다.".formatted(nickname));
+        return RsData.of("S-1", "%s(은)는 사용 가능한 닉네임입니다.".formatted(nickname));
+    }
 }
