@@ -11,6 +11,16 @@
     </div>
     <br><br>
     <div class=" w-12/12 flex flex-wrap  board-container  items-center">
+        <div th:if="${board.size()==0}">
+            <img src="/img/camera1.jpg" alt="">
+            <div class="no-img">
+                게시물이 없습니다
+
+            </div>
+
+        </div>
+
+
         <div  class="appeal-img-container w-4/12 " th:each="board : ${board}">
             <a class="" th:href="@{|/board/myAppealBoardList#${board.id}|}">
                 <img  class="ex-current-img  " th:src=" ${@rq.getImgs(board).get(0).filepath}" alt="">
@@ -48,6 +58,7 @@
   .board-container {
         margin-top:150px;
       border-top:1px solid black;
+      position:relative;
 
 
   }
@@ -63,5 +74,15 @@
       height:120px;
   }
 
+
+
+    .no-img {
+        position:absolute;
+        top:80%;
+        left:50%;
+        transform: translate(-50%,-50%);
+        font-size:20px;
+
+    }
 </style>
 
