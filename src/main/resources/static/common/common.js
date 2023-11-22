@@ -46,4 +46,7 @@ function toastWarning(msg) {
     if (needToShow) {
         toastr["warning"](pureMsg, "경고");
     }
+    function setTimeoutZero(callback) {
+        setTimeout(callback);
+    }
 }
