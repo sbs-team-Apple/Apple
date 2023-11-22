@@ -75,7 +75,7 @@
 
 
                         <li class="nav-item" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
-                            <a class="nav-link" th:href="@{/admin/report_list}">신고 게시판</a>
+                            <a  class="nav-link" th:href="@{/admin/report_list}">신고 게시판</a>
                         </li>
                         <li class="nav-item" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
                             <a class="nav-link" th:href="@{/admin/exchange_list}">환전 게시판</a>
@@ -90,16 +90,16 @@
             <div class="navbar-center">
                 <a th:href="@{/}" class="btn btn-ghost normal-case text-xl">The Cupid</a>
             </div>
-            <div class="navbar-end">
+            <div  class="navbar-end">
                                 <div  class="userIdDiv" th:if="${@rq.login}" th:text="${@rq.user.id}"></div>
-                <button class="btn btn-ghost btn-circle btn-bell">
+                <button th:if="${@rq.login}" class="btn btn-ghost btn-circle btn-bell">
                     <div class="indicator">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                              stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
                         </svg>
-                        <span class="badge badge-xs badge-primary indicator-item"></span>
+                        <span th:if="${@rq.notification.size()>0}"  class="badge badge-xs badge-primary indicator-item"></span>
                     </div>
                 </button>
                 <br>
@@ -111,15 +111,15 @@
                             <div class="  content-end" style="text-align: right;"> 알림 없음 </div>
                         </div>
                         <div class="flex notification-item" th:each="notification : ${@rq.notification}">
-                            <div th:if="${notification.kind == 'chatRoom'}" class="notification-text" th:text="${notification.siteUserFrom.nickname}+'님이 채팅방을 만드는 것을 수락했습니다.'"></div>
+                            <div th:if="${notification.kind == 'chatRoom'}" class="notification-text" th:text="${notification.siteUserFrom.nickname}+'님이 초대를 수락해 채팅방이 만들어졌습니다.'"></div>
                             <div th:if="${notification.kind == 'money'}" class="notification-text" th:text="${notification.siteUserFrom.nickname}+'님이 하트를 보냈습니다.'"></div>
-                            <button class="notification-cancel-btn" th:data-notification-id="${notification.id}">x</button>
+                            <button class="notification-cancel-btn" th:data-notification-id="${notification.id}">&nbsp;X</button>
                         </div>
 
                     </ul>
                 </ul>
             </div>
-            <div id="myModal" class="modal2">
+            <div  id="myModal" class="modal2">
                 <div class="modal-content">
                     <span class="close">&times;</span>
                     <p id="notificationText"></p>
@@ -135,7 +135,45 @@
 </div>
 
 
+<script>
+    // 페이지가 로드될 때 실행되는 함수
+    document.addEventListener("DOMContentLoaded", function() {
+      // notification-text 클래스가 존재하는지 확인
+      var notificationTextExists = $('.notification-text');
+      console.log(notificationTextExists);
 
+      // notification-text 클래스가 존재하는 경우
+      if (notificationTextExists.length >0) {
+        // indicator 아이디를 가진 요소를 표시
+      $('#indicator').css('display', 'inline');
+            console.log("알림표시");
+      } else {
+                    // notification-text 클래스가 존재하지 않는 경우
+            $('#indicator').css('display', 'none');
+            console.log("알림표시안함");
+      }
+    });
+</script>
+
+<script >
+    function noti(){
+          var notificationTextExists = $('.notification-text');
+      console.log(notificationTextExists);
+
+      // notification-text 클래스가 존재하는 경우
+      if (notificationTextExists.length >0) {
+        // indicator 아이디를 가진 요소를 표시
+      $('#indicator').css('display', 'inline');
+            console.log("알림표시");
+      } else {
+                    // notification-text 클래스가 존재하지 않는 경우
+            $('#indicator').css('display', 'none');
+            console.log("알림표시안함");
+      }
+
+    }
+
+</script>
 
 <script>
 
@@ -149,11 +187,13 @@
 
   closeButton.onclick = function() {
     modal.style.display = "none";
+     location.reload();
   };
 
   window.onclick = function(event) {
     if (event.target == modal) {
       modal.style.display = "none";
+        location.reload();
     }
   };
 }
@@ -233,7 +273,7 @@
      <!-- ul.append(notificationItem); notificationItem.append(li); notificationItem.append(button); -->
 
       if(notification.kind=="chatRoom"){
-     openModal(notification.userFrom.nickname + '님이 채팅방 초대를 수락했습니다.');
+     openModal(notification.userFrom.nickname + '님이 초대를 수락해 채팅방이 만들어졌습니다.');
      }else {
          openModal(notification.userFrom.nickname + '님이 하트를 보내서 1대1 채팅에 초대했습니다.');
      }
@@ -281,7 +321,7 @@ getNewNotifications()
 </script>
 
 <script>
-
+<!-- 알림 x 버튼 누를시 서버로 정보 보내서 db 에서 알림기록 삭제해준느거-->
     document.addEventListener('DOMContentLoaded', function() {
      // Select all x buttons.
      var cancelButtons = document.querySelectorAll('.notification-cancel-btn');
@@ -290,6 +330,7 @@ getNewNotifications()
      cancelButtons.forEach(function(button) {
          button.addEventListener('click', function(event) {
              // Find the parent element of the clicked x button.
+             noti();
              var parentElement = event.target.parentElement;
 
              // Find the sibling element with the class '.notification-text'.
