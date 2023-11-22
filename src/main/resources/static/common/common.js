@@ -27,6 +27,10 @@ function parseMsg(msg) {
 
     return [pureMsg, true];
 }
+function toastMsg(isNotice, msg) {
+    if ( isNotice ) toastNotice(msg);
+    else toastWarning(msg);
+}
 
 function toastNotice(msg) {
     const [pureMsg, needToShow] = parseMsg(msg);
@@ -41,5 +45,8 @@ function toastWarning(msg) {
 
     if (needToShow) {
         toastr["warning"](pureMsg, "경고");
+    }
+    function setTimeoutZero(callback) {
+        setTimeout(callback);
     }
 }
