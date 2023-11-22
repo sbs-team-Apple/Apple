@@ -12,8 +12,8 @@
             <i class="fa-solid fa-user-plus"></i>
             회원가입
         </h1>
-        <form enctype="multipart/form-data" th:action="@{/user/signup}" th:object="${userCreateForm}" name="join-form"
-              method="post" onsubmit="submitJoinForm(this); return false;" class="flex flex-col gap-6" style="margin-bottom:40px;">
+        <form enctype="multipart/form-data" th:action name="join-form" method="post" th:object="${userCreateForm}"
+               onsubmit="submitJoinForm(this); return false;" class="flex flex-col gap-6" style="margin-bottom:40px;">
             <div class="form-control" style="text-align: center;">
                 <label class="label">
                     <span class="label-text" style="font-size: 18px; font-weight: bold;">프로필 이미지</span>
@@ -77,28 +77,20 @@
         </form>
         <script>
             function checkUsernameDup(form) {
-
                 form.username.value = form.username.value.trim();
                  if ( form.username.value.length == 0 ) {
                     clearUsernameInputMsg();
                     return;
                 }
-
                 if ( form.username.value.length < 4 ) {
                     clearUsernameInputMsg();
                     return;
                 }
 
                 if ( validUsername == form.username.value ) return;
-
                 if ( lastCheckedUsername == form.username.value ) return;
-
-                if ( form.username.value.length < 4 ) return;
                 lastCheckedUsername = form.username.value;
-
                 clearUsernameInputMsg();
-
-
                 fetch(
                     'checkUsernameDup?username=' + form.username.value
                 )
@@ -110,24 +102,22 @@
                          setUsernameInputMsg(rsData.success, rsData.msg);
                     });
             }
+
             function checkNicknameDup(form) {
                 form.nickname.value = form.nickname.value.trim();
-
                  if ( form.nickname.value.length == 0 ) {
                     clearNicknameInputMsg();
                     return;
                 }
-
                 if ( form.nickname.value.length < 4 ) {
                     clearNicknameInputMsg();
                     return;
                 }
                 if ( validNickname == form.nickname.value ) return;
-
                 if ( lastCheckedNickname == form.nickname.value ) return;
-                 lastCheckedNickname = form.nickname.value;
-                clearNicknameInputMsg();
+                lastCheckedNickname = form.nickname.value;
 
+                clearNicknameInputMsg();
                 fetch(
                     'checkNicknameDup?nickname=' + form.nickname.value
                 )
@@ -139,7 +129,8 @@
                         setNicknameInputMsg(rsData.success, rsData.msg);
                     });
             }
-             const joinForm = document['join-form'];
+
+            const joinForm = document['join-form'];
             const checkUsernameDupDebounce = _.debounce(() => checkUsernameDup(joinForm), 500);
             const checkNicknameDupDebounce = _.debounce(() => checkNicknameDup(joinForm), 500);
 
@@ -171,8 +162,11 @@
             let validUsername = '';
             let validNickname = '';
             let submitJoinFormDone = false;
+
             function submitJoinForm(form) {
                 if (submitJoinFormDone) return;
+
+
 
                 form.username.value = form.username.value.trim();
 
@@ -216,6 +210,11 @@
                     toastWarning('닉네임을 입력해주세요.');
                     return;
                 }
+                if ( form.nickname.value.length < 4 ) {
+                    form.nickname.focus();
+                    toastWarning('닉네임을 4자 이상 입력해주세요.');
+                    return;
+                }
                  if ( validUsername != form.username.value ) {
                     $(form.username).next().focus();
                     toastWarning('아이디 중복체크를 해주세요.');
@@ -226,6 +225,14 @@
                     toastWarning('아이디 중복체크를 해주세요.');
                     return;
                 }
+                form.file.value = form.file.value.trim();
+
+                if (form.file.value.length == 0) {
+                    form.file.focus();
+                    toastWarning('사진을 등록해주세요.');
+                    return;
+                }
+
                 form.submit();
                 submitJoinFormDone = true;
             }
