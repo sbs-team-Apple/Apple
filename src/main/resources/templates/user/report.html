@@ -8,18 +8,22 @@
 <div layout:fragment="content" class="container m-auto flex justify-center flex-col items-center">
 
     <form th:action="@{'/user/report/' + ${userId}}" th:object="${reportForm}" method="post">
+        <div>
+            <div class="mb-3 flex justify-center" style="font-size: 25px; font-weight: bold;">신고하기</div>
+            <div class="mb-5">
+                <input type="text" name="subject" id="subject" placeholder="제목" style="outline:3px solid pink;"
+                       class="input input-bordered input-secondary w-full max-w-xs">
+            </div>
+            <div class="mb-3">
+            <textarea name="content" id="content" placeholder="내용" class="textarea textarea-secondary w-full max-w-xs"
+                      rows="10" style="outline:3px solid pink;"></textarea>
+            </div>
+            <div class="flex justify-center">
+                <input type="submit" value="제출하기" style="padding:5px 100px; border-radius:10px; border:5px solid red;
+                    font-size: 15px; font-weight: bold;">
+            </div>
+        </div>
 
-        <div class="mb-3">
-            <input type="text" name="subject" id="subject" placeholder="제목"
-                   class="input input-bordered input-info w-full max-w-xs">
-        </div>
-        <div class="mb-3">
-            <textarea name="content" id="content" placeholder="내용" class="textarea textarea-info w-full max-w-xs"
-                      rows="15"></textarea>
-        </div>
-        <div class="flex justify-end">
-            <input type="submit" value="신고하기" class="btn btn-primary my-2">
-        </div>
     </form>
     <div th:include="common/menu.html" class="tap_bar"></div>
     <style>

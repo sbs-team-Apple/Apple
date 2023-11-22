@@ -1,20 +1,22 @@
 <div class="underBody flex flex-col items-center"
-style="border: 1px solid rgb(198, 198, 198); padding: 20px 15px 15px 15px; border-radius: 15px; flex-direction: column; align-items: center;" >
+     style="border: 1px solid rgb(198, 198, 198); padding: 20px 15px 15px 15px; border-radius: 15px; flex-direction: column; align-items: center;">
     <div>
         <form th:action="@{/user/login}" method="post" class="login">
             <div class="mb-2">
-                <input type="text" name="username" id="username" class="border border-solid border-gray-300"
-                       style="border-radius: 10px; width: 300px; height: 50px;" placeholder=" 아이디">
+                <input type="text" name="username" id="username"
+                       style="border-radius: 10px; width: 300px; height: 50px; outline:2px solid gray;"
+                       placeholder=" 아이디">
             </div>
-            <div class="mb-10">
-                <input type="password" name="password" id="password" class="border border-solid border-gray-300"
-                       style="border-radius: 10px; width: 300px; height: 50px;" placeholder=" 비밀번호">
+            <div class="mb-8">
+                <input type="password" name="password" id="password"
+                       style="border-radius: 10px; width: 300px; height: 50px; outline:2px solid gray;"
+                       placeholder=" 비밀번호">
             </div>
             <div class="mb-3">
-                <input type="submit" value="로그인" class="btn" style="padding: 0 131px; margin: 0;
+                <input type="submit" value="로그인" class="btn" style="padding: 0 123px; margin: 0; color:white; font-size:20px;
                 border-radius:10px; border :1px solid #f08dac; background-color :#f08dac">
             </div>
-            <div class="mb-8 text-center rounded-lg">
+            <div class="mb-4 text-center rounded-lg">
             <span>
                 <a href="/user/signup" class="social-kakao">회원가입</a>
             </span>
@@ -28,11 +30,17 @@ style="border: 1px solid rgb(198, 198, 198); padding: 20px 15px 15px 15px; borde
             </span>
             </div>
 
-
         </form>
-        <div class="kakao border border-solid border-gray-300 text-center rounded-lg">
-            <a href="/oauth2/authorization/kakao">카카오 로그인</a>
+        <div class="text-center mb-1" style="height:50px;">
+            <span class="mr-2" style="width:100px; outline:1px solid black; border-radius:5px; padding: 10px 20px;"><a href="/oauth2/authorization/kakao">카카오 로그인</a></span>
+            <span class="ml-2" style="width:100px; outline:1px solid black; border-radius:5px; padding: 10px 20px;"><a href="#">네이버 로그인</a></span>
         </div>
-
+        <div class="text-center" style="height:50px;">
+            <span class="mr-2" style="width:100px;outline:1px solid black; border-radius:5px; padding: 10px 20px;"><a href="#">구글 로그인</a></span>
+            <span class="ml-2" style="width:100px;outline:1px solid black; border-radius:5px; padding: 10px 20px;"><a href="#">페이스북 로그인</a></span>
+        </div>
+        <div>
+            <a href="board/"></a>
+        </div>
     </div>
 </div>
