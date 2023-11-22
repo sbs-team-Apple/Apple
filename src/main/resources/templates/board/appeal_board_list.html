@@ -11,7 +11,7 @@
     </div>
     <br><br>
     <div class="m-auto w-4/12 flex flex-col board-container  justify-center items-center">
-        <div  class="mt-2 appeal-img-container" th:each="board : ${board}">
+        <div  class="mt-2 appeal-img-container" th:each="board : ${board}"  th:id="${board.id}">
             <div class="flex mb-2">
                 <a th:href="@{|/user/detail/${board.siteUser.id}|}">
                     <div class="avatar ">
@@ -48,6 +48,13 @@
                     <button class="nextButton img-btn"><i class="fa-regular fa-circle-right fa-2xl"></i></button>
                 </div>
             </div>
+                <div>
+                    <a th:href="@{|/board/like/${board.id}|}" class="recommend btn btn-sm btn-outline-secondary" >
+                        좋아요
+                        <span class="badge rounded-pill bg-success" th:text="${#lists.size(board.like)}"></span>
+                    </a>
+
+                </div>
 
                   <div class="img-content" >
                      <div th:text="${board.content}"></div>
