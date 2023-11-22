@@ -10,15 +10,13 @@
         <a th:href="@{/board/create}"><i class="fa-solid fa-square-plus fa-2xl"></i></a>
     </div>
     <br><br>
-    <div class="m-auto w-4/12 flex flex-col board-container  justify-center items-center">
-        <div  class="mt-2 appeal-img-container" th:each="board : ${board}">
+    <div class="m-auto  w-4/12 flex flex-col board-container  justify-center items-center">
+        <div  class="mt-2 appeal-img-container " th:each="board : ${board}"  th:id="${board.id}">
             <div class="flex mb-2">
                 <a th:href="@{|/user/detail/${board.siteUser.id}|}">
                     <div class="avatar ">
                         <div class="w-10 rounded-full">
-
-                             <img th:src="${board.siteUser.filepath}">
-
+                            <img th:src="${board.siteUser.filepath}">
                         </div>
                     </div>
                 </a>
@@ -38,7 +36,7 @@
             </div>
 
 
-            <div class="flex board-img-box ">
+            <div class="flex board-img-box  ">
                 <div th:each="img : ${@rq.getImgs(board)}" class="slide">
                     <img class="w-30 h-30 board-img" th:src="@{|${img.filepath}|}" alt="">
 
@@ -49,17 +47,17 @@
                 </div>
             </div>
 
-                  <div class="img-content" >
-                     <div th:text="${board.content}"></div>
-<!--                <div class="flex">-->
+            <div class="img-content" >
+                <div th:text="${board.content}"  ></div>
+                <!--                <div class="flex">-->
 
-<!--                <div th:text="${board.siteUser.age}+'/'"></div>-->
-<!--                    <div th:text="${board.siteUser.nickname}+'/'"></div>-->
+                <!--                <div th:text="${board.siteUser.age}+'/'"></div>-->
+                <!--                    <div th:text="${board.siteUser.nickname}+'/'"></div>-->
 
-<!--                    <div th:text="${board.siteUser.living}"></div>-->
+                <!--                    <div th:text="${board.siteUser.living}"></div>-->
 
-<!--                </div>-->
-                  </div>
+                <!--                </div>-->
+            </div>
 
 
 
@@ -119,7 +117,7 @@
         width:40%;
 
         padding-bottom:20px;
-        padding-top: 100px;
+         padding-top: 100px;
 
     }
 
@@ -150,10 +148,11 @@
         margin-right:auto;
     }
 
-      .board-container div:first-child {
+
+
+    .board-container div:first-child {
             padding-top:0px;
         }
-
 
 
     .board-img-box{
@@ -217,64 +216,65 @@
 </style>
 
 
-
 <script>
 
- $(document).ready(function() {
-     $(".board-img-box").each(function() {
-         var currentSlide = 0;
-         var slides = $(this).find(".slide");
+    $(document).ready(function() {
+        $(".board-img-box").each(function() {
+            var currentSlide = 0;
+            var slides = $(this).find(".slide");
 
-         var prevButton = $(this).find(".prevButton");
-         var nextButton = $(this).find(".nextButton");
+            var prevButton = $(this).find(".prevButton");
+            var nextButton = $(this).find(".nextButton");
 
-         if(slides.length==1){
-           prevButton.hide();
-           nextButton.hide();
-         }
-
-         showSlide(currentSlide);
-         updateButtonVisibility(currentSlide);
-
-         prevButton.click(function() {
-             showSlide(currentSlide - 1);
-         });
-
-         nextButton.click(function() {
-             showSlide(currentSlide + 1);
-         });
-
-         function showSlide(slideIndex) {
-             if (slideIndex < 0) {
-                 slideIndex = slides.length - 1;
-             } else if (slideIndex >= slides.length) {
-                 slideIndex = 0;
-             }
-
-             slides.eq(currentSlide).removeClass('active');
-             slides.eq(slideIndex).addClass('active');
-             currentSlide = slideIndex;
-             updateButtonVisibility(currentSlide);
-         }
-
-         function updateButtonVisibility(currentSlideIndex) {
-             if (slides.length === 1) {
-                prevButton.hide();
-                nextButton.hide();
+            if(slides.length==1){
+              prevButton.hide();
+              nextButton.hide();
             }
 
-             else if (currentSlideIndex === 0) {
-                 prevButton.hide();
-                 nextButton.show();
-             } else if (currentSlideIndex === slides.length - 1) {
-                 prevButton.show();
-                 nextButton.hide();
-             } else {
-                 prevButton.show();
-                 nextButton.show();
-             }
-         }
-     });
- });
+            showSlide(currentSlide);
+            updateButtonVisibility(currentSlide);
+
+            prevButton.click(function() {
+                showSlide(currentSlide - 1);
+            });
+
+            nextButton.click(function() {
+                showSlide(currentSlide + 1);
+            });
+
+            function showSlide(slideIndex) {
+                if (slideIndex < 0) {
+                    slideIndex = slides.length - 1;
+                } else if (slideIndex >= slides.length) {
+                    slideIndex = 0;
+                }
+
+                slides.eq(currentSlide).removeClass('active');
+                slides.eq(slideIndex).addClass('active');
+                currentSlide = slideIndex;
+                updateButtonVisibility(currentSlide);
+            }
+
+            function updateButtonVisibility(currentSlideIndex) {
+                if (slides.length === 1) {
+                   prevButton.hide();
+                   nextButton.hide();
+               }
+
+                else if (currentSlideIndex === 0) {
+                    prevButton.hide();
+                    nextButton.show();
+                } else if (currentSlideIndex === slides.length - 1) {
+                    prevButton.show();
+                    nextButton.hide();
+                } else {
+                    prevButton.show();
+                    nextButton.show();
+                }
+            }
+        });
+    });
 </script>
+
+
 

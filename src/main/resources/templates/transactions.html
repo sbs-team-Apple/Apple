@@ -23,7 +23,7 @@
 
         .title {
         font-size: 20px;
-        border-bottom: 2px solid #000;
+        border-bottom: 1px solid #d9d9d9;
         margin-bottom: 10px;
 
         }
@@ -46,12 +46,12 @@
 
         <div class="tab-buttons" style="display: flex; justify-content: center;">
             <div style="text-align: center; flex: 1;">
-                <button type="submit" class="btn mr-1"
-                        style="border-radius:10px; border :1px solid #f08dac; background-color :#f08dac" onclick="showTab('receivedTab')">누군가 하트를 보냈어요!</button>
+                <button type="submit" class="btn mr-1 w-full"
+                        style="border-radius:10px; border :1px solid #f08dac; background-color :#F48FB1" onclick="showTab('receivedTab')">Receive!</button>
             </div>
             <div style="text-align: center; flex: 1;">
-                <button type="submit" class="btn ml-1"
-                        style="border-radius:10px; border :1px solid #f08dac; background-color :#f08dac" onclick="showTab('completedTab')">승인이 완료된 하트에요!</button>
+                <button type="submit" class="btn ml-1 w-full"
+                        style="border-radius:10px; border :1px solid #FABBEE; background-color :#BBCBFA" onclick="showTab('completedTab')">Complete!</button>
             </div>
         </div>
         <div class="title" style="height: 20px;"></div>
@@ -91,11 +91,12 @@
             <ul>
                 <li class="Transactions_list" th:each="transaction : ${completedTransactions}" th:if="${transaction.isAccepted()} or ${transaction.isRejected()}" style="display: flex; justify-content: space-between;"
                     th:unless="${transaction.senderUser.username eq user.username}" th:remove="tag">
-                    <div>
+                    <div style="border :1px solid #FABBEE; padding:5px;">
                         <p th:text="${transaction.senderUser.username} +' 님이 ♥ ' + ${transaction.amount} + '개를 보냈습니다'"></p>
-                        <p th:text="${transaction.transactionDate}"></p>
+                        <p th:text="${#dates.format(transaction.transactionDate, 'yyyy-MM-dd')}"></p>
+
                     </div>
-                    <div> 승인 완료</div>
+
                 </li>
             </ul>
         </div>

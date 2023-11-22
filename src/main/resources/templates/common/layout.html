@@ -9,7 +9,12 @@
 <!--드로그앤 드롭 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js" integrity="sha512-zYXldzJsDrNKV+odAwFYiDXV2Cy37cwizT+NkuiPGsa9X1dOz04eHvUWVuxaJ299GvcJT31ug2zO4itXBjFx4w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 
+    <!-- Plugin -->
+    <link rel="stylesheet" href="https://rawgit.com/enyo/dropzone/master/dist/dropzone.css" />
+    <script src="https://rawgit.com/enyo/dropzone/master/dist/dropzone.js"></script>
 
     <!-- 제이쿼리 불러오기 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -62,9 +67,9 @@
                         <li class="nav-item" sec:authorize="isAuthenticated()">
                             <a th:href="@{/user/transactions}"><i class="fa-solid fa-heart"></i>하트</a>
                         </li>
-                        <li class="nav-item" sec:authorize="isAuthenticated()">
-                            <a th:href="@{/user/setting}">내 정보 수정</a>
-                        </li>
+<!--                        <li class="nav-item" sec:authorize="isAuthenticated()">-->
+<!--                            <a th:href="@{/user/setting}">내 정보 수정</a>-->
+<!--                        </li>-->
 
 
                         <li class="nav-item" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
@@ -208,7 +213,7 @@ const sse2 = new EventSource(`/sse/connect/userId_${userId}`);
 
 // 서버로부터 "chat__messageAdded" 라는 명령이 내려오면 아래 함수를 실행
 sse2.addEventListener('invite_chatRoom', e => {
-alert("채팅방에 초대됨");
+
 
 getNewNotifications()
 });
@@ -234,6 +239,7 @@ getNewNotifications()
 <style>
     .navbar {
         position:relative;
+        z-index:10;
     }
 
 

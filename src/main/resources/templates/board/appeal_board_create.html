@@ -8,35 +8,46 @@
 <div layout:fragment="content" class="container my-3">
     <div class="ml-auto mr-auto w-60 ">
             <form  class="imgForm" enctype="multipart/form-data" th:action="@{/board/create}"  object="${boardForm}" method="post" >
-
+                <button type="button" class="add-file-input mb-2 mt-2"><i class="fa-solid fa-file-circle-plus fa-2xl"></i></button>
                 <div class="current-img"></div>
+
+
+
+
+
                 <div id="file-input-container">
 
-        <!--            <input type="file" name="file" accept="image/*" class="image-file-input">-->
 
-                    <button type="button" class="add-file-input">사진 추가</button>
-                </div>
-                <div class="column">
 
+                    <!--            <input type="file" name="file" accept="image/*" class="image-file-input">-->
 
                 </div>
 
+                <div class="image-preview-container" >
 
-                <div>제목</div>
-                <input type="text" name="subject">
-                <div>내용</div>
-                <input type="text" name="content">
+                    <div class="column mt-4">
 
-                <button  class="end-function" type="submit" onclick="onSubmitClick()">작성 완료</button>
+
+                    </div>
+                    <div class="scroll-btn-left scroll-btn" id="scroll-left"><i class="fa-solid fa-angle-up fa-rotate-270 fa-2xl"></i></div>   <div  class="scroll-btn scroll-btn-right" id="scroll-right"><i class="fa-solid fa-angle-up fa-rotate-90 fa-2xl"></i></div>
+
+                </div>
+
+
+                <textarea type="text" name="content" class="textarea textarea-secondary" placeholder="내용을 입력하세요"></textarea>
+
+                <button type="submit" class="btn end-function"  onclick="onSubmitClick()"
+                        style="margin-left:auto; border-radius:10px; border :1px solid #f08dac; background-color :#f08dac">
+                    <span>작성</span>
+                </button>
 
 
 
             </form>
-
     </div>
 
 
-    <button onclick="SubmitClick()">dd</button>
+<!--    <button onclick="SubmitClick()">dd</button>-->
 
 </div>
 </body>
@@ -44,7 +55,7 @@
 
 <style>
     .ex-current-img {
-        width:300px;
+        width:240px;
         height:300px;
 
     }
@@ -57,15 +68,45 @@
         right:0;
     }
 
+
+
+    .image-preview-container {
+          width: calc(100%);
+                  position:relative;
+
+    }
      .column {
-        position :absolute;
-        top:50px;
-        right:0;
+        display:flex;
+           border:1px solid black;
+           overflow-x: auto;
+        border-radius:10px;
+            scrollbar-width: auto;
+              height:100px;
+
     }
 
 
+    .column::-webkit-scrollbar {
+    width: 2px; /* Adjust scrollbar width */
+      height: 10px;
+}
+
+.column::-webkit-scrollbar-thumb {
+    background-color: #888; /* Scrollbar thumb color */
+    border-radius: 5px; /* Rounded corners */
+}
+
+.column::-webkit-scrollbar-track {
+    background-color: #f1f1f1; /* Scrollbar track color */
+    border-radius: 8px; /* Rounded track */
+}
+
+
+
     .image-preview {
-                    position:relative;
+           position:relative;
+            flex: 0 0 auto;
+
 
     }
     .ex-img {
@@ -73,6 +114,9 @@
                 height:80px;
 
             position:relative;
+             border-radius:10px;
+           border:1px solid black;
+
 
     }
 
@@ -80,12 +124,94 @@
         position:absolute;
         top:0;
         right:0;
-        background-color:red;
         width:20px;
         height:20px;
 
 
     }
+
+    .textarea{
+       width:240px;
+       margin-top:20px;
+
+    }
+
+
+           .scroll-btn-left{
+        position:absolute;
+        top:50%;
+
+        left:-40px;
+        transform:translate(0,-50%);
+                  padding:10px;
+
+
+    }
+    .scroll-btn-right{
+        position:absolute;
+        top:50%;
+        right:-40px;
+          transform:translate(0,-50%);
+          padding:10px;
+
+
+    }
+
+
+
+
+
+
+.dropzone {
+  width: 98%;
+  margin: 1%;
+  border: 2px dashed #3498db !important;
+  border-radius: 5px;
+  -webkit-transition: .2s;
+  transition: .2s;
+}
+
+.dropzone.dz-drag-hover {
+  border: 2px solid #3498db !important;
+}
+
+.dz-message.needsclick img {
+  width: 50px;
+  display: block;
+  margin: auto;
+  opacity: .6;
+  margin-bottom: 15px;
+}
+
+span.plus {
+  display: none;
+}
+
+.dropzone.dz-started .dz-message {
+  display: inline-block !important;
+  width: 120px;
+  float: right;
+  border: 1px solid rgba(238, 238, 238, 0.36);
+  border-radius: 30px;
+  height: 120px;
+  margin: 16px;
+  -webkit-transition: .2s;
+  transition: .2s;
+}
+
+.dropzone.dz-started .dz-message span.text {
+  display: none;
+}
+
+.dropzone.dz-started .dz-message span.plus {
+  display: block;
+  font-size: 70px;
+  color: #AAA;
+  line-height: 110px;
+}
+
+
+
 </style>
 
 <script>
@@ -153,7 +279,7 @@ console.log(indexImg);
 
 
 
-     alert('작성 완료 버튼 클릭됨!');
+
 
      // 폼을 서버로 제출
     $('end-function').submit();
@@ -197,7 +323,7 @@ console.log(indexImg);
                       }) ;
                      previewImage.attr("src", e.target.result);
 
-                     var cancelBtn =$("<div>", {class:"cancelBtn",currentIndex   ,onclick:"hideImagePreview(this)"} );
+                     var cancelBtn =$("<div>", {class:"cancelBtn fa-solid fa-xmark",currentIndex   ,onclick:"hideImagePreview(this)"} );
 
                      currentIndex++;
 
@@ -287,4 +413,19 @@ console.log(indexImg);
     }
 </script>
 
+<script>
+    $(document).ready(function() {
+        $('#scroll-left').on('click', function() {
+            $('.column').animate({
+                scrollLeft: '-=100' // Adjust the scroll amount as needed
+            }, 'slow');
+        });
+
+        $('#scroll-right').on('click', function() {
+            $('.column').animate({
+                scrollLeft: '+=100' // Adjust the scroll amount as needed
+            }, 'slow');
+        });
+    });
+</script>
 
