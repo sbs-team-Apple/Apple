@@ -176,6 +176,15 @@ public class Rq {
         imgsService.getImgsByBoard(board);
         return imgsService.getImgsByBoard(board);
     }
+    public String historyBack(String msg) {
+        String referer = request.getHeader("referer");
+        String key = "historyBackFailMsg___" + referer;
+        request.setAttribute("localStorageKeyAboutHistoryBackFailMsg", key);
+        request.setAttribute("historyBackFailMsg", msg);
+        // 200 이 아니라 400 으로 응답코드가 지정되도록
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        return "common/js";
+    }
 }
 
 
