@@ -13,6 +13,67 @@
         </h1>
 
         <script>
+            function checkUsernameDup(el) {
+                const form = $(el).closest('form')[0];
+
+                form.username.value = form.username.value.trim();
+
+                if ( form.username.value.length == 0 ) {
+                    form.username.focus();
+                    toastWarning('아이디를 입력해주세요.');
+                    return;
+                }
+
+                if ( form.username.value.length < 4 ) {
+                    form.username.focus();
+                    toastWarning('아이디를 4자 이상 입력해주세요.');
+                    return;
+                }
+
+                fetch(
+                    'checkUsernameDup?username=' + form.username.value
+                )
+                    .then(request => request.json())
+                    .then((rsData) => {
+                        if ( rsData.msg ) toastMsg(rsData.success, rsData.msg);
+                        if ( rsData.success ) {
+                            validUsername = form.username.value;
+                            $(form.username).addClass('input-accent');
+                        }
+                    });
+            }
+            function checkNicknameDup(el) {
+                const form = $(el).closest('form')[0];
+
+                form.nickname.value = form.nickname.value.trim();
+
+                if ( form.nickname.value.length == 0 ) {
+                    form.nickname.focus();
+                    toastWarning('닉네임을 입력해주세요.');
+                    return;
+                }
+
+                if ( form.nickname.value.length < 4 ) {
+                    form.nickname.focus();
+                    toastWarning('닉네임를 4자 이상 입력해주세요.');
+                    return;
+                }
+
+                fetch(
+                    'checkNicknameDup?nickname=' + form.nickname.value
+                )
+                    .then(request => request.json())
+                    .then((rsData) => {
+                        if ( rsData.msg ) toastMsg(rsData.success, rsData.msg);
+                        if ( rsData.success ) {
+                            validNickname = form.nickname.value;
+                            $(form.nickname).addClass('input-accent');
+                        }
+                    });
+            }
+
+            let validUsername = '';
+            let validNickname = '';
             let submitJoinFormDone = false;
             function submitJoinForm(form) {
                 if (submitJoinFormDone) return;
@@ -22,6 +83,11 @@
                 if (form.username.value.length == 0) {
                     form.username.focus();
                     toastWarning('아이디를 입력해주세요.');
+                    return;
+                }
+                if ( form.username.value.length < 4 ) {
+                    form.username.focus();
+                    toastWarning('아이디를 4자 이상 입력해주세요.');
                     return;
                 }
 
@@ -54,7 +120,16 @@
                     toastWarning('닉네임을 입력해주세요.');
                     return;
                 }
-
+                 if ( validUsername != form.username.value ) {
+                    $(form.username).next().focus();
+                    toastWarning('아이디 중복체크를 해주세요.');
+                    return;
+                }
+                if ( validNickname != form.nickname.value ) {
+                    $(form.nickname).next().focus();
+                    toastWarning('아이디 중복체크를 해주세요.');
+                    return;
+                }
                 form.submit();
                 submitJoinFormDone = true;
             }
@@ -74,7 +149,10 @@
                     <span class="label-text" style="font-size: 18px; font-weight: bold;">아이디</span>
                 </label>
                 <input type="text" name="username" placeholder="아이디" class="input input-bordered input-secondary" autofocus
-                       maxlength="30">
+                maxlength="30" onchange="$(this).removeClass('input-accent');">
+                <button onclick="checkUsernameDup(this);" type="button" class="btn btn-block mt-2">
+                    <span>아이디 중복체크</span>
+                </button>
                 <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" style="color: red;"></p>
             </div>
 
@@ -97,7 +175,11 @@
                 <label class="label" style="font-size: 18px; font-weight: bold;">
                     <span class="label-text">닉네임</span>
                 </label>
-                <input type="text" name="nickname" placeholder="닉네임" class="input input-bordered input-secondary" maxlength="30">
+                <input type="text" name="nickname" placeholder="닉네임" class="input input-bordered input-secondary"
+                       maxlength="30" onchange="$(this).removeClass('input-accent');">
+                <button onclick="checkNicknameDup(this);" type="button" class="btn btn-block mt-2">
+                    <span>닉네임 중복체크</span>
+                </button>
             </div>
 
             <div class="form-control">

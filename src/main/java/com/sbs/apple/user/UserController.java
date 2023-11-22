@@ -15,6 +15,7 @@ import com.sbs.apple.notification.Notification;
 import com.sbs.apple.notification.NotificationService;
 import com.sbs.apple.report.ReportForm;
 import com.sbs.apple.report.ReportService;
+import com.sbs.apple.util.Rq;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -47,7 +48,7 @@ import java.util.Optional;
 @RequestMapping("/user")
 public class UserController {
 
-
+    private final Rq rq;
     private final UserService userService;
     private final ReportService reportService;
     private final UserRepository userRepository;
@@ -69,23 +70,30 @@ public class UserController {
 
     @PostMapping("/signup")
     public String signup2(@Valid UserCreateForm userCreateForm, BindingResult bindingResult,
-                          RedirectAttributes redirectAttributes, Model model, MultipartFile file, HttpServletRequest req)
+                          RedirectAttributes redirectAttributes, Model model, MultipartFile file)
             throws Exception {
-
         RsData<SiteUser> joinRs = userService.create(false, false, userCreateForm.getFile(), userCreateForm.getUsername(), userCreateForm.getPassword1(),
                 userCreateForm.getNickname(), userCreateForm.getGender());
         if (joinRs.getResultCode().equals("F-1")) {
-            req.setAttribute("msg", joinRs.getMsg());
-            return "common/js";
+            return rq.historyBack(joinRs.getMsg());
         }
         if (joinRs.getResultCode().equals("F-2")) {
-            req.setAttribute("msg", joinRs.getMsg());
-            return "common/js";
+            return rq.historyBack(joinRs.getMsg());
         }
         redirectAttributes.addAttribute("id", joinRs.getData().getId());
         return "redirect:/user/add/" + joinRs.getData().getId();
     }
+    @GetMapping("/checkUsernameDup")
+    @ResponseBody
+    public RsData checkUsernameDup(String username) {
+        return userService.checkUsernameDup(username);
+    }
 
+    @GetMapping("/checkNicknameDup")
+    @ResponseBody
+    public RsData checkNicknameDup(String nickname) {
+        return userService.checkNicknameDup(nickname);
+    }
 
     @GetMapping("/add/{id}")
     public String add1(UserAddForm userAddForm, @PathVariable("id") Integer id, Model model) {
