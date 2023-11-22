@@ -7,6 +7,7 @@ import com.sbs.apple.user.SiteUser;
 import com.sbs.apple.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -220,6 +221,15 @@ public class BoardController {
 
 
         return "board/my_desiredList";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/like/{id}")
+    public String boradLike(Principal principal, @PathVariable("id") Integer id) {
+        Board board = this.boardService.getBoard(id);
+        SiteUser siteUser = this.userService.getUser(principal.getName());
+        this.boardService.like(board, siteUser);
+        return String.format("redirect:/board/appealList#%s",id);
     }
 
 
