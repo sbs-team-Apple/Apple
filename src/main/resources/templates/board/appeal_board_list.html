@@ -51,7 +51,7 @@
             </div>
                 <div class="flex">
                     <div class="heart-container mr-4">
-                        <a class="recommend btn btn-sm btn-outline-secondary   " style=" "th:onclick="'likeBoard(' + ${board.id} + ')'">
+                        <a class=" " style=" "th:onclick="'likeBoard(' + ${board.id} + ')'">
                         <div th:classappend="${!@rq.checkLike(board)} ? 'empty-heart' : 'empty-heart hidden'">
                             <i class="fa-regular fa-heart " style="color: #df1616; ">
 
