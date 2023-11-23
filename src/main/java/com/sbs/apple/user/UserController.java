@@ -484,10 +484,10 @@ public class UserController {
             userRepository.save(recipientUser);
             SiteUser senderUser = transaction.getSenderUser();
 
-            Notification notification=notificationService.findByUsers(senderUser,recipientUser);
-            if(notification != null ) {
-                notificationService.delete(notification);
-            }
+//            Notification notification=notificationService.findByUsers(senderUser,recipientUser);
+//            if(notification != null ) {
+//                notificationService.delete(notification);
+//            }
         } else if ("reject".equals(action) && !transaction.isAccepted() && !transaction.isRejected()) {
             // 거래가 아직 수락되지 않았고 거부되지 않았을 경우에만 처리
             transaction.setRejected(true); // 거부 플래그 설정
@@ -496,10 +496,10 @@ public class UserController {
             SiteUser senderUser = transaction.getSenderUser();
             senderUser.setCyberMoney(senderUser.getCyberMoney() + transaction.getAmount());
             userRepository.save(senderUser);
-            Notification notification=notificationService.findByUsers(senderUser,recipientUser);
-            if(notification != null ) {
-                notificationService.delete(notification);
-            }
+//            Notification notification=notificationService.findByUsers(senderUser,recipientUser);
+//            if(notification != null ) {
+//                notificationService.delete(notification);
+//            }
 
 
 
