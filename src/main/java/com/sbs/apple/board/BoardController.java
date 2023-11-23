@@ -28,6 +28,7 @@ public class BoardController {
     private final BoardService boardService;
     private final ImgsService imgsService;
     private final BoardRepository boardRepository;
+    private Board board;
 
 
     @GetMapping("/create")
@@ -229,7 +230,7 @@ public class BoardController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/like/{id}")
     public String boradLike(Principal principal, @PathVariable("id") Integer id) {
-        Board board = this.boardService.getBoard(id);
+        board = this.boardService.getBoard(id);
         SiteUser siteUser = this.userService.getUser(principal.getName());
         if(board.getLike().contains(siteUser)){
             board.getLike().remove(siteUser);
@@ -242,14 +243,14 @@ public class BoardController {
             System.out.println("하트 누른 사람 추가");
 
         }
-        return String.format("redirect:/board/appealList#%s",id);
+        return "board/appeal_board_list";
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/like/{id}")
     @ResponseBody
     public  Map<String, Integer>  boradLike2(Principal principal, @PathVariable("id") Integer id, Model model) {
-        Board board = this.boardService.getBoard(id);
+        System.out.println("좋아요수 업데이트 해주기--------------------------");
         Map<String, Integer> response = new HashMap<>();
         response.put("likeCount", board.getLike().size()); // Add the like count to the response
 
