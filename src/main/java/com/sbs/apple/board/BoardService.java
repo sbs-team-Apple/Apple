@@ -108,5 +108,10 @@ public class BoardService {
     }
 
 
+    public void like(Board board, SiteUser siteUser) {
+        board.getLike().add(siteUser);
+        this.boardRepository.save(board);
+    }
+
 
 }

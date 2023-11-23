@@ -7,7 +7,7 @@
 <body>
 <div layout:fragment="content" class="container my-3">
     <div class="ml-auto mr-auto w-60 ">
-            <form  class="imgForm" enctype="multipart/form-data" th:action="@{/board/create}"  object="${boardForm}" method="post" >
+            <form  class="imgForm ml-auto mr-auto" enctype="multipart/form-data" th:action="@{/board/create}"  object="${boardForm}" method="post" >
                 <button type="button" class="add-file-input mb-2 mt-2"><i class="fa-solid fa-file-circle-plus fa-2xl"></i></button>
                 <div class="current-img"></div>
 
@@ -37,7 +37,7 @@
                 <textarea type="text" name="content" class="textarea textarea-secondary" placeholder="내용을 입력하세요"></textarea>
 
                 <button type="submit" class="btn end-function"  onclick="onSubmitClick()"
-                        style="margin-left:auto; border-radius:10px; border :1px solid #f08dac; background-color :#f08dac">
+                        style="display: block; margin-left:auto;  border-radius:10px; border :1px solid #f08dac; background-color :#f08dac">
                     <span>작성</span>
                 </button>
 
