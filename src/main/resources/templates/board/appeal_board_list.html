@@ -50,9 +50,11 @@
                 </div>
             </div>
                 <div>
-                    <a class="recommend btn btn-sm btn-outline-secondary" th:onclick="'likeBoard(' + ${board.id} + ')'">
-                        <div th:if="${@rq.checkLike(board)}"><i class="fa-regular fa-heart" style="color: #df1616;"></i></div>
-                        <div><i class="fa-solid fa-heart" style="color: #df1616;"></i></div>
+                    <a class="recommend btn btn-sm btn-outline-secondary heart-container" th:onclick="'likeBoard(' + ${board.id} + ')'">
+                        <div th:if="${!@rq.checkLike(board)}" class="empty-heart"><i class="fa-regular fa-heart" style="color: #df1616;"></i></div>
+                        <div th:if="${@rq.checkLike(board)}"  class="full-heart"><i class="fa-solid fa-heart" style="color: #df1616;"></i></div>
+                        <div  class="empty-heart2 hidden"><i class="fa-regular fa-heart" style="color: #df1616;"></i></div>
+                        <div   class="full-heart2 hidden"><i class="fa-solid fa-heart" style="color: #df1616;"></i></div>
                         <span class="badge rounded-pill bg-success likeNum"
                                   th:id="'likeCount-' + ${board.id}" ></span>
                         <span class="ex hidden "  th:data-initial-value="${#lists.size(board.like)}" th:text="${#lists.size(board.like)}" ></span>
@@ -85,6 +87,17 @@
 </div>
 </body>
 </html>
+
+<script>
+    $('.heart-container').on('click', '.empty-heart:not(.hidden), .full-heart:not(.hidden)', function() {
+      var $clickedHeart = $(this);
+      var $siblingHeart = $clickedHeart.siblings('.empty-heart:not(.hidden), .full-heart:not(.hidden)');
+
+      $clickedHeart.toggleClass('hidden');
+      $siblingHeart.toggleClass('hidden');
+  });
+
+</script>
 <script>
 
 
