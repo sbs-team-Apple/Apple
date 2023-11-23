@@ -49,9 +49,9 @@
                 </div>
             </div>
                 <div>
-                    <a th:href="@{|/board/like/${board.id}|}" class="recommend btn btn-sm btn-outline-secondary" >
+                    <a class="recommend btn btn-sm btn-outline-secondary" th:onclick="'likeBoard(' + ${board.id} + ')'">
                         좋아요
-                        <span class="badge rounded-pill bg-success" th:text="${#lists.size(board.like)}"></span>
+                        <span class="badge rounded-pill bg-success" th:id="'likeCount-' + ${board.id}" th:text="${#lists.size(board.like)}"></span>
                     </a>
 
                 </div>
@@ -82,6 +82,73 @@
 </body>
 </html>
 
+<script>
+    function getLikeBoard(boardId) {
+              $.ajax({
+              type: "GET",
+              url: `/board/like/${boardId}`,
+
+              success: function(response) {
+              // 서버에서 좋아요 처리 후 반환된 데이터를 처리
+              // 여기서는 좋아요 수를 업데이트
+                console.log("좋아요 수 업데이트");
+                 updateLikeCountSpan(response, boardId);
+
+                },
+
+              error: function(err) {
+              console.error('에러 발생: ', err);
+              }
+              });
+          }
+
+</script>
+
+<script>
+    function likeBoard(boardId) {
+
+      var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+        $.ajax({
+            type: "POST",
+            url: `/board/like/${boardId}`,
+
+              beforeSend: function(xhr) {
+            // Include CSRF token in request header
+            xhr.setRequestHeader(header, token);
+        },
+            success: function(response) {
+                // 서버에서 좋아요 처리 후 반환된 데이터를 처리
+                // 여기서는 좋아요 수를 업데이트
+                console.log("좋아요 수 보내기");
+
+                getLikeBoard(boardId);
+            },
+            error: function(err) {
+                console.error('에러 발생: ', err);
+            }
+        });
+    }
+
+    function updateLikeCountSpan(response, boardId) {
+    // Assuming your span has an ID like 'likeCountSpan-BOARD_ID'
+   var updatedLikeCount = response.likeCount;
+   console.log("현재 좋아요수 "+updatedLikeCount);
+
+    // Update the UI element for the like count of the specific board
+    // Assuming you have a span element with an ID like 'likeCountSpan-BOARD_ID'
+    var spanId = '#likeCountSpan-' + boardId;
+    console.log("현재 좋아요 업데이트 해야 할 태그"+spanId)
+
+    // Update the content of the span with the new like count
+     $(spanId).text(0);
+    $(spanId).text(updatedLikeCount);
+     $(spanId).text("0");
+}
+</script>
+
+
+
 <style>
 
     .board-img-box {
@@ -104,6 +171,8 @@
     #prevButton, #nextButton {
         cursor: pointer;
     }
+
+
 
 
     .navbar {
