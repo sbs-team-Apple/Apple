@@ -8,6 +8,7 @@
 <div layout:fragment="content" class="container my-3 w-10/12 m-auto">
     <div class="board-create-container">
         <a th:href="@{/board/create}"><i class="fa-solid fa-square-plus fa-2xl"></i></a>
+        <div class="ex2">2</div>
     </div>
     <br><br>
     <div class="m-auto w-4/12 flex flex-col board-container  justify-center items-center">
@@ -50,8 +51,11 @@
             </div>
                 <div>
                     <a class="recommend btn btn-sm btn-outline-secondary" th:onclick="'likeBoard(' + ${board.id} + ')'">
-                        좋아요
-                        <span class="badge rounded-pill bg-success" th:id="'likeCount-' + ${board.id}" th:text="${#lists.size(board.like)}"></span>
+                        <div th:if="${@rq.checkLike(board)}"><i class="fa-regular fa-heart" style="color: #df1616;"></i></div>
+                        <div><i class="fa-solid fa-heart" style="color: #df1616;"></i></div>
+                        <span class="badge rounded-pill bg-success likeNum"
+                                  th:id="'likeCount-' + ${board.id}" ></span>
+                        <span class="ex hidden "  th:data-initial-value="${#lists.size(board.like)}" th:text="${#lists.size(board.like)}" ></span>
                     </a>
 
                 </div>
@@ -81,6 +85,19 @@
 </div>
 </body>
 </html>
+<script>
+
+
+     // Update the content of the span with the new like count
+
+
+  $('.ex').each(function() {
+    var initialValue = $(this).data('initial-value');
+    $(this).siblings('.likeNum').text(initialValue);
+});
+
+</script>
+
 
 <script>
     function getLikeBoard(boardId) {
@@ -137,13 +154,16 @@
 
     // Update the UI element for the like count of the specific board
     // Assuming you have a span element with an ID like 'likeCountSpan-BOARD_ID'
-    var spanId = '#likeCountSpan-' + boardId;
+    var spanId = $('#likeCount-' + boardId);
     console.log("현재 좋아요 업데이트 해야 할 태그"+spanId)
-
+    console.log(spanId);
     // Update the content of the span with the new like count
-     $(spanId).text(0);
-    $(spanId).text(updatedLikeCount);
-     $(spanId).text("0");
+     $(spanId).siblings('.ex').text(updatedLikeCount);
+
+     $(spanId).text($(spanId).siblings('.ex').text());
+
+
+
 }
 </script>
 
