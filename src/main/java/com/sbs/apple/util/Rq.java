@@ -2,6 +2,7 @@ package com.sbs.apple.util;
 
 
 import com.sbs.apple.board.Board;
+import com.sbs.apple.board.BoardService;
 import com.sbs.apple.imgs.Imgs;
 import com.sbs.apple.imgs.ImgsService;
 import com.sbs.apple.notification.Notification;
@@ -25,6 +26,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -45,9 +47,10 @@ public class Rq {
     private User user;
     private final NotificationService notificationService;
     private final ImgsService imgsService;
+    private final BoardService boardService;
 
 
-    public Rq(UserService userService ,NotificationService notificationService,ImgsService imgsService) {
+    public Rq(UserService userService ,NotificationService notificationService,ImgsService imgsService,BoardService boardService) {
         ServletRequestAttributes sessionAttributes = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes()));
         HttpServletRequest request = sessionAttributes.getRequest();
         HttpServletResponse response = sessionAttributes.getResponse();
@@ -57,6 +60,7 @@ public class Rq {
         this.userService=userService;
         this.notificationService=notificationService;
         this.imgsService=imgsService;
+        this.boardService=boardService;
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -185,6 +189,19 @@ public class Rq {
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         return "common/js";
     }
+
+    public boolean checkLike( Board board){
+        SiteUser user =getUser();
+        if(board.getLike().contains(user)){
+            return true;
+
+        }else {
+            return false;
+        }
+
+
+    }
+
 }
 
 

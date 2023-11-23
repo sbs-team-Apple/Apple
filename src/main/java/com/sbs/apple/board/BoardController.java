@@ -237,7 +237,7 @@ public class BoardController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/like/{id}")
     @ResponseBody
-    public  Map<String, Integer>  boradLike2(Principal principal, @PathVariable("id") Integer id) {
+    public  Map<String, Integer>  boradLike2(Principal principal, @PathVariable("id") Integer id, Model model) {
         Board board = this.boardService.getBoard(id);
         SiteUser siteUser = this.userService.getUser(principal.getName());
         this.boardService.like(board, siteUser);
