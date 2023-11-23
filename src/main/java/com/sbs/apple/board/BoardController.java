@@ -15,7 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @RequiredArgsConstructor
@@ -224,12 +226,25 @@ public class BoardController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/like/{id}")
+    @PostMapping("/like/{id}")
     public String boradLike(Principal principal, @PathVariable("id") Integer id) {
         Board board = this.boardService.getBoard(id);
         SiteUser siteUser = this.userService.getUser(principal.getName());
         this.boardService.like(board, siteUser);
         return String.format("redirect:/board/appealList#%s",id);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/like/{id}")
+    @ResponseBody
+    public  Map<String, Integer>  boradLike2(Principal principal, @PathVariable("id") Integer id) {
+        Board board = this.boardService.getBoard(id);
+        SiteUser siteUser = this.userService.getUser(principal.getName());
+        this.boardService.like(board, siteUser);
+        Map<String, Integer> response = new HashMap<>();
+        response.put("likeCount", board.getLike().size()); // Add the like count to the response
+
+        return response;
     }
 
 
