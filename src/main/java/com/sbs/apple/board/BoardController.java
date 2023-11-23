@@ -27,6 +27,7 @@ public class BoardController {
     private final UserService userService;
     private final BoardService boardService;
     private final ImgsService imgsService;
+    private final BoardRepository boardRepository;
 
 
     @GetMapping("/create")
@@ -230,7 +231,17 @@ public class BoardController {
     public String boradLike(Principal principal, @PathVariable("id") Integer id) {
         Board board = this.boardService.getBoard(id);
         SiteUser siteUser = this.userService.getUser(principal.getName());
-        this.boardService.like(board, siteUser);
+        if(board.getLike().contains(siteUser)){
+            board.getLike().remove(siteUser);
+            boardRepository.save(board);
+            System.out.println("이미 하트 눌렀던 애 사라짐");
+                    
+
+        }else {
+            this.boardService.like(board, siteUser);
+            System.out.println("하트 누른 사람 추가");
+
+        }
         return String.format("redirect:/board/appealList#%s",id);
     }
 
@@ -239,8 +250,6 @@ public class BoardController {
     @ResponseBody
     public  Map<String, Integer>  boradLike2(Principal principal, @PathVariable("id") Integer id, Model model) {
         Board board = this.boardService.getBoard(id);
-        SiteUser siteUser = this.userService.getUser(principal.getName());
-        this.boardService.like(board, siteUser);
         Map<String, Integer> response = new HashMap<>();
         response.put("likeCount", board.getLike().size()); // Add the like count to the response
 

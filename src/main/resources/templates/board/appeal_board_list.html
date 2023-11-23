@@ -49,15 +49,25 @@
                     <button class="nextButton img-btn"><i class="fa-regular fa-circle-right fa-2xl"></i></button>
                 </div>
             </div>
-                <div>
-                    <a class="recommend btn btn-sm btn-outline-secondary heart-container" th:onclick="'likeBoard(' + ${board.id} + ')'">
-                        <div th:classappend="${!@rq.checkLike(board)} ? 'empty-heart' : 'empty-heart hidden'"><i class="fa-regular fa-heart" style="color: #df1616;"></i></div>
-                        <div th:classappend="${@rq.checkLike(board)} ? 'full-heart' : 'full-heart hidden'"><i class="fa-solid fa-heart" style="color: #df1616;"></i></div>
+                <div class="flex">
+                    <div class="heart-container mr-4">
+                        <a class="recommend btn btn-sm btn-outline-secondary   " style=" "th:onclick="'likeBoard(' + ${board.id} + ')'">
+                        <div th:classappend="${!@rq.checkLike(board)} ? 'empty-heart' : 'empty-heart hidden'">
+                            <i class="fa-regular fa-heart " style="color: #df1616; ">
 
-                        <span class="badge rounded-pill bg-success likeNum"
+                            </i>
+                        </div>
+                        <div th:classappend="${@rq.checkLike(board)} ? 'full-heart' : 'full-heart hidden'">
+                            <i class="fa-solid fa-heart" style="color: #df1616; ">
+                            </i>
+                        </div>
+                        </a>
+                     </div>
+                    <div>
+                        <span class="badge rounded-pill  likeNum" style="background-color:#f0bddb;"
                                   th:id="'likeCount-' + ${board.id}" ></span>
                         <span class="ex hidden "  th:data-initial-value="${#lists.size(board.like)}" th:text="${#lists.size(board.like)}" ></span>
-                    </a>
+                    </div>
 
                 </div>
 
@@ -88,13 +98,13 @@
 </html>
 
 <script>
-    $('.heart-container').on('click', '.empty-heart, .full-heart', function() {
-    var $emptyHeart = $(this).closest('.heart-container').find('.empty-heart');
-    var $fullHeart = $(this).closest('.heart-container').find('.full-heart');
+    $('.heart-container').on('click', function() {
+     var $emptyHeart = $(this).find('.empty-heart');
+     var $fullHeart = $(this).find('.full-heart');
 
-    $emptyHeart.toggleClass('hidden');
-    $fullHeart.toggleClass('hidden');
-});
+     $emptyHeart.toggleClass('hidden');
+     $fullHeart.toggleClass('hidden');
+ });
 
 </script>
 <script>
