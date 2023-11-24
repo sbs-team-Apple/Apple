@@ -1,5 +1,8 @@
-package com.sbs.apple.user;
+package com.sbs.apple.base.security;
 
+import com.sbs.apple.user.SiteUser;
+import com.sbs.apple.user.UserRepository;
+import com.sbs.apple.user.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,10 +17,9 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
-public class UserSecurityService implements UserDetailsService {
+public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         SiteUser siteUser = userRepository.findByUsername(username).orElse(null);
