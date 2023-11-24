@@ -7,7 +7,7 @@
 <body>
 <div layout:fragment="content" class="container my-3 w-10/12 m-auto">
     <div class="board-create-container">
-        <a th:href="@{/board/create}"><i class="fa-solid fa-square-plus fa-2xl"></i></a>
+        <a th:href="@{/board/create(key-kind=my)}"><i class="fa-solid fa-square-plus fa-2xl"></i></a>
     </div>
     <br><br>
     <div class="m-auto  w-4/12 flex flex-col board-container  justify-center items-center">
@@ -27,8 +27,8 @@
                     <div class="dropdown dropdown-end">
                         <label tabindex="0" class=" m-1">...</label>
                         <ul tabindex="0" class="option-btn-content dropdown-content z-[1] mt-2 menu p-2 shadow bg-base-100 rounded-box w-52">
-                            <li th:if="${@rq.user.nickname==board.siteUser.nickname}"> <a th:href="@{|/board/modify/${board.id}|}">수정하기</a></li>
-                            <li th:if="${@rq.user.nickname==board.siteUser.nickname}"><a th:href="@{|/board/delete/${board.id}|}">삭제하기</a></li>
+                            <li th:if="${@rq.user.nickname==board.siteUser.nickname}"> <a th:href="@{|/board/modify/${board.id}?key-kind=my|}">수정하기</a></li>
+                            <li th:if="${@rq.user.nickname==board.siteUser.nickname}"><a th:href="@{|/board/delete/${board.id}?key-kind=my|}">삭제하기</a></li>
                         </ul>
                     </div>
 
