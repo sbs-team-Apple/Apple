@@ -32,14 +32,16 @@ public class BoardController {
 
 
     @GetMapping("/create")
-    public String Create(BoardForm boardForm) {
+    public String Create(BoardForm boardForm,  @RequestParam("key-kind") String kind, Model model) {
+        System.out.println(kind);
+        model.addAttribute("keyKind", kind);
         return "board/appeal_board_create";
 
     }
 
 
     @PostMapping("/create")
-    public String Create(@Valid BoardForm boardForm, MultipartFile file, Model model, Principal principal) throws Exception {
+    public String Create(@Valid BoardForm boardForm, MultipartFile file, Model model, Principal principal, @RequestParam("key-kind") String kind ) throws Exception {
         SiteUser user = userService.getUserbyName(principal.getName());
         if(boardForm.getFile()==null){
 
@@ -49,8 +51,14 @@ public class BoardController {
 
         Board board = boardService.create(boardForm.getFile(),boardForm.getContent(), user);
 
+        if(kind.equals("my")){
+            return "redirect:/board/myAppealBoard";
+
+        }else {
 
         return "redirect:/board/appealList";
+         }
+
     }
 
     @GetMapping("/appealList")
@@ -80,7 +88,7 @@ public class BoardController {
 //    }
 
     @GetMapping("/modify/{id}")
-    public String modify2(BoardForm boardForm, MultipartFile file, Model model, Principal principal, @PathVariable Integer id) {
+    public String modify2(BoardForm boardForm, MultipartFile file, Model model, Principal principal, @PathVariable Integer id, @RequestParam("key-kind") String kind) {
          Board board = boardService.getBoard(id);
         model.addAttribute("board", board);
         List<Imgs> imgs=imgsService.getImgsByBoard(board);
@@ -88,6 +96,8 @@ public class BoardController {
         for (int i = 0; i < imgs.size(); i++) {
             System.out.println(imgs.get(i).getIndexA());
         }
+        model.addAttribute("keyKind", kind);
+
 
         return "board/appeal_board_modify";
 
@@ -95,7 +105,7 @@ public class BoardController {
 
     @PostMapping("/modify/{id}")
     public String modify(@Valid BoardForm boardForm ,MultipartFile file, Model model, Principal principal,
-                         @PathVariable Integer id,@RequestParam("myArray") String myArray,@RequestParam("myAddArray") String myAddArray)throws Exception {
+                         @PathVariable Integer id,@RequestParam("myArray") String myArray,@RequestParam("myAddArray") String myAddArray, @RequestParam("key-kind") String kind)throws Exception {
         SiteUser user = userService.getUserbyName(principal.getName());
         Board board = boardService.getBoard(id);
         List<Imgs> imgs=imgsService.getImgsByBoard(board);
@@ -176,18 +186,24 @@ public class BoardController {
         boardService.modify( boardForm.getContent(), board,imgs);
 
 
+        if(kind.equals("my")){
+            return "redirect:/board/myAppealBoard";
 
+        }
 
         return "redirect:/board/appealList";
     }
 
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Integer id) {
+    public String delete(@PathVariable Integer id, @RequestParam("key-kind") String kind ) {
         Board board = boardService.getBoard(id);
 
         boardService.doDelete(board);
         System.out.println("삭제 실행됨~!!!!!!!!!!!!!!!!!!!!!!");
+        if(kind.equals("my")){
+            return "redirect:/board/myAppealBoard";
+        }
 
         return "redirect:/board/appealList";
     }
