@@ -7,8 +7,7 @@
 <body>
 <div layout:fragment="content" class="container my-3 w-10/12 m-auto">
     <div class="board-create-container">
-        <a th:href="@{/board/create}"><i class="fa-solid fa-square-plus fa-2xl"></i></a>
-        <div class="ex2">2</div>
+        <a th:href="@{/board/create(key-kind=public)}"><i class="fa-solid fa-square-plus fa-2xl"></i></a>
     </div>
     <br><br>
     <div class="m-auto w-4/12 flex flex-col board-container  justify-center items-center">
@@ -30,8 +29,8 @@
                     <div class="dropdown dropdown-end">
                         <label tabindex="0" class=" m-1">...</label>
                         <ul tabindex="0" class="option-btn-content dropdown-content z-[1] mt-2 menu p-2 shadow bg-base-100 rounded-box w-52">
-                            <li th:if="${@rq.user.nickname==board.siteUser.nickname}"> <a th:href="@{|/board/modify/${board.id}|}">수정하기</a></li>
-                            <li th:if="${@rq.user.nickname==board.siteUser.nickname}"><a th:href="@{|/board/delete/${board.id}|}">삭제하기</a></li>
+                            <li th:if="${@rq.user.nickname==board.siteUser.nickname}"> <a th:href="@{|/board/modify/${board.id}?key-kind=public|}">수정하기</a></li>
+                            <li th:if="${@rq.user.nickname==board.siteUser.nickname}"><a th:href="@{|/board/delete/${board.id}?key-kind=public|}">삭제하기</a></li>
                         </ul>
                     </div>
 
@@ -49,21 +48,21 @@
                     <button class="nextButton img-btn"><i class="fa-regular fa-circle-right fa-2xl"></i></button>
                 </div>
             </div>
-                <div class="flex">
-                    <div class="heart-container mr-4">
+                <div class="flex ">
+                    <div class="heart-container mt-2 ml-2 mr-4">
                         <a class=" " style=" "th:onclick="'likeBoard(' + ${board.id} + ')'">
-                        <div th:classappend="${!@rq.checkLike(board)} ? 'empty-heart' : 'empty-heart hidden'">
-                            <i class="fa-regular fa-heart " style="color: #df1616; ">
+                        <div th:classappend="${!@rq.checkLike(board)} ? 'empty-heart heart' : 'empty-heart heart hidden'">
+                            <i class="fa-regular fa-heart fa-2xl" style="color: #df1616; ">
 
                             </i>
                         </div>
-                        <div th:classappend="${@rq.checkLike(board)} ? 'full-heart' : 'full-heart hidden'">
-                            <i class="fa-solid fa-heart" style="color: #df1616; ">
+                        <div th:classappend="${@rq.checkLike(board)} ? 'full-heart heart ' : 'full-heart heart hidden'">
+                            <i class="fa-solid fa-heart fa-bounce fa-2xl" style="color: #df1616; ">
                             </i>
                         </div>
                         </a>
                      </div>
-                    <div>
+                    <div style="display: flex; align-items: center;">
                         <span class="badge rounded-pill  likeNum" style="background-color:#f0bddb;"
                                   th:id="'likeCount-' + ${board.id}" ></span>
                         <span class="ex hidden "  th:data-initial-value="${#lists.size(board.like)}" th:text="${#lists.size(board.like)}" ></span>
@@ -234,7 +233,7 @@
     }
 
     .appeal-img-container{
-        width:30%;
+        width:20%;
 
         padding-bottom:20px;
         padding-top: 100px;
@@ -329,6 +328,10 @@
 
     .img-content {
         margin:20px 10px;
+
+    }
+
+    .heart {
 
     }
 
