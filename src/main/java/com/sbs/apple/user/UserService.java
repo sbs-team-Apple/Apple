@@ -126,11 +126,10 @@ public class UserService {
     }
 
     //회원가입
-    public SiteUser create(String username, String password, String nickname, String gender) {
+    public SiteUser create(String username, String password, String gender) {
         SiteUser user = new SiteUser();
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
-        user.setNickname(nickname);
         user.setGender(gender);
         this.userRepository.save(user);
         return user;
@@ -201,12 +200,16 @@ public class UserService {
         this.userRepository.delete(siteUser);
     }
 
-    //소셜 로그인
     @Transactional
-    public SiteUser whenSocialLogin(String providerTypeCode, String username, String nickname) {
+    public SiteUser whenSocialLogin(String providerTypeCode, String username) {
+        Optional <SiteUser> siteUser = findByUsername(username);
+
+        if (siteUser.isPresent()) return siteUser.get();
+
         // 소셜 로그인를 통한 가입시 비번은 없다.
-        return create(username, "", nickname, ""); // 최초 로그인 시 딱 한번 실행
+        return create(username, "","남"); // 최초 로그인 시 딱 한번 실행
     }
+
 
 
     public List<SiteUser> getAllUser() {
