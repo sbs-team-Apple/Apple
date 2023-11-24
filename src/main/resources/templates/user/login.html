@@ -1,7 +1,7 @@
 <div class="underBody flex flex-col items-center"
      style="border: 1px solid rgb(198, 198, 198); padding: 20px 15px 15px 15px; border-radius: 15px; flex-direction: column; align-items: center;">
     <div>
-        <form th:action="@{/user/login}" method="post" class="login">
+        <form th:action="@{/user/login}" method="post"  onsubmit="submitLoginForm(this); return false;" class="login">
             <div class="mb-2">
                 <input type="text" name="username" id="username"
                        style="border-radius: 10px; width: 300px; height: 50px; outline:2px solid gray;"
@@ -31,12 +31,57 @@
             </div>
 
         </form>
+        <script>
+            let submitLoginFormDone = false;
+            function submitLoginForm(form) {
+                if ( submitLoginFormDone ) return;
+
+                form.username.value = form.username.value.trim();
+
+                if ( form.username.value.length == 0 ) {
+                    form.username.focus();
+                    toastWarning('아이디를 입력해주세요.');
+                    return;
+                }
+
+                if ( form.username.value.length < 4 ) {
+                    form.username.focus();
+                    toastWarning('아이디를 4자 이상 입력해주세요.');
+                    return;
+                }
+
+                form.password.value = form.password.value.trim();
+
+                if ( form.password.value.length == 0 ) {
+                    form.password.focus();
+                    toastWarning('비밀번호를 입력해주세요.');
+                    return;
+                }
+
+                if ( form.password.value.length < 4 ) {
+                    form.password.focus();
+                    toastWarning('비밀번호를 4자 이상 입력해주세요.');
+                    return;
+                }
+
+                form.passwordConfirm.value = form.passwordConfirm.value.trim();
+
+                if ( form.passwordConfirm.value.length == 0 ) {
+                    form.passwordConfirm.focus();
+                    toastWarning('비밀번호를 확인을 입력해주세요.');
+                    return;
+                }
+
+                form.submit();
+                submitLoginFormDone = true;
+            }
+        </script>
         <div class="text-center mb-1" style="height:50px;">
             <span class="mr-2" style="width:100px; outline:/1px solid black; border-radius:5px; padding: 10px 20px;"><a href="/oauth2/authorization/kakao">카카오 로그인</a></span>
             <span class="ml-2" style="width:100px; outline:1px solid black; border-radius:5px; padding: 10px 20px;"><a href="/oauth2/authorization/naver" class="social-naver">네이버 로그인</a></span>
         </div>
         <div class="text-center" style="height:50px;">
-            <span class="mr-2" style="width:100px;outline:1px solid black; border-radius:5px; padding: 10px 20px;"><a href="#">구글 로그인</a></span>
+            <span class="mr-2" style="width:100px;outline:1px solid black; border-radius:5px; padding: 10px 20px;"><a href="/oauth2/authorization/google" class="social-google">구글 로그인</a></span>
             <span class="ml-2" style="width:100px;outline:1px solid black; border-radius:5px; padding: 10px 20px;"><a href="#">페이스북 로그인</a></span>
         </div>
         <div>
