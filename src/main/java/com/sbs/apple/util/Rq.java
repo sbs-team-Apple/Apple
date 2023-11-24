@@ -1,6 +1,7 @@
 package com.sbs.apple.util;
 
 
+import com.sbs.apple.Ut;
 import com.sbs.apple.board.Board;
 import com.sbs.apple.board.BoardService;
 import com.sbs.apple.imgs.Imgs;
@@ -26,7 +27,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.io.IOException;
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -184,7 +184,7 @@ public class Rq {
         String referer = request.getHeader("referer");
         String key = "historyBackFailMsg___" + referer;
         request.setAttribute("localStorageKeyAboutHistoryBackFailMsg", key);
-        request.setAttribute("historyBackFailMsg", msg);
+        request.setAttribute("historyBackFailMsg", Ut.url.withTtl(msg));
         // 200 이 아니라 400 으로 응답코드가 지정되도록
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         return "common/js";
@@ -198,10 +198,10 @@ public class Rq {
         }else {
             return false;
         }
-
-
     }
-
+    public String redirect(String url, String msg) {
+        return "redirect:" + Ut.url.modifyQueryParam(url, "msg", Ut.url.encodeWithTtl(msg));
+    }
 }
 
 
