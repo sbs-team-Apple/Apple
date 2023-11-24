@@ -7,6 +7,7 @@ import com.sbs.apple.user.SiteUser;
 import com.sbs.apple.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @RequiredArgsConstructor
@@ -24,6 +27,8 @@ public class BoardController {
     private final UserService userService;
     private final BoardService boardService;
     private final ImgsService imgsService;
+    private final BoardRepository boardRepository;
+    private Board board;
 
 
     @GetMapping("/create")
@@ -220,6 +225,36 @@ public class BoardController {
 
 
         return "board/my_desiredList";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/like/{id}")
+    public String boradLike(Principal principal, @PathVariable("id") Integer id) {
+        board = this.boardService.getBoard(id);
+        SiteUser siteUser = this.userService.getUser(principal.getName());
+        if(board.getLike().contains(siteUser)){
+            board.getLike().remove(siteUser);
+            boardRepository.save(board);
+            System.out.println("이미 하트 눌렀던 애 사라짐");
+                    
+
+        }else {
+            this.boardService.like(board, siteUser);
+            System.out.println("하트 누른 사람 추가");
+
+        }
+        return "board/appeal_board_list";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/like/{id}")
+    @ResponseBody
+    public  Map<String, Integer>  boradLike2(Principal principal, @PathVariable("id") Integer id, Model model) {
+        System.out.println("좋아요수 업데이트 해주기--------------------------");
+        Map<String, Integer> response = new HashMap<>();
+        response.put("likeCount", board.getLike().size()); // Add the like count to the response
+
+        return response;
     }
 
 
