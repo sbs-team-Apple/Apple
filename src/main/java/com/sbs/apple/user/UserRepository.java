@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<SiteUser, Integer> {
     Optional<SiteUser> findByUsername(String username);
     Optional<SiteUser> findByNickname(String nickname);
-
+    Optional<SiteUser> findByEmail(String email);
     boolean existsByUsername(String username);
 
 
@@ -22,6 +22,7 @@ public interface UserRepository extends JpaRepository<SiteUser, Integer> {
 
     @Query("SELECT su FROM SiteUser su WHERE  su.gender <> :userGender AND (su.living = :desiredLiving OR su.religion = :desiredReligion)")
     List<SiteUser> findByDesired( @Param("userGender") String userGender, @Param("desiredLiving") String desiredLiving, @Param("desiredReligion") String desiredReligion);
+
 
 
 }
