@@ -28,7 +28,7 @@
 	String oid					= mid+"_"+SignatureUtil.getTimestamp();	// 가맹점 주문번호(가맹점에서 직접 설정)
 	String price				= "1000";													// 상품가격(특수기호 제외, 가맹점에서 직접 설정)
 
-	String cardNoInterestQuota	= ""; 			// 카드 분담 무이자 여부 설정(별도 카드사와 계약한 가맹점에서 직접 설정 예시: 11-2:3,34-5:12,14-6:12:24,12-12:36,06-9:12,01-3:4)
+	String cardNoInterestQuota	= "11-2:3"; 			// 카드 분담 무이자 여부 설정(별도 카드사와 계약한 가맹점에서 직접 설정 예시: 11-2:3,34-5:12,14-6:12:24,12-12:36,06-9:12,01-3:4)
 	String cardQuotaBase		= "2:3:4";		// 가맹점에서 사용할 할부 개월수 설정
 	String merchantData			= URLEncoder.encode("테스트 주문","UTF-8"); // 가맹점 임의 데이터 (한글 입력 시 urlencoding 필요)
 
@@ -202,15 +202,15 @@
 											<div style="border:2px #dddddd double;padding:10px;background-color:#f3f3f3;">
 												<br/><b>languageView</b> : 초기 표시 언어
 												<br/>[ko|en] (default:ko)
-												<br/><input style="width:100%;" name="languageView" value="" >
+												<br/><input style="width:100%;" name="languageView" value="ko" >
 
 												<br/><b>charset</b> : 리턴 인코딩
 												<br/>[UTF-8|EUC-KR] (default:UTF-8)
-												<br/><input style="width:100%;" name="charset" value="" >
+												<br/><input style="width:100%;" name="charset" value="UTF-8" >
 
 												<br/><b>payViewType</b> : 결제창 표시방법
 												<br/>[overlay] (default:overlay)
-												<br/><input style="width:100%;" name="payViewType" value="" >
+												<br/><input style="width:100%;" name="payViewType" value="overlay" >
 
 												<br/><b>closeUrl</b> : payViewType='overlay','popup'시 취소버튼 클릭시 창닫이상기 처리 URL(가맹점에 맞게 설정)
 												<br/>close.jsp 샘플사용(생략가능, 미설정시 사용자에 의해 취소 버튼 클릭시 인증결과 페이지로 취소 결과를 보냅니다.)
@@ -250,7 +250,7 @@
 											<div style="border:2px #cccccc solid;padding:10px;background-color:#f3f3f3;">
 												<br/><b>INIregno</b> : 주민번호 설정 기능
 												<br/>13자리(주민번호),10자리(사업자번호),미입력시(화면에서입력가능)
-												<br/><input  style="width:100%;" name="INIregno" value="" >
+												<br/><input  style="width:100%;" name="INIregno" value="1234567890" >
 											</div>
 											
 											<br/><br/>

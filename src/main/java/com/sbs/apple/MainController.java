@@ -92,10 +92,7 @@ public class MainController {
 
     @RequestMapping("/jsp")
     public String jsp(){
-        System.out.println("asdasd!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        System.out.println("asdasd!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        System.out.println("asdasd!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        System.out.println("asdasd!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
 
         return "jsp/close";
     }
@@ -108,8 +105,18 @@ public class MainController {
     }
 
 
-    @GetMapping("/jsp3")
+    @GetMapping("jsp/WelStdPayReturn")
     public String jsp3(){
+
+        System.out.println("asdasd!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        System.out.println("asdasd!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        System.out.println("asdasd!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        System.out.println("asdasd!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        return "jsp/WelStdPayReturn";
+    }
+
+    @GetMapping("/jsp/WelStdPayResult")
+    public String jsp4(){
 
 
         return "jsp/WelStdPayResult";
