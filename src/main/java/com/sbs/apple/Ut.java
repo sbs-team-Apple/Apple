@@ -2,6 +2,7 @@ package com.sbs.apple;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Date;
 
 public class Ut {
     public static class url {
@@ -12,6 +13,48 @@ public class Ut {
             } catch (UnsupportedEncodingException e) {
                 return null;
             }
+        }
+        public static String modifyQueryParam(String url, String paramName, String paramValue) {
+            url = deleteQueryParam(url, paramName);
+            url = addQueryParam(url, paramName, paramValue);
+
+            return url;
+        }
+
+        public static String addQueryParam(String url, String paramName, String paramValue) {
+            if (!url.contains("?")) {
+                url += "?";
+            }
+
+            if (!url.endsWith("?") && !url.endsWith("&")) {
+                url += "&";
+            }
+
+            url += paramName + "=" + paramValue;
+
+            return url;
+        }
+
+        private static String deleteQueryParam(String url, String paramName) {
+            int startPoint = url.indexOf(paramName + "=");
+            if (startPoint == -1) return url;
+
+            int endPoint = url.substring(startPoint).indexOf("&");
+
+            if (endPoint == -1) {
+                return url.substring(0, startPoint - 1);
+            }
+
+            String urlAfter = url.substring(startPoint + endPoint + 1);
+
+            return url.substring(0, startPoint) + urlAfter;
+        }
+        public static String encodeWithTtl(String s) {
+            return withTtl(encode(s));
+        }
+
+        public static String withTtl(String msg) {
+            return msg + ";ttl=" + new Date().getTime();
         }
     }
 }

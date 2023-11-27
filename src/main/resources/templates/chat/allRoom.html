@@ -8,10 +8,16 @@
 <div layout:fragment="content" class="container my-3">
 
 
-        <div class="all-room-section">
+        <div class="all-room-section mt-7 ">
+            <div th:if="${chatRoom2.size()==0 AND chatRoom3.size()==0}">
+                <div class="mt-20 relative ml-auto mr-auto" >
+                    <div class="absolute" style="font-size:20px;top:20%; left:50%; transform:translate(-50%,-50%);" > 채팅방이 없습니다. </div>
+                    <div class=" flex justify-center"> <img class="allRoom-img" src="/img/하트.jpg" alt=""></div>
+                </div>
+            </div>
 
 <!--        <div> 내가 초대한 채팅방</div>-->
-        <div class="flex all-room-container" th:each="room2 : ${chatRoom2}">
+        <div class="flex all-room-container ml-6" th:each="room2 : ${chatRoom2}">
             <form method="get" th:action="@{|/chat/${room2.id}/room3?userId2=${room2.siteUser2.id}|}">
                 <button type="submit"  class="flex">
                     <div class="avatar chatRoom-user-img">
@@ -36,7 +42,7 @@
 
 
 <!--        <div> 내가 초대받은 채팅방</div>-->
-        <div class="flex all-room-container"   th:each="room3 : ${chatRoom3}">
+        <div class="flex all-room-container ml-6"   th:each="room3 : ${chatRoom3}">
             <form method="get" th:action="@{|/chat/${room3.id}/room2?userId=${room3.siteUser2.id}|}">
                 <button type="submit" class="flex" >
 
@@ -68,7 +74,7 @@
 
 <style>
     .all-room-section {
-        width:500px;
+
         height:700px;
         margin-left:auto;
         margin-right:auto;
@@ -98,6 +104,22 @@
         margin-top:20px;
     }
 
+    .allRoom-img {
+        width:400px;
+        height:500px;
+
+    }
+    @media screen and (max-width :800px) {
+        .allRoom-img {
+
+            width:100%;
+            height:600px;
+        }
+
+
+
+
+    }
 </style>
 
 

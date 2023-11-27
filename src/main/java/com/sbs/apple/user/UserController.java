@@ -11,10 +11,10 @@ import com.sbs.apple.cybermoney.CyberMoneyTransactionRepository;
 import com.sbs.apple.exchange.ExchangeRepository;
 import com.sbs.apple.exchange.ExchangeService;
 import com.sbs.apple.interest.InterestService;
-import com.sbs.apple.notification.Notification;
 import com.sbs.apple.notification.NotificationService;
 import com.sbs.apple.report.ReportForm;
 import com.sbs.apple.report.ReportService;
+import com.sbs.apple.util.Rq;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -47,7 +47,7 @@ import java.util.Optional;
 @RequestMapping("/user")
 public class UserController {
 
-
+    private final Rq rq;
     private final UserService userService;
     private final ReportService reportService;
     private final UserRepository userRepository;
@@ -68,23 +68,39 @@ public class UserController {
 
     @PostMapping("/signup")
     public String signup2(@Valid UserCreateForm userCreateForm, BindingResult bindingResult,
-                          RedirectAttributes redirectAttributes, Model model, MultipartFile file, HttpServletRequest req)
+                          RedirectAttributes redirectAttributes, Model model, MultipartFile file)
             throws Exception {
-
-        RsData<SiteUser> joinRs = userService.create(false, false, userCreateForm.getFile(), userCreateForm.getUsername(), userCreateForm.getPassword1(),
-                userCreateForm.getNickname(), userCreateForm.getGender());
+        RsData<SiteUser> joinRs = userService.create(false, false, userCreateForm.getFile(), userCreateForm.getUsername(), userCreateForm.getPassword1()
+                ,userCreateForm.getEmail(),userCreateForm.getNickname(), userCreateForm.getGender());
         if (joinRs.getResultCode().equals("F-1")) {
-            req.setAttribute("msg", joinRs.getMsg());
-            return "common/js";
+            return rq.historyBack(joinRs.getMsg());
         }
         if (joinRs.getResultCode().equals("F-2")) {
-            req.setAttribute("msg", joinRs.getMsg());
-            return "common/js";
+            return rq.historyBack(joinRs.getMsg());
+        }
+        if (joinRs.getResultCode().equals("F-3")) {
+            return rq.historyBack(joinRs.getMsg());
         }
         redirectAttributes.addAttribute("id", joinRs.getData().getId());
         return "redirect:/user/add/" + joinRs.getData().getId();
     }
+    @GetMapping("/checkUsernameDup")
+    @ResponseBody
+    public RsData<String> checkUsernameDup(String username) {
+        return userService.checkUsernameDup(username);
+    }
 
+    @GetMapping("/checkNicknameDup")
+    @ResponseBody
+    public RsData<String> checkNicknameDup(String nickname) {
+        return userService.checkNicknameDup(nickname);
+    }
+
+    @GetMapping("/checkEmailDup")
+    @ResponseBody
+    public RsData<String> checkEmailDup(String email) {
+        return userService.checkEmailDup(email);
+    }
 
     @GetMapping("/add/{id}")
     public String add1(UserAddForm userAddForm, @PathVariable("id") Integer id, Model model) {
@@ -476,10 +492,10 @@ public class UserController {
             userRepository.save(recipientUser);
             SiteUser senderUser = transaction.getSenderUser();
 
-            Notification notification=notificationService.findByUsers(senderUser,recipientUser);
-            if(notification != null ) {
-                notificationService.delete(notification);
-            }
+//            Notification notification=notificationService.findByUsers(senderUser,recipientUser);
+//            if(notification != null ) {
+//                notificationService.delete(notification);
+//            }
         } else if ("reject".equals(action) && !transaction.isAccepted() && !transaction.isRejected()) {
             // 거래가 아직 수락되지 않았고 거부되지 않았을 경우에만 처리
             transaction.setRejected(true); // 거부 플래그 설정
@@ -488,10 +504,10 @@ public class UserController {
             SiteUser senderUser = transaction.getSenderUser();
             senderUser.setCyberMoney(senderUser.getCyberMoney() + transaction.getAmount());
             userRepository.save(senderUser);
-            Notification notification=notificationService.findByUsers(senderUser,recipientUser);
-            if(notification != null ) {
-                notificationService.delete(notification);
-            }
+//            Notification notification=notificationService.findByUsers(senderUser,recipientUser);
+//            if(notification != null ) {
+//                notificationService.delete(notification);
+//            }
 
 
 

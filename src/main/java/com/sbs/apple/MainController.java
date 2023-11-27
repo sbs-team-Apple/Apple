@@ -70,8 +70,6 @@ public class MainController {
 
         System.out.println("메인페이지 실행3");
 
-        SiteUser closeSiteUser = userService.getUser(1);
-        model.addAttribute("closeSiteUser", closeSiteUser);
         String username = principal.getName();
         SiteUser siteUser =userService.getUserbyName(username);
         boolean userWarning = siteUser.isUserWarning();
