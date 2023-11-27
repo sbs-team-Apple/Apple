@@ -111,14 +111,14 @@
             <div>
                 <div class="text-xl flex justify-center">
                     <button onclick="show_desired()" id="up_down"
-                            style="border: 1px solid black; border-radius: 10px; padding: 0 90px; margin: 10px 0;">
-                        <span>이상형</span><i id="icon" class="fa-solid fa-caret-down ml-1"></i>
+                            style="border: 1px solid black; border-radius: 10px; padding: 0 10px; margin: 10px 0;">
+                        <span>저는 이런사람이 좋아요</span><i id="icon" class="fa-solid fa-caret-down ml-1"></i>
                     </button>
                 </div>
                 <div class="mb-3" style="display:none;" id="all">
-                    <div class="ml-2" th:text="'나이 : ' + ${receivedSiteUser.desired_age}"></div>
+                    <div class="ml-2" th:text="'나이 : ' + ${receivedSiteUser.desired_age1}+'~'+${receivedSiteUser.desired_age2}"></div>
                     <div class="ml-2" th:text="'지역 : ' + ${receivedSiteUser.desired_living}"></div>
-                    <div class="ml-2" th:text="'키 : ' + ${receivedSiteUser.desired_tall}"></div>
+                    <div class="ml-2" th:text="'키 : ' + ${receivedSiteUser.desired_tall1}+'~'+${receivedSiteUser.desired_tall2}"></div>
                     <div class="ml-2" th:text="'체형 : ' + ${receivedSiteUser.desired_body_type}"></div>
                     <div class="ml-2" th:text="'흡연 : ' + ${receivedSiteUser.desired_smoking}"></div>
                     <div class="ml-2" th:text="'음주 : ' + ${receivedSiteUser.desired_drinking}"></div>
