@@ -40,11 +40,21 @@
             </div>
 
             <div class="form-control">
-                <label class="label" style="font-size: 18px; font-weight: bold;">
-                    <span class="label-text">비밀번호 확인</span>
+                <label class="label">
+                    <span class="label-text" style="font-size: 18px; font-weight: bold;">비밀번호 확인</span>
                 </label>
                 <input type="password" name="password2" placeholder="비밀번호 확인" class="input input-bordered input-secondary"
                        maxlength="30">
+            </div>
+
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text" style="font-size: 18px; font-weight: bold;">이메일</span>
+                </label>
+                <input type="email" name="email" placeholder="이메일" class="input input-bordered input-secondary" maxlength="30"
+                       onchange="$(this).keyup();" onpaste="setTimeoutZero(() => $(this).keyup());"
+                       onkeyup="checkEmailDupDebounce();">
+                <div class="mt-2 text-sm"></div>
             </div>
 
             <div class="form-control">
@@ -76,91 +86,175 @@
             </div>
         </form>
         <script>
+            const joinForm = document['join-form'];
+            // username 중복체크 시작
             function checkUsernameDup(form) {
                 form.username.value = form.username.value.trim();
-                 if ( form.username.value.length == 0 ) {
+
+                if ( form.username.value.length == 0 ) {
                     clearUsernameInputMsg();
                     return;
                 }
+
                 if ( form.username.value.length < 4 ) {
                     clearUsernameInputMsg();
                     return;
                 }
 
                 if ( validUsername == form.username.value ) return;
+
                 if ( lastCheckedUsername == form.username.value ) return;
+
                 lastCheckedUsername = form.username.value;
+
                 clearUsernameInputMsg();
+
                 fetch(
                     'checkUsernameDup?username=' + form.username.value
                 )
-                    .then(request => request.json())
+                    .then(res => res.json())
                     .then((rsData) => {
                         if ( rsData.success ) {
-                            validUsername = form.username.value;
+                            validUsername = rsData.data;
                         }
-                         setUsernameInputMsg(rsData.success, rsData.msg);
+
+                        setUsernameInputMsg(rsData.success, rsData.msg);
                     });
             }
 
-            function checkNicknameDup(form) {
-                form.nickname.value = form.nickname.value.trim();
-                 if ( form.nickname.value.length == 0 ) {
-                    clearNicknameInputMsg();
-                    return;
-                }
-                if ( form.nickname.value.length < 4 ) {
-                    clearNicknameInputMsg();
-                    return;
-                }
-                if ( validNickname == form.nickname.value ) return;
-                if ( lastCheckedNickname == form.nickname.value ) return;
-                lastCheckedNickname = form.nickname.value;
-
-                clearNicknameInputMsg();
-                fetch(
-                    'checkNicknameDup?nickname=' + form.nickname.value
-                )
-                    .then(request => request.json())
-                    .then((rsData) => {
-                        if ( rsData.success ) {
-                            validNickname = form.nickname.value;
-                        }
-                        setNicknameInputMsg(rsData.success, rsData.msg);
-                    });
-            }
-
-            const joinForm = document['join-form'];
             const checkUsernameDupDebounce = _.debounce(() => checkUsernameDup(joinForm), 500);
-            const checkNicknameDupDebounce = _.debounce(() => checkNicknameDup(joinForm), 500);
 
             function clearUsernameInputMsg() {
                 $(joinForm.username).removeClass('input-accent input-error');
                 $(joinForm.username).next().removeClass('text-green-400 text-red-400');
                 $(joinForm.username).next().empty();
             }
+
             function setUsernameInputMsg(isSuccess, msg) {
                 if ( isSuccess ) $(joinForm.username).addClass('input-accent');
                 if ( !isSuccess ) $(joinForm.username).addClass('input-error');
+
                 $(joinForm.username).next().addClass(isSuccess ? 'text-green-400' : 'text-red-400');
+
                 $(joinForm.username).next().text(msg);
             }
+
+            let validUsername = '';
+            let lastCheckedUsername = '';
+            // username 중복체크 끝
+
+            // email 중복체크 시작
+            function checkEmailDup(form) {
+                form.email.value = form.email.value.trim();
+
+                if ( form.email.value.length == 0 ) {
+                    clearEmailInputMsg();
+                    return;
+                }
+
+                if ( form.email.value.length < 4 ) {
+                    clearEmailInputMsg();
+                    return;
+                }
+
+                if ( validEmail == form.email.value ) return;
+
+                if ( lastCheckedEmail == form.email.value ) return;
+
+                lastCheckedEmail = form.email.value;
+
+                clearEmailInputMsg();
+
+                fetch(
+                    'checkEmailDup?email=' + form.email.value
+                )
+                    .then(res => res.json())
+                    .then((rsData) => {
+                        if ( rsData.success ) {
+                            validEmail = rsData.data;
+                        }
+
+                        setEmailInputMsg(rsData.success, rsData.msg);
+                    });
+            }
+
+            const checkEmailDupDebounce = _.debounce(() => checkEmailDup(joinForm), 500);
+
+            function clearEmailInputMsg() {
+                $(joinForm.email).removeClass('input-accent input-error');
+                $(joinForm.email).next().removeClass('text-green-400 text-red-400');
+                $(joinForm.email).next().empty();
+            }
+
+            function setEmailInputMsg(isSuccess, msg) {
+                if ( isSuccess ) $(joinForm.email).addClass('input-accent');
+                if ( !isSuccess ) $(joinForm.email).addClass('input-error');
+
+                $(joinForm.email).next().addClass(isSuccess ? 'text-green-400' : 'text-red-400');
+
+                $(joinForm.email).next().text(msg);
+            }
+
+            let validEmail = '';
+            let lastCheckedEmail = '';
+            // email 중복체크 끝
+
+            // nickname 중복체크 시작
+            function checkNicknameDup(form) {
+                form.nickname.value = form.nickname.value.trim();
+
+                if ( form.nickname.value.length == 0 ) {
+                    clearNicknameInputMsg();
+                    return;
+                }
+
+                if ( form.nickname.value.length < 4 ) {
+                    clearNicknameInputMsg();
+                    return;
+                }
+
+                if ( validNickname == form.nickname.value ) return;
+
+                if ( lastCheckedNickname == form.nickname.value ) return;
+
+                lastCheckedNickname = form.nickname.value;
+
+                clearNicknameInputMsg();
+
+                fetch(
+                    'checkNicknameDup?nickname=' + form.nickname.value
+                )
+                    .then(res => res.json())
+                    .then((rsData) => {
+                        if ( rsData.success ) {
+                            validNickname = rsData.data;
+                        }
+
+                        setNicknameInputMsg(rsData.success, rsData.msg);
+                    });
+            }
+
+            const checkNicknameDupDebounce = _.debounce(() => checkNicknameDup(joinForm), 500);
 
             function clearNicknameInputMsg() {
                 $(joinForm.nickname).removeClass('input-accent input-error');
                 $(joinForm.nickname).next().removeClass('text-green-400 text-red-400');
                 $(joinForm.nickname).next().empty();
             }
+
             function setNicknameInputMsg(isSuccess, msg) {
                 if ( isSuccess ) $(joinForm.nickname).addClass('input-accent');
                 if ( !isSuccess ) $(joinForm.nickname).addClass('input-error');
+
                 $(joinForm.nickname).next().addClass(isSuccess ? 'text-green-400' : 'text-red-400');
+
                 $(joinForm.nickname).next().text(msg);
             }
-            let lastCheckedUsername = '';
-            let lastCheckedNickname = '';
-            let validUsername = '';
+
             let validNickname = '';
+            let lastCheckedNickname = '';
+            // nickname 중복체크 끝
+
             let submitJoinFormDone = false;
 
             function submitJoinForm(form) {
@@ -185,6 +279,11 @@
                     toastWarning('비밀번호를 입력해주세요.');
                     return;
                 }
+                if ( form.password1.value.length < 4 ) {
+                    form.password1.focus();
+                    toastWarning('비밀번호를 4자 이상 입력해주세요.');
+                    return;
+                }
 
                 form.password2.value = form.password2.value.trim();
 
@@ -197,6 +296,18 @@
                 if (form.password1.value != form.password2.value) {
                     form.password2.focus();
                     toastWarning('비밀번호 확인이 일치하지 않습니다.');
+                    return;
+                }
+                form.email.value = form.email.value.trim();
+
+                if (form.email.value.length == 0) {
+                    form.email.focus();
+                    toastWarning('이메일을 입력해주세요.');
+                    return;
+                }
+                if ( form.email.value.length < 4 ) {
+                    form.email.focus();
+                    toastWarning('이메일을 4자 이상 입력해주세요.');
                     return;
                 }
 
@@ -217,9 +328,14 @@
                     toastWarning('아이디 중복체크를 해주세요.');
                     return;
                 }
+                   if ( validEmail != form.email.value ) {
+                    $(form.email).next().focus();
+                    toastWarning('이메일 중복체크를 해주세요.');
+                    return;
+                }
                 if ( validNickname != form.nickname.value ) {
                     $(form.nickname).next().focus();
-                    toastWarning('아이디 중복체크를 해주세요.');
+                    toastWarning('닉네임 중복체크를 해주세요.');
                     return;
                 }
                 form.file.value = form.file.value.trim();

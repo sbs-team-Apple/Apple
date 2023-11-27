@@ -51,10 +51,6 @@ spring:
             client-name: Kakao
             authorization-grant-type: authorization_code
             redirect-uri: '${custom.site.baseUrl}/{action}/oauth2/code/{registrationId}'
-          google:
-            scope: profile
-            client-name: Google
-            redirect-uri: '${custom.site.baseUrl}/{action}/oauth2/code/{registrationId}'
         provider:
           kakao:
             authorization-uri: https://kauth.kakao.com/oauth/authorize
@@ -68,7 +64,7 @@ spring:
             user-name-attribute: response
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     database-platform: org.hibernate.dialect.MySQLDialect
     properties:
       hibernate:
