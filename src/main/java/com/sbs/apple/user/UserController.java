@@ -154,6 +154,9 @@ public class UserController {
         String username = principal.getName();
         SiteUser user = userService.getUserbyName(username);
 
+        int minHeart = user.getMinHeart();
+        model.addAttribute("minHeart", minHeart);
+
         int userCyberMoney = user.getCyberMoney();
         int receivedCyberMoney = user.getReceivedCyberMoney(); // 다른 사용자로부터 받은 사이버머니
 
@@ -450,10 +453,12 @@ public class UserController {
     }
 
     @PostMapping("/updateMinHeart")
-    public String updateMinHeart(Principal principal,@PathVariable("minHeart") Integer minHeart) {
-            String username = principal.getName();
-            userService.updateMinHeart(username, minHeart);
-            return "user/myPage"; // 최신 정보를 반영하도록 리다이렉트
+    public String updateMinHeart(@RequestParam("minHeart") Integer minHeart, Principal principal) {
+
+        String username = principal.getName();
+        userService.updateMinHeart(username, minHeart);
+        return "redirect:/user/myPage"; // 최신 정보를 반영하도록 리다이렉트
+
 
     }
 
@@ -488,10 +493,6 @@ public class UserController {
             userRepository.save(recipientUser);
             SiteUser senderUser = transaction.getSenderUser();
 
-//            Notification notification=notificationService.findByUsers(senderUser,recipientUser);
-//            if(notification != null ) {
-//                notificationService.delete(notification);
-//            }
         } else if ("reject".equals(action) && !transaction.isAccepted() && !transaction.isRejected()) {
             // 거래가 아직 수락되지 않았고 거부되지 않았을 경우에만 처리
             transaction.setRejected(true); // 거부 플래그 설정
@@ -500,11 +501,6 @@ public class UserController {
             SiteUser senderUser = transaction.getSenderUser();
             senderUser.setCyberMoney(senderUser.getCyberMoney() + transaction.getAmount());
             userRepository.save(senderUser);
-//            Notification notification=notificationService.findByUsers(senderUser,recipientUser);
-//            if(notification != null ) {
-//                notificationService.delete(notification);
-//            }
-
 
 
 
@@ -552,4 +548,3 @@ public class UserController {
     }
 
 }
-
