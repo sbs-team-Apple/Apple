@@ -48,7 +48,7 @@ public class SiteUser {
     private String gender; //성별
     //기본 프로필 기입
     private int age;//나이
-
+    private String email;
     private String living;//사는 지역
 
     private List<String> hobbyList;
