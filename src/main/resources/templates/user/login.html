@@ -82,8 +82,31 @@
         </div>
         <div class="text-center" style="height:50px;">
             <span class="mr-2" style="width:100px;outline:1px solid black; border-radius:5px; padding: 10px 20px;"><a href="/oauth2/authorization/google" class="social-google">구글 로그인</a></span>
-            <span class="ml-2" style="width:100px;outline:1px solid black; border-radius:5px; padding: 10px 20px;"><a href="#">페이스북 로그인</a></span>
         </div>
+        <h1>Send POST Request to /getNiceApiToken</h1>
+        <button onclick="sendPostRequest()">Get Nice API Token</button>
+
+        <script>
+            function sendPostRequest() {
+                const xhr = new XMLHttpRequest();
+                const url = '/getNiceApiToken';
+
+                xhr.open('POST', url, true);
+                xhr.setRequestHeader('Content-Type', 'application/json');
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            alert('Token received: ' + xhr.responseText);
+                        } else {
+                            alert('Failed to get token. Status: ' + xhr.status);
+                        }
+                    }
+                };
+
+                xhr.send();
+            }
+        </script>
         <div>
             <a href="board/"></a>
         </div>
