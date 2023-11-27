@@ -18,8 +18,7 @@ public class UserAddForm {
 
     private List<String> hobbyList;
 
-    @NotEmpty(message = "키는 필수항목입니다.")
-    private int tall; //키
+    private float tall; //키
 
     private String body_type; //체형
 
