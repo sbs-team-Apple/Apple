@@ -146,6 +146,7 @@ public class SiteUser {
     @OneToMany(mappedBy = "recipientUser", fetch = FetchType.LAZY)
     private List<CyberMoneyTransaction> receivedTransactions;
 
+
     public List<CyberMoneyTransaction> getCompletedTransactions() {
         List<CyberMoneyTransaction> completedTransactions = new ArrayList<>();
 

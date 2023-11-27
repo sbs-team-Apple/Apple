@@ -8,4 +8,5 @@ public interface CyberMoneyService {
     CyberMoneyTransaction findByUserIdAndUserId2(Integer userId, Integer userId2);
 
 
+    void justsendCyberMoney(SiteUser senderUser, SiteUser recipientUser, int amount);
 }
