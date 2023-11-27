@@ -23,7 +23,40 @@ public class CyberMoneyController {
     private final UserRepository userRepository;
     private final SseEmitters sseEmitters;
     private final NotificationService notificationService;
+    private final CyberMoneyTransactionRepository cyberMoneyTransactionRepository;
 
+
+    @PostMapping("/JustSend")
+    public ResponseEntity<String> JustsendCyberMoney(
+            @RequestParam("recipientUsername") String recipientUsername,
+            @RequestParam("amount") int amount
+    ) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        Optional<SiteUser> senderUserOptional = userRepository.findByUsername(username);
+        if (!senderUserOptional.isPresent()) {
+            return ResponseEntity.badRequest().body("보내는 사용자를 찾을 수 없습니다.");
+        }
+        SiteUser senderUser = senderUserOptional.get();
+
+        if (senderUser.getUsername().equals(recipientUsername)) {
+            return ResponseEntity.badRequest().body("자기 자신에게 사이버 머니를 보낼 수 없습니다.");
+        }
+
+        Optional<SiteUser> recipientUserOptional = userRepository.findByUsername(recipientUsername);
+        if (!recipientUserOptional.isPresent()) {
+            return ResponseEntity.badRequest().body("받는 사용자를 찾을 수 없습니다.");
+        }
+        SiteUser recipientUser = recipientUserOptional.get();
+
+        try {
+            cyberMoneyService.sendCyberMoney(senderUser, recipientUser, amount);
+            return ResponseEntity.ok("사이버 머니 전송이 성공했습니다.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
 
 
