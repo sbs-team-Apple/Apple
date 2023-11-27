@@ -4,6 +4,7 @@ import com.sbs.apple.DataNotFoundException;
 import com.sbs.apple.RsData;
 import com.sbs.apple.chat.ChatRoom;
 import com.sbs.apple.chat.ChatRoomService;
+import com.sbs.apple.email.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,6 +23,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final ChatRoomService chatRoomService;
     private String uploadDir;
+    private final EmailService emailService;
 
     Random random = new Random();
 
@@ -183,9 +185,12 @@ public class UserService {
         user.setDesired_job(desiredJob);
         this.userRepository.save(user);
         user = userRepository.save(user);
+        sendJoinCompleteMail(user);
         return RsData.of("S-1", "회원가입이 완료되었습니다.", user);
     }
-
+    private void sendJoinCompleteMail(SiteUser siteUser) {
+        emailService.send(siteUser.getEmail(), "회원가입이 완료되었습니다.", "회원가입이 완료되었습니다.");
+    }
 
     public boolean isCorrectPassword(String username, String password) {
         SiteUser user = getUserbyName(username);
