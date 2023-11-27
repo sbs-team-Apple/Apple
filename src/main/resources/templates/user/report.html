@@ -11,8 +11,16 @@
         <div>
             <div class="mb-3 flex justify-center" style="font-size: 25px; font-weight: bold;">신고하기</div>
             <div class="mb-5">
-                <input type="text" name="subject" id="subject" placeholder="제목" style="outline:3px solid pink;"
-                       class="input input-bordered input-secondary w-full max-w-xs">
+                <select name="subject" id="subject" class="input input-bordered input-secondary w-full max-w-xs" placeholder="제목">
+                    <option value="부적절한 콘텐츠">부적절한 콘텐츠</option>
+                    <option value="사용자의 안전 위협">사용자의 안전 위협</option>
+                    <option value="가짜 프로필 또는 사기">가짜 프로필 또는 사기</option>
+                    <option value="스팸 또는 광고성 콘텐츠">스팸 또는 광고성 콘텐츠</option>
+                    <option value="저작권 침해">저작권 침해</option>
+                    <option value="사생활 침해 또는 개인 정보 유출">사생활 침해 또는 개인 정보 유출</option>
+                    <option value="약관 위반">약관 위반</option>
+                    <option value="기타 법적 문제">기타 법적 문제</option>
+                </select>
             </div>
             <div class="mb-3">
             <textarea name="content" id="content" placeholder="내용" class="textarea textarea-secondary w-full max-w-xs"

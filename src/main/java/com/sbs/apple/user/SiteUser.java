@@ -70,11 +70,12 @@ public class SiteUser {
     private String About_Me; //자기소개
 
     private String desired_age;
-//    private int desired_age1;
-//    private int desired_age2;
+    private int desired_age1;
+    private int desired_age2;
     private String desired_hobby; // 여러개 고를 수 있게 하기
     private String desired_living; //원하는 지역
-    private String desired_tall; // 원하는 키 어떻게 범위 설정할지 다시 고민
+    private int desired_tall1;
+    private int desired_tall2;
     private String desired_body_type; //원하는 체형
     private String desired_smoking; // 원하는 흡연 유무
     private String desired_drinking; // 원하는 음주 유무
