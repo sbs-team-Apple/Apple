@@ -457,7 +457,7 @@ public class UserController {
             return "redirect:/user/transactions"; // 최신 정보를 반영하도록 리다이렉트
         } catch (Exception e) {
             // 예외 처리 로직 추가
-            return "error"; // 예외 발생 시 에러 페이지로 이동하거나 다른 적절한 처리를 수행할 수 있습니다.
+            return "redirect:/user/transactions";
         }
     }
 
