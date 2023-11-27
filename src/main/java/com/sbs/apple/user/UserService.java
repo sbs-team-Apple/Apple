@@ -73,10 +73,8 @@ public class UserService {
         user.setSchool("4년제 졸업");
         user.setJob("무직");
         user.setAbout_Me("반갑소");
-        user.setDesired_age("상관없음");
         user.setDesired_living("서울");
         user.setDesired_hobby("골프");
-        user.setDesired_tall("상관없음");
         user.setDesired_body_type("평범한");
         user.setDesired_smoking("비흡연");
         user.setDesired_drinking("가끔");
@@ -167,14 +165,16 @@ public class UserService {
     }
 
     //이상형 설정
-    public RsData<SiteUser> add_desired(SiteUser user, String desiredAge, String desiredLiving,
-                                        String desiredTall, String desiredBodyType, String desiredSmoking,
+    public RsData<SiteUser> add_desired(SiteUser user, int desiredAge1,int desiredAge2, String desiredLiving,
+                                        int desiredTall1,int desiredTall2, String desiredBodyType, String desiredSmoking,
                                         String desiredDrinking, List<String> desiredStyleList, String desiredReligion,
                                         String desiredMbti, String desiredSchool, String desiredJob) {
 
-        user.setDesired_age(desiredAge);
+        user.setDesired_age1(desiredAge1);
+        user.setDesired_age2(desiredAge2);
         user.setDesired_living(desiredLiving);
-        user.setDesired_tall(desiredTall);
+        user.setDesired_tall1(desiredTall1);
+        user.setDesired_tall2(desiredTall2);
         user.setDesired_body_type(desiredBodyType);
         user.setDesired_smoking(desiredSmoking);
         user.setDesired_drinking(desiredDrinking);
