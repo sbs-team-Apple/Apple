@@ -23,9 +23,16 @@ spring:
           auth: true
           starttls:
             enable: true
+  mvc:
+    view:
+      prefix: /WEB-INF/views/   # JSP 파일이 위치할 기본 위치 설정
+      suffix: .jsp
+
+
   thymeleaf:
     cache: false
     prefix: file:src/main/resources/templates/
+    view-names: th/*
   output:
     ansi:
       enabled: always
