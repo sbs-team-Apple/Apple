@@ -68,12 +68,14 @@
                         <p th:text="${transaction.recipientUser.username} +' 님에게 ♥ ' + ${transaction.amount} + '개를 보냈습니다.'"></p>
                         <p th:text="${#dates.format(transaction.transactionDate, 'yyyy-MM-dd')}"></p>
                     </div>
+                    <div style="display: flex; align-items: center;">
                     <form th:action="@{/user/processTransaction}" method="post">
                         <input type="hidden" name="transactionId" th:value="${transaction.id}" />
                         <input type="hidden" name="action" value="reject" /> <!-- 거절 작업 설정 -->
                         <button class="btn-sm btn btn-outline btn-info" type="submit"
-                                th:disabled="${transaction.isAccepted() or transaction.isRejected()}">취소</button>
+                                th:disabled="${transaction.isAccepted() or transaction.isRejected()}">거절</button>
                     </form>
+                    </div>
                 </li>
             </ul>
         </div>
@@ -114,7 +116,6 @@
                     <div style="border :1px solid #FABBEE; padding:5px;">
                         <p th:text="${transaction.senderUser.username} +' 님이 ♥ ' + ${transaction.amount} + '개를 보냈습니다'"></p>
                         <p th:text="${#dates.format(transaction.transactionDate, 'yyyy-MM-dd')}"></p>
-
                     </div>
 
                 </li>
@@ -136,7 +137,7 @@
                 style="border-radius:10px; border :1px solid #3B84F7; background-color :#ffffff"><a href="/exchange/create"><i class="fa-solid fa-sack-dollar"></i> 환전하기</a></button>
     </div>
     <div style="height: 20px;"></div>
-    <div class="outer-box" ></div>
+    <div class="outer-box"></div>
 
     <!--    <div class="outer-box">-->
     <!--        <div class="inner-box">-->
@@ -157,30 +158,6 @@
             }
             document.getElementById(tabName).style.display = 'block';
         }
-    </script>
-
-    <script>
-        // 취소 버튼 클릭 시 해당 거래 리스트에서 삭제
-        $('.Transactions_list form').submit(function (event) {
-            event.preventDefault(); // 폼의 기본 동작인 전송 방지
-
-            var $form = $(this); // 현재 폼 선택
-            var $listItem = $form.closest('.Transactions_list'); // 해당 폼의 부모 리스트 아이템 선택
-
-            // AJAX를 이용해 취소 작업을 처리하고, 성공 시 리스트에서 아이템을 삭제
-            $.ajax({
-                type: $form.attr('method'),
-                url: $form.attr('action'),
-                data: $form.serialize(),
-                success: function () {
-                    $listItem.remove(); // 리스트에서 아이템 삭제
-                },
-                error: function (error) {
-                    console.error('취소 실패:', error);
-                    // 실패 시 처리 (예: 알림 표시)
-                }
-            });
-        });
     </script>
 </div>
 </body>

@@ -455,9 +455,9 @@ public class UserController {
     @PostMapping("/updateMinHeart")
     public String updateMinHeart(@RequestParam("minHeart") Integer minHeart, Principal principal) {
 
-            String username = principal.getName();
-            userService.updateMinHeart(username, minHeart);
-            return "redirect:/user/myPage"; // 최신 정보를 반영하도록 리다이렉트
+        String username = principal.getName();
+        userService.updateMinHeart(username, minHeart);
+        return "redirect:/user/myPage"; // 최신 정보를 반영하도록 리다이렉트
 
 
     }
@@ -484,6 +484,7 @@ public class UserController {
         }
         CyberMoneyTransaction transaction = transactionOptional.get();
 
+
         if ("accept".equals(action) && !transaction.isAccepted() && !transaction.isRejected()) {
             // 거래가 아직 수락되지 않았을 경우에만 처리
             transaction.setAccepted(true);
@@ -502,7 +503,12 @@ public class UserController {
             senderUser.setCyberMoney(senderUser.getCyberMoney() + transaction.getAmount());
             userRepository.save(senderUser);
 
-
+            // 해당 거래를 sentTransactions에서 삭제하고 completedTransactions로 이동
+            recipientUser.getSentTransactions().remove(transaction);
+            // 이 부분을 추가하여 거래를 삭제합니다.
+            cyberMoneyTransactionRepository.delete(transaction);
+            // recipientUser.getCompletedTransactions().add(transaction); 이 부분은 삭제된 거래를 추가하는 것으로 보입니다.
+            userRepository.save(recipientUser);
 
             return "redirect:/user/transactions";
         } else {
@@ -548,4 +554,3 @@ public class UserController {
     }
 
 }
-

@@ -15,11 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.Optional;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/user/cybermoney")
 public class CyberMoneyController {
     private final CyberMoneyService cyberMoneyService;
+    private final CyberMoneyServiceImpl cyberMoneyServiceImpl;
     private final UserRepository userRepository;
     private final SseEmitters sseEmitters;
     private final NotificationService notificationService;
@@ -50,11 +52,9 @@ public class CyberMoneyController {
         SiteUser recipientUser = recipientUserOptional.get();
 
 
-        cyberMoneyService.justsendCyberMoney(senderUser, recipientUser, amount);
+        cyberMoneyServiceImpl.JustSendCyberMoney(senderUser, recipientUser, amount);
         return ResponseEntity.ok("사이버 머니 전송이 성공했습니다.");
     }
-
-
 
 
     @PostMapping("/send")
@@ -93,7 +93,7 @@ public class CyberMoneyController {
             SseEmitter emitter = new SseEmitter();
             sseEmitters.add(groupKey, emitter);
             sseEmitters.noti(groupKey, "give_money");
-            notificationService.create(recipientUser,senderUser,"money" );
+            notificationService.create(recipientUser, senderUser, "money");
             return ResponseEntity.ok("사이버 머니 전송이 성공했습니다.");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
