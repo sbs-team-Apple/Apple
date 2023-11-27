@@ -51,7 +51,11 @@ public class CyberMoneyController {
         SiteUser recipientUser = recipientUserOptional.get();
 
         try {
+
+            // 거래를 처리하지 않고 바로 사이버 머니를 전송하는 기능 호출
             cyberMoneyService.sendCyberMoney(senderUser, recipientUser, amount);
+
+            // 추가적인 로직 또는 응답 반환
             return ResponseEntity.ok("사이버 머니 전송이 성공했습니다.");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
