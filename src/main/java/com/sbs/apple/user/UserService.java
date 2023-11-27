@@ -63,7 +63,7 @@ public class UserService {
         user.setAge(random.nextInt(30));
         user.setLiving("서울");
         user.setHobbyList(hobbyList);
-        user.setTall(random.nextInt(170));
+        user.setTall(random.nextFloat(170));
         user.setBody_type("평범한");
         user.setSmoking("비흡연");
         user.setDrinking("가끔");
@@ -146,7 +146,7 @@ public class UserService {
     }
 
     //프로필 설정
-    public SiteUser add_profile(SiteUser user, int age, String living, List<String> hobbyList, int tall, String bodyType,
+    public SiteUser add_profile(SiteUser user, int age, String living, List<String> hobbyList, float tall, String bodyType,
                                 String smoking, String drinking, List<String> styleList, String religion,
                                 String mbti, String school, String job, String About_Me) {
         user.setAge(age);
