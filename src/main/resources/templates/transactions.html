@@ -5,8 +5,7 @@
     <style>
         .Transactions_list {
             margin-bottom: 10px;
-            border: 1px solid #000;
-            padding: 10px;
+
         }
         .tab-button {
             cursor: pointer;
@@ -63,18 +62,19 @@
 
         <div id="sentTab" class="tab-content " style="display: none;">
             <ul>
-                <li class="Transactions_list" th:each="transaction : ${sentTransactions}" style="display: flex; justify-content: space-between;">
-                    <div>
+                <li th:if="${not transaction.isAccepted() and not transaction.isRejected()}"
+                        class="Transactions_list" th:each="transaction : ${sentTransactions}" >
+                    <!-- 거절 버튼 -->
+                    <div style="border :1px solid #FABBEE; padding:5px;">
                         <p th:text="${transaction.recipientUser.username} +' 님에게 ♥ ' + ${transaction.amount} + '개를 보냈습니다.'"></p>
                         <p th:text="${#dates.format(transaction.transactionDate, 'yyyy-MM-dd')}"></p>
-                    </div>
-                    <div style="display: flex; align-items: center;">
-                    <form th:action="@{/user/processTransaction}" method="post">
-                        <input type="hidden" name="transactionId" th:value="${transaction.id}" />
-                        <input type="hidden" name="action" value="reject" /> <!-- 거절 작업 설정 -->
-                        <button class="btn-sm btn btn-outline btn-info" type="submit"
-                                th:disabled="${transaction.isAccepted() or transaction.isRejected()}">거절</button>
-                    </form>
+                        <div style="display: flex; align-items: center;">
+                            <form th:action="@{/user/processTransaction}" method="post">
+                                <input type="hidden" name="transactionId" th:value="${transaction.id}" />
+                                <input type="hidden" name="action" value="reject" />
+                                <button class="btn-sm btn btn-outline btn-info" type="submit">거절</button>
+                            </form>
+                        </div>
                     </div>
                 </li>
             </ul>
@@ -83,10 +83,10 @@
         <div id="receivedTab" class="tab-content">
             <ul>
                 <li class="Transactions_list" th:each="transaction : ${receivedTransactions}" style="display: flex; justify-content: space-between;">
-                    <div>
+                    <div style="border :1px solid #FABBEE; padding:5px;">
                         <p th:text="${transaction.senderUser.username} +' 님이 ♥ ' + ${transaction.amount} + '개를 보냈습니다'"></p>
                         <p th:text="${transaction.transactionDate}"></p>
-                    </div>
+
                     <!-- "수락" 버튼 -->
                     <div style="display: flex; align-items: center;">
                         <form th:action="@{/user/processTransaction}" method="post">
@@ -104,6 +104,7 @@
                                     th:disabled="${transaction.isAccepted() or transaction.isRejected()}">거절</button>
                         </form>
                     </div>
+                    </div>
                 </li>
             </ul>
         </div>
@@ -118,6 +119,12 @@
                         <p th:text="${#dates.format(transaction.transactionDate, 'yyyy-MM-dd')}"></p>
                     </div>
 
+                </li>
+                <li class="Transactions_list" th:each="transaction : ${sentTransactions}" th:if="${transaction.isAccepted()}">
+                    <div style="border :1px solid #FABBEE; padding:5px;">
+                        <p th:text="${transaction.recipientUser.username} +' 님에게 ♥ ' + ${transaction.amount} + '개를 보냈습니다.'"></p>
+                        <p th:text="${#dates.format(transaction.transactionDate, 'yyyy-MM-dd')}"></p>
+                    </div>
                 </li>
             </ul>
         </div>
@@ -159,6 +166,8 @@
             document.getElementById(tabName).style.display = 'block';
         }
     </script>
+
+
 </div>
 </body>
 </html>

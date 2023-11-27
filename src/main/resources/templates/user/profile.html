@@ -208,65 +208,56 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script>
-    $(document).ready(function () {
-    var isSending = false;
-
     $('#sendCyberMoneyBtn').click(function () {
-        if (isSending) return;
-        isSending = true;
+    my_modal_5.showModal();
 
-        my_modal_5.showModal();
+    var siteUserUsernameElement = $("#recipientUsername");
+    var recipientUsername = siteUserUsernameElement.text();
 
-        var siteUserUsernameElement = $("#recipientUsername");
-        var recipientUsername = siteUserUsernameElement.text();
+    // 이벤트 핸들러 등록 전에 기존 핸들러 삭제
+    $('#sendCyberMoneyConfirmBtn').off('click');
 
-        // 이벤트 핸들러 등록 전에 기존 핸들러 삭제
-        $('#sendCyberMoneyConfirmBtn').off('click');
+    // 이벤트 핸들러 등록
+    $('#sendCyberMoneyConfirmBtn').click(function () {
+        var amount = $('#cyberMoneyAmount').val();
+        var minHeart = parseInt([[${receivedSiteUser.minHeart}]]);
+        var userCyberMoney = parseInt([[${userCyberMoney}]]);
 
-        // 이벤트 핸들러 등록
-        $('#sendCyberMoneyConfirmBtn').click(function () {
-            var amount = $('#cyberMoneyAmount').val();
-            var minHeart = parseInt([[${receivedSiteUser.minHeart}]]);
-            var userCyberMoney = parseInt([[${userCyberMoney}]]);
+        if (amount < minHeart) {
+            alert("최소하트보다 작습니다.");
+            $('#cyberMoneyModal').modal('hide');
+            isSending = false;
+            return;
+        }
 
-            if (amount < minHeart) {
-                alert("최소하트보다 작습니다.");
-                $('#cyberMoneyModal').modal('hide');
-                isSending = false;
-                return;
-            }
+        if (amount > userCyberMoney) {
+            alert("하트가 부족합니다.");
+            $('#cyberMoneyModal').modal('hide');
+            isSending = false;
+            return;
+        }
 
-            if (amount > userCyberMoney) {
-                alert("하트가 부족합니다.");
-                $('#cyberMoneyModal').modal('hide');
-                isSending = false;
-                return;
-            }
+        var csrfToken = $("meta[name='_csrf']").attr("content");
+        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
 
-
-            var csrfToken = $("meta[name='_csrf']").attr("content");
-            var csrfHeader = $("meta[name='_csrf_header']").attr("content");
-
-            $.ajax({
-                type: 'POST',
-                url: '/user/cybermoney/send',
-                data: 'recipientUsername=' + recipientUsername + '&amount=' + amount,
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader(csrfHeader, csrfToken);
-                },
-                success: function () {
+        $.ajax({
+            type: 'POST',
+            url: '/user/cybermoney/send',
+            data: 'recipientUsername=' + recipientUsername + '&amount=' + amount,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(csrfHeader, csrfToken);
+            },
+            success: function () {
                 alert("하트가 성공적으로 전송 되었습니다.");
-                    location.reload();
-                    $('#cyberMoneyModal').modal('hide');
-
-                },
-                error: function (error) {
-                    alert("Error: " + error.responseText);
-                },
-                complete: function () {
-                    isSending = false;
-                }
-            });
+                location.reload();
+                $('#cyberMoneyModal').modal('hide');
+            },
+            error: function (error) {
+                alert("Error: " + error.responseText);
+            },
+            complete: function () {
+                isSending = false;
+            }
         });
     });
 });
