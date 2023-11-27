@@ -11,7 +11,6 @@ import com.sbs.apple.cybermoney.CyberMoneyTransactionRepository;
 import com.sbs.apple.exchange.ExchangeRepository;
 import com.sbs.apple.exchange.ExchangeService;
 import com.sbs.apple.interest.InterestService;
-import com.sbs.apple.notification.Notification;
 import com.sbs.apple.notification.NotificationService;
 import com.sbs.apple.report.ReportForm;
 import com.sbs.apple.report.ReportService;
@@ -72,12 +71,15 @@ public class UserController {
     public String signup2(@Valid UserCreateForm userCreateForm, BindingResult bindingResult,
                           RedirectAttributes redirectAttributes, Model model, MultipartFile file)
             throws Exception {
-        RsData<SiteUser> joinRs = userService.create(false, false, userCreateForm.getFile(), userCreateForm.getUsername(), userCreateForm.getPassword1(),
-                userCreateForm.getNickname(), userCreateForm.getGender());
+        RsData<SiteUser> joinRs = userService.create(false, false, userCreateForm.getFile(), userCreateForm.getUsername(), userCreateForm.getPassword1()
+                ,userCreateForm.getEmail(),userCreateForm.getNickname(), userCreateForm.getGender());
         if (joinRs.getResultCode().equals("F-1")) {
             return rq.historyBack(joinRs.getMsg());
         }
         if (joinRs.getResultCode().equals("F-2")) {
+            return rq.historyBack(joinRs.getMsg());
+        }
+        if (joinRs.getResultCode().equals("F-3")) {
             return rq.historyBack(joinRs.getMsg());
         }
         redirectAttributes.addAttribute("id", joinRs.getData().getId());
@@ -85,14 +87,20 @@ public class UserController {
     }
     @GetMapping("/checkUsernameDup")
     @ResponseBody
-    public RsData checkUsernameDup(String username) {
+    public RsData<String> checkUsernameDup(String username) {
         return userService.checkUsernameDup(username);
     }
 
     @GetMapping("/checkNicknameDup")
     @ResponseBody
-    public RsData checkNicknameDup(String nickname) {
+    public RsData<String> checkNicknameDup(String nickname) {
         return userService.checkNicknameDup(nickname);
+    }
+
+    @GetMapping("/checkEmailDup")
+    @ResponseBody
+    public RsData<String> checkEmailDup(String email) {
+        return userService.checkEmailDup(email);
     }
 
     @GetMapping("/add/{id}")
