@@ -119,6 +119,21 @@
                     </div>
 
                 </li>
+                <li
+                        class="Transactions_list" th:each="transaction : ${sentTransactions}" style="display: flex; justify-content: space-between;">
+                    <div>
+                        <p th:text="${transaction.recipientUser.username} +' 님에게 ♥ ' + ${transaction.amount} + '개를 보냈습니다.'"></p>
+                        <p th:text="${#dates.format(transaction.transactionDate, 'yyyy-MM-dd')}"></p>
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        <form th:action="@{/user/processTransaction}" method="post">
+                            <input type="hidden" name="transactionId" th:value="${transaction.id}" />
+                            <input type="hidden" name="action" value="reject" /> <!-- 거절 작업 설정 -->
+                            <button class="btn-sm btn btn-outline btn-info" type="submit"
+                                    th:disabled="${transaction.isAccepted() or transaction.isRejected()}">거절</button>
+                        </form>
+                    </div>
+                </li>
             </ul>
         </div>
 
