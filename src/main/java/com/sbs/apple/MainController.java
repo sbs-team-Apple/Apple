@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
 import java.util.List;
@@ -49,13 +50,13 @@ public class MainController {
         ChatRoom chatRoom= chatRoomService.findLastRoom();
 
         if(principal==null){
-            return "main";
+            return "th/main";
         }
 
         SiteUser loginUser = userService.getUserbyName(principal.getName());
 
         if(loginUser==null) {
-            return "main";
+            return "th/main";
         }
 
         List<SiteUser> siteUsers2 = userService.getAllUser2(loginUser);
@@ -86,6 +87,31 @@ public class MainController {
         }
 
         List<Notification> notificationsList = notificationService.getByUserTo(loginUser);
-        return "main";
+        return "th/main";
+    }
+
+    @RequestMapping("/jsp")
+    public String jsp(){
+        System.out.println("asdasd!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        System.out.println("asdasd!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        System.out.println("asdasd!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        System.out.println("asdasd!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+        return "jsp/close";
+    }
+
+    @GetMapping("/jsp2")
+    public String jsp2(){
+
+
+        return "jsp/WelStdPayRequest";
+    }
+
+
+    @GetMapping("/jsp3")
+    public String jsp3(){
+
+
+        return "jsp/WelStdPayResult";
     }
 }
