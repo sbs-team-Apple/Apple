@@ -7,30 +7,33 @@
 
 <div layout:fragment="content" class="container m-auto flex justify-center flex-col items-center">
     <div class="mb-5 mt-5" style="margin-bottom:40px; width: 270px; border-radius: 20px;
-    border: 2px solid #f08dac; box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.4);">
+    outline: 2px solid #f08dac; box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.4);">
         <div class="all">
-            <div class="photo" style="position: relative;">
+            <div class="photo mb-3" style="position: relative;">
                 <div class="flex justify-center">
                     <img th:src="@{|${user.filepath}|}" alt="User Image" style="width: 270px; height: 270px;
              object-fit: cover; border-top-left-radius: 20px; border-top-right-radius: 20px;">
                 </div>
+                <div class="dropdown w-full" style="position: absolute; top: 10px; right: 10px;">
+                    <div class=" flex justify-end">
+                        <label tabindex="0">
+                            <i class="fa-solid fa-gear fa-xl" style="color: #000000;"></i>
+                        </label>
+                    </div>
+                    <ul tabindex="0"
+                        class="menu menu-sm dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                        <li><a th:href="@{|/user/photoModify/${user.id}|}">사진 변경</a></li>
+                        <li><a href="/user/profile_modify">프로필 변경</a></li>
+                        <li><a href="/user/desired_modify">이상형 변경</a></li>
+                        <li><a href="/user/passwordChange">비밀번호 변경</a></li>
+                        <li><a href="/user/delete">회원 탈퇴</a></li>
+                        <li><a href="/board/myAppealBoard">내가 쓴 글</a></li>
+                    </ul>
+                </div>
+            </div>
 
-            </div>
-            <div>
-                <div class="flex">
-                    <a th:href="@{|/user/photoModify/${user.id}|}"
-                       style="padding:4px 10px; border-radius:6px; border :1px solid purple">
-                        사진 수정</a>
-                </div>
-                <div class="flex">
-                    <a href="/user/profile_modify" style="padding:4px 15px; border-radius:6px;
-                    border :1px solid #f08dac;">프로필 수정</a>
-                </div>
-                <div class="flex">
-                    <a href="/user/desired_modify" style="padding:4px 20px; border-radius:6px;
-                    border :1px solid #f08dac;">나의 이상형 정보 수정</a>
-                </div>
-            </div>
+
+
 
             <div class="profile">
                 <div th:text="${user.nickname + ', ' + user.age}+', '+${user.mbti}" class="ml-2"
@@ -60,10 +63,10 @@
                 <div class="ml-2" th:text="'취미 : ' + ${user.hobbyList}"></div>
 
             </div>
-            <div class="last" style="margin-bottom :20px;">
-                <div class="text-xl flex justify-left ml-2">
+            <div class="last mb-3">
+                <div class="text-xl flex justify-center">
                     <button onclick="show_desired()" id="up_down"
-                            style="border: 1px solid black; border-radius: 10px; padding: 0 10px; margin: 10px 0;">
+                            style="border: 2px solid black; border-radius: 10px; padding: 0 90px; margin: 10px 0;">
                         <span>이상형</span><i id="icon" class="fa-solid fa-caret-down ml-1"></i>
                     </button>
                 </div>

@@ -3,8 +3,7 @@
 <head>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <meta name="_csrf" th:content="${_csrf.token}"/>
-    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
     <title></title>
 
 </head>
@@ -23,12 +22,29 @@
                     <div class="dropdown dropdown-bottom dropdown-end chat-option-icon text-right  ">
                         <label tabindex="0" class=" m-1 bg-white"><i class="fa-solid fa-gear fa-lg option-icon-img"></i></label>
                         <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-40">
-                            <li><a class="flex justify-end"><button class="btn" onclick="my_modal_5.showModal()">채팅방 나가기</button>
-                                <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
+                            <li><a class="flex justify-end"><button class="btn" onclick="my_modal_6.showModal()">하트 보내기</button>
+                                <dialog id="my_modal_6" class="modal modal-bottom sm:modal-middle">
                                     <div class="modal-box">
                                         <h3 class="font-bold text-lg">경고</h3>
                                         <p class="py-4">채팅방을 나가시면 또 하트를 보내야지만 채팅방이 만들어집니다. 채팅방을 나가시겠습니까?</p>
                                         <div class="modal-action">
+
+                                            <form th:action="@{|/chat/${roomId}/delete|}" method="get">
+                                                <button class="btn" type="submit" >예 </button>
+                                            </form>
+                                            <form method="dialog">
+                                                <button class="btn">아니오</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </dialog>
+                            </a></li>
+                            <li><a class="flex justify-end"><button class="btn" onclick="my_modal_5.showModal()">채팅방 나가기</button>
+                                <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
+                                    <div class="modal-box" style="height:180px; width:300px; padding:15px;">
+                                        <h3 class="font-bold text-lg">경고!!!!!</h3>
+                                        <p class="mt-2">채팅방을 나가시면 또 하트를 보내야지만 채팅방이 만들어집니다. 채팅방을 나가시겠습니까?</p>
+                                        <div class="modal-action mt-2">
 
                                             <form th:action="@{|/chat/${roomId}/delete|}" method="get">
                                                 <button class="btn" type="submit" >예 </button>
@@ -118,7 +134,9 @@
 
 
     </div>
-
+    <div class="toUser-img-src" th:text="${toUser.filepath}" style="display:none;"></div>
+    <div class="toUser-id" th:text="${'user/detail/'+toUser.id}" style="display:none;"></div>
+    <div class="toUser-nickname" th:text="${toUser.nickname}" style="display:none;"></div>
 
 
 </div>
@@ -157,6 +175,18 @@ input:focus {
     margin-right:auto;
      position:relative;
 }
+ @media screen and (min-width: 800px) {
+    .chat-section {
+
+    width:50%;
+
+    }
+
+
+
+ }
+
+
 .chat-container{
 
 
@@ -165,13 +195,13 @@ input:focus {
 
 
 .chat__message-box{
-
+        padding-top:20px;
       height:500px;
 
 
      overflow-y: scroll; /* 세로 스크롤만 활성화 */
      overflow-x: hidden;
-     background-color :#9bbbd4;
+     background-color :#f08dac;
      position:relative;
 }
 
@@ -191,7 +221,7 @@ input:focus {
 
 .chat-option-box {
     height:35px;
-     background-color :#9bbbd4;
+     background-color :#f0bddb;
      display:flex;
       align-items: center;
 
@@ -201,6 +231,7 @@ input:focus {
 .chat-option-item {
     display:flex;
     width:100%;
+
 
 }
 
@@ -213,7 +244,7 @@ input:focus {
 }
 
 .fa-cog:before, .fa-gear:before{
-           background-color :#9bbbd4;
+           background-color :#f0bddb;
 
 }
 
@@ -252,7 +283,7 @@ input:focus {
 }
 
 .chat-write-box-item-button {
-    background-color : #fef01b;
+    background-color : #f0bddb;
     margin-left:10px;
 }
 
@@ -271,7 +302,7 @@ input:focus {
 
 .chat__message.right {
 text-align: left;
-background-color: #fef01b; /* 원하는 배경색으로 변경 */
+background-color: #f0bddb; /* 원하는 배경색으로 변경 */
  clear:both;
     float:right;
     margin-right:10px;
@@ -282,14 +313,33 @@ background-color: #fef01b; /* 원하는 배경색으로 변경 */
 /* 상대방의 메시지 */
 .chat__message.left {
 text-align: left;
-background-color: #ffffff; /* 원하는 배경색으로 변경 */
+background-color: white; /* 원하는 배경색으로 변경 */
 clear:both;
 float:left;
-    margin-left:10px;
+    margin-left:55px;
 
-
+    position:relative;
 
 }
+
+.left-div {
+    position:absolute;
+    top:-30px;
+    left:-50px;
+    border:1px solid #bcc0c4;
+     border-radius: 50%;
+
+}
+
+.left-div-name{
+         position:absolute;
+    top:-30px;
+    left:0px;
+
+}
+
+
+
 
 .emo-button {
         line-height: 56px;
@@ -308,7 +358,7 @@ float:left;
 
      overflow-y: scroll; /* 세로 스크롤만 활성화 */
      overflow-x: hidden;
-     background-color:gray;
+    border:1px solid black;
 }
 
 
@@ -482,6 +532,11 @@ float:left;
 
 <script>
     // 채팅 메세지 작성 시작
+    var toUserImgSrc=$(".toUser-img-src").text();
+    var toUserDetail=$(".toUser-id").text();
+    var toUserNickname=$(".toUser-nickname").text();
+    console.log("asda"+toUserImgSrc);
+
     function Chat__writeMessage(form) {
         form.authorName.value = form.authorName.value.trim();
 
@@ -544,9 +599,24 @@ float:left;
             Chat__elMessageUl
                 .insertAdjacentHTML(
                     "beforeBegin",
-                    `<li class="chat__message ${alignClass}">${message.authorName} : ${message.content}</li>`
+                    `<li class="chat__message ${alignClass}"> ${message.content}</li>`
                 );
+            if (alignClass === 'left') {
+            const imgDiv = $('<div class="avatar left-div">' +
+    '<div class="w-10 rounded-full">' +
+    '<a href=/' + toUserDetail + '>' +
+    '<img src="' + toUserImgSrc + '">' +
+    '</a>' +
+    '</div>' +
+    '</div>');
 
+      const toUserName = $('<div class="left-div-name"></div>').text(toUserNickname);
+
+
+        $(".left:last").append(imgDiv);
+        $(".left:last").append(toUserName);
+
+     }
 
         // 스크롤 컨테이너의 스크롤 위치를 가장 아래로 이동
         const scrollContainer = document.querySelector(".chat__message-box"); // 스크롤 컨테이너의 선택자를 적절히 변경

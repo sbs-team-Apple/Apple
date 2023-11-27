@@ -13,7 +13,7 @@
 <div layout:fragment="content" class="container m-auto flex justify-center flex-col items-center">
     <div class="mb-5 mt-5"
          style="width: 270px; border-radius: 20px; margin-bottom:80px;
-         border: 2px solid #f08dac; box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.3);">
+          box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.3);">
         <div>
             <div>
                 <div class="photo" style="position: relative;">
@@ -24,38 +24,42 @@
 
                     <div style="position: absolute; top: 10px; right: 10px;">
                         <a th:href="@{'/user/add_interest/' + ${receivedSiteUser.id}}">
+                            <div class="bg-white p-4 px-4 rounded-full absolute -left-6 -top-6 shadow-md">
                             <span th:if="${isInterested}">
                                                          <span style="position: relative;">
-                    <i class="fa-regular fa-star fa-2xl" style="position: absolute; top: 9px; left: 0;"></i>
-                    <i class="fa-solid fa-star fa-2xl" style="color: yellow;"></i>
+                    <i class="fa-solid fa-star fa-xl" style="color: yellow;"></i>
                                 </span>
                                  </span>
-                            <span th:unless="${isInterested}">
+                                <span th:unless="${isInterested}">
                                 <span style="position: relative;">
-                                <i class="fa-regular fa-star fa-2xl"
-                                   style="position: absolute; top: 9px; left: 0;"></i>
-                                <i class="fa-solid fa-star fa-2xl" style="color: white;"></i>
+                                <i class="fa-regular fa-star fa-xl"></i>
                                 </span>
-                            </span>
+                                 </span>
+                            </div>
                         </a>
                     </div>
                 </div>
-                <div class="flex justify-between">
-                    <a style="padding:5px 15px; border-radius:10px; border:3px solid red;"
-                       th:href="@{'/user/report/' + ${receivedSiteUser.id}}">
-                        <i class="fa-solid fa-shield mr-1   "></i>신고하기</a>
-
+                <div>
                     <button th:if="${chatRoom == null && log == null}" id="sendCyberMoneyBtn"
                             style="padding:5px 15px; border-radius:10px; border:3px solid purple;"
                             data-toggle="modal" data-target="#cyberMoneyModal">
-                        <i class="fa-solid fa-comment mr-1"></i>채팅방 만들기
+                        <i class="fa-solid fa-comment mr-1"></i>하트 보내기
                     </button>
                 </div>
+                <div class="flex">
+                    <div th:text="${receivedSiteUser.nickname + ', ' + receivedSiteUser.age}+', '+${receivedSiteUser.mbti}"
+                         class="ml-2 mr-2"
+                         style="font-size: 25px; font-weight: bold; position: relative;">
+                    </div>
+                    <div>
+                        <a style="padding:5px 15px; border-radius:10px; border:3px solid red;"
+                           th:href="@{'/user/report/' + ${receivedSiteUser.id}}">
+                            dfdsf</a>
+                    </div>
+                </div>
 
-                <div th:text="${receivedSiteUser.nickname + ', ' + receivedSiteUser.age}+', '+${receivedSiteUser.mbti}"
-                     class="ml-2 mr-2"
-                     style="font-size: 25px; font-weight: bold;"></div>
-                <div class="ml-2 mr-2 mb-2" th:text="${receivedSiteUser.About_Me}" style="max-width: 250px; word-wrap: break-word;"></div>
+                <div class="ml-2 mr-2 mb-2" th:text="${receivedSiteUser.About_Me}"
+                     style="max-width: 250px; word-wrap: break-word;"></div>
 
                 <div class="ml-2 mr-2 info_wrap">
                     <span><i class="fa-solid fa-location-dot"></i><span
@@ -82,21 +86,20 @@
             <div>
                 <div class="text-xl flex justify-center">
                     <button onclick="show_desired()" id="up_down"
-                            style="border: 1px solid black; border-radius: 10px; padding: 0 10px; margin: 10px 0;">
+                            style="border: 1px solid black; border-radius: 10px; padding: 0 90px; margin: 10px 0;">
                         <span>이상형</span><i id="icon" class="fa-solid fa-caret-down ml-1"></i>
                     </button>
                 </div>
-                <div style="display:none;" id="all">
-                    <div class="ml-2" th:text="'선호하는 나이 : ' + ${receivedSiteUser.desired_age}"></div>
-                    <div class="ml-2" th:text="'선호하는 지역 : ' + ${receivedSiteUser.desired_living}"></div>
-                    <div class="ml-2" th:text="'선호하는 이성 키 : ' + ${receivedSiteUser.desired_tall}"></div>
-                    <div class="ml-2" th:text="'선호하는 이성 체형 : ' + ${receivedSiteUser.desired_body_type}"></div>
-                    <div class="ml-2" th:text="'선호하는 이성 흡연 : ' + ${receivedSiteUser.desired_smoking}"></div>
-                    <div class="ml-2" th:text="'선호하는 이성 음주 : ' + ${receivedSiteUser.desired_drinking}"></div>
-                    <div class="ml-2" th:text="'선호하는 이성 성격 : ' + ${receivedSiteUser.desired_styleList}"></div>
-                    <div class="ml-2" th:text="'선호하는 이성 종교 : ' + ${receivedSiteUser.desired_religion}"></div>
-                    <div class="ml-2" th:text="'선호하는 이성 MBTI : ' + ${receivedSiteUser.desired_mbti}"></div>
-                    <div class="ml-2" th:text="'최소하트 : ' + ${receivedSiteUser.minHeart}"></div>
+                <div class="mb-3" style="display:none;" id="all">
+                    <div class="ml-2" th:text="'나이 : ' + ${receivedSiteUser.desired_age}"></div>
+                    <div class="ml-2" th:text="'지역 : ' + ${receivedSiteUser.desired_living}"></div>
+                    <div class="ml-2" th:text="'키 : ' + ${receivedSiteUser.desired_tall}"></div>
+                    <div class="ml-2" th:text="'체형 : ' + ${receivedSiteUser.desired_body_type}"></div>
+                    <div class="ml-2" th:text="'흡연 : ' + ${receivedSiteUser.desired_smoking}"></div>
+                    <div class="ml-2" th:text="'음주 : ' + ${receivedSiteUser.desired_drinking}"></div>
+                    <div class="ml-2" th:text="'성격 : ' + ${receivedSiteUser.desired_styleList}"></div>
+                    <div class="ml-2" th:text="'종교 : ' + ${receivedSiteUser.desired_religion}"></div>
+                    <div class="ml-2" th:text="'MBTI : ' + ${receivedSiteUser.desired_mbti}"></div>
                 </div>
             </div>
             <script>

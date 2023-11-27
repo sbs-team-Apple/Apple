@@ -124,14 +124,21 @@ public class ChatController {
         System.out.println("원래 있던 채팅방에 접속");
         SiteUser user =userService.getUserbyName(principal.getName());
         ChatRoom room = chatRoomService.findRoomByUserIdAndUserId2(userId,user.getId());
+
+
+
         System.out.println("채팅방에 들어갈 방번호 "+room.getId());
 
         model.addAttribute("roomId",room.getId() );
         model.addAttribute("user",user);
 
-        //나랑 채팅하고 있는 사람
+        //나랑 채팅하고 있는 사람, 나한테 채팅초대한 사람
         SiteUser toUser=room.getSiteUser();
         model.addAttribute(("toUser"),toUser);
+//        Notification notification =notificationService.findByUsers(toUser, user);
+//        if(notification !=null) {
+//            notificationService.delete(notification);
+//        }
 
 
         return "chat/room";
@@ -230,11 +237,11 @@ public class ChatController {
 
 
         //그 채팅룸의 유저 정보로 알람 기록을 찾아서 나갈때 그 알람 기록도 삭제해주기
-        Notification notification=notificationService.findByUsers(room.getSiteUser(),room.getSiteUser2());
-
-        if(notification !=null){
-                notificationService.delete(notification);
-        }
+//        Notification notification=notificationService.findByUsers(room.getSiteUser(),room.getSiteUser2());
+//
+//        if(notification !=null){
+//                notificationService.delete(notification);
+//        }
 
 
 
