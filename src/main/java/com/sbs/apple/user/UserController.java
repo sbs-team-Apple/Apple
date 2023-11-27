@@ -450,15 +450,11 @@ public class UserController {
     }
 
     @PostMapping("/updateMinHeart")
-    public String updateMinHeart(@RequestParam("minHeart") Integer minHeart, Principal principal) {
-        try {
+    public String updateMinHeart(Principal principal,@PathVariable("minHeart") Integer minHeart) {
             String username = principal.getName();
             userService.updateMinHeart(username, minHeart);
-            return "redirect:/user/transactions"; // 최신 정보를 반영하도록 리다이렉트
-        } catch (Exception e) {
-            // 예외 처리 로직 추가
-            return "redirect:/user/transactions";
-        }
+            return "user/myPage"; // 최신 정보를 반영하도록 리다이렉트
+
     }
 
 
