@@ -31,4 +31,5 @@ public class CyberMoneyTransaction {
     private boolean accepted = false;
 
     private boolean rejected = false;
+
 }

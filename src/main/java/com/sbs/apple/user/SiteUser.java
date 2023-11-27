@@ -148,6 +148,10 @@ public class SiteUser {
     @OneToMany(mappedBy = "recipientUser", fetch = FetchType.LAZY)
     private List<CyberMoneyTransaction> receivedTransactions;
 
+    @OneToMany(mappedBy = "senderUser")
+    private List<CyberMoneyTransaction> sentTransactions;
+
+
     public List<CyberMoneyTransaction> getCompletedTransactions() {
         List<CyberMoneyTransaction> completedTransactions = new ArrayList<>();
 
@@ -163,5 +167,6 @@ public class SiteUser {
 
     @Column
     private Integer minHeart = 200;
+
 
 }
