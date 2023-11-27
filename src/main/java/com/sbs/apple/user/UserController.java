@@ -455,9 +455,9 @@ public class UserController {
     @PostMapping("/updateMinHeart")
     public String updateMinHeart(@RequestParam("minHeart") Integer minHeart, Principal principal) {
 
-            String username = principal.getName();
-            userService.updateMinHeart(username, minHeart);
-            return "redirect:/user/myPage"; // 최신 정보를 반영하도록 리다이렉트
+        String username = principal.getName();
+        userService.updateMinHeart(username, minHeart);
+        return "redirect:/user/myPage"; // 최신 정보를 반영하도록 리다이렉트
 
 
     }
@@ -548,4 +548,3 @@ public class UserController {
     }
 
 }
-
