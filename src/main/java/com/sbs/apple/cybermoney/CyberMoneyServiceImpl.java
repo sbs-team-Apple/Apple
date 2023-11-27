@@ -15,6 +15,12 @@ public class CyberMoneyServiceImpl implements CyberMoneyService {
         this.cyberMoneyTransactionRepository = cyberMoneyTransactionRepository;
 
     }
+    public void JustSendCyberMoney(SiteUser senderUser, SiteUser recipientUser, int amount) {
+        senderUser.setCyberMoney(senderUser.getCyberMoney() - amount);
+        recipientUser.setReceivedCyberMoney(recipientUser.getReceivedCyberMoney() + amount);
+        userRepository.save(senderUser);
+        userRepository.save(recipientUser);
+    }
 
     @Override
     public void sendCyberMoney(SiteUser senderUser, SiteUser recipientUser, int amount) {
@@ -29,9 +35,9 @@ public class CyberMoneyServiceImpl implements CyberMoneyService {
 
             // 그 후, 사용자들의 사이버 머니를 업데이트
             senderUser.setCyberMoney(senderUser.getCyberMoney() - amount);
-//            recipientUser.setReceivedCyberMoney(recipientUser.getReceivedCyberMoney() + amount);
+//
             userRepository.save(senderUser);
-//            userRepository.save(recipientUser);
+//
         } else {
             throw new IllegalArgumentException("사이버 머니가 부족합니다.");
         }
