@@ -7,11 +7,11 @@
 <body>
 <div layout:fragment="content" class="container my-3 w-10/12 m-auto">
     <div class="board-create-container">
-        <a th:href="@{/board/create}"><i class="fa-solid fa-square-plus fa-2xl"></i></a>
+        <a th:href="@{/board/create(key-kind=public)}"><i class="fa-solid fa-square-plus fa-2xl"></i></a>
     </div>
     <br><br>
     <div class="m-auto w-4/12 flex flex-col board-container  justify-center items-center">
-        <div  class="mt-2 appeal-img-container" th:each="board : ${board}">
+        <div  class="mt-2 appeal-img-container" th:each="board : ${board}"  th:id="${board.id}">
             <div class="flex mb-2">
                 <a th:href="@{|/user/detail/${board.siteUser.id}|}">
                     <div class="avatar ">
@@ -29,8 +29,8 @@
                     <div class="dropdown dropdown-end">
                         <label tabindex="0" class=" m-1">...</label>
                         <ul tabindex="0" class="option-btn-content dropdown-content z-[1] mt-2 menu p-2 shadow bg-base-100 rounded-box w-52">
-                            <li th:if="${@rq.user.nickname==board.siteUser.nickname}"> <a th:href="@{|/board/modify/${board.id}|}">수정하기</a></li>
-                            <li th:if="${@rq.user.nickname==board.siteUser.nickname}"><a th:href="@{|/board/delete/${board.id}|}">삭제하기</a></li>
+                            <li th:if="${@rq.user.nickname==board.siteUser.nickname}"> <a th:href="@{|/board/modify/${board.id}?key-kind=public|}">수정하기</a></li>
+                            <li th:if="${@rq.user.nickname==board.siteUser.nickname}"><a th:href="@{|/board/delete/${board.id}?key-kind=public|}">삭제하기</a></li>
                         </ul>
                     </div>
 
@@ -48,6 +48,27 @@
                     <button class="nextButton img-btn"><i class="fa-regular fa-circle-right fa-2xl"></i></button>
                 </div>
             </div>
+                <div class="flex ">
+                    <div class="heart-container mt-2 ml-2 mr-4">
+                        <a class=" " style=" "th:onclick="'likeBoard(' + ${board.id} + ')'">
+                        <div th:classappend="${!@rq.checkLike(board)} ? 'empty-heart heart' : 'empty-heart heart hidden'">
+                            <i class="fa-regular fa-heart fa-2xl" style="color: #df1616; ">
+
+                            </i>
+                        </div>
+                        <div th:classappend="${@rq.checkLike(board)} ? 'full-heart heart ' : 'full-heart heart hidden'">
+                            <i class="fa-solid fa-heart fa-bounce fa-2xl" style="color: #df1616; ">
+                            </i>
+                        </div>
+                        </a>
+                     </div>
+                    <div style="display: flex; align-items: center;">
+                        <span class="badge rounded-pill  likeNum" style="background-color:#f0bddb;"
+                                  th:id="'likeCount-' + ${board.id}" ></span>
+                        <span class="ex hidden "  th:data-initial-value="${#lists.size(board.like)}" th:text="${#lists.size(board.like)}" ></span>
+                    </div>
+
+                </div>
 
                   <div class="img-content" >
                      <div th:text="${board.content}"></div>
@@ -75,6 +96,100 @@
 </body>
 </html>
 
+<script>
+    $('.heart-container').on('click', function() {
+     var $emptyHeart = $(this).find('.empty-heart');
+     var $fullHeart = $(this).find('.full-heart');
+
+     $emptyHeart.toggleClass('hidden');
+     $fullHeart.toggleClass('hidden');
+ });
+
+</script>
+<script>
+
+
+     // Update the content of the span with the new like count
+
+
+  $('.ex').each(function() {
+    var initialValue = $(this).data('initial-value');
+    $(this).siblings('.likeNum').text(initialValue);
+});
+
+</script>
+
+
+<script>
+    function getLikeBoard(boardId) {
+              $.ajax({
+              type: "GET",
+              url: `/board/like/${boardId}`,
+
+              success: function(response) {
+              // 서버에서 좋아요 처리 후 반환된 데이터를 처리
+              // 여기서는 좋아요 수를 업데이트
+                console.log("좋아요 수 업데이트");
+                 updateLikeCountSpan(response, boardId);
+
+                },
+
+              error: function(err) {
+              console.error('에러 발생: ', err);
+              }
+              });
+          }
+
+</script>
+
+<script>
+    function likeBoard(boardId) {
+
+      var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+        $.ajax({
+            type: "POST",
+            url: `/board/like/${boardId}`,
+
+              beforeSend: function(xhr) {
+            // Include CSRF token in request header
+            xhr.setRequestHeader(header, token);
+        },
+            success: function(response) {
+                // 서버에서 좋아요 처리 후 반환된 데이터를 처리
+                // 여기서는 좋아요 수를 업데이트
+                console.log("좋아요 수 보내기");
+
+                getLikeBoard(boardId);
+            },
+            error: function(err) {
+                console.error('에러 발생: ', err);
+            }
+        });
+    }
+
+    function updateLikeCountSpan(response, boardId) {
+    // Assuming your span has an ID like 'likeCountSpan-BOARD_ID'
+   var updatedLikeCount = response.likeCount;
+   console.log("현재 좋아요수 "+updatedLikeCount);
+
+    // Update the UI element for the like count of the specific board
+    // Assuming you have a span element with an ID like 'likeCountSpan-BOARD_ID'
+    var spanId = $('#likeCount-' + boardId);
+    console.log("현재 좋아요 업데이트 해야 할 태그"+spanId)
+    console.log(spanId);
+    // Update the content of the span with the new like count
+     $(spanId).siblings('.ex').text(updatedLikeCount);
+
+     $(spanId).text($(spanId).siblings('.ex').text());
+
+
+
+}
+</script>
+
+
+
 <style>
 
     .board-img-box {
@@ -99,6 +214,8 @@
     }
 
 
+
+
     .navbar {
         position:fixed;
     }
@@ -116,7 +233,7 @@
     }
 
     .appeal-img-container{
-        width:40%;
+        width:20%;
 
         padding-bottom:20px;
         padding-top: 100px;
@@ -211,6 +328,10 @@
 
     .img-content {
         margin:20px 10px;
+
+    }
+
+    .heart {
 
     }
 

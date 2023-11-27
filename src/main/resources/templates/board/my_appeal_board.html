@@ -7,34 +7,30 @@
 <body>
 <div layout:fragment="content" class="container my-3 ">
     <div class="board-create-container">
-        <a th:href="@{/board/create}"><i class="fa-solid fa-square-plus fa-2xl"></i></a>
+        <a th:href="@{/board/create(key-kind=my)}"><i class="fa-solid fa-square-plus fa-2xl"></i></a>
     </div>
     <br><br>
-    <div class=" w-12/12 flex flex-wrap  board-container  items-center">
-        <div th:if="${board.size()==0}">
-            <img src="/img/camera1.jpg" alt="">
-            <div class="no-img">
-                게시물이 없습니다
+    <div style="border-top: 1px solid #e4e6eb;    margin-top:150px;">
+        <div class=" w-12/12 flex flex-wrap  board-container  items-center">
+            <div th:if="${board.size()==0}">
+                <img src="/img/camera1.jpg" alt="">
+                <div class="no-img">
+                    게시물이 없습니다
+
+                </div>
 
             </div>
 
-        </div>
+
+            <div  class="appeal-img-container w-4/12 " th:each="board : ${board}">
+                <a class="" th:href="@{|/board/myAppealBoardList#${board.id}|}">
+                    <img  class="ex-current-img  " th:src=" ${@rq.getImgs(board).get(0).filepath}" alt="">
+                </a>
 
 
-        <div  class="appeal-img-container w-4/12 " th:each="board : ${board}">
-            <a class="" th:href="@{|/board/myAppealBoardList#${board.id}|}">
-                <img  class="ex-current-img  " th:src=" ${@rq.getImgs(board).get(0).filepath}" alt="">
-            </a>
-
-
-
-
-
-
-
+            </div>
         </div>
     </div>
-
     <br>
 
 
@@ -56,10 +52,22 @@
 
 
   .board-container {
-        margin-top:150px;
-      border-top:1px solid black;
-      position:relative;
 
+
+      position:relative;
+      margin-left:auto;
+      margin-right:auto;
+
+
+  }
+
+    @media screen and (min-width: 800px) {
+
+               .board-container{
+                  width:60%;
+
+
+                }
 
   }
 
@@ -72,6 +80,16 @@
   .ex-current-img{
       width:100%;
       height:120px;
+      border:1px solid #e4e6eb;
+  }
+
+    @media screen and (min-width: 800px) {
+
+              .ex-current-img{
+                    height:250px;
+
+                }
+
   }
 
 

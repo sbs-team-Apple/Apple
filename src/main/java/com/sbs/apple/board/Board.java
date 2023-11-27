@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Setter
@@ -35,6 +36,10 @@ public class Board {
     private List<Imgs> imgs;
 
     private LocalDateTime createDate;
+
+
+    @ManyToMany
+    Set<SiteUser> like;
 
 
 

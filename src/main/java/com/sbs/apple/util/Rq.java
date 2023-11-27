@@ -1,7 +1,9 @@
 package com.sbs.apple.util;
 
 
+import com.sbs.apple.Ut;
 import com.sbs.apple.board.Board;
+import com.sbs.apple.board.BoardService;
 import com.sbs.apple.imgs.Imgs;
 import com.sbs.apple.imgs.ImgsService;
 import com.sbs.apple.notification.Notification;
@@ -45,9 +47,10 @@ public class Rq {
     private User user;
     private final NotificationService notificationService;
     private final ImgsService imgsService;
+    private final BoardService boardService;
 
 
-    public Rq(UserService userService ,NotificationService notificationService,ImgsService imgsService) {
+    public Rq(UserService userService ,NotificationService notificationService,ImgsService imgsService,BoardService boardService) {
         ServletRequestAttributes sessionAttributes = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes()));
         HttpServletRequest request = sessionAttributes.getRequest();
         HttpServletResponse response = sessionAttributes.getResponse();
@@ -57,6 +60,7 @@ public class Rq {
         this.userService=userService;
         this.notificationService=notificationService;
         this.imgsService=imgsService;
+        this.boardService=boardService;
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -175,6 +179,28 @@ public class Rq {
     public List<Imgs> getImgs(Board board){
         imgsService.getImgsByBoard(board);
         return imgsService.getImgsByBoard(board);
+    }
+    public String historyBack(String msg) {
+        String referer = request.getHeader("referer");
+        String key = "historyBackFailMsg___" + referer;
+        request.setAttribute("localStorageKeyAboutHistoryBackFailMsg", key);
+        request.setAttribute("historyBackFailMsg", Ut.url.withTtl(msg));
+        // 200 이 아니라 400 으로 응답코드가 지정되도록
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        return "common/js";
+    }
+
+    public boolean checkLike( Board board){
+        SiteUser user =getUser();
+        if(board.getLike().contains(user)){
+            return true;
+
+        }else {
+            return false;
+        }
+    }
+    public String redirect(String url, String msg) {
+        return "redirect:" + Ut.url.modifyQueryParam(url, "msg", Ut.url.encodeWithTtl(msg));
     }
 }
 

@@ -63,10 +63,10 @@
 
                             <li><a class="flex justify-end"><button class="btn" onclick="my_modal_5.showModal()">채팅방 나가기</button>
                                 <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
-                                    <div class="modal-box">
-                                        <h3 class="font-bold text-lg">경고</h3>
-                                        <p class="py-4">채팅방을 나가시면 또 하트를 보내야지만 채팅방이 만들어집니다. 채팅방을 나가시겠습니까?</p>
-                                        <div class="modal-action">
+                                    <div class="modal-box" style="height:180px; width:300px; padding:15px;">
+                                        <h3 class="font-bold text-lg">경고!!!!!</h3>
+                                        <p class="mt-2">채팅방을 나가시면 또 하트를 보내야지만 채팅방이 만들어집니다. 채팅방을 나가시겠습니까?</p>
+                                        <div class="modal-action mt-2">
 
                                             <form th:action="@{|/chat/${roomId}/delete|}" method="get">
                                                 <button class="btn" type="submit" >예 </button>
@@ -199,6 +199,18 @@ input:focus {
     margin-right:auto;
      position:relative;
 }
+ @media screen and (min-width: 800px) {
+    .chat-section {
+
+    width:50%;
+
+    }
+
+
+
+ }
+
+
 .chat-container{
 
 

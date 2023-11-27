@@ -7,6 +7,7 @@ import com.sbs.apple.user.SiteUser;
 import com.sbs.apple.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @RequiredArgsConstructor
@@ -24,17 +27,21 @@ public class BoardController {
     private final UserService userService;
     private final BoardService boardService;
     private final ImgsService imgsService;
+    private final BoardRepository boardRepository;
+    private Board board;
 
 
     @GetMapping("/create")
-    public String Create(BoardForm boardForm) {
+    public String Create(BoardForm boardForm,  @RequestParam("key-kind") String kind, Model model) {
+        System.out.println(kind);
+        model.addAttribute("keyKind", kind);
         return "board/appeal_board_create";
 
     }
 
 
     @PostMapping("/create")
-    public String Create(@Valid BoardForm boardForm, MultipartFile file, Model model, Principal principal) throws Exception {
+    public String Create(@Valid BoardForm boardForm, MultipartFile file, Model model, Principal principal, @RequestParam("key-kind") String kind ) throws Exception {
         SiteUser user = userService.getUserbyName(principal.getName());
         if(boardForm.getFile()==null){
 
@@ -44,8 +51,14 @@ public class BoardController {
 
         Board board = boardService.create(boardForm.getFile(),boardForm.getContent(), user);
 
+        if(kind.equals("my")){
+            return "redirect:/board/myAppealBoard";
+
+        }else {
 
         return "redirect:/board/appealList";
+         }
+
     }
 
     @GetMapping("/appealList")
@@ -75,7 +88,7 @@ public class BoardController {
 //    }
 
     @GetMapping("/modify/{id}")
-    public String modify2(BoardForm boardForm, MultipartFile file, Model model, Principal principal, @PathVariable Integer id) {
+    public String modify2(BoardForm boardForm, MultipartFile file, Model model, Principal principal, @PathVariable Integer id, @RequestParam("key-kind") String kind) {
          Board board = boardService.getBoard(id);
         model.addAttribute("board", board);
         List<Imgs> imgs=imgsService.getImgsByBoard(board);
@@ -83,6 +96,8 @@ public class BoardController {
         for (int i = 0; i < imgs.size(); i++) {
             System.out.println(imgs.get(i).getIndexA());
         }
+        model.addAttribute("keyKind", kind);
+
 
         return "board/appeal_board_modify";
 
@@ -90,7 +105,7 @@ public class BoardController {
 
     @PostMapping("/modify/{id}")
     public String modify(@Valid BoardForm boardForm ,MultipartFile file, Model model, Principal principal,
-                         @PathVariable Integer id,@RequestParam("myArray") String myArray,@RequestParam("myAddArray") String myAddArray)throws Exception {
+                         @PathVariable Integer id,@RequestParam("myArray") String myArray,@RequestParam("myAddArray") String myAddArray, @RequestParam("key-kind") String kind)throws Exception {
         SiteUser user = userService.getUserbyName(principal.getName());
         Board board = boardService.getBoard(id);
         List<Imgs> imgs=imgsService.getImgsByBoard(board);
@@ -171,18 +186,24 @@ public class BoardController {
         boardService.modify( boardForm.getContent(), board,imgs);
 
 
+        if(kind.equals("my")){
+            return "redirect:/board/myAppealBoard";
 
+        }
 
         return "redirect:/board/appealList";
     }
 
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Integer id) {
+    public String delete(@PathVariable Integer id, @RequestParam("key-kind") String kind ) {
         Board board = boardService.getBoard(id);
 
         boardService.doDelete(board);
         System.out.println("삭제 실행됨~!!!!!!!!!!!!!!!!!!!!!!");
+        if(kind.equals("my")){
+            return "redirect:/board/myAppealBoard";
+        }
 
         return "redirect:/board/appealList";
     }
@@ -220,6 +241,36 @@ public class BoardController {
 
 
         return "board/my_desiredList";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/like/{id}")
+    public String boradLike(Principal principal, @PathVariable("id") Integer id) {
+        board = this.boardService.getBoard(id);
+        SiteUser siteUser = this.userService.getUser(principal.getName());
+        if(board.getLike().contains(siteUser)){
+            board.getLike().remove(siteUser);
+            boardRepository.save(board);
+            System.out.println("이미 하트 눌렀던 애 사라짐");
+                    
+
+        }else {
+            this.boardService.like(board, siteUser);
+            System.out.println("하트 누른 사람 추가");
+
+        }
+        return "board/appeal_board_list";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/like/{id}")
+    @ResponseBody
+    public  Map<String, Integer>  boradLike2(Principal principal, @PathVariable("id") Integer id, Model model) {
+        System.out.println("좋아요수 업데이트 해주기--------------------------");
+        Map<String, Integer> response = new HashMap<>();
+        response.put("likeCount", board.getLike().size()); // Add the like count to the response
+
+        return response;
     }
 
 

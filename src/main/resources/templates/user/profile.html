@@ -39,22 +39,24 @@
                         </a>
                     </div>
                 </div>
-                <div class="flex justify-between">
-                    <a style="padding:5px 15px; border-radius:10px; border:3px solid red;"
-                       th:href="@{'/user/report/' + ${receivedSiteUser.id}}">
-                        </a>
-
+                <div>
                     <button th:if="${chatRoom == null && log == null}" id="sendCyberMoneyBtn"
                             style="padding:5px 15px; border-radius:10px; border:3px solid purple;"
                             data-toggle="modal" data-target="#cyberMoneyModal">
                         <i class="fa-solid fa-comment mr-1"></i>하트 보내기
                     </button>
                 </div>
-
-                <div th:text="${receivedSiteUser.nickname + ', ' + receivedSiteUser.age}+', '+${receivedSiteUser.mbti}"
-                     class="ml-2 mr-2"
-                     style="font-size: 25px; font-weight: bold;"></div>
-
+                <div class="flex">
+                    <div th:text="${receivedSiteUser.nickname + ', ' + receivedSiteUser.age}+', '+${receivedSiteUser.mbti}"
+                         class="ml-2 mr-2"
+                         style="font-size: 25px; font-weight: bold; position: relative;">
+                    </div>
+                    <div>
+                        <a style="padding:5px 15px; border-radius:10px; border:3px solid red;"
+                           th:href="@{'/user/report/' + ${receivedSiteUser.id}}">
+                            dfdsf</a>
+                    </div>
+                </div>
 
                 <div class="ml-2 mr-2 mb-2" th:text="${receivedSiteUser.About_Me}"
                      style="max-width: 250px; word-wrap: break-word;"></div>
