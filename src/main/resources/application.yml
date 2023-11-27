@@ -64,7 +64,7 @@ spring:
             user-name-attribute: response
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     database-platform: org.hibernate.dialect.MySQLDialect
     properties:
       hibernate:
@@ -96,4 +96,3 @@ custom:
 
   thymeleaf:
     cache: false
-
