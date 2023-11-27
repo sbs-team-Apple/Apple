@@ -3,8 +3,7 @@
 <head>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <meta name="_csrf" th:content="${_csrf.token}"/>
-    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
     <title></title>
 
 </head>
@@ -31,8 +30,8 @@
 
 
                             <li>
-                                <button class="flex justify-end" id="sendCyberMoneyBtn" data-toggle="modal" data-target="#cyberMoneyModal">
-                                    <i class="fa-solid fa-comment mr-1"></i>하트 보내기
+                                <a class="flex justify-end"><button class="btn" id="sendCyberMoneyBtn" data-toggle="modal" data-target="#cyberMoneyModal">
+                                    하트 보내기
                                 </button>
                                 <dialog id="my_modal_6" class="modal modal-bottom sm:modal-middle">
                                 <div class="modal-box">
@@ -51,6 +50,7 @@
                                     </div>
                                 </div>
                             </dialog>
+                                </a>
                             </li>
 
 
@@ -681,7 +681,7 @@ float:left;
 
          $.ajax({
              type: 'POST',
-             url: '/user/cybermoney/send',
+             url: '/user/cybermoney/JustSend',
              data: 'recipientUsername=' + recipientUsername + '&amount=' + amount,
              beforeSend: function (xhr) {
                  xhr.setRequestHeader(csrfHeader, csrfToken);
