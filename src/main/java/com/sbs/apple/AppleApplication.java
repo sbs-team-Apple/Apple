@@ -12,13 +12,5 @@ public class AppleApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(AppleApplication.class, args);
 
-		AccessTokenRequest tokenRequest = new AccessTokenRequest();
-
-		try {
-			String tokenResponse = tokenRequest.requestToken();
-			System.out.println("Token Response: " + tokenResponse);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 }

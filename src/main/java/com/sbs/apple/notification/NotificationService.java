@@ -56,4 +56,9 @@ public class NotificationService {
     public void delete(Notification notification){
         notificationRepository.delete(notification);
     }
+
+    public Notification findById(Integer id){
+
+        return notificationRepository.findById(id).get();
+    }
 }

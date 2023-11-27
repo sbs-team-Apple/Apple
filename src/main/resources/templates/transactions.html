@@ -44,19 +44,39 @@
 
 
 
-        <div class="tab-buttons" style="display: flex; justify-content: center;">
+        <div class="tab-buttons" style="display: flex; justify-content: center; gap: 10px;">
             <div style="text-align: center; flex: 1;">
-                <button type="submit" class="btn mr-1 w-full"
-                        style="border-radius:10px; border :1px solid #f08dac; background-color :#F48FB1" onclick="showTab('receivedTab')">Receive!</button>
+                <button type="submit" class="btn w-full"
+                        style="border-radius: 10px; border: 1px solid #FABBEE; background-color: #BBCBFA" onclick="showTab('sentTab')">&nbsp&nbsp&nbsp&nbsp&nbspSent!&nbsp&nbsp&nbsp&nbsp&nbsp</button>
             </div>
             <div style="text-align: center; flex: 1;">
-                <button type="submit" class="btn ml-1 w-full"
-                        style="border-radius:10px; border :1px solid #FABBEE; background-color :#BBCBFA" onclick="showTab('completedTab')">Complete!</button>
+                <button type="submit" class="btn w-full"
+                        style="border-radius: 10px; border: 1px solid #f08dac; background-color: #F48FB1" onclick="showTab('receivedTab')">&nbsp&nbsp&nbspReceive!&nbsp&nbsp&nbsp</button>
+            </div>
+            <div style="text-align: center; flex: 1;">
+                <button type="submit" class="btn w-full"
+                        style="border-radius: 10px; border: 1px solid #FABBEE; background-color: #BBCBFA" onclick="showTab('completedTab')">Complete!</button>
             </div>
         </div>
+
         <div class="title" style="height: 20px;"></div>
 
-
+        <div id="sentTab" class="tab-content " style="display: none;">
+            <ul>
+                <li class="Transactions_list" th:each="transaction : ${sentTransactions}" style="display: flex; justify-content: space-between;">
+                    <div>
+                        <p th:text="${transaction.recipientUser.username} +' 님에게 ♥ ' + ${transaction.amount} + '개를 보냈습니다.'"></p>
+                        <p th:text="${#dates.format(transaction.transactionDate, 'yyyy-MM-dd')}"></p>
+                    </div>
+                    <form th:action="@{/user/processTransaction}" method="post">
+                        <input type="hidden" name="transactionId" th:value="${transaction.id}" />
+                        <input type="hidden" name="action" value="reject" /> <!-- 거절 작업 설정 -->
+                        <button class="btn-sm btn btn-outline btn-info" type="submit"
+                                th:disabled="${transaction.isAccepted() or transaction.isRejected()}">취소</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
 
         <div id="receivedTab" class="tab-content">
             <ul>

@@ -5,6 +5,10 @@ server:
 file:
   upload-dir: C:/uploads/
 spring:
+  servlet:
+    multipart:
+      maxFileSize: 10MB
+      maxRequestSize: 100MB
   profiles:
     active: dev
     include: secret
@@ -83,11 +87,8 @@ custom:
   thymeleaf:
     cache: false
 
+
   servlet:
     multipart:
       maxFileSize: 10MB
       maxRequestSize: 100MB
-
-  app:
-    clientId: ${secret.clientId}
-    clientSecret: ${secret.clientSecret}

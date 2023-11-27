@@ -120,6 +120,7 @@ public class PaymentController {
 
         return "success";
     }
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/user/payment")
     public String paymentPage(Model model, Principal principal) {
@@ -128,4 +129,5 @@ public class PaymentController {
         model.addAttribute("user", user);
         return "pay/payment";
     }
+
 }
