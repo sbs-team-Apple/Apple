@@ -54,7 +54,7 @@ public class SiteUser {
     private List<String> hobbyList;
     //private String[] hobby; //취미 여려개 추가할 수 있게 변경하기
 
-    private float tall; //키
+    private int tall; //키
 
     private String body_type; //체형
 
