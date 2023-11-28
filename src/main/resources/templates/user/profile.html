@@ -76,7 +76,7 @@
 
 
                 <div class="flex">
-                    <div th:text="${receivedSiteUser.nickname + ', ' + receivedSiteUser.age}+', '+${receivedSiteUser.mbti}"
+                    <div th:text="${receivedSiteUser.nickname + ', ' + receivedSiteUser.age}+', '+${receivedSiteUser.living}"
                          class="ml-2 mr-2"
                          style="font-size: 25px; font-weight: bold; position: relative;">
                     </div>
@@ -87,8 +87,7 @@
                      style="max-width: 250px; word-wrap: break-word;"></div>
 
                 <div class="ml-2 mr-2 info_wrap">
-                    <span><i class="fa-solid fa-location-dot"></i><span
-                            th:text="${receivedSiteUser.living}"></span></span>
+                    <span><span th:text="${receivedSiteUser.mbti}"></span></span>
                     <span><i class="fa-solid fa-briefcase"></i><span th:text="${receivedSiteUser.job}"></span></span>
                 </div>
                 <div class="ml-2 mr-2 info_wrap">

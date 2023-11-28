@@ -297,7 +297,7 @@ public class UserController {
     @PostMapping("/desired_modify")
     public String desired_modify(UserDesiredForm userDesiredForm, Principal principal) {
         SiteUser user = this.userService.getUserbyName(principal.getName());
-        userService.add_desired(user, userDesiredForm.getDesired_age1(),userDesiredForm.getDesired_age2(), userDesiredForm.getDesired_living(),
+        userService.add_desired2(user, userDesiredForm.getDesired_age1(),userDesiredForm.getDesired_age2(), userDesiredForm.getDesired_living(),
                 userDesiredForm.getDesired_tall1(),userDesiredForm.getDesired_tall2(),
                 userDesiredForm.getDesired_body_type(), userDesiredForm.getDesired_smoking(),
                 userDesiredForm.getDesired_drinking(), userDesiredForm.getDesired_styleList(),
