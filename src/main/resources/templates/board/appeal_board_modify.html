@@ -280,14 +280,10 @@ console.log(indexImg);
 
             if (exImgValue.length==0) {
                shouldSubmit = false;
-                var proceed = confirm('Are you sure you want to submit without adding a photo?');
-                                 event.preventDefault();
+            alert('사진이 1장 이상은 꼭 있어야 합니다!');
+              event.preventDefault();
 
-                if (!proceed) {
 
-                shouldSubmit = false; // Update the variable to prevent form submission
-                 event.preventDefault();
-                     }
                 }
 
             if(shouldSubmit){
