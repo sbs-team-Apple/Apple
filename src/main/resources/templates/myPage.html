@@ -46,14 +46,13 @@
 
 
             <div class="profile">
-                <div th:text="${user.nickname + ', ' + user.age}+', '+${user.mbti}" class="ml-2"
+                <div th:text="${user.nickname + ', ' + user.age}+', '+${user.living}" class="ml-2"
                      style="font-size: 27px; font-weight: bold;"></div>
                 <div class="ml-2" th:text="${user.About_Me}"></div>
 
 
                 <div class="ml-2 mr-2 info_wrap">
-                    <span><i class="fa-solid fa-location-dot"></i><span
-                            th:text="${user.living}"></span></span>
+                    <span><span th:text="${user.mbti}"></span></span>
                     <span><i class="fa-solid fa-briefcase"></i><span th:text="${user.job}"></span></span>
                 </div>
 

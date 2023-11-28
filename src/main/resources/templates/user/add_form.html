@@ -56,8 +56,11 @@
                     <span class="label-text" style="font-size: 18px; font-weight: bold;">나이</span>
                     <span>(숫자만 입력해주세요.)</span>
                 </label>
-                <input type="text" name="age" placeholder="나이" class="input input-bordered input-secondary" maxlength="30"
-                       pattern="[0-9]*">
+                <div style="position: relative;">
+                    <input type="number" name="age" class="input input-bordered input-secondary ml-3"
+                           pattern="^\d+$" min="20" max="99" maxlength="2">
+                    <span style="position: absolute; left: 50px; top: 12px;">살</span>
+                </div>
             </div>
 
             <div class="form-control">
@@ -89,7 +92,7 @@
             <div class="form-control">
                 <label class="label">
                     <span class="label-text" style="font-size: 18px; font-weight: bold;">취미</span>
-                    <span>최대 8개까지 선택가능합니다.</span>
+                    <span>최대 5개까지 선택가능합니다.</span>
                 </label>
                 <div class="grid grid-cols-3 gap-4 border border-pink-600 rounded-lg justify-items-center">
                     <div class="col-span-1">
@@ -264,7 +267,7 @@
                 </div>
             </div>
             <script>
-                const otherMaxSelections = 8;
+                const otherMaxSelections = 5;
                     const otherCheckboxes = document.querySelectorAll('input[name="hobbyList"]');
                     otherCheckboxes.forEach((checkbox) => {
                         checkbox.addEventListener('change', function () {
@@ -280,8 +283,12 @@
                     <span class="label-text" style="font-size: 18px; font-weight: bold;">키</span>
                     <span>(숫자만 입력해주세요.)</span>
                 </label>
-                <input type="text" name="tall" placeholder="키" class="input input-bordered input-secondary" maxlength="30"
-                       pattern="^\d+(\.\d)?$">
+                <div style="position: relative;">
+                    <input type="number" name="tall" placeholder="키" class="input input-bordered input-secondary"
+                           pattern="^\d+$" min="140" max="210" maxlength="3">
+                    <span style="position: absolute; left: 45px; top: 13px;">cm</span>
+                </div>
+
             </div>
 
             <div class="form-control">
@@ -300,7 +307,7 @@
             <div class="form-control">
                 <label class="label">
                     <span class="label-text" style="font-size: 18px; font-weight: bold;">스타일</span>
-                    <span>최대 8개까지 선택가능합니다.</span>
+                    <span>최대 5개까지 선택가능합니다.</span>
                 </label>
                 <div class="grid grid-cols-3 gap-4 border border-pink-600 rounded-lg justify-items-center">
                     <div class="col-span-1">
@@ -412,7 +419,7 @@
                 </div>
             </div>
             <script>
-                const maxSelections = 8;
+                const maxSelections = 5;
                     const checkboxes = document.querySelectorAll('input[name="styleList"]');
                     checkboxes.forEach((checkbox) => {
                         checkbox.addEventListener('change', function () {
