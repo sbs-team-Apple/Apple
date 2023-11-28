@@ -33,6 +33,7 @@ spring:
     cache: false
     prefix: file:src/main/resources/templates/
 
+#    view-names: th/*
   output:
     ansi:
       enabled: always

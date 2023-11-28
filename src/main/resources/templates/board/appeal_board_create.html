@@ -8,18 +8,15 @@
 <div layout:fragment="content" class="container my-3">
     <div class="ml-auto mr-auto w-60 ">
             <form  class="imgForm ml-auto mr-auto" enctype="multipart/form-data" th:action="@{/board/create}"  object="${boardForm}" method="post" >
-                <button type="button" class="add-file-input mb-2 mt-2"><i class="fa-solid fa-file-circle-plus fa-2xl"></i></button>
+                <button type="button" class="add-file-input mb-2 mt-2">
+                        <i class="fa-solid fa-file-circle-plus fa-2xl"></i>
+                </button>
                 <div class="current-img"></div>
 
 
+                    <div id="file-input-container">
 
-
-
-                <div id="file-input-container">
-
-
-
-                    <!--            <input type="file" name="file" accept="image/*" class="image-file-input">-->
+<!--                                <input id="lab1" type="file" name="file" accept="image/*" class="image-file-input hidden">-->
 
                 </div>
 
@@ -36,7 +33,7 @@
 
                 <textarea type="text" name="content" class="textarea textarea-secondary" placeholder="내용을 입력하세요"></textarea>
 
-                <button type="submit" class="btn end-function"  onclick="onSubmitClick()"
+                <button type="button" class="btn end-function"  onclick="onSubmitClick()"
                         style="display: block; margin-left:auto;  border-radius:10px; border :1px solid #f08dac; background-color :#f08dac">
                     <span>작성</span>
                 </button>
@@ -216,6 +213,28 @@ span.plus {
 </style>
 
 <script>
+<!--파일 선택시 아무것도 안누르고 취소 하면 생기는 빈 input 태그 지우는 함수-->
+    function removeEmptyFileInput() {
+    var fileInputs = $('.image-file-input'); // Get all file input elements
+
+    if (fileInputs.length > 0) {
+        var lastFileInput = fileInputs[fileInputs.length - 1]; // Get the last file input
+
+        if (lastFileInput.files.length === 0 || lastFileInput.files[0].name === '') {
+            lastFileInput.parentNode.removeChild(lastFileInput); // Remove the input if no file selected
+            console.log('Removed empty file input.');
+        } else {
+            console.log('File found in the most recent input.');
+        }
+    } else {
+        console.log('No file inputs found.');
+    }
+}
+
+
+</script>
+
+<script>
     function SubmitClick(){
         indexExImgs();
 
@@ -278,12 +297,24 @@ console.log(indexImg);
 
         reorderInputsByIndex();
 
+        removeEmptyFileInput();
 
 
+ var exImgValue = $('.ex-img'); // Replace 'ex-img' with your actual field ID or class
 
+    if (exImgValue.length==0) {
+        // If $(ex-img) is empty or doesn't exist, show a warning message
+        var proceed = confirm('Are you sure you want to submit without adding a photo?');
 
+        if (!proceed) {
+            // If the user chooses not to proceed, stop form submission
+            return;
+        }
+    }
+
+    console.log("서버로 전송");
      // 폼을 서버로 제출
-    $('end-function').submit();
+    $('.imgForm').submit();
    }
 
 
@@ -300,17 +331,24 @@ console.log(indexImg);
 
      // "파일 추가" 버튼 클릭 이벤트
      $(".add-file-input").click(function() {
-           $(".add-file-input").addClass("hidden");
+<!--           $(".add-file-input").addClass("hidden");-->
+
+        removeEmptyFileInput();
 
          var fileInputContainer = $(this).prev(".image-file-input");
          var newFileInput = $("<input>", {
              type: "file",
              name: "file",
              accept: "image/**",
-             class:  "image-file-input",
+             class:  "image-file-input hidden",
+
              currentIndex
          });
+
+
+
          var newImagePreview = $("<div>", { class: "image-preview" });
+          newFileInput.click();
 
          newFileInput.change(function() {
              var file = newFileInput[0].files[0];
@@ -332,24 +370,29 @@ console.log(indexImg);
                        class:"ex-current-img"
                       }) ;
                      previewCurrentImage.attr("src", e.target.result);
-                     newImagePreview.empty().append(previewImage);
+                     newImagePreview.append(previewImage);
                      newImagePreview.append(cancelBtn);
                      currentImg.empty().append(previewCurrentImage);
                      exImgs = $(".ex-img");
                      console.log(exImgs);
+
                  };
 
                  reader.readAsDataURL(file);
                   $(" .image-file-input").addClass("hidden");
                      $(".add-file-input").removeClass("hidden");
+
+
              } else {
+
                  newImagePreview.empty();
+                 newFileInput.remove();
 
              }
          });
+                   newFileInput.insertBefore($(this));
+                 preImgContainer.append(newImagePreview);
 
-         newFileInput.insertBefore($(this));
-         preImgContainer.append(newImagePreview);
 
 
      });
