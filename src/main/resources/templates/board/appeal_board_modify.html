@@ -8,7 +8,9 @@
 <div layout:fragment="content" class="container my-3">
     <div class="ml-auto mr-auto w-60 ">
         <form  class="imgForm ml-auto mr-auto" enctype="multipart/form-data" th:action="@{|/board/modify/${board.id}|}"  object="${boardForm}" method="post" >
-            <button type="button" class="add-file-input mb-2 mt-2"><i class="fa-solid fa-file-circle-plus fa-2xl"></i></button>
+            <button type="button" class="add-file-input mb-2 mt-2">
+                 <i class="fa-solid fa-file-circle-plus fa-2xl"></i>
+            </button>
 
             <div class="current-img">
                 <img  class="ex-current-img" th:src=" ${@rq.getImgs(board).get(0).filepath}" alt="">
@@ -163,6 +165,31 @@
 </style>
 
 <script>
+    <!--파일 선택시 아무것도 안누르고 취소 하면 생기는 빈 input 태그 지우는 함수-->
+        function removeEmptyFileInput() {
+        var fileInputs = $('.image-file-input'); // Get all file input elements
+        var imgPreview =$(".image-preview");
+        var lastElement = imgPreview.last();
+        if (fileInputs.length > 0) {
+            var lastFileInput = fileInputs[fileInputs.length - 1]; // Get the last file input
+
+            if (lastFileInput.files.length === 0 || lastFileInput.files[0].name === '') {
+                lastFileInput.parentNode.removeChild(lastFileInput); // Remove the input if no file selected
+                lastElement.remove();
+                console.log('Removed empty file input.');
+            } else {
+                console.log('File found in the most recent input.');
+            }
+        } else {
+            console.log('No file inputs found.');
+        }
+    }
+
+
+</script>
+
+
+<script>
 <!--   테스트 용-->
     function SubmitClick(){
         indexExImgs();
@@ -251,6 +278,7 @@ console.log(indexImg);
     document.getElementById('myArrayInput').value = jsonData;
      document.getElementById('myAddArrayInput').value = jsonData2;
 
+                removeEmptyFileInput();
 
 
 
@@ -273,17 +301,20 @@ console.log(indexImg);
 
       // "파일 추가" 버튼 클릭 이벤트
       $(".add-file-input").click(function() {
-            $(".add-file-input").addClass("hidden");
+<!--            $(".add-file-input").addClass("hidden");-->
+                            removeEmptyFileInput();
+
 
           var fileInputContainer = $(this).prev(".image-file-input");
           var newFileInput = $("<input>", {
               type: "file",
               name: "file",
               accept: "image/**",
-              class:  "image-file-input",
+              class:  "image-file-input hidden",
               currentIndex
           });
           var newImagePreview = $("<div>", { class: "image-preview" });
+          newFileInput.click();
 
           newFileInput.change(function() {
               var file = newFileInput[0].files[0];
