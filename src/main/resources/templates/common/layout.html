@@ -111,8 +111,14 @@
                             <div class="  content-end" style="text-align: right;"> 알림 없음 </div>
                         </div>
                         <div class="flex notification-item" th:each="notification : ${@rq.notification}">
-                            <div th:if="${notification.kind == 'chatRoom'}" class="notification-text" th:text="${notification.siteUserFrom.nickname}+'님이 초대를 수락해 채팅방이 만들어졌습니다.'"></div>
-                            <div th:if="${notification.kind == 'money'}" class="notification-text" th:text="${notification.siteUserFrom.nickname}+'님이 하트를 보냈습니다.'"></div>
+                            <a th:if="${notification.kind == 'chatRoom'}" th:href="@{|${'/chat/'+@rq.findChatRoomByNoti(notification) + '/room2?userId='+notification.siteUserFrom}|}"
+
+                               class="notification-text" th:text="${notification.siteUserFrom.nickname}+'님이 초대를 수락해 채팅방이 만들어졌습니다.'">
+
+                            </a>
+                            <a th:if="${notification.kind == 'money'}"  th:href="@{/user/transactions}" class="notification-text" th:text="${notification.siteUserFrom.nickname}+'님이 대화 신청을 요청 했습니다.'">
+
+                            </a>
                             <button class="notification-cancel-btn" th:data-notification-id="${notification.id}">&nbsp;X</button>
                         </div>
 
@@ -275,7 +281,7 @@
       if(notification.kind=="chatRoom"){
      openModal(notification.userFrom.nickname + '님이 초대를 수락해 채팅방이 만들어졌습니다.');
      }else {
-         openModal(notification.userFrom.nickname + '님이 하트를 보내서 1대1 채팅에 초대했습니다.');
+         openModal(notification.userFrom.nickname + '님이 대화 신청을 요청했습니다.');
      }
   });
 }
