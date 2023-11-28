@@ -121,4 +121,11 @@ public class MainController {
 
         return "jsp/WelStdPayResult";
     }
+
+    @GetMapping("/jsp4")
+    public String jsp5(){
+
+
+        return "jsp/WelStdPayReturn";
+    }
 }
