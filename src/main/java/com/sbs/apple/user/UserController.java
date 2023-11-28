@@ -132,8 +132,8 @@ public class UserController {
             return "user/desired_form";
         }
         SiteUser user = this.userService.getUser(id);
-        RsData<SiteUser> joinRs = userService.add_desired(user, userDesiredForm.getDesired_age(), userDesiredForm.getDesired_living(),
-                userDesiredForm.getDesired_tall(), userDesiredForm.getDesired_body_type(),
+        RsData<SiteUser> joinRs = userService.add_desired(user, userDesiredForm.getDesired_age1(),userDesiredForm.getDesired_age2(), userDesiredForm.getDesired_living(),
+                userDesiredForm.getDesired_tall1(),userDesiredForm.getDesired_tall2(), userDesiredForm.getDesired_body_type(),
                 userDesiredForm.getDesired_smoking(), userDesiredForm.getDesired_drinking(),
                 userDesiredForm.getDesired_styleList(), userDesiredForm.getDesired_religion(),
                 userDesiredForm.getDesired_mbti(), userDesiredForm.getDesired_school(),
@@ -277,9 +277,11 @@ public class UserController {
     @GetMapping("/desired_modify")
     public String desired_modify1(UserDesiredForm userDesiredForm, Principal principal, Model model) {
         SiteUser siteUser = this.userService.getUserbyName(principal.getName());
-        userDesiredForm.setDesired_age(siteUser.getDesired_age());
+        userDesiredForm.setDesired_age1(siteUser.getDesired_age1());
+        userDesiredForm.setDesired_age2(siteUser.getDesired_age2());
         userDesiredForm.setDesired_living(siteUser.getDesired_living());
-        userDesiredForm.setDesired_tall(siteUser.getDesired_tall());
+        userDesiredForm.setDesired_tall1(siteUser.getDesired_tall1());
+        userDesiredForm.setDesired_tall2(siteUser.getDesired_tall2());
         userDesiredForm.setDesired_body_type(siteUser.getDesired_body_type());
         userDesiredForm.setDesired_smoking(siteUser.getDesired_smoking());
         userDesiredForm.setDesired_drinking(siteUser.getDesired_drinking());
@@ -295,8 +297,8 @@ public class UserController {
     @PostMapping("/desired_modify")
     public String desired_modify(UserDesiredForm userDesiredForm, Principal principal) {
         SiteUser user = this.userService.getUserbyName(principal.getName());
-        userService.add_desired(user, userDesiredForm.getDesired_age(), userDesiredForm.getDesired_living(),
-                userDesiredForm.getDesired_tall(),
+        userService.add_desired(user, userDesiredForm.getDesired_age1(),userDesiredForm.getDesired_age2(), userDesiredForm.getDesired_living(),
+                userDesiredForm.getDesired_tall1(),userDesiredForm.getDesired_tall2(),
                 userDesiredForm.getDesired_body_type(), userDesiredForm.getDesired_smoking(),
                 userDesiredForm.getDesired_drinking(), userDesiredForm.getDesired_styleList(),
                 userDesiredForm.getDesired_religion(), userDesiredForm.getDesired_mbti(),

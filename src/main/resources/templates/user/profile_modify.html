@@ -46,6 +46,7 @@
             <div class="form-control">
                 <label class="label">
                     <span class="label-text" style="font-size: 18px; font-weight: bold;">취미</span>
+                    <span>최대 8개까지만 선택가능합니다.</span>
                 </label>
                 <div class="grid grid-cols-3 gap-4 border border-pink-600 rounded-lg justify-items-center">
                     <div class="col-span-1">
@@ -219,81 +220,35 @@
                     </div>
                 </div>
             </div>
+            <script>
+                const maxSelections = 8; // 최대 선택 가능한 개수
+                const checkboxes = document.querySelectorAll('input[name="hobbyList"]');
+                checkboxes.forEach((checkbox) => {
+                    checkbox.addEventListener('change', function () {
+                        let checkedCount = document.querySelectorAll('input[name="hobbyList"]:checked').length;
+                        if (checkedCount > maxSelections) {
+                            this.checked = false;
+                        }
+                    });
+                });
+            </script>
             <div class="form-control">
                 <label class="label">
                     <span class="label-text" style="font-size: 18px; font-weight: bold;">키</span>
+                    <span>(숫자만 입력해주세요.)</span>
                 </label>
-                <select name="tall" class="input input-bordered input-secondary" th:field="*{tall}">
-                    <option value="140">140</option>
-                    <option value="141">141</option>
-                    <option value="142">142</option>
-                    <option value="143">143</option>
-                    <option value="144">144</option>
-                    <option value="145">145</option>
-                    <option value="146">146</option>
-                    <option value="147">147</option>
-                    <option value="148">148</option>
-                    <option value="149">149</option>
-                    <option value="150">150</option>
-                    <option value="151">151</option>
-                    <option value="152">152</option>
-                    <option value="153">153</option>
-                    <option value="154">154</option>
-                    <option value="155">155</option>
-                    <option value="156">156</option>
-                    <option value="157">157</option>
-                    <option value="158">158</option>
-                    <option value="159">159</option>
-                    <option value="160">160</option>
-                    <option value="161">161</option>
-                    <option value="162">162</option>
-                    <option value="163">163</option>
-                    <option value="164">164</option>
-                    <option value="165">165</option>
-                    <option value="166">166</option>
-                    <option value="167">167</option>
-                    <option value="168">168</option>
-                    <option value="169">169</option>
-                    <option value="170">170</option>
-                    <option value="171">171</option>
-                    <option value="172">172</option>
-                    <option value="173">173</option>
-                    <option value="174">174</option>
-                    <option value="175">175</option>
-                    <option value="176">176</option>
-                    <option value="177">177</option>
-                    <option value="178">178</option>
-                    <option value="179">179</option>
-                    <option value="180">180</option>
-                    <option value="181">181</option>
-                    <option value="182">182</option>
-                    <option value="183">183</option>
-                    <option value="184">184</option>
-                    <option value="185">185</option>
-                    <option value="186">186</option>
-                    <option value="187">187</option>
-                    <option value="188">188</option>
-                    <option value="189">189</option>
-                    <option value="190">190</option>
-                    <option value="191">191</option>
-                    <option value="192">192</option>
-                    <option value="193">193</option>
-                    <option value="194">194</option>
-                    <option value="195">195</option>
-                    <option value="196">196</option>
-                    <option value="197">197</option>
-                    <option value="198">198</option>
-                    <option value="199">199</option>
-                    <option value="200">200</option>
-                </select>
+                <input type="text" name="tall" placeholder="키" class="input input-bordered input-secondary" maxlength="30"
+                       pattern="^\d+(\.\d)?$" th:field="*{tall}">
             </div>
             <div class="form-control">
                 <label class="label">
                     <span class="label-text" style="font-size: 18px; font-weight: bold;">체형</span>
                 </label>
                 <select name="body_type" class="input input-bordered input-secondary" th:field="*{body_type}">
+                    <option value="마른">마른</option>
                     <option value="슬림한">슬림한</option>
                     <option value="평범한">평범한</option>
+                    <option value="탄탄한">탄탄한</option>
                     <option value="통통한">통통한</option>
                     <option value="근육질">근육질</option>
                 </select>
@@ -325,6 +280,7 @@
             <div class="form-control">
                 <label class="label">
                     <span class="label-text" style="font-size: 18px; font-weight: bold;">스타일</span>
+                    <span>최대 8개까지 선택가능합니다.</span>
                 </label>
                 <div class="grid grid-cols-3 gap-4 border border-pink-600 rounded-lg justify-items-center">
                     <div class="col-span-1">
@@ -435,6 +391,18 @@
                     </div>
                 </div>
             </div>
+            <script>
+                const maxSelections = 8;
+                    const checkboxes = document.querySelectorAll('input[name="styleList"]');
+                    checkboxes.forEach((checkbox) => {
+                        checkbox.addEventListener('change', function () {
+                            let checkedCount = document.querySelectorAll('input[name="styleList"]:checked').length;
+                            if (checkedCount > maxSelections) {
+                                this.checked = false;
+                            }
+                        });
+                    });
+            </script>
 
             <div class="form-control">
                 <label class="label">
@@ -483,8 +451,11 @@
                     <option value="고교 졸업 이하">고교 졸업 이하</option>
                     <option value="고등학교 졸업">고등학교 졸업</option>
                     <option value="전문 대학교">전문 대학교</option>
-                    <option value="대학교">대학교</option>
+                    <option value="대학교 재학">대학교 재학</option>
                     <option value="외국어대학교">외국어대학교</option>
+                    <option value="대학교 졸업">대학교 졸업</option>
+                    <option value="대학교 수료">대학교 수료</option>
+                    <option value="유학생">유학생</option>
                     <option value="대학원">대학원</option>
                 </select>
             </div>
@@ -519,6 +490,21 @@
                 <textarea name="About_Me" placeholder="자기소개" class="input input-bordered input-secondary" maxlength="500"
                           style="height: 200px;"></textarea>
             </div>
+            <script>
+                const forbiddenWords = ['씨발', '씹', '창녀','존나','좆밥','지랄','찐따','병신','보지','자지' ];
+
+                const textArea = document.querySelector('textarea[name="About_Me"]');
+                textArea.addEventListener('input', function () {
+                    const inputValue = this.value.toLowerCase();
+                    for (let i = 0; i < forbiddenWords.length; i++) {
+                        if (inputValue.includes(forbiddenWords[i].toLowerCase())) {
+                            alert('비속어는 사용할 수 없습니다.');
+                            this.value = '';
+                            return;
+                        }
+                    }
+                });
+            </script>
             <style>
                 input:checked + label {
                     color: purple;

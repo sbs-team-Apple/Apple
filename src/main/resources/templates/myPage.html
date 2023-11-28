@@ -76,20 +76,20 @@
             <div class="last mb-3">
                 <div class="text-xl flex justify-center">
                     <button onclick="show_desired()" id="up_down"
-                            style="border: 2px solid black; border-radius: 10px; padding: 0 90px; margin: 10px 0;">
-                        <span>이상형</span><i id="icon" class="fa-solid fa-caret-down ml-1"></i>
+                            style="border: 2px solid black; border-radius: 10px; padding: 0 10px; margin: 10px 0;">
+                        <span>저는 이런사람이 좋아요</span><i id="icon" class="fa-solid fa-caret-down ml-1"></i>
                     </button>
                 </div>
                 <div style="display:none;" id="all">
-                    <div class="ml-2" th:text="'선호하는 나이 : ' + ${user.desired_age}"></div>
-                    <div class="ml-2" th:text="'선호하는 지역 : ' + ${user.desired_living}"></div>
-                    <div class="ml-2" th:text="'선호하는 이성 키 : ' + ${user.desired_tall}"></div>
-                    <div class="ml-2" th:text="'선호하는 이성 체형 : ' + ${user.desired_body_type}"></div>
-                    <div class="ml-2" th:text="'선호하는 이성 흡연 : ' + ${user.desired_smoking}"></div>
-                    <div class="ml-2" th:text="'선호하는 이성 음주 : ' + ${user.desired_drinking}"></div>
-                    <div class="ml-2" th:text="'선호하는 이성 성격 : ' + ${user.desired_styleList}"></div>
-                    <div class="ml-2" th:text="'선호하는 이성 종교 : ' + ${user.desired_religion}"></div>
-                    <div class="ml-2" th:text="'선호하는 이성 MBTI : ' + ${user.desired_mbti}"></div>
+                    <div class="ml-2" th:text="'나이 : ' + ${user.desired_age1}+'~'+${user.desired_age2}"></div>
+                    <div class="ml-2" th:text="'지역 : ' + ${user.desired_living}"></div>
+                    <div class="ml-2" th:text="'키 : ' + ${user.desired_tall1}+'~'+${user.desired_tall2}"></div>
+                    <div class="ml-2" th:text="'체형 : ' + ${user.desired_body_type}"></div>
+                    <div class="ml-2" th:text="'흡연 : ' + ${user.desired_smoking}"></div>
+                    <div class="ml-2" th:text="'음주 : ' + ${user.desired_drinking}"></div>
+                    <div class="ml-2" th:text="'성격 : ' + ${user.desired_styleList}"></div>
+                    <div class="ml-2" th:text="'종교 : ' + ${user.desired_religion}"></div>
+                    <div class="ml-2" th:text="'MBTI : ' + ${user.desired_mbti}"></div>
 
                 </div>
             </div>
