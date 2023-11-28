@@ -39,24 +39,28 @@
                         </a>
                     </div>
                 </div>
-                <div>
+                <div style="display: flex; flex-direction: column; gap: 10px; padding: 5px;">
                     <button th:if="${chatRoom == null && log == null}" id="sendCyberMoneyBtn"
                             style="padding:5px 15px; border-radius:10px; border:3px solid purple;"
                             data-toggle="modal" data-target="#cyberMoneyModal">
                         <i class="fa-solid fa-comment mr-1"></i>1:1 대화신청
                     </button>
                 </div>
-                <div>
+
+                <div style="display: flex; padding: 5px;">
                 <button style="padding:5px 15px; border-radius:10px; border:3px solid purple;" id="justsendCyberMoneyBtn" data-toggle="modal" data-target="#justcyberMoneyModal">
-                    <i class="fa-solid fa-heart"></i>하트 보내기
+                    <i class="fa-solid fa-heart"></i> 하트 보내기
                 </button>
                 <dialog id="my_modal_6" class="modal modal-bottom sm:modal-middle">
                     <div class="modal-box">
 
                         <div class="modal-body">
                             <p class="badge badge-secondary badge-outline" style="display: inline-block; margin-right: 10px;">보유중인 하트개수 : <span th:text="${userCyberMoney}"></span>개</p>
-                            <div>하트갯수를 입력해주세요.</div>
+                            <div>호감이 있는만큼 하트를 보내세요.</div>
                             <input type="number" id="justcyberMoneyAmount" class="input input-sm input-bordered input-warning" required>
+                            <p style="font-size: 16px; color: red;"><span style="font-size: 24px;">※</span> 여기서는 대화를 신청할 수 없습니다.</p>
+                            <p style="font-size: 16px; color: red;">&nbsp&nbsp&nbsp&nbsp대화를 신청하려면 대화신청 버튼을 이용해주세요.</p>
+
                         </div>
 
                         <div class="modal-action">
@@ -67,11 +71,11 @@
                         </div>
                     </div>
                 </dialog>
-                    <div>
-                        <a style="padding:5px 15px; border-radius:10px; border:3px solid red;"
-                           th:href="@{'/user/report/' + ${receivedSiteUser.id}}">
-                            dfdsf</a>
-                    </div>
+                    <a style="display:flex; padding:5px 15px; border-radius:10px; border:3px solid red; margin-left: 5px;"
+                            th:href="@{'/user/report/' + ${receivedSiteUser.id}}">&nbsp
+                        <?xml version="1.0" encoding="UTF-8"?>
+                        <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="19" height="19"><path d="m21,18.126v-5.126c0-4.963-4.037-9-9-9S3,8.037,3,13v5.126c-1.724.445-3,2.013-3,3.874,0,1.103.897,2,2,2h20c1.103,0,2-.897,2-2,0-1.861-1.276-3.429-3-3.874ZM12,6c3.859,0,7,3.141,7,7v5H5v-5c0-3.859,3.141-7,7-7ZM2,22c0-1.103.897-2,2-2h16c1.103,0,2,.897,2,2H2ZM20.797,6.211c-.393-.389-.396-1.021-.008-1.414l1.5-1.517c.388-.393,1.021-.396,1.414-.008.393.389.396,1.021.008,1.414l-1.5,1.517c-.195.198-.453.297-.711.297-.254,0-.508-.097-.703-.289Zm-4.185-4.171l.777-1.5c.254-.492.859-.682,1.348-.428.49.254.682.857.428,1.348l-.777,1.5c-.178.344-.527.54-.889.54-.155,0-.312-.036-.459-.112-.49-.254-.682-.857-.428-1.348ZM.289,4.687c-.389-.393-.385-1.025.008-1.414.392-.389,1.027-.385,1.414.008l1.5,1.517c.389.393.385,1.025-.008,1.414-.194.192-.449.289-.703.289-.258,0-.516-.099-.711-.297l-1.5-1.517ZM4.835,1.46c-.254-.49-.062-1.094.428-1.348.487-.254,1.093-.064,1.348.428l.777,1.5c.254.49.062,1.094-.428,1.348-.146.076-.304.112-.459.112-.361,0-.711-.196-.889-.54l-.777-1.5Zm3.165,11.54c0-2.206,1.794-4,4-4,.553,0,1,.447,1,1s-.447,1-1,1c-1.103,0-2,.897-2,2,0,.553-.447,1-1,1s-1-.447-1-1Z"/></svg>
+                        <span>&nbsp신고하기&nbsp&nbsp</span></a>
             </div>
 
 
@@ -161,18 +165,20 @@
                 <p>받는사람:</p>
                 <div th:text="${receivedSiteUser.username}" id="recipientUsername" class="form-control"></div>
                 <div class="modal-body">
-                    <p class="badge badge-secondary badge-outline" style="display: inline-block; margin-right: 10px;">보유중인 하트개수 : <span th:text="${userCyberMoney}"></span>개</p>
+                    <p class="badge badge-secondary badge-outline mb-5" style="display: inline-block; margin-right: 10px;">보유중인 하트개수 : <span th:text="${userCyberMoney}"></span>개</p>
 
-                    <div th:text="'하트갯수를 입력해주세요. (최소하트 : ' + ${receivedSiteUser.minHeart} + '개)'"></div>
-                    <input type="number" id="cyberMoneyAmount" class="input input-sm input-bordered input-warning" required>
-
+                    <p>
+                        대화신청을 하려면 하트 <span th:text="${receivedSiteUser.minHeart}" style="color: red;"></span>개가 필요해요.
+                    </p>
+                    <p> YES를 누르면 하트 <span th:text="${receivedSiteUser.minHeart}" style="color: red;"></span>개가 차감돼요.</p>
+                    <p style="color: red;">하트 페이지에서 상대방이 수락 하기전에 보낸하트를 취소할수 있어요.</p>
 
                 </div>
 
                 <div class="modal-action">
                     <form method="dialog">
-                        <button class="btn btn-secondary" data-dismiss="modal">닫기</button>
-                        <button class="btn btn-primary" id="sendCyberMoneyConfirmBtn">확인</button>
+                        <button class="btn btn-secondary" data-dismiss="modal">NO</button>
+                        <button class="btn btn-primary" id="sendCyberMoneyConfirmBtn">YES</button>
                     </form>
                 </div>
             </div>
@@ -218,16 +224,9 @@
 
     // 이벤트 핸들러 등록
     $('#sendCyberMoneyConfirmBtn').click(function () {
-        var amount = $('#cyberMoneyAmount').val();
+        var amount = parseInt([[${receivedSiteUser.minHeart}]]);
         var minHeart = parseInt([[${receivedSiteUser.minHeart}]]);
         var userCyberMoney = parseInt([[${userCyberMoney}]]);
-
-        if (amount < minHeart) {
-            alert("최소하트보다 작습니다.");
-            $('#cyberMoneyModal').modal('hide');
-            isSending = false;
-            return;
-        }
 
         if (amount > userCyberMoney) {
             alert("하트가 부족합니다.");
@@ -247,10 +246,10 @@
                 xhr.setRequestHeader(csrfHeader, csrfToken);
             },
             success: function () {
-                alert("하트가 성공적으로 전송 되었습니다.");
+                alert("이제 상대방이 수락을 하면 상대방과 채팅을 할 수 있습니다.");
                 location.reload();
                 $('#cyberMoneyModal').modal('hide');
-            },
+},
             error: function (error) {
                 alert("Error: " + error.responseText);
             },
