@@ -43,13 +43,14 @@
                 </label>
                 <input type="text" name="username" placeholder="아이디" class="input input-bordered input-secondary" autofocus
                        maxlength="30" onchange="$(this).keyup();" onpaste="setTimeoutZero(() => $(this).keyup());"
-                       onkeyup="checkUsernameDupDebounce();">
+                       onkeyup="checkUsernameDupDebounce();"  oninput="this.value = this.value.replace(/[^a-zA-Z0-9]/g, '');">
                 <div class="mt-2 text-sm"></div>
             </div>
 
             <div class="form-control">
                 <label class="label">
                     <span class="label-text" style="font-size: 18px; font-weight: bold;">비밀번호</span>
+                    <span>비밀번호는 8~20자 이내로 입력하셔야 합니다.</span>
                 </label>
                 <input type="password" name="password1" placeholder="비밀번호" class="input input-bordered input-secondary" maxlength="30">
             </div>
@@ -78,9 +79,22 @@
                 </label>
                 <input type="text" name="nickname" placeholder="닉네임" class="input input-bordered input-secondary"
                        maxlength="30" onchange="$(this).keyup();" onpaste="setTimeoutZero(() => $(this).keyup());"
-                       onkeyup="checkNicknameDupDebounce();">
+                       onkeyup="checkNicknameDupDebounce(); checkNicknameForBannedWords(this);">
                 <div class="mt-2 text-sm"></div>
             </div>
+            <script>
+                const bannedWords = ['씨발', '씹', '창녀','존나','좆밥','지랄','찐따','병신','보지','자지' ];
+                function checkNicknameForBannedWords(input) {
+                    const value = input.value.toLowerCase();
+                    for (let i = 0; i < bannedWords.length; i++) {
+                        if (value.includes(bannedWords[i].toLowerCase())) {
+                            alert('비속어는 사용할 수 없습니다.');
+                            input.value = '';
+                            return;
+                        }
+                    }
+                }
+            </script>
 
             <div class="form-control">
                 <label class="label" style="font-size: 18px; font-weight: bold;">
@@ -285,9 +299,14 @@
                     toastWarning('비밀번호를 입력해주세요.');
                     return;
                 }
-                if ( form.password1.value.length < 4 ) {
+                if ( form.password1.value.length < 7 ) {
                     form.password1.focus();
-                    toastWarning('비밀번호를 4자 이상 입력해주세요.');
+                    toastWarning('비밀번호를 8자 이상 입력해주세요.');
+                    return;
+                }
+                if ( form.password1.value.length > 21 ) {
+                    form.password1.focus();
+                    toastWarning('비밀번호를 20자 이내로 입력해주세요.');
                     return;
                 }
 
