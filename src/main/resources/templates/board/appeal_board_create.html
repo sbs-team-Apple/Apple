@@ -11,8 +11,11 @@
                 <button type="button" class="add-file-input mb-2 mt-2">
                         <i class="fa-solid fa-file-circle-plus fa-2xl"></i>
                 </button>
-                <div class="current-img"></div>
+                <div >
+                    <div class="current-img" >
 
+                    </div>
+                </div>
 
                     <div id="file-input-container">
 
@@ -31,7 +34,7 @@
                 </div>
 
 
-                <textarea type="text" name="content" class="textarea textarea-secondary" placeholder="내용을 입력하세요"></textarea>
+                <textarea style="   resize: none; " type="text" name="content" class="textarea textarea-secondary" placeholder="내용을 입력하세요"></textarea>
 
                 <button type="button" class="btn end-function"  onclick="onSubmitClick()"
                         style="display: block; margin-left:auto;  border-radius:10px; border :1px solid #f08dac; background-color :#f08dac">
@@ -55,6 +58,7 @@
     .ex-current-img {
         width:240px;
         height:300px;
+       object-fit: contain;
 
     }
 
@@ -76,26 +80,21 @@
      .column {
         display:flex;
            border:1px solid black;
-           overflow-x: auto;
+           overflow: hidden;
         border-radius:10px;
-            scrollbar-width: auto;
-              height:100px;
+              height:80px;
 
     }
 
 
     .column::-webkit-scrollbar {
-    width: 2px; /* Adjust scrollbar width */
-      height: 10px;
 }
 
 .column::-webkit-scrollbar-thumb {
-    background-color: #888; /* Scrollbar thumb color */
     border-radius: 5px; /* Rounded corners */
 }
 
 .column::-webkit-scrollbar-track {
-    background-color: #f1f1f1; /* Scrollbar track color */
     border-radius: 8px; /* Rounded track */
 }
 
@@ -298,26 +297,29 @@ console.log(indexImg);
         reorderInputsByIndex();
 
         removeEmptyFileInput();
+        shouldSubmit=true;
 
+    var exImgValue = $('.ex-img'); // Replace 'ex-img' with your actual field ID or class
 
- var exImgValue = $('.ex-img'); // Replace 'ex-img' with your actual field ID or class
+    if (exImgValue.length==0)   {
+                shouldSubmit = false;
+                var proceed = confirm('Are you sure you want to submit without adding a photo?');
+                                 event.preventDefault();
 
-    if (exImgValue.length==0) {
-        // If $(ex-img) is empty or doesn't exist, show a warning message
-        var proceed = confirm('Are you sure you want to submit without adding a photo?');
+                if (!proceed) {
 
-        if (!proceed) {
-            // If the user chooses not to proceed, stop form submission
-            return;
-        }
-    }
+                shouldSubmit = false; // Update the variable to prevent form submission
+                 event.preventDefault();
+                     }
+                }
 
-    console.log("서버로 전송");
-     // 폼을 서버로 제출
-    $('.imgForm').submit();
-   }
+            if(shouldSubmit){
+                console.log("서버로 전송");
 
+                $('.imgForm').submit();
+            }
 
+ }
 </script>
 
 
@@ -352,6 +354,12 @@ console.log(indexImg);
 
          newFileInput.change(function() {
              var file = newFileInput[0].files[0];
+
+                // Set the scroll position to the maximum right
+                $('.column').animate({
+                                scrollLeft: '+=300' // Adjust the scroll amount as needed
+                            }, 'slow');
+
 
              if (file) {
                  var reader = new FileReader();
