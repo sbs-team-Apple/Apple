@@ -38,9 +38,9 @@
             </div>
 
 
-            <div class="flex board-img-box ">
-                <div th:each="img : ${@rq.getImgs(board)}" class="slide">
-                    <img class="w-30 h-30 board-img" th:src="@{|${img.filepath}|}" alt="">
+            <div class="flex board-img-box"  style="  text-align: center">
+                <div th:each="img : ${@rq.getImgs(board)}" class="slide" style=" text-align: center;">
+                    <img style="object-fit: contain; " class="w-30 h-30 board-img" th:src="@{|${img.filepath}|}" alt="">
 
                 </div>
                 <div class="btn-box">
