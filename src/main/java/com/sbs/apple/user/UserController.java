@@ -60,8 +60,6 @@ public class UserController {
     private final NotificationService notificationService;
 
 
-
-
     @GetMapping("/signup")
     public String signup1(UserCreateForm userCreateForm) {
         return "user/signup_form";
@@ -72,7 +70,7 @@ public class UserController {
                           RedirectAttributes redirectAttributes, Model model, MultipartFile file)
             throws Exception {
         RsData<SiteUser> joinRs = userService.create(false, false, userCreateForm.getFile(), userCreateForm.getUsername(), userCreateForm.getPassword1()
-                ,userCreateForm.getEmail(),userCreateForm.getNickname(), userCreateForm.getGender());
+                , userCreateForm.getEmail(), userCreateForm.getNickname(), userCreateForm.getGender());
         if (joinRs.getResultCode().equals("F-1")) {
             return rq.historyBack(joinRs.getMsg());
         }
@@ -85,6 +83,7 @@ public class UserController {
         redirectAttributes.addAttribute("id", joinRs.getData().getId());
         return "redirect:/user/add/" + joinRs.getData().getId();
     }
+
     @GetMapping("/checkUsernameDup")
     @ResponseBody
     public RsData<String> checkUsernameDup(String username) {
@@ -312,7 +311,6 @@ public class UserController {
         model.addAttribute("receivedSiteUser", receivedSiteUser);
         String interest_user = principal.getName();
 
-        model.addAttribute("receivedSiteUser", receivedSiteUser);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
@@ -322,13 +320,13 @@ public class UserController {
         int userCyberMoney = user.getCyberMoney();
         int receivedCyberMoney = user.getReceivedCyberMoney(); // 다른 사용자로부터 받은 사이버머니
 
-        boolean isInterested = interestService.isInterested(siteUser,receivedSiteUser);
+        boolean isInterested = interestService.isInterested(siteUser, receivedSiteUser);
         model.addAttribute("isInterested", isInterested);
         SiteUser loginUser = userService.getUserbyName(principal.getName());
 
         //로그인한 사용자와 현재 프로필 선택한 유저 사이의 채팅방과 사이버 머니 전송 기록을 찾는 코드
-        ChatRoom chatRoom = chatRoomService.findRoomByUserIdAndUserId2( loginUser.getId(),receivedSiteUser.getId());
-        CyberMoneyTransaction log =cyberMoneyTransactionRepository.findByUserIdAndUserId2(loginUser.getId(),receivedSiteUser.getId());
+        ChatRoom chatRoom = chatRoomService.findRoomByUserIdAndUserId2(loginUser.getId(), receivedSiteUser.getId());
+        CyberMoneyTransaction log = cyberMoneyTransactionRepository.findByUserIdAndUserId2(loginUser.getId(), receivedSiteUser.getId());
         //현재 그유저와 채팅방이 있으면 채팅방 만들기 버튼은 아예 안만들 생각
         model.addAttribute("chatRoom", chatRoom);
         model.addAttribute("log", log);
@@ -390,12 +388,13 @@ public class UserController {
         return "user/userPhoto_modify";
     }
 
-//    private MultipartFile file;
+    //    private MultipartFile file;
     @Getter
     @AllArgsConstructor
-    public static class PhotoForm  {
-    private MultipartFile file;
+    public static class PhotoForm {
+        private MultipartFile file;
     }
+
     @PostMapping("/photoModify/{id}")
     public String photoModify2(@Valid PhotoForm photoForm, MultipartFile file, Model model, Principal principal,
                                @PathVariable Integer id) throws Exception {
@@ -403,6 +402,7 @@ public class UserController {
         userService.photoModify(user, photoForm.getFile());
         return "redirect:/user/myPage";
     }
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/transactions")
     public String getTransactionHistory(Model model, Principal principal) {
@@ -451,14 +451,11 @@ public class UserController {
 
     @PostMapping("/updateMinHeart")
     public String updateMinHeart(@RequestParam("minHeart") Integer minHeart, Principal principal) {
-        try {
-            String username = principal.getName();
-            userService.updateMinHeart(username, minHeart);
-            return "redirect:/user/transactions"; // 최신 정보를 반영하도록 리다이렉트
-        } catch (Exception e) {
-            // 예외 처리 로직 추가
-            return "redirect:/user/transactions"; // 예외 발생 시 에러 페이지로 이동하거나 다른 적절한 처리를 수행할 수 있습니다.
-        }
+
+        String username = principal.getName();
+        userService.updateMinHeart(username, minHeart);
+
+        return "redirect:/user/transactions"; // 최신 정보를 반영하도록 리다이렉트
     }
 
 
@@ -510,8 +507,6 @@ public class UserController {
 //            }
 
 
-
-
             return "redirect:/user/transactions";
         } else {
             return "redirect:/error?message=이미 수락 또는 거부된 거래입니다.";
@@ -533,8 +528,7 @@ public class UserController {
         }
 
         //사이버 머니 받은 사용자의 id 즉 채팅방 초대받는 유저 인덱스번호
-        Integer toUserId= transaction.getSenderUser().getId();
-
+        Integer toUserId = transaction.getSenderUser().getId();
 
 
         return "redirect:/chat/" + roomId + "/room/" + toUserId; // 거래 내역 페이지로 리다이렉트
@@ -555,12 +549,4 @@ public class UserController {
         model.addAttribute("siteUser", siteUser);
         return "user/interest_all";
     }
-
-//    @PreAuthorize("isAuthenticated()")
-//    @GetMapping("/setting")
-//    public String setting(Principal principal, Model model) {
-//        SiteUser siteUser = this.userService.getUserbyName(principal.getName());
-//        model.addAttribute("siteUser", siteUser);
-//        return "user/setting";
-//    }
 }

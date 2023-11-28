@@ -398,5 +398,4 @@ public class UserService {
         return RsData.of("S-1", "%s(은)는 사용 가능한 이메일입니다.".formatted(email),email);
     }
 
-
 }
