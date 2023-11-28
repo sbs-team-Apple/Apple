@@ -18,10 +18,7 @@
             <span>저장하기</span>
         </button>
         <form enctype="multipart/form-data" th:action name="join-form" method="post" th:object="${userCreateForm}"
-               onsubmit="submitJoinForm(this); return false;" class="flex flex-col gap-6" style="margin-bottom:40px;">
-
-
-
+              onsubmit="submitJoinForm(this); return false;" class="flex flex-col gap-6" style="margin-bottom:40px;">
             <div class="form-control" style="text-align: center;">
                 <label class="label">
                     <span class="label-text" style="font-size: 18px; font-weight: bold;">프로필 이미지</span>

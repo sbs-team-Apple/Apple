@@ -18,7 +18,7 @@ public class UserAddForm {
 
     private List<String> hobbyList;
 
-    private float tall; //키
+    private int tall; //키
 
     private String body_type; //체형
 
