@@ -40,9 +40,33 @@ public class ImgsService {
             System.out.println("사진없음");
             imgs.setFilename("white.png");
             imgs.setFilepath("/img/white.png");
+            imgs.setIndexA(1);
+            imgs.setCreateDate(LocalDateTime.now());
+
             this.imgsRepository.save(imgs);
         }
             else {
+            for (int i = 0; i < file.size(); i++) {
+                if (file.get(i).getOriginalFilename().equals("")) {
+                    if(file.size()==1){
+                        Imgs imgs =new Imgs();
+                        imgs.setBoard(board);
+                        System.out.println("사진없음");
+                        imgs.setFilename("white.png");
+                        imgs.setFilepath("/img/white.png");
+                        imgs.setIndexA(1);
+                        imgs.setCreateDate(LocalDateTime.now());
+
+                        this.imgsRepository.save(imgs);
+
+                    }
+                    file.remove(i);
+
+
+                }
+            }
+
+
             for (int i = 0; i < file.size(); i++) {
                 Imgs imgs = new Imgs();
                 imgs.setBoard(board);
@@ -50,11 +74,15 @@ public class ImgsService {
                 UUID uuid = UUID.randomUUID();
                 String fileName = uuid + "_" + file.get(i).getOriginalFilename();
                 File saveFile = new File(directory, fileName);
-                file.get(i).transferTo(saveFile);
-                imgs.setFilename(fileName);
-                imgs.setFilepath("/gen/" + fileName);
-                imgs.setIndexA(i + 1);
-                this.imgsRepository.save(imgs);
+
+
+                    file.get(i).transferTo(saveFile);
+                    imgs.setFilename(fileName);
+                    imgs.setFilepath("/gen/" + fileName);
+                    imgs.setIndexA(i + 1);
+                    imgs.setCreateDate(LocalDateTime.now());
+
+                    this.imgsRepository.save(imgs);
 
                     }
                 }
@@ -65,6 +93,7 @@ public class ImgsService {
 
     //수정에서 사진추가용 크레이트
     public  void create2(List<MultipartFile> file, Board board , List<Integer> addIndex)  throws Exception {
+        System.out.println("수정에서 파일추가해서 새로운 이미지들 추가하는것 ");
         File directory = new File(uploadDir);
 
 
@@ -74,6 +103,41 @@ public class ImgsService {
 
 
 
+        if (file ==null) {
+            System.out.println("파일이 아예 없을떄  이거 실행");
+            Imgs imgs =new Imgs();
+            imgs.setBoard(board);
+            System.out.println("사진없음");
+            imgs.setFilename("white.png");
+            imgs.setFilepath("/img/white.png");
+            imgs.setCreateDate(LocalDateTime.now());
+            imgs.setIndexA(1);
+
+
+            this.imgsRepository.save(imgs);
+        }
+
+        else {
+
+            for (int i = 0; i < file.size(); i++) {
+                if (file.get(i).getOriginalFilename().equals("")) {
+                    if(file.size()==1){
+                        Imgs imgs =new Imgs();
+                        imgs.setBoard(board);
+                        System.out.println("사진없음");
+                        imgs.setFilename("white.png");
+                        imgs.setFilepath("/img/white.png");
+                        imgs.setIndexA(1);
+                        imgs.setCreateDate(LocalDateTime.now());
+
+                        this.imgsRepository.save(imgs);
+
+                    }
+                    file.remove(i);
+
+
+                }
+            }
 
             for (int i = 0; i < file.size(); i++) {
                 Imgs imgs = new Imgs();
@@ -83,14 +147,28 @@ public class ImgsService {
                 String fileName = uuid + "_" + file.get(i).getOriginalFilename();
                 File saveFile = new File(directory, fileName);
                 file.get(i).transferTo(saveFile);
-                imgs.setFilename(fileName);
-                imgs.setFilepath("/gen/" + fileName);
-                imgs.setIndexA(addIndex.get(i));
-                imgs.setCreateDate(LocalDateTime.now());
-                this.imgsRepository.save(imgs);
+                if (file.get(i).getOriginalFilename().equals("")) {
+
+
+                    System.out.println("사진없음");
+                    imgs.setFilename("white.png");
+                    imgs.setFilepath("/img/white.png");
+                    imgs.setIndexA(addIndex.get(i));
+                    imgs.setCreateDate(LocalDateTime.now());
+
+
+                    this.imgsRepository.save(imgs);
+                } else {
+                    imgs.setFilename(fileName);
+                    imgs.setFilepath("/gen/" + fileName);
+                    imgs.setIndexA(addIndex.get(i));
+                    imgs.setCreateDate(LocalDateTime.now());
+                    this.imgsRepository.save(imgs);
+                }
 
             }
 
+        }
 
 
     }

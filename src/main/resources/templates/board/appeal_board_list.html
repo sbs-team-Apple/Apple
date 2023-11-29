@@ -12,10 +12,10 @@
     <br><br>
     <div class="m-auto w-4/12 flex flex-col board-container  justify-center items-center">
         <div  class="mt-2 appeal-img-container" th:each="board : ${board}"  th:id="${board.id}">
-            <div class="flex mb-2">
-                <a th:href="@{|/user/detail/${board.siteUser.id}|}">
+            <div class="flex  ml-4">
+                <a th:href="@{|/user/detail/${board.siteUser.id}|}"  style="display:flex; align-items:center;">
                     <div class="avatar ">
-                        <div class="w-10 rounded-full">
+                        <div class="w-10 rounded-full" >
 
                              <img th:src="${board.siteUser.filepath}">
 
@@ -26,8 +26,8 @@
                     <div th:text="${board.siteUser.nickname}"></div>
                 </div>
                 <div class="option-btn mr-2">
-                    <div class="dropdown dropdown-end">
-                        <label tabindex="0" class=" m-1">...</label>
+                    <div class="dropdown dropdown-end  mt-5 mr-3 mb-2">
+                        <label tabindex="0" style="font-size:25px;">...</label>
                         <ul tabindex="0" class="option-btn-content dropdown-content z-[1] mt-2 menu p-2 shadow bg-base-100 rounded-box w-52">
                             <li th:if="${@rq.user.nickname==board.siteUser.nickname}"> <a th:href="@{|/board/modify/${board.id}?key-kind=public|}">수정하기</a></li>
                             <li th:if="${@rq.user.nickname==board.siteUser.nickname}"><a th:href="@{|/board/delete/${board.id}?key-kind=public|}">삭제하기</a></li>
@@ -38,9 +38,9 @@
             </div>
 
 
-            <div class="flex board-img-box ">
-                <div th:each="img : ${@rq.getImgs(board)}" class="slide">
-                    <img class="w-30 h-30 board-img" th:src="@{|${img.filepath}|}" alt="">
+            <div class="flex board-img-box"  style="  text-align: center">
+                <div th:each="img : ${@rq.getImgs(board)}" class="slide" style=" text-align: center;">
+                    <img style="object-fit: contain; " class="w-30 h-30 board-img" th:src="@{|${img.filepath}|}" alt="">
 
                 </div>
                 <div class="btn-box">
@@ -62,7 +62,7 @@
                         </div>
                         </a>
                      </div>
-                    <div style="display: flex; align-items: center;">
+                    <div style="display: flex; align-items: end;">
                         <span class="badge rounded-pill  likeNum" style="background-color:#f0bddb;"
                                   th:id="'likeCount-' + ${board.id}" ></span>
                         <span class="ex hidden "  th:data-initial-value="${#lists.size(board.like)}" th:text="${#lists.size(board.like)}" ></span>

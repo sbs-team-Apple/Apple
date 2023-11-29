@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8090
   http2:
     enabled: true
 file:
@@ -23,9 +23,13 @@ spring:
           auth: true
           starttls:
             enable: true
+
+
   thymeleaf:
     cache: false
     prefix: file:src/main/resources/templates/
+
+#    view-names: th/*
   output:
     ansi:
       enabled: always
