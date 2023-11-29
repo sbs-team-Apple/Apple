@@ -174,7 +174,7 @@ public class Rq {
 
             loginUser = userService.getUserbyName(getLoginedMemberUsername());
 
-            notificationList=notificationService.getByUserTo(loginUser);
+            notificationList=notificationService.getsByUserTo(loginUser);
 
 
         return notificationList;
