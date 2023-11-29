@@ -85,6 +85,7 @@
                             inputElement.disabled = true;
                             inputElement.value = selectedValue;
                         }
+                        saveDomain(inputElement.value);
                     }
                 </script>
             </div>
@@ -227,18 +228,17 @@
     }
 
     function setEmailInputMsg(isSuccess, msg) {
-        $(joinForm.email).removeClass('input-accent input-error'); // 초기화
-        $(joinForm.email).next().removeClass('text-green-400 text-red-400');
+    $(joinForm.email).removeClass('input-accent input-error'); // 초기화
+    $(joinForm.email).next().removeClass('text-green-400 text-red-400');
+    $('#emailMessage').removeClass('text-green-400 text-red-400'); // 이메일 메시지 관련 클래스 초기화
 
-        if (isSuccess) {
-            $('#emailMessage').addClass('text-green-400'); // 성공인 경우
-        } else {
-            $('#emailMessage').addClass('text-red-400'); // 실패인 경우
-            $(joinForm.email).addClass('input-error'); // 실패인 경우 이메일 입력창에 에러 스타일 적용
-        }
-
-        $('#emailMessage').text(msg); // 이메일 메시지가 표시되는 부분에 메시지를 넣어줍니다.
+    if (isSuccess) {
+        $('#emailMessage').addClass('text-green-400').text(msg); // 성공인 경우 초록색으로 텍스트 설정
+    } else {
+        $('#emailMessage').addClass('text-red-400').text(msg); // 실패인 경우 빨간색으로 텍스트 설정
+        $(joinForm.email).addClass('input-error'); // 실패인 경우 이메일 입력창에 에러 스타일 적용
     }
+}
 
             let validEmail = '';
             let lastCheckedEmail = '';
