@@ -27,12 +27,12 @@ public class ExchangeService {
             throw new DataNotFoundException("exchange not found");
         }
     }
-    public Exchange getExchangeBySiteUser(SiteUser siteUser) {
-        Optional<Exchange> exchange = this.exchangeRepository.findBySiteUser(siteUser);
-        if (exchange.isPresent()) {
-            return exchange.get();
+    public List<Exchange> getExchangeBySiteUser(SiteUser siteUser) {
+        List<Exchange> exchanges = this.exchangeRepository.findBySiteUser(siteUser);
+        if (!exchanges.isEmpty()) {
+            return exchanges;
         } else {
-            throw new DataNotFoundException("exchange not found");
+            throw new DataNotFoundException("No exchanges found for the given user");
         }
     }
     public void create(String subject, String content, SiteUser user) {
@@ -45,7 +45,7 @@ public class ExchangeService {
     }
     public void apply(Exchange exchange, String realname, String email,
                       String address, String f_No, String phonNo_2,
-                      String phonNo_3, String homeAdress, String nationality,
+                      String phonNo_3, String homeAdress,
                       String bank, String accountHolder, String accountNumber
                       ) {
         exchange.setRealname(realname);
@@ -55,7 +55,6 @@ public class ExchangeService {
         exchange.setPhonNo_2(phonNo_2);
         exchange.setPhonNo_3(phonNo_3);
         exchange.setHomeAdress(homeAdress);
-        exchange.setNationality(nationality);
         exchange.setBank(bank);
         exchange.setAccountHolder(accountHolder);
         exchange.setAccountNumber(accountNumber);
