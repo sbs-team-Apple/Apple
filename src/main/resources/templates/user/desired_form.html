@@ -18,21 +18,36 @@
                 if (submitJoinFormDone) return;
 
 
-                form.desired_hobby.value = form.desired_hobby.value.trim();
+                form.desired_age1.value = form.desired_age1.value.trim();
 
-                if (form.desired_hobby.value.length == 0) {
-                    form.desired_hobby.focus();
-                    toastWarning('취미를 입력해주세요.');
+                if (form.desired_age1.value.length == 0) {
+                    form.desired_age1.focus();
+                    toastWarning('최소 나이를 설정해주세요.');
+                    return;
+                }
+
+                form.desired_age2.value = form.desired_age2.value.trim();
+
+                if (form.desired_age2.value.length == 0) {
+                    form.desired_age2.focus();
+                    toastWarning('최대 나이를 설정해주세요.');
+                    return;
+                }
+
+                form.desired_tall1.value = form.desired_tall1.value.trim();
+
+                if (form.desired_tall1.value.length == 0) {
+                    form.desired_tall1.focus();
+                    toastWarning('최소 키를 설정해주세요.');
                     return;
                 }
 
 
+                form.desired_tall2.value = form.desired_tall2.value.trim();
 
-                form.desired_style.value = form.desired_style.value.trim();
-
-                if (form.desired_style.value.length == 0) {
-                    form.desired_style.focus();
-                    toastWarning('스타일을 입력해주세요.');
+                if (form.desired_tall2.value.length == 0) {
+                    form.desired_tall1.focus();
+                    toastWarning('최대 키를 설정해주세요.');
                     return;
                 }
 
