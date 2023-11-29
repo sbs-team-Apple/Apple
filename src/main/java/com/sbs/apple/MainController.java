@@ -84,7 +84,7 @@ public class MainController {
             userService.resetUserWarning(siteUser);
         }
 
-        List<Notification> notificationsList = notificationService.getByUserTo(loginUser);
+        List<Notification> notificationsList = notificationService.getsByUserTo(loginUser);
         return "main";
     }
 
