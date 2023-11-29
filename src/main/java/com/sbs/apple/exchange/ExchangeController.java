@@ -71,27 +71,39 @@ public class ExchangeController {
     public String exchange_apply(ExchangeForm exchangeForm, Model model, Principal principal) {
         String username = principal.getName();
         SiteUser siteUser = userService.getUserbyName(username);
+        List<Exchange> userExchanges = exchangeService.getExchangeBySiteUser(siteUser);
 
         model.addAttribute("siteUser", siteUser);
-
+        model.addAttribute("userExchanges", userExchanges);
         return "pay/exchange_apply";
 
     }
 
+
+
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/exchange_apply")
     public String exchange_apply(@Valid ApplyForm applyForm, RedirectAttributes redirectAttributes,
-                                 BindingResult bindingResult, Principal principal,Model model) {
+                                 BindingResult bindingResult, Principal principal, Model model) {
         if (bindingResult.hasErrors()) {
             return "pay/exchange_apply";
         }
         SiteUser siteUser = this.userService.getUser(principal.getName());
-        Exchange exchange =this.exchangeService.getExchangeBySiteUser(siteUser);
-        this.exchangeService.apply(exchange, applyForm.getRealname(), applyForm.getEmail(), applyForm.getAddress(),
-                applyForm.getF_No(),applyForm.getPhonNo_2(),
-                applyForm.getPhonNo_3(),applyForm.getHomeAdress(),
-                applyForm.getNationality(),applyForm.getBank(),
-                applyForm.getAccountHolder(),applyForm.getAccountNumber());
-        return "redirect:/";
+
+        // 수정 시작
+        List<Exchange> exchanges = this.exchangeService.getExchangeBySiteUser(siteUser);
+        if (!exchanges.isEmpty()) {
+            Exchange exchange = exchanges.get(0);  // 첫 번째 Exchange 객체를 사용하거나 적절한 방법으로 선택
+            this.exchangeService.apply(exchange, applyForm.getRealname(), applyForm.getEmail(), applyForm.getAddress(),
+                    applyForm.getF_No(), applyForm.getPhonNo_2(),
+                    applyForm.getPhonNo_3(), applyForm.getHomeAdress(),
+                    applyForm.getBank(), applyForm.getAccountHolder(), applyForm.getAccountNumber());
+            return "redirect:/";
+        } else {
+            // 적절한 처리를 수행 (예: 오류 처리 또는 다른 동작)
+            return "redirect:/exchange/exchange_apply";  // 혹은 다른 적절한 경로로 리다이렉트
+        }
+        // 수정 끝
     }
+
 }

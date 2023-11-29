@@ -10,15 +10,17 @@
 
 <body>
 <th:block th:if="${#strings.equals(isSuccess, 'true')}">
-    <h1>결제 성공</h1>
-    <p>결과데이터 : <span th:text="${responseStr}"></span></p>
-    <p>orderName : <span th:text="${orderName}"></span></p>
-    <p>method : <span th:text="${method}"></span></p>
+    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center;">
+        <h1>충전 완료</h1>
+        <p>충전이 완료되었습니다.</p>
+        <p>이제 사람들과 소통하면서 인연을 쌓으세요!</p>
+        <button class="btn btn-success" onclick="goToMainPage()">확인</button>
+    </div>
     <tr th:if="${#strings.equals(method, '카드')}">cardNumber<td th:text="${cardNumber}"></td></tr>
     <tr th:if="${#strings.equals(method, '가상계좌')}">accountNumber<td th:text="${accountNumber}"></td></tr>
     <tr th:if="${#strings.equals(method, '계좌이체')}">bank<td th:text="${bank}"></td></tr>
     <tr th:if="${#strings.equals(method, '휴대폰')}">customerMobilePhone<td th:text="${customerMobilePhone}"></td></tr>
-    <button onclick="goToMainPage()">확인</button>
+
 </th:block>
 <th:block th:if="${#strings.equals(isSuccess, 'false')}">
     <h1>결제 실패</h1>
