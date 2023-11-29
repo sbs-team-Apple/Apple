@@ -6,28 +6,26 @@
 </head>
 <body>
 <div layout:fragment="content" class="container my-3">
-<h2 class="border-bottom py-2" th:text="${exchange.subject}"></h2>
-<div class="card my-3">
-    <div class="card-body">
-        <div class="card-text" style="white-space: pre-line;" th:text="${exchange.content}"></div>
-        <div class="card-text" style="white-space: pre-line;" th:text="${exchange.realname}"></div>
-        <div class="card-text" style="white-space: pre-line;" th:text="${exchange.email}"></div>
-        <div class="card-text" style="white-space: pre-line;" th:text="${exchange.address}"></div>
-        <div class="card-text" style="white-space: pre-line;" th:text="${exchange.f_No}"></div>
-        <div class="card-text" style="white-space: pre-line;" th:text="${exchange.phonNo_2}"></div>
-        <div class="card-text" style="white-space: pre-line;" th:text="${exchange.phonNo_3}"></div>
-        <div class="card-text" style="white-space: pre-line;" th:text="${exchange.homeAdress}"></div>
-        <div class="card-text" style="white-space: pre-line;" th:text="${exchange.nationality}"></div>
-        <div class="card-text" style="white-space: pre-line;" th:text="${exchange.bank}"></div>
-        <div class="card-text" style="white-space: pre-line;" th:text="${exchange.accountHolder}"></div>
-        <div class="card-text" style="white-space: pre-line;" th:text="${exchange.accountNumber}"></div>
+    <h2 class="border-bottom py-2 text-center" th:text="${exchange.subject}"></h2>
+    <div class="card my-3 mx-auto" style="width: 18rem;">
+        <div class="card-body text-center">
+            <div class="card-text text-start" style="white-space: pre-line;" th:text="'신청인ID : ' + ${exchange.siteUser.username}"></div>
+            <div class="card-text text-start" style="white-space: pre-line;" th:text="'신청한 하트 : ' + ${exchange.content} + '개'"></div>
+            <div class="card-text text-start" style="white-space: pre-line;" th:text="'실명 : ' + ${exchange.realname}"></div>
+            <div class="card-text text-start" style="white-space: pre-line;" th:text="'이메일 : ' + ${exchange.email} + '@' + ${exchange.address}"></div>
+            <div class="card-text text-start" style="white-space: pre-line;" th:text="'휴대폰 번호 : ' + ${exchange.f_No} + ' - ' + ${exchange.phonNo_2} + ' - ' + ${exchange.phonNo_3}"></div>
+            <div class="card-text text-start" style="white-space: pre-line;" th:text="'집 주소 : ' + ${exchange.homeAdress}"></div>
+            <div class="card-text text-start" style="white-space: pre-line;" th:text="'은행 : ' + ${exchange.bank}"></div>
+            <div class="card-text text-start" style="white-space: pre-line;" th:text="'예금주 : ' + ${exchange.accountHolder}"></div>
+            <div class="card-text text-start" style="white-space: pre-line;" th:text="'계좌번호 : ' + ${exchange.accountNumber}"></div>
 
-        <div class="d-flex justify-content-end">
-            <div class="badge bg-light text-dark p-2 text-start">
+            <div class="d-flex justify-content-end">
+                <div class="badge bg-light text-dark p-2 text-start">
+                </div>
             </div>
         </div>
     </div>
-</div>
+
 </div>
 </body>
 </html>
