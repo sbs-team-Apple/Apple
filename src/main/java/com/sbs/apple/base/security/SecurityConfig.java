@@ -27,7 +27,9 @@ public class SecurityConfig {
                                 XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
                 .formLogin(formLogin -> formLogin
                         .loginPage("/user/login")
-                        .defaultSuccessUrl("/"))
+                        .successHandler(new CustomSimpleUrlAuthenticationSuccessHandler())
+                        .failureHandler(new CustomSimpleUrlAuthenticationFailureHandler())
+                )
                 .oauth2Login(oauth2Login -> oauth2Login
                         .loginPage("/user/login"))
                 .logout(logout -> logout

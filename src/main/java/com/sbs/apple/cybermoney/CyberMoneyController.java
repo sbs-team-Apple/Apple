@@ -15,16 +15,46 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.Optional;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/user/cybermoney")
 public class CyberMoneyController {
     private final CyberMoneyService cyberMoneyService;
+    private final CyberMoneyServiceImpl cyberMoneyServiceImpl;
     private final UserRepository userRepository;
     private final SseEmitters sseEmitters;
     private final NotificationService notificationService;
+    private final CyberMoneyTransactionRepository cyberMoneyTransactionRepository;
 
 
+    @PostMapping("/JustSend")
+    public ResponseEntity<String> JustsendCyberMoney(
+            @RequestParam("recipientUsername") String recipientUsername,
+            @RequestParam("amount") int amount) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        Optional<SiteUser> senderUserOptional = userRepository.findByUsername(username);
+        if (!senderUserOptional.isPresent()) {
+            return ResponseEntity.badRequest().body("보내는 사용자를 찾을 수 없습니다.");
+        }
+        SiteUser senderUser = senderUserOptional.get();
+
+        if (senderUser.getUsername().equals(recipientUsername)) {
+            return ResponseEntity.badRequest().body("자기 자신에게 사이버 머니를 보낼 수 없습니다.");
+        }
+
+        Optional<SiteUser> recipientUserOptional = userRepository.findByUsername(recipientUsername);
+        if (!recipientUserOptional.isPresent()) {
+            return ResponseEntity.badRequest().body("받는 사용자를 찾을 수 없습니다.");
+        }
+        SiteUser recipientUser = recipientUserOptional.get();
+
+
+        cyberMoneyServiceImpl.JustSendCyberMoney(senderUser, recipientUser, amount);
+        return ResponseEntity.ok("사이버 머니 전송이 성공했습니다.");
+    }
 
 
     @PostMapping("/send")
@@ -63,7 +93,7 @@ public class CyberMoneyController {
             SseEmitter emitter = new SseEmitter();
             sseEmitters.add(groupKey, emitter);
             sseEmitters.noti(groupKey, "give_money");
-            notificationService.create(recipientUser,senderUser,"money" );
+            notificationService.create(recipientUser, senderUser, "money");
             return ResponseEntity.ok("사이버 머니 전송이 성공했습니다.");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

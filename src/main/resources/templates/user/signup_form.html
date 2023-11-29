@@ -12,8 +12,13 @@
             <i class="fa-solid fa-user-plus"></i>
             회원가입
         </h1>
+
+        <button class="btn" onclick="cropImage()" style="padding:0 145px; border-radius:10px; border :1px solid #f08dac; background-color :#f08dac">
+            <i class="fa-solid fa-save"></i>
+            <span>저장하기</span>
+        </button>
         <form enctype="multipart/form-data" th:action name="join-form" method="post" th:object="${userCreateForm}"
-               onsubmit="submitJoinForm(this); return false;" class="flex flex-col gap-6" style="margin-bottom:40px;">
+              onsubmit="submitJoinForm(this); return false;" class="flex flex-col gap-6" style="margin-bottom:40px;">
             <div class="form-control" style="text-align: center;">
                 <label class="label">
                     <span class="label-text" style="font-size: 18px; font-weight: bold;">프로필 이미지</span>
@@ -22,29 +27,47 @@
                        accept="image/**" onchange="previewImage(this)" style="margin-bottom :15px; padding: 0; ">
                 <div id="image-preview" style="margin: auto; border-radius:20px; border: 2px solid #f08dac;"></div>
             </div>
+
+
+
+
+
+
+
             <div class="form-control">
                 <label class="label" style="padding :0 4px 8px 4px;">
                     <span class="label-text" style="font-size: 18px; font-weight: bold;">아이디</span>
                 </label>
                 <input type="text" name="username" placeholder="아이디" class="input input-bordered input-secondary" autofocus
                        maxlength="30" onchange="$(this).keyup();" onpaste="setTimeoutZero(() => $(this).keyup());"
-                       onkeyup="checkUsernameDupDebounce();">
+                       onkeyup="checkUsernameDupDebounce();"  oninput="this.value = this.value.replace(/[^a-zA-Z0-9]/g, '');">
                 <div class="mt-2 text-sm"></div>
             </div>
 
             <div class="form-control">
                 <label class="label">
                     <span class="label-text" style="font-size: 18px; font-weight: bold;">비밀번호</span>
+                    <span>비밀번호는 8~20자 이내로 입력하셔야 합니다.</span>
                 </label>
                 <input type="password" name="password1" placeholder="비밀번호" class="input input-bordered input-secondary" maxlength="30">
             </div>
 
             <div class="form-control">
-                <label class="label" style="font-size: 18px; font-weight: bold;">
-                    <span class="label-text">비밀번호 확인</span>
+                <label class="label">
+                    <span class="label-text" style="font-size: 18px; font-weight: bold;">비밀번호 확인</span>
                 </label>
                 <input type="password" name="password2" placeholder="비밀번호 확인" class="input input-bordered input-secondary"
                        maxlength="30">
+            </div>
+
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text" style="font-size: 18px; font-weight: bold;">이메일</span>
+                </label>
+                <input type="email" name="email" placeholder="이메일" class="input input-bordered input-secondary" maxlength="30"
+                       onchange="$(this).keyup();" onpaste="setTimeoutZero(() => $(this).keyup());"
+                       onkeyup="checkEmailDupDebounce();">
+                <div class="mt-2 text-sm"></div>
             </div>
 
             <div class="form-control">
@@ -53,9 +76,22 @@
                 </label>
                 <input type="text" name="nickname" placeholder="닉네임" class="input input-bordered input-secondary"
                        maxlength="30" onchange="$(this).keyup();" onpaste="setTimeoutZero(() => $(this).keyup());"
-                       onkeyup="checkNicknameDupDebounce();">
+                       onkeyup="checkNicknameDupDebounce(); checkNicknameForBannedWords(this);">
                 <div class="mt-2 text-sm"></div>
             </div>
+            <script>
+                const bannedWords = ['씨발', '씹', '창녀','존나','좆밥','지랄','찐따','병신','보지','자지' ];
+                function checkNicknameForBannedWords(input) {
+                    const value = input.value.toLowerCase();
+                    for (let i = 0; i < bannedWords.length; i++) {
+                        if (value.includes(bannedWords[i].toLowerCase())) {
+                            alert('비속어는 사용할 수 없습니다.');
+                            input.value = '';
+                            return;
+                        }
+                    }
+                }
+            </script>
 
             <div class="form-control">
                 <label class="label" style="font-size: 18px; font-weight: bold;">
@@ -76,98 +112,170 @@
             </div>
         </form>
         <script>
+            const joinForm = document['join-form'];
+            // username 중복체크 시작
             function checkUsernameDup(form) {
                 form.username.value = form.username.value.trim();
-                 if ( form.username.value.length == 0 ) {
+
+                if ( form.username.value.length == 0 ) {
                     clearUsernameInputMsg();
                     return;
                 }
+
                 if ( form.username.value.length < 4 ) {
                     clearUsernameInputMsg();
                     return;
                 }
-
-                if ( validUsername == form.username.value ) return;
                 if ( lastCheckedUsername == form.username.value ) return;
+
                 lastCheckedUsername = form.username.value;
+
                 clearUsernameInputMsg();
+
                 fetch(
                     'checkUsernameDup?username=' + form.username.value
                 )
-                    .then(request => request.json())
+                    .then(res => res.json())
                     .then((rsData) => {
                         if ( rsData.success ) {
-                            validUsername = form.username.value;
+                            validUsername = rsData.data;
                         }
-                         setUsernameInputMsg(rsData.success, rsData.msg);
+
+                        setUsernameInputMsg(rsData.success, rsData.msg);
                     });
             }
 
-            function checkNicknameDup(form) {
-                form.nickname.value = form.nickname.value.trim();
-                 if ( form.nickname.value.length == 0 ) {
-                    clearNicknameInputMsg();
-                    return;
-                }
-                if ( form.nickname.value.length < 4 ) {
-                    clearNicknameInputMsg();
-                    return;
-                }
-                if ( validNickname == form.nickname.value ) return;
-                if ( lastCheckedNickname == form.nickname.value ) return;
-                lastCheckedNickname = form.nickname.value;
-
-                clearNicknameInputMsg();
-                fetch(
-                    'checkNicknameDup?nickname=' + form.nickname.value
-                )
-                    .then(request => request.json())
-                    .then((rsData) => {
-                        if ( rsData.success ) {
-                            validNickname = form.nickname.value;
-                        }
-                        setNicknameInputMsg(rsData.success, rsData.msg);
-                    });
-            }
-
-            const joinForm = document['join-form'];
             const checkUsernameDupDebounce = _.debounce(() => checkUsernameDup(joinForm), 500);
-            const checkNicknameDupDebounce = _.debounce(() => checkNicknameDup(joinForm), 500);
 
             function clearUsernameInputMsg() {
                 $(joinForm.username).removeClass('input-accent input-error');
                 $(joinForm.username).next().removeClass('text-green-400 text-red-400');
                 $(joinForm.username).next().empty();
             }
+
             function setUsernameInputMsg(isSuccess, msg) {
                 if ( isSuccess ) $(joinForm.username).addClass('input-accent');
                 if ( !isSuccess ) $(joinForm.username).addClass('input-error');
+
                 $(joinForm.username).next().addClass(isSuccess ? 'text-green-400' : 'text-red-400');
+
                 $(joinForm.username).next().text(msg);
             }
+
+            let validUsername = '';
+            let lastCheckedUsername = '';
+            // username 중복체크 끝
+
+            // email 중복체크 시작
+            function checkEmailDup(form) {
+                form.email.value = form.email.value.trim();
+
+                if ( form.email.value.length == 0 ) {
+                    clearEmailInputMsg();
+                    return;
+                }
+
+                if ( form.email.value.length < 4 ) {
+                    clearEmailInputMsg();
+                    return;
+                }
+                if ( lastCheckedEmail == form.email.value ) return;
+
+                lastCheckedEmail = form.email.value;
+
+                clearEmailInputMsg();
+
+                fetch(
+                    'checkEmailDup?email=' + form.email.value
+                )
+                    .then(res => res.json())
+                    .then((rsData) => {
+                        if ( rsData.success ) {
+                            validEmail = rsData.data;
+                        }
+
+                        setEmailInputMsg(rsData.success, rsData.msg);
+                    });
+            }
+
+            const checkEmailDupDebounce = _.debounce(() => checkEmailDup(joinForm), 500);
+
+            function clearEmailInputMsg() {
+                $(joinForm.email).removeClass('input-accent input-error');
+                $(joinForm.email).next().removeClass('text-green-400 text-red-400');
+                $(joinForm.email).next().empty();
+            }
+
+            function setEmailInputMsg(isSuccess, msg) {
+                if ( isSuccess ) $(joinForm.email).addClass('input-accent');
+                if ( !isSuccess ) $(joinForm.email).addClass('input-error');
+
+                $(joinForm.email).next().addClass(isSuccess ? 'text-green-400' : 'text-red-400');
+
+                $(joinForm.email).next().text(msg);
+            }
+
+            let validEmail = '';
+            let lastCheckedEmail = '';
+            // email 중복체크 끝
+
+            // nickname 중복체크 시작
+            function checkNicknameDup(form) {
+                form.nickname.value = form.nickname.value.trim();
+
+                if ( form.nickname.value.length == 0 ) {
+                    clearNicknameInputMsg();
+                    return;
+                }
+
+                if ( form.nickname.value.length < 4 ) {
+                    clearNicknameInputMsg();
+                    return;
+                }
+                if ( lastCheckedNickname == form.nickname.value ) return;
+
+                lastCheckedNickname = form.nickname.value;
+
+                clearNicknameInputMsg();
+
+                fetch(
+                    'checkNicknameDup?nickname=' + form.nickname.value
+                )
+                    .then(res => res.json())
+                    .then((rsData) => {
+                        if ( rsData.success ) {
+                            validNickname = rsData.data;
+                        }
+
+                        setNicknameInputMsg(rsData.success, rsData.msg);
+                    });
+            }
+
+            const checkNicknameDupDebounce = _.debounce(() => checkNicknameDup(joinForm), 500);
 
             function clearNicknameInputMsg() {
                 $(joinForm.nickname).removeClass('input-accent input-error');
                 $(joinForm.nickname).next().removeClass('text-green-400 text-red-400');
                 $(joinForm.nickname).next().empty();
             }
+
             function setNicknameInputMsg(isSuccess, msg) {
                 if ( isSuccess ) $(joinForm.nickname).addClass('input-accent');
                 if ( !isSuccess ) $(joinForm.nickname).addClass('input-error');
+
                 $(joinForm.nickname).next().addClass(isSuccess ? 'text-green-400' : 'text-red-400');
+
                 $(joinForm.nickname).next().text(msg);
             }
-            let lastCheckedUsername = '';
-            let lastCheckedNickname = '';
-            let validUsername = '';
+
             let validNickname = '';
+            let lastCheckedNickname = '';
+            // nickname 중복체크 끝
+
             let submitJoinFormDone = false;
 
             function submitJoinForm(form) {
                 if (submitJoinFormDone) return;
-
-
-
                 form.username.value = form.username.value.trim();
 
                 if (form.username.value.length == 0) {
@@ -188,6 +296,16 @@
                     toastWarning('비밀번호를 입력해주세요.');
                     return;
                 }
+                if ( form.password1.value.length < 7 ) {
+                    form.password1.focus();
+                    toastWarning('비밀번호를 8자 이상 입력해주세요.');
+                    return;
+                }
+                if ( form.password1.value.length > 21 ) {
+                    form.password1.focus();
+                    toastWarning('비밀번호를 20자 이내로 입력해주세요.');
+                    return;
+                }
 
                 form.password2.value = form.password2.value.trim();
 
@@ -200,6 +318,18 @@
                 if (form.password1.value != form.password2.value) {
                     form.password2.focus();
                     toastWarning('비밀번호 확인이 일치하지 않습니다.');
+                    return;
+                }
+                form.email.value = form.email.value.trim();
+
+                if (form.email.value.length == 0) {
+                    form.email.focus();
+                    toastWarning('이메일을 입력해주세요.');
+                    return;
+                }
+                if ( form.email.value.length < 4 ) {
+                    form.email.focus();
+                    toastWarning('이메일을 4자 이상 입력해주세요.');
                     return;
                 }
 
@@ -220,9 +350,14 @@
                     toastWarning('아이디 중복체크를 해주세요.');
                     return;
                 }
+                   if ( validEmail != form.email.value ) {
+                    $(form.email).next().focus();
+                    toastWarning('이메일 중복체크를 해주세요.');
+                    return;
+                }
                 if ( validNickname != form.nickname.value ) {
                     $(form.nickname).next().focus();
-                    toastWarning('아이디 중복체크를 해주세요.');
+                    toastWarning('닉네임 중복체크를 해주세요.');
                     return;
                 }
                 form.file.value = form.file.value.trim();
@@ -246,28 +381,52 @@
             margin-top: 10px;
         }
     </style>
+    <!-- Croppie 라이브러리 추가 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
+
     <script>
+        let croppie = null;
+
         function previewImage(input) {
-        var preview = document.getElementById('image-preview');
-        preview.innerHTML = '';
+            const preview = document.getElementById('image-preview');
+            preview.innerHTML = '';
 
-        if (input.files && input.files[0]) {
-        var reader = new FileReader();
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
 
-        reader.onload = function (e) {
-        var img = document.createElement('img');
-        img.src = e.target.result;
-        img.style.width = '270px';
-        img.style.height = '270px';
-        img.style.objectFit = 'cover';
-        img.style.borderRadius = '20px';
-        preview.appendChild(img);
-        };
+                reader.onload = function (e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.width = '270px';
+                    img.style.height = '270px';
+                    img.style.objectFit = 'cover';
+                    img.style.borderRadius = '20px';
+                    preview.appendChild(img);
 
-        reader.readAsDataURL(input.files[0]);
+                    // Croppie 인스턴스 초기화
+                    croppie = new Croppie(img, {
+                        viewport: { width: 200, height: 200, type: 'square' },
+                        boundary: { width: 300, height: 300 },
+                        enableOrientation: true
+                    });
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
         }
+
+        function cropImage() {
+            if (croppie) {
+                croppie.result('base64').then(function (result) {
+                    // 크롭된 이미지 데이터(result)를 사용할 수 있습니다.
+                    console.log('크롭된 이미지:', result);
+                    // 여기에 원하는 작업을 수행할 수 있습니다.
+                });
+            }
         }
     </script>
+
 </div>
 </body>
 </html>

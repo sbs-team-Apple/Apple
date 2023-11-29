@@ -5,8 +5,7 @@
     <style>
         .Transactions_list {
             margin-bottom: 10px;
-            border: 1px solid #000;
-            padding: 10px;
+
         }
         .tab-button {
             cursor: pointer;
@@ -23,61 +22,88 @@
 
         .title {
         font-size: 20px;
-        border-bottom: 2px solid #000;
+        border-bottom: 1px solid #d9d9d9;
         margin-bottom: 10px;
 
         }
+
+
     </style>
 </head>
 <body>
 
 <div layout:fragment="content" class="container m-auto flex justify-center flex-col items-center -mt-16 min-h-screen">
     <div class="mt-16">
-    <div style="height: 50px;"></div>
-    <div class="container_2 my-3">
-        <p class="badge badge-accent badge-outline" style="display: inline-block; margin-right: 10px;">보유한 하트: <span th:text="${userCyberMoney}"></span>개</p>
-        <p class="badge badge-accent badge-outline" style="display: inline-block; margin-right: 10px;">받은 하트: <span th:text="${receivedCyberMoney}"></span>개</p>
-        <p class="badge badge-accent badge-outline" style="display: inline-block; margin-right: 10px;">최소 하트: <span th:text="${minHeart}"></span>개</p>
-    </div>
-
-
-
-
-    <div class="tab-buttons" style="display: flex; justify-content: center;">
-        <div style="text-align: center; flex: 1;">
-            <button class="btn btn-outline btn-info" onclick="showTab('receivedTab')">받은 거래</button>
+        <div style="height: 50px;"></div>
+        <div class="container_2 my-3 text-center">
+            <p class="badge badge-secondary badge-outline" style="display: inline-block; margin-right: 10px;">보유한 <i class="fa-solid fa-heart" style="color: #ff0000;"></i> : <span th:text="${userCyberMoney}"></span>개</p>
+            <p class="badge badge-secondary badge-outline" style="display: inline-block; margin-right: 10px;">받은 <i class="fa-solid fa-heart" style="color: #ff0000;"></i> : <span th:text="${receivedCyberMoney}"></span>개</p>
         </div>
-        <div style="text-align: center; flex: 1;">
-            <button class="btn btn-outline btn-info" onclick="showTab('completedTab')">완료된 거래</button>
+
+
+
+
+        <div class="tab-buttons" style="display: flex; justify-content: center; gap: 10px;">
+            <div style="text-align: center; flex: 1;">
+                <button type="submit" class="btn w-full"
+                        style="border-radius: 10px; border: 1px solid #FABBEE; background-color: #BBCBFA" onclick="showTab('sentTab')">&nbsp&nbsp&nbsp&nbsp&nbspSent!&nbsp&nbsp&nbsp&nbsp&nbsp</button>
+            </div>
+            <div style="text-align: center; flex: 1;">
+                <button type="submit" class="btn w-full"
+                        style="border-radius: 10px; border: 1px solid #f08dac; background-color: #F48FB1" onclick="showTab('receivedTab')">&nbsp&nbsp&nbspReceive!&nbsp&nbsp&nbsp</button>
+            </div>
+            <div style="text-align: center; flex: 1;">
+                <button type="submit" class="btn w-full"
+                        style="border-radius: 10px; border: 1px solid #FABBEE; background-color: #BBCBFA" onclick="showTab('completedTab')">Complete!</button>
+            </div>
         </div>
-    </div>
-    <div class="title" style="height: 20px;"></div>
 
+        <div class="title" style="height: 20px;"></div>
 
+        <div id="sentTab" class="tab-content " style="display: none;">
+            <ul>
+                <li th:if="${not transaction.isAccepted() and not transaction.isRejected()}"
+                    class="Transactions_list" th:each="transaction : ${sentTransactions}" >
+                    <!-- 거절 버튼 -->
+                    <div style="border :1px solid #FABBEE; padding:5px;">
+                        <p th:text="${transaction.recipientUser.username} +' 님에게 ♥ ' + ${transaction.amount} + '개를 보냈습니다.'"></p>
+                        <p th:text="${#dates.format(transaction.transactionDate, 'yyyy-MM-dd')}"></p>
+                        <div style="display: flex; align-items: center;">
+                            <form th:action="@{/user/processTransaction}" method="post">
+                                <input type="hidden" name="transactionId" th:value="${transaction.id}" />
+                                <input type="hidden" name="action" value="reject" />
+                                <button class="btn-sm btn btn-outline btn-info" type="submit">거절</button>
+                            </form>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
 
         <div id="receivedTab" class="tab-content">
             <ul>
                 <li class="Transactions_list" th:each="transaction : ${receivedTransactions}" style="display: flex; justify-content: space-between;">
-                    <div>
+                    <div style="border :1px solid #FABBEE; padding:5px;">
                         <p th:text="${transaction.senderUser.username} +' 님이 ♥ ' + ${transaction.amount} + '개를 보냈습니다'"></p>
                         <p th:text="${transaction.transactionDate}"></p>
-                    </div>
-                    <!-- "수락" 버튼 -->
-                    <div style="display: flex; align-items: center;">
-                        <form th:action="@{/user/processTransaction}" method="post">
-                            <input type="hidden" name="transactionId" th:value="${transaction.id}" />
-                            <input type="hidden" name="action" value="accept" /> <!-- 수락 작업 설정 -->
-                            <button class="btn-sm btn btn-outline btn-info" type="submit"
-                                    th:disabled="${transaction.isAccepted() or transaction.isRejected()}">수락</button>
-                        </form>
-                        <div style="width: 10px;"></div> <!-- 10px 여백 추가 -->
-                        <!-- "거절" 버튼 -->
-                        <form th:action="@{/user/processTransaction}" method="post">
-                            <input type="hidden" name="transactionId" th:value="${transaction.id}" />
-                            <input type="hidden" name="action" value="reject" /> <!-- 거절 작업 설정 -->
-                            <button class="btn-sm btn btn-outline btn-info" type="submit"
-                                    th:disabled="${transaction.isAccepted() or transaction.isRejected()}">거절</button>
-                        </form>
+
+                        <!-- "수락" 버튼 -->
+                        <div style="display: flex; align-items: center;">
+                            <form th:action="@{/user/processTransaction}" method="post">
+                                <input type="hidden" name="transactionId" th:value="${transaction.id}" />
+                                <input type="hidden" name="action" value="accept" /> <!-- 수락 작업 설정 -->
+                                <button class="btn-sm btn btn-outline btn-info" type="submit"
+                                        th:disabled="${transaction.isAccepted() or transaction.isRejected()}">수락</button>
+                            </form>
+                            <div style="width: 10px;"></div> <!-- 10px 여백 추가 -->
+                            <!-- "거절" 버튼 -->
+                            <form th:action="@{/user/processTransaction}" method="post">
+                                <input type="hidden" name="transactionId" th:value="${transaction.id}" />
+                                <input type="hidden" name="action" value="reject" /> <!-- 거절 작업 설정 -->
+                                <button class="btn-sm btn btn-outline btn-info" type="submit"
+                                        th:disabled="${transaction.isAccepted() or transaction.isRejected()}">거절</button>
+                            </form>
+                        </div>
                     </div>
                 </li>
             </ul>
@@ -88,49 +114,43 @@
             <ul>
                 <li class="Transactions_list" th:each="transaction : ${completedTransactions}" th:if="${transaction.isAccepted()} or ${transaction.isRejected()}" style="display: flex; justify-content: space-between;"
                     th:unless="${transaction.senderUser.username eq user.username}" th:remove="tag">
-                    <div>
+                    <div style="border :1px solid #FABBEE; padding:5px; margin-bottom:10px;">
                         <p th:text="${transaction.senderUser.username} +' 님이 ♥ ' + ${transaction.amount} + '개를 보냈습니다'"></p>
-                        <p th:text="${transaction.transactionDate}"></p>
+                        <p th:text="${#dates.format(transaction.transactionDate, 'yyyy-MM-dd')}"></p>
                     </div>
-                    <div> 승인 완료</div>
+
+                </li>
+                <li class="Transactions_list" th:each="transaction : ${sentTransactions}" th:if="${transaction.isAccepted()}">
+                    <div style="border :1px solid #FABBEE; padding:5px;">
+                        <p th:text="'회원님께서 ' + ${transaction.recipientUser.username} +' 님에게 ♥ ' + ${transaction.amount} + '개를 보냈습니다.'"></p>
+                        <p th:text="${#dates.format(transaction.transactionDate, 'yyyy-MM-dd')}"></p>
+                    </div>
                 </li>
             </ul>
         </div>
 
-
-
-
-
-
     </div>
     <div class="flex-grow"></div>
     <div class="button-container">
-        <button class="btn-sm btn btn-outline btn-info"><a href="/user/payment"><i class="fa-solid fa-won-sign"></i> 결제하기</a></button>
+        <button type="submit" class="btn btn-sm"
+                style="border-radius:10px; border :1px solid #3B84F7; background-color :#ffffff"><a href="/user/payment"><i class="fa-solid fa-won-sign"></i> 결제하기</a></button>
         <span class="spacer">|</span>
-        <button class="btn-sm btn btn-outline btn-info"><a href="/exchange/create"><i class="fa-solid fa-sack-dollar"></i> 환전하기</a></button>
+        <button type="submit" class="btn btn-sm"
+                style="border-radius:10px; border :1px solid #3B84F7; background-color :#ffffff"><a href="/exchange/create"><i class="fa-solid fa-sack-dollar"></i> 환전하기</a></button>
     </div>
     <div style="height: 20px;"></div>
-    <div class="outer-box" >
-            <form action="/user/updateMinHeart" method="post">
-                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+    <div class="outer-box"></div>
 
-                <p class="title text-lg border-b border-black">최소 하트값 설정</p>
-                <label for="minHeartInput">최소 하트값:</label>
-                <input type="number" name="minHeart" id="minHeartInput" placeholder="최소 하트값 입력" />
-                <button class="btn-sm btn btn-outline btn-info" type="submit">확인</button>
-            </form>
-    </div>
-
-<!--    <div class="outer-box">-->
-<!--        <div class="inner-box">-->
-<!--            <p class="title">마음에 드는 이성과 대화 해보세요!</p>-->
-<!--            <p>"수락"을 누르면 하트를 받고, 해당 이성과의 채팅방이 열립니다.</p>-->
-<!--            <p>※ 욕설 및 음담패설을 하지 않도록 합니다.</p>-->
-<!--            <p>※ 억지로 상대방의 정보를 캐내려고 하지 마세요.</p>-->
-<!--            <p>"거절"을 누르면 하트를 받지 않고, 해당 이성에게 하트를 반송합니다.</p>-->
-<!--            <p>- 거절해도 상대방에게 알림이 가지 않아요.</p>-->
-<!--        </div>-->
-<!--    </div>-->
+    <!--    <div class="outer-box">-->
+    <!--        <div class="inner-box">-->
+    <!--            <p class="title">마음에 드는 이성과 대화 해보세요!</p>-->
+    <!--            <p>"수락"을 누르면 하트를 받고, 해당 이성과의 채팅방이 열립니다.</p>-->
+    <!--            <p>※ 욕설 및 음담패설을 하지 않도록 합니다.</p>-->
+    <!--            <p>※ 억지로 상대방의 정보를 캐내려고 하지 마세요.</p>-->
+    <!--            <p>"거절"을 누르면 하트를 받지 않고, 해당 이성에게 하트를 반송합니다.</p>-->
+    <!--            <p>- 거절해도 상대방에게 알림이 가지 않아요.</p>-->
+    <!--        </div>-->
+    <!--    </div>-->
 
     <script>
         function showTab(tabName) {
@@ -141,6 +161,17 @@
             document.getElementById(tabName).style.display = 'block';
         }
     </script>
+
+
+
+<div th:include="common/menu.html" class="tap_bar"></div>
+<style>
+    .tap_bar {
+            position: fixed;
+            width: 100%;
+            bottom : 0;
+        }
+</style>
 </div>
 </body>
 </html>

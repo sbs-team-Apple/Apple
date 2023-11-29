@@ -28,6 +28,16 @@
                         <li><a href="/user/passwordChange">비밀번호 변경</a></li>
                         <li><a href="/user/delete">회원 탈퇴</a></li>
                         <li><a href="/board/myAppealBoard">내가 쓴 글</a></li>
+                        <form action="/user/updateMinHeart" method="post">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+                            <div class="title text-lg border-b border-black">최소 하트값 설정<p style="display: inline-block; margin-right: 10px;">&nbsp(최소 하트: <span th:text="${minHeart}+'개)'"></span></p>
+                            </div>
+                            <label for="minHeartInput">최소 하트값:</label>
+                            <input class="input input-sm input-secondary  max-w-xs" type="number" name="minHeart" id="minHeartInput" placeholder="최소 하트값 입력" />
+                            <button type="submit" class="btn btn-sm"
+                                    style="border-radius:10px; border :1px solid #f08dac; background-color :#F7A03B">확인</button>
+                        </form>
                     </ul>
                 </div>
             </div>
@@ -36,14 +46,13 @@
 
 
             <div class="profile">
-                <div th:text="${user.nickname + ', ' + user.age}+', '+${user.mbti}" class="ml-2"
+                <div th:text="${user.nickname + ', ' + user.age}+', '+${user.living}" class="ml-2"
                      style="font-size: 27px; font-weight: bold;"></div>
                 <div class="ml-2" th:text="${user.About_Me}"></div>
 
 
                 <div class="ml-2 mr-2 info_wrap">
-                    <span><i class="fa-solid fa-location-dot"></i><span
-                            th:text="${user.living}"></span></span>
+                    <span><span th:text="${user.mbti}"></span></span>
                     <span><i class="fa-solid fa-briefcase"></i><span th:text="${user.job}"></span></span>
                 </div>
 
@@ -66,20 +75,20 @@
             <div class="last mb-3">
                 <div class="text-xl flex justify-center">
                     <button onclick="show_desired()" id="up_down"
-                            style="border: 2px solid black; border-radius: 10px; padding: 0 90px; margin: 10px 0;">
-                        <span>이상형</span><i id="icon" class="fa-solid fa-caret-down ml-1"></i>
+                            style="border: 2px solid black; border-radius: 10px; padding: 0 10px; margin: 10px 0;">
+                        <span>저는 이런사람이 좋아요</span><i id="icon" class="fa-solid fa-caret-down ml-1"></i>
                     </button>
                 </div>
                 <div style="display:none;" id="all">
-                    <div class="ml-2" th:text="'선호하는 나이 : ' + ${user.desired_age}"></div>
-                    <div class="ml-2" th:text="'선호하는 지역 : ' + ${user.desired_living}"></div>
-                    <div class="ml-2" th:text="'선호하는 이성 키 : ' + ${user.desired_tall}"></div>
-                    <div class="ml-2" th:text="'선호하는 이성 체형 : ' + ${user.desired_body_type}"></div>
-                    <div class="ml-2" th:text="'선호하는 이성 흡연 : ' + ${user.desired_smoking}"></div>
-                    <div class="ml-2" th:text="'선호하는 이성 음주 : ' + ${user.desired_drinking}"></div>
-                    <div class="ml-2" th:text="'선호하는 이성 성격 : ' + ${user.desired_styleList}"></div>
-                    <div class="ml-2" th:text="'선호하는 이성 종교 : ' + ${user.desired_religion}"></div>
-                    <div class="ml-2" th:text="'선호하는 이성 MBTI : ' + ${user.desired_mbti}"></div>
+                    <div class="ml-2" th:text="'나이 : ' + ${user.desired_age1}+'~'+${user.desired_age2}"></div>
+                    <div class="ml-2" th:text="'지역 : ' + ${user.desired_living}"></div>
+                    <div class="ml-2" th:text="'키 : ' + ${user.desired_tall1}+'~'+${user.desired_tall2}"></div>
+                    <div class="ml-2" th:text="'체형 : ' + ${user.desired_body_type}"></div>
+                    <div class="ml-2" th:text="'흡연 : ' + ${user.desired_smoking}"></div>
+                    <div class="ml-2" th:text="'음주 : ' + ${user.desired_drinking}"></div>
+                    <div class="ml-2" th:text="'성격 : ' + ${user.desired_styleList}"></div>
+                    <div class="ml-2" th:text="'종교 : ' + ${user.desired_religion}"></div>
+                    <div class="ml-2" th:text="'MBTI : ' + ${user.desired_mbti}"></div>
 
                 </div>
             </div>
