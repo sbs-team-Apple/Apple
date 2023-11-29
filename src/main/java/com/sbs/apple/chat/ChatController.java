@@ -82,6 +82,8 @@ public class ChatController {
         ChatRoom room= chatRoomService.create(user, user2);
 
 
+
+
         String groupKey = "userId_" + userId2;
         System.out.println(groupKey);
         SseEmitter emitter = new SseEmitter();
@@ -107,6 +109,13 @@ public class ChatController {
         System.out.println("원래 있던 채팅방에 접속");
         SiteUser user =userService.getUserbyName(principal.getName());
         ChatRoom room = chatRoomService.findRoomByUserIdAndUserId2(user.getId(),userId2);
+
+        //혹시 중간에 상대방이 채팅방을 나가서 채팅방 사라지거나 그러면 채팅방 목록으로 가기
+        if(room ==null){
+            return "redirect:/chat/allRoom";
+            
+        }
+        
         System.out.println("채팅방에 들어갈 방번호 "+room.getId());
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -135,6 +144,10 @@ public class ChatController {
         System.out.println("원래 있던 채팅방에 접속");
         SiteUser user =userService.getUserbyName(principal.getName());
         ChatRoom room = chatRoomService.findRoomByUserIdAndUserId2(userId,user.getId());
+        if(room ==null){
+            return "redirect:/chat/allRoom";
+
+        }
 
 
 
@@ -254,7 +267,7 @@ public class ChatController {
         chatRoomService.delete(room);
 
 
-        //그 채팅룸의 유저 정보로 알람 기록을 찾아서 나갈때 그 알람 기록도 삭제해주기
+//        그 채팅룸의 유저 정보로 알람 기록을 찾아서 나갈때 그 알람 기록도 삭제해주기
 //        Notification notification=notificationService.findByUsers(room.getSiteUser(),room.getSiteUser2());
 //
 //        if(notification !=null){
