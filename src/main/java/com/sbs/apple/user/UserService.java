@@ -63,7 +63,7 @@ public class UserService {
         user.setAge(random.nextInt(30));
         user.setLiving("서울");
         user.setHobbyList(hobbyList);
-        user.setTall(random.nextFloat(170));
+        user.setTall(random.nextInt(170));
         user.setBody_type("평범한");
         user.setSmoking("비흡연");
         user.setDrinking("가끔");
@@ -144,7 +144,7 @@ public class UserService {
     }
 
     //프로필 설정
-    public SiteUser add_profile(SiteUser user, int age, String living, List<String> hobbyList, float tall, String bodyType,
+    public SiteUser add_profile(SiteUser user, int age, String living, List<String> hobbyList, int tall, String bodyType,
                                 String smoking, String drinking, List<String> styleList, String religion,
                                 String mbti, String school, String job, String About_Me) {
         user.setAge(age);
@@ -164,7 +164,7 @@ public class UserService {
         return user;
     }
 
-    //이상형 설정
+    //이상형 설정 회원가입 할때
     public RsData<SiteUser> add_desired(SiteUser user, int desiredAge1,int desiredAge2, String desiredLiving,
                                         int desiredTall1,int desiredTall2, String desiredBodyType, String desiredSmoking,
                                         String desiredDrinking, List<String> desiredStyleList, String desiredReligion,
@@ -190,6 +190,29 @@ public class UserService {
     }
     private void sendJoinCompleteMail(SiteUser siteUser) {
         emailService.send(siteUser.getEmail(), "회원가입이 완료되었습니다.", "회원가입이 완료되었습니다.");
+    }
+    //수정할 때
+    public RsData<SiteUser> add_desired2(SiteUser user, int desiredAge1,int desiredAge2, String desiredLiving,
+                                        int desiredTall1,int desiredTall2, String desiredBodyType, String desiredSmoking,
+                                        String desiredDrinking, List<String> desiredStyleList, String desiredReligion,
+                                        String desiredMbti, String desiredSchool, String desiredJob) {
+
+        user.setDesired_age1(desiredAge1);
+        user.setDesired_age2(desiredAge2);
+        user.setDesired_living(desiredLiving);
+        user.setDesired_tall1(desiredTall1);
+        user.setDesired_tall2(desiredTall2);
+        user.setDesired_body_type(desiredBodyType);
+        user.setDesired_smoking(desiredSmoking);
+        user.setDesired_drinking(desiredDrinking);
+        user.setDesired_styleList(desiredStyleList);
+        user.setDesired_religion(desiredReligion);
+        user.setDesired_mbti(desiredMbti);
+        user.setDesired_school(desiredSchool);
+        user.setDesired_job(desiredJob);
+        this.userRepository.save(user);
+        user = userRepository.save(user);
+        return RsData.of("S-1", "회원가입이 완료되었습니다.", user);
     }
 
     public boolean isCorrectPassword(String username, String password) {

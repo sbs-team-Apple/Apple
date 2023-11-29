@@ -14,22 +14,15 @@
         </h1>
 
         <form enctype="multipart/form-data" th:action name="join-form" method="post" th:object="${userCreateForm}"
-               onsubmit="submitJoinForm(this); return false;" class="flex flex-col gap-6" style="margin-bottom:40px;">
-
-
-
-            <div class="form-control">
-                <!-- 이미지 미리보기 -->
-                <label class="label">
-                    <span class="label-text" style="font-size: 18px; font-weight: bold;">프로필 이미지</span>
-                </label>
-                <input type="file" name="file" id="image" class="file-input file-input-bordered file-input-secondary"
-                       accept="image/**" onchange="previewImage(this)" style="margin-bottom: 15px; padding: 0; ">
-                <div id="image-preview" style="margin: auto; border-radius: 20px; border: 2px solid #f08dac;"></div>
-
-                <!-- 크롭 버튼 -->
-                <button onclick="cropImage()" style="margin-top: 15px;">이미지 크롭</button>
-            </div>
+              onsubmit="submitJoinForm(this); return false;" class="flex flex-col gap-6" style="margin-bottom:40px;">
+        <div class="form-control" style="text-align: center;">
+            <label class="label">
+                <span class="label-text" style="font-size: 18px; font-weight: bold;">프로필 이미지</span>
+            </label>
+            <input type="file" name="file" id="image" class="file-input file-input-bordered file-input-secondary"
+                   accept="image/**" onchange="previewImage(this)" style="margin-bottom :15px; padding: 0; ">
+            <div id="image-preview" style="margin: auto; border-radius:20px; border: 2px solid #f08dac;"></div>
+        </div>
 
 
 
@@ -376,70 +369,35 @@
         </script>
 
     </div>
-    <style>
-        #image-preview {
-            max-width: 300px;
-            max-height: 300px;
-            margin-top: 10px;
-        }
-    </style>
-    <!-- Croppie 라이브러리 추가 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
-
-    <script>
-        let croppie = null;
-
-        function previewImage(input) {
-            const preview = document.getElementById('image-preview');
+        <style>
+            #image-preview {
+                max-width: 300px;
+                max-height: 300px;
+                margin-top: 10px;
+            }
+        </style>
+        <script>
+            function previewImage(input) {
+            var preview = document.getElementById('image-preview');
             preview.innerHTML = '';
 
             if (input.files && input.files[0]) {
-                const reader = new FileReader();
+            var reader = new FileReader();
 
-                reader.onload = function (e) {
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.style.width = '270px';
-                    img.style.height = '270px';
-                    img.style.objectFit = 'cover';
-                    img.style.borderRadius = '20px';
-                    preview.appendChild(img);
+            reader.onload = function (e) {
+            var img = document.createElement('img');
+            img.src = e.target.result;
+            img.style.width = '270px';
+            img.style.height = '270px';
+            img.style.objectFit = 'cover';
+            img.style.borderRadius = '20px';
+            preview.appendChild(img);
+            };
 
-                    // Croppie 인스턴스 초기화
-                    croppie = new Croppie(img, {
-                        viewport: { width: 200, height: 200, type: 'square' },
-                        boundary: { width: 300, height: 300 },
-                        enableOrientation: true
-                    });
-                };
-
-                reader.readAsDataURL(input.files[0]);
+            reader.readAsDataURL(input.files[0]);
             }
-        }
-
-        function cropImage() {
-            if (croppie) {
-                croppie.result('base64').then(function (result) {
-                    // 크롭된 이미지 데이터(result)를 사용할 수 있습니다.
-                    console.log('크롭된 이미지:', result);
-
-                    // 프리뷰에 크롭된 이미지를 보여주는 코드 추가
-                    const preview = document.getElementById('image-preview');
-                    preview.innerHTML = ''; // 기존의 프리뷰를 초기화합니다.
-
-                    const croppedImg = document.createElement('img');
-                    croppedImg.src = result;
-                    croppedImg.style.width = '270px';
-                    croppedImg.style.height = '270px';
-                    croppedImg.style.objectFit = 'cover';
-                    croppedImg.style.borderRadius = '20px';
-                    preview.appendChild(croppedImg);
-                });
             }
-        }
-    </script>
-
+        </script>
 
 </div>
 </body>
