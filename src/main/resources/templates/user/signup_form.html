@@ -13,21 +13,16 @@
             회원가입
         </h1>
 
-        <button class="btn" onclick="cropImage()" style="padding:0 145px; border-radius:10px; border :1px solid #f08dac; background-color :#f08dac">
-            <i class="fa-solid fa-save"></i>
-            <span>저장하기</span>
-        </button>
         <form enctype="multipart/form-data" th:action name="join-form" method="post" th:object="${userCreateForm}"
               onsubmit="submitJoinForm(this); return false;" class="flex flex-col gap-6" style="margin-bottom:40px;">
-            <div class="form-control" style="text-align: center;">
-                <label class="label">
-                    <span class="label-text" style="font-size: 18px; font-weight: bold;">프로필 이미지</span>
-                </label>
-                <input type="file" name="file" id="image" class="file-input file-input-bordered file-input-secondary"
-                       accept="image/**" onchange="previewImage(this)" style="margin-bottom :15px; padding: 0; ">
-                <div id="image-preview" style="margin: auto; border-radius:20px; border: 2px solid #f08dac;"></div>
-            </div>
-
+        <div class="form-control" style="text-align: center;">
+            <label class="label">
+                <span class="label-text" style="font-size: 18px; font-weight: bold;">프로필 이미지</span>
+            </label>
+            <input type="file" name="file" id="image" class="file-input file-input-bordered file-input-secondary"
+                   accept="image/**" onchange="previewImage(this)" style="margin-bottom :15px; padding: 0; ">
+            <div id="image-preview" style="margin: auto; border-radius:20px; border: 2px solid #f08dac;"></div>
+        </div>
 
 
 
@@ -374,58 +369,35 @@
         </script>
 
     </div>
-    <style>
-        #image-preview {
-            max-width: 300px;
-            max-height: 300px;
-            margin-top: 10px;
-        }
-    </style>
-    <!-- Croppie 라이브러리 추가 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
-
-    <script>
-        let croppie = null;
-
-        function previewImage(input) {
-            const preview = document.getElementById('image-preview');
+        <style>
+            #image-preview {
+                max-width: 300px;
+                max-height: 300px;
+                margin-top: 10px;
+            }
+        </style>
+        <script>
+            function previewImage(input) {
+            var preview = document.getElementById('image-preview');
             preview.innerHTML = '';
 
             if (input.files && input.files[0]) {
-                const reader = new FileReader();
+            var reader = new FileReader();
 
-                reader.onload = function (e) {
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.style.width = '270px';
-                    img.style.height = '270px';
-                    img.style.objectFit = 'cover';
-                    img.style.borderRadius = '20px';
-                    preview.appendChild(img);
+            reader.onload = function (e) {
+            var img = document.createElement('img');
+            img.src = e.target.result;
+            img.style.width = '270px';
+            img.style.height = '270px';
+            img.style.objectFit = 'cover';
+            img.style.borderRadius = '20px';
+            preview.appendChild(img);
+            };
 
-                    // Croppie 인스턴스 초기화
-                    croppie = new Croppie(img, {
-                        viewport: { width: 200, height: 200, type: 'square' },
-                        boundary: { width: 300, height: 300 },
-                        enableOrientation: true
-                    });
-                };
-
-                reader.readAsDataURL(input.files[0]);
+            reader.readAsDataURL(input.files[0]);
             }
-        }
-
-        function cropImage() {
-            if (croppie) {
-                croppie.result('base64').then(function (result) {
-                    // 크롭된 이미지 데이터(result)를 사용할 수 있습니다.
-                    console.log('크롭된 이미지:', result);
-                    // 여기에 원하는 작업을 수행할 수 있습니다.
-                });
             }
-        }
-    </script>
+        </script>
 
 </div>
 </body>

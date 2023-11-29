@@ -38,9 +38,8 @@
 
                                     <div class="modal-body">
                                         <p class="badge badge-secondary badge-outline" style="display: inline-block; margin-right: 10px;">보유중인 하트개수 : <span th:text="${userCyberMoney}"></span>개</p>
-                                        <div>하트갯수를 입력해주세요.</div>
-                                        <input type="number" id="cyberMoneyAmount" class="input input-sm input-bordered input-warning" required>
-                                    </div>
+                                        <div>호감이 있는만큼 하트를 보내세요.</div>
+                                        <input style="width:100px;" type="text" id="cyberMoneyAmount" class="input input-sm input-bordered input-warning" required><span style="font-size: 21px;">&nbsp&nbsp개</span>                                    </div>
 
                                     <div class="modal-action">
                                         <form method="dialog">
@@ -692,24 +691,30 @@ float:left;
          var recipientUsername = $(".toUser-username").text();
 
          $.ajax({
-             type: 'POST',
-             url: '/user/cybermoney/JustSend',
-             data: 'recipientUsername=' + recipientUsername + '&amount=' + amount,
-             beforeSend: function (xhr) {
-                 xhr.setRequestHeader(csrfHeader, csrfToken);
-             },
-             success: function () {
-                 alert("하트가 성공적으로 전송 되었습니다.");
-                 location.reload();
-                 $('#cyberMoneyModal').modal('hide');
-             },
-             error: function (error) {
-                 alert("Error: " + error.responseText);
-             },
-             complete: function () {
-                 isSending = false;
-             }
-         });
+    type: 'POST',
+    url: '/user/cybermoney/JustSend',
+    data: 'recipientUsername=' + recipientUsername + '&amount=' + amount,
+    beforeSend: function (xhr) {
+        xhr.setRequestHeader(csrfHeader, csrfToken);
+    },
+    success: function () {
+        alert("하트가 성공적으로 전송 되었습니다.");
+        // 여기에 채팅 메세지를 전송하는 코드 추가
+        var sentMessage = recipientUsername + " 님에게 하트 " +  amount + "개를 선물 했어요.";
+        fetchPost(`/chat/${roomId}/writeMessage`, {
+            authorName: userNickname,
+            content: sentMessage
+        });
+        location.reload();
+        $('#cyberMoneyModal').modal('hide');
+    },
+    error: function (error) {
+        alert("Error: " + error.responseText);
+    },
+    complete: function () {
+        isSending = false;
+    }
+});
      });
  });
 
