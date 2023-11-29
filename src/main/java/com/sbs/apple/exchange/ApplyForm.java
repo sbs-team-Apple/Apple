@@ -29,9 +29,6 @@ public class ApplyForm {
     @NotEmpty(message="자택 주소를 적어주세요.")
     private String homeAdress;
 
-    @NotEmpty(message="나라를 선택 해주세요.")
-    private String nationality;
-
     @NotEmpty(message="은행선택은 필수 항목입니다.")
     private String bank;
 
