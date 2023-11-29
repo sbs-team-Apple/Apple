@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html layout:decorate="~{common/layout}" lang="en">
+<meta charset="UTF-8">
+<title>Title</title>
+</head>
+<body>
+
+<div layout:fragment="content" class="container my-3 ml-auto mr-auto">
+
+    <div th:each="room : ${rooms}">
+        <a th:href="@{|${'/chat/'+room.id+'/adminChatRoom/'+room.siteUser2.id+'/and/'+room.siteUser.id}|}"
+           th:text="${room.siteUser.nickname+'님이 ' +room.siteUser2.nickname + '님을 초대한 채팅방'}"></a>
+
+    </div>
+
+
+</div>
+
+</body>
+
+
+</html>
