@@ -20,24 +20,46 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private final UserService userService;
-
     // 카카오톡 로그인이 성공할 때 마다 이 함수가 실행된다.
     @Override
     @Transactional
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+        // OAuth2 로그인 후 기본 사용자 정보 가져오기
         OAuth2User oAuth2User = super.loadUser(userRequest);
 
-        String oauthId = oAuth2User.getName();
-        Map<String, Object> attributes = oAuth2User.getAttributes();
+        // 사용자의 소셜 계정 고유 ID를 저장할 변수
+        String oauthId;
 
-        Map attributesProperties = (Map) attributes.get("properties");
-        String nickname = (String) attributesProperties.get("nickname");
+        // 사용자의 소셜 계정 닉네임을 저장할 변수
+        String nickname;
 
+        // 사용자가 선택한 소셜 로그인 제공자의 종류를 저장할 변수 (예: NAVER, GOOGLE 등)
         String providerTypeCode = userRequest.getClientRegistration().getRegistrationId().toUpperCase();
 
-        String username = providerTypeCode + "__%s".formatted(oauthId);
-        SiteUser siteUser = userService.whenSocialLogin(providerTypeCode, username, nickname);
+        // 네이버 로그인을 선택한 사용자 정보 추출
+        if ("NAVER".equals(providerTypeCode)) {
+            Map<String, Object> naverAttributes = (Map<String, Object>) oAuth2User.getAttributes().get("response");
+            oauthId = (String) naverAttributes.get("id");
 
+            // 구글 로그인을 선택한 사용자 정보 추출
+        } else if ("GOOGLE".equals(providerTypeCode)) {
+            oauthId = oAuth2User.getName();
+
+            // 카카오 로그인을 선택한 사용자 정보 추출
+        } else if ("KAKAO".equals(providerTypeCode)) {
+            Map<String, Object> kakaoAttributes = (Map<String, Object>) oAuth2User.getAttributes();
+            oauthId = String.valueOf(kakaoAttributes.get("id"));
+
+
+            // 다른 소셜 로그인 서비스를 선택한 경우의 기본 처리
+        } else {
+            oauthId = oAuth2User.getName();
+            nickname = (String) oAuth2User.getAttributes().get("nickname"); // 기본 처리
+        }
+        // DB에 저장될 유저네임 형식 생성
+        String username = providerTypeCode + "__%s".formatted(oauthId);
+
+        SiteUser siteUser =userService.whenSocialLogin(providerTypeCode, username);
         return new CustomOAuth2User(siteUser.getUsername(), siteUser.getPassword(), siteUser.getGrantedAuthorities());
     }
 }

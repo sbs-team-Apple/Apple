@@ -11,7 +11,6 @@ import com.sbs.apple.cybermoney.CyberMoneyTransactionRepository;
 import com.sbs.apple.exchange.ExchangeRepository;
 import com.sbs.apple.exchange.ExchangeService;
 import com.sbs.apple.interest.InterestService;
-import com.sbs.apple.notification.Notification;
 import com.sbs.apple.notification.NotificationService;
 import com.sbs.apple.report.ReportForm;
 import com.sbs.apple.report.ReportService;
@@ -62,7 +61,6 @@ public class UserController {
 
 
 
-
     @GetMapping("/signup")
     public String signup1(UserCreateForm userCreateForm) {
         return "user/signup_form";
@@ -72,12 +70,15 @@ public class UserController {
     public String signup2(@Valid UserCreateForm userCreateForm, BindingResult bindingResult,
                           RedirectAttributes redirectAttributes, Model model, MultipartFile file)
             throws Exception {
-        RsData<SiteUser> joinRs = userService.create(false, false, userCreateForm.getFile(), userCreateForm.getUsername(), userCreateForm.getPassword1(),
-                userCreateForm.getNickname(), userCreateForm.getGender());
+        RsData<SiteUser> joinRs = userService.create(false, false, userCreateForm.getFile(), userCreateForm.getUsername(), userCreateForm.getPassword1()
+                ,userCreateForm.getEmail(),userCreateForm.getNickname(), userCreateForm.getGender());
         if (joinRs.getResultCode().equals("F-1")) {
             return rq.historyBack(joinRs.getMsg());
         }
         if (joinRs.getResultCode().equals("F-2")) {
+            return rq.historyBack(joinRs.getMsg());
+        }
+        if (joinRs.getResultCode().equals("F-3")) {
             return rq.historyBack(joinRs.getMsg());
         }
         redirectAttributes.addAttribute("id", joinRs.getData().getId());
@@ -85,14 +86,20 @@ public class UserController {
     }
     @GetMapping("/checkUsernameDup")
     @ResponseBody
-    public RsData checkUsernameDup(String username) {
+    public RsData<String> checkUsernameDup(String username) {
         return userService.checkUsernameDup(username);
     }
 
     @GetMapping("/checkNicknameDup")
     @ResponseBody
-    public RsData checkNicknameDup(String nickname) {
+    public RsData<String> checkNicknameDup(String nickname) {
         return userService.checkNicknameDup(nickname);
+    }
+
+    @GetMapping("/checkEmailDup")
+    @ResponseBody
+    public RsData<String> checkEmailDup(String email) {
+        return userService.checkEmailDup(email);
     }
 
     @GetMapping("/add/{id}")
@@ -125,8 +132,8 @@ public class UserController {
             return "user/desired_form";
         }
         SiteUser user = this.userService.getUser(id);
-        RsData<SiteUser> joinRs = userService.add_desired(user, userDesiredForm.getDesired_age(), userDesiredForm.getDesired_living(),
-                userDesiredForm.getDesired_tall(), userDesiredForm.getDesired_body_type(),
+        RsData<SiteUser> joinRs = userService.add_desired(user, userDesiredForm.getDesired_age1(),userDesiredForm.getDesired_age2(), userDesiredForm.getDesired_living(),
+                userDesiredForm.getDesired_tall1(),userDesiredForm.getDesired_tall2(), userDesiredForm.getDesired_body_type(),
                 userDesiredForm.getDesired_smoking(), userDesiredForm.getDesired_drinking(),
                 userDesiredForm.getDesired_styleList(), userDesiredForm.getDesired_religion(),
                 userDesiredForm.getDesired_mbti(), userDesiredForm.getDesired_school(),
@@ -146,6 +153,9 @@ public class UserController {
     public String userMyPage(Model model, Principal principal) {
         String username = principal.getName();
         SiteUser user = userService.getUserbyName(username);
+
+        int minHeart = user.getMinHeart();
+        model.addAttribute("minHeart", minHeart);
 
         int userCyberMoney = user.getCyberMoney();
         int receivedCyberMoney = user.getReceivedCyberMoney(); // 다른 사용자로부터 받은 사이버머니
@@ -267,9 +277,11 @@ public class UserController {
     @GetMapping("/desired_modify")
     public String desired_modify1(UserDesiredForm userDesiredForm, Principal principal, Model model) {
         SiteUser siteUser = this.userService.getUserbyName(principal.getName());
-        userDesiredForm.setDesired_age(siteUser.getDesired_age());
+        userDesiredForm.setDesired_age1(siteUser.getDesired_age1());
+        userDesiredForm.setDesired_age2(siteUser.getDesired_age2());
         userDesiredForm.setDesired_living(siteUser.getDesired_living());
-        userDesiredForm.setDesired_tall(siteUser.getDesired_tall());
+        userDesiredForm.setDesired_tall1(siteUser.getDesired_tall1());
+        userDesiredForm.setDesired_tall2(siteUser.getDesired_tall2());
         userDesiredForm.setDesired_body_type(siteUser.getDesired_body_type());
         userDesiredForm.setDesired_smoking(siteUser.getDesired_smoking());
         userDesiredForm.setDesired_drinking(siteUser.getDesired_drinking());
@@ -285,8 +297,8 @@ public class UserController {
     @PostMapping("/desired_modify")
     public String desired_modify(UserDesiredForm userDesiredForm, Principal principal) {
         SiteUser user = this.userService.getUserbyName(principal.getName());
-        userService.add_desired(user, userDesiredForm.getDesired_age(), userDesiredForm.getDesired_living(),
-                userDesiredForm.getDesired_tall(),
+        userService.add_desired2(user, userDesiredForm.getDesired_age1(),userDesiredForm.getDesired_age2(), userDesiredForm.getDesired_living(),
+                userDesiredForm.getDesired_tall1(),userDesiredForm.getDesired_tall2(),
                 userDesiredForm.getDesired_body_type(), userDesiredForm.getDesired_smoking(),
                 userDesiredForm.getDesired_drinking(), userDesiredForm.getDesired_styleList(),
                 userDesiredForm.getDesired_religion(), userDesiredForm.getDesired_mbti(),
@@ -304,7 +316,6 @@ public class UserController {
         model.addAttribute("receivedSiteUser", receivedSiteUser);
         String interest_user = principal.getName();
 
-        model.addAttribute("receivedSiteUser", receivedSiteUser);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
@@ -314,13 +325,13 @@ public class UserController {
         int userCyberMoney = user.getCyberMoney();
         int receivedCyberMoney = user.getReceivedCyberMoney(); // 다른 사용자로부터 받은 사이버머니
 
-        boolean isInterested = interestService.isInterested(siteUser,receivedSiteUser);
+        boolean isInterested = interestService.isInterested(siteUser, receivedSiteUser);
         model.addAttribute("isInterested", isInterested);
         SiteUser loginUser = userService.getUserbyName(principal.getName());
 
         //로그인한 사용자와 현재 프로필 선택한 유저 사이의 채팅방과 사이버 머니 전송 기록을 찾는 코드
-        ChatRoom chatRoom = chatRoomService.findRoomByUserIdAndUserId2( loginUser.getId(),receivedSiteUser.getId());
-        CyberMoneyTransaction log =cyberMoneyTransactionRepository.findByUserIdAndUserId2(loginUser.getId(),receivedSiteUser.getId());
+        ChatRoom chatRoom = chatRoomService.findRoomByUserIdAndUserId2(loginUser.getId(), receivedSiteUser.getId());
+        CyberMoneyTransaction log = cyberMoneyTransactionRepository.findByUserIdAndUserId2(loginUser.getId(), receivedSiteUser.getId());
         //현재 그유저와 채팅방이 있으면 채팅방 만들기 버튼은 아예 안만들 생각
         model.addAttribute("chatRoom", chatRoom);
         model.addAttribute("log", log);
@@ -382,12 +393,13 @@ public class UserController {
         return "user/userPhoto_modify";
     }
 
-//    private MultipartFile file;
+    //    private MultipartFile file;
     @Getter
     @AllArgsConstructor
-    public static class PhotoForm  {
-    private MultipartFile file;
+    public static class PhotoForm {
+        private MultipartFile file;
     }
+
     @PostMapping("/photoModify/{id}")
     public String photoModify2(@Valid PhotoForm photoForm, MultipartFile file, Model model, Principal principal,
                                @PathVariable Integer id) throws Exception {
@@ -395,6 +407,7 @@ public class UserController {
         userService.photoModify(user, photoForm.getFile());
         return "redirect:/user/myPage";
     }
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/transactions")
     public String getTransactionHistory(Model model, Principal principal) {
@@ -443,14 +456,12 @@ public class UserController {
 
     @PostMapping("/updateMinHeart")
     public String updateMinHeart(@RequestParam("minHeart") Integer minHeart, Principal principal) {
-        try {
-            String username = principal.getName();
-            userService.updateMinHeart(username, minHeart);
-            return "redirect:/user/transactions"; // 최신 정보를 반영하도록 리다이렉트
-        } catch (Exception e) {
-            // 예외 처리 로직 추가
-            return "error"; // 예외 발생 시 에러 페이지로 이동하거나 다른 적절한 처리를 수행할 수 있습니다.
-        }
+
+        String username = principal.getName();
+        userService.updateMinHeart(username, minHeart);
+        return "redirect:/user/myPage"; // 최신 정보를 반영하도록 리다이렉트
+
+
     }
 
 
@@ -475,6 +486,7 @@ public class UserController {
         }
         CyberMoneyTransaction transaction = transactionOptional.get();
 
+
         if ("accept".equals(action) && !transaction.isAccepted() && !transaction.isRejected()) {
             // 거래가 아직 수락되지 않았을 경우에만 처리
             transaction.setAccepted(true);
@@ -484,10 +496,6 @@ public class UserController {
             userRepository.save(recipientUser);
             SiteUser senderUser = transaction.getSenderUser();
 
-//            Notification notification=notificationService.findByUsers(senderUser,recipientUser);
-//            if(notification != null ) {
-//                notificationService.delete(notification);
-//            }
         } else if ("reject".equals(action) && !transaction.isAccepted() && !transaction.isRejected()) {
             // 거래가 아직 수락되지 않았고 거부되지 않았을 경우에만 처리
             transaction.setRejected(true); // 거부 플래그 설정
@@ -496,13 +504,13 @@ public class UserController {
             SiteUser senderUser = transaction.getSenderUser();
             senderUser.setCyberMoney(senderUser.getCyberMoney() + transaction.getAmount());
             userRepository.save(senderUser);
-//            Notification notification=notificationService.findByUsers(senderUser,recipientUser);
-//            if(notification != null ) {
-//                notificationService.delete(notification);
-//            }
 
-
-
+            // 해당 거래를 sentTransactions에서 삭제하고 completedTransactions로 이동
+            recipientUser.getSentTransactions().remove(transaction);
+            // 이 부분을 추가하여 거래를 삭제합니다.
+            cyberMoneyTransactionRepository.delete(transaction);
+            // recipientUser.getCompletedTransactions().add(transaction); 이 부분은 삭제된 거래를 추가하는 것으로 보입니다.
+            userRepository.save(recipientUser);
 
             return "redirect:/user/transactions";
         } else {
@@ -525,8 +533,7 @@ public class UserController {
         }
 
         //사이버 머니 받은 사용자의 id 즉 채팅방 초대받는 유저 인덱스번호
-        Integer toUserId= transaction.getSenderUser().getId();
-
+        Integer toUserId = transaction.getSenderUser().getId();
 
 
         return "redirect:/chat/" + roomId + "/room/" + toUserId; // 거래 내역 페이지로 리다이렉트
@@ -548,11 +555,4 @@ public class UserController {
         return "user/interest_all";
     }
 
-//    @PreAuthorize("isAuthenticated()")
-//    @GetMapping("/setting")
-//    public String setting(Principal principal, Model model) {
-//        SiteUser siteUser = this.userService.getUserbyName(principal.getName());
-//        model.addAttribute("siteUser", siteUser);
-//        return "user/setting";
-//    }
 }

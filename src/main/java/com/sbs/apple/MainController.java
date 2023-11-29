@@ -50,13 +50,13 @@ public class MainController {
         ChatRoom chatRoom= chatRoomService.findLastRoom();
 
         if(principal==null){
-            return "th/main";
+            return "main";
         }
 
         SiteUser loginUser = userService.getUserbyName(principal.getName());
 
         if(loginUser==null) {
-            return "th/main";
+            return "main";
         }
 
         List<SiteUser> siteUsers2 = userService.getAllUser2(loginUser);
@@ -71,8 +71,6 @@ public class MainController {
 
         System.out.println("메인페이지 실행3");
 
-        SiteUser closeSiteUser = userService.getUser(1);
-        model.addAttribute("closeSiteUser", closeSiteUser);
         String username = principal.getName();
         SiteUser siteUser =userService.getUserbyName(username);
         boolean userWarning = siteUser.isUserWarning();
@@ -87,7 +85,7 @@ public class MainController {
         }
 
         List<Notification> notificationsList = notificationService.getByUserTo(loginUser);
-        return "th/main";
+        return "main";
     }
 
     @RequestMapping("/jsp")

@@ -39,31 +39,59 @@
                         </a>
                     </div>
                 </div>
-                <div>
+                <div style="display: flex; flex-direction: column; gap: 10px; padding: 5px;">
                     <button th:if="${chatRoom == null && log == null}" id="sendCyberMoneyBtn"
                             style="padding:5px 15px; border-radius:10px; border:3px solid purple;"
                             data-toggle="modal" data-target="#cyberMoneyModal">
-                        <i class="fa-solid fa-comment mr-1"></i>하트 보내기
+                        <i class="fa-solid fa-comment mr-1"></i>1:1 대화신청
                     </button>
                 </div>
+
+                <div style="display: flex; padding: 5px;">
+                <button style="padding:5px 15px; border-radius:10px; border:3px solid purple;" id="justsendCyberMoneyBtn" data-toggle="modal" data-target="#justcyberMoneyModal">
+                    <i class="fa-solid fa-heart"></i> 하트 보내기
+                </button>
+                <dialog id="my_modal_6" class="modal modal-bottom sm:modal-middle">
+                    <div class="modal-box">
+
+                        <div class="modal-body">
+                            <p class="badge badge-secondary badge-outline" style="display: inline-block; margin-right: 10px;">보유중인 하트개수 : <span th:text="${userCyberMoney}"></span>개</p>
+                            <div>호감이 있는만큼 하트를 보내세요.</div>
+                            <input type="number" id="justcyberMoneyAmount" class="input input-sm input-bordered input-warning" required>
+                            <p style="font-size: 16px; color: red;"><span style="font-size: 24px;">※</span> 여기서는 대화를 신청할 수 없습니다.</p>
+                            <p style="font-size: 16px; color: red;">&nbsp&nbsp&nbsp&nbsp대화를 신청하려면 대화신청 버튼을 이용해주세요.</p>
+
+                        </div>
+
+                        <div class="modal-action">
+                            <form method="dialog">
+                                <button class="btn btn-sm btn-secondary" data-dismiss="modal">닫기</button>
+                                <button class="btn btn-sm btn-primary" id="justsendCyberMoneyConfirmBtn">확인</button>
+                            </form>
+                        </div>
+                    </div>
+                </dialog>
+                    <a style="display:flex; padding:5px 15px; border-radius:10px; border:3px solid red; margin-left: 5px;"
+                            th:href="@{'/user/report/' + ${receivedSiteUser.id}}">&nbsp
+                        <?xml version="1.0" encoding="UTF-8"?>
+                        <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="19" height="19"><path d="m21,18.126v-5.126c0-4.963-4.037-9-9-9S3,8.037,3,13v5.126c-1.724.445-3,2.013-3,3.874,0,1.103.897,2,2,2h20c1.103,0,2-.897,2-2,0-1.861-1.276-3.429-3-3.874ZM12,6c3.859,0,7,3.141,7,7v5H5v-5c0-3.859,3.141-7,7-7ZM2,22c0-1.103.897-2,2-2h16c1.103,0,2,.897,2,2H2ZM20.797,6.211c-.393-.389-.396-1.021-.008-1.414l1.5-1.517c.388-.393,1.021-.396,1.414-.008.393.389.396,1.021.008,1.414l-1.5,1.517c-.195.198-.453.297-.711.297-.254,0-.508-.097-.703-.289Zm-4.185-4.171l.777-1.5c.254-.492.859-.682,1.348-.428.49.254.682.857.428,1.348l-.777,1.5c-.178.344-.527.54-.889.54-.155,0-.312-.036-.459-.112-.49-.254-.682-.857-.428-1.348ZM.289,4.687c-.389-.393-.385-1.025.008-1.414.392-.389,1.027-.385,1.414.008l1.5,1.517c.389.393.385,1.025-.008,1.414-.194.192-.449.289-.703.289-.258,0-.516-.099-.711-.297l-1.5-1.517ZM4.835,1.46c-.254-.49-.062-1.094.428-1.348.487-.254,1.093-.064,1.348.428l.777,1.5c.254.49.062,1.094-.428,1.348-.146.076-.304.112-.459.112-.361,0-.711-.196-.889-.54l-.777-1.5Zm3.165,11.54c0-2.206,1.794-4,4-4,.553,0,1,.447,1,1s-.447,1-1,1c-1.103,0-2,.897-2,2,0,.553-.447,1-1,1s-1-.447-1-1Z"/></svg>
+                        <span>&nbsp신고하기&nbsp&nbsp</span></a>
+            </div>
+
+
                 <div class="flex">
-                    <div th:text="${receivedSiteUser.nickname + ', ' + receivedSiteUser.age}+', '+${receivedSiteUser.mbti}"
+                    <div th:text="${receivedSiteUser.nickname + ', ' + receivedSiteUser.age}+', '+${receivedSiteUser.living}"
                          class="ml-2 mr-2"
                          style="font-size: 25px; font-weight: bold; position: relative;">
                     </div>
-                    <div>
-                        <a style="padding:5px 15px; border-radius:10px; border:3px solid red;"
-                           th:href="@{'/user/report/' + ${receivedSiteUser.id}}">
-                            dfdsf</a>
-                    </div>
+
                 </div>
 
                 <div class="ml-2 mr-2 mb-2" th:text="${receivedSiteUser.About_Me}"
                      style="max-width: 250px; word-wrap: break-word;"></div>
 
                 <div class="ml-2 mr-2 info_wrap">
-                    <span><i class="fa-solid fa-location-dot"></i><span
-                            th:text="${receivedSiteUser.living}"></span></span>
+                    <span><span th:text="${receivedSiteUser.mbti}"></span></span>
                     <span><i class="fa-solid fa-briefcase"></i><span th:text="${receivedSiteUser.job}"></span></span>
                 </div>
                 <div class="ml-2 mr-2 info_wrap">
@@ -86,14 +114,14 @@
             <div>
                 <div class="text-xl flex justify-center">
                     <button onclick="show_desired()" id="up_down"
-                            style="border: 1px solid black; border-radius: 10px; padding: 0 90px; margin: 10px 0;">
-                        <span>이상형</span><i id="icon" class="fa-solid fa-caret-down ml-1"></i>
+                            style="border: 1px solid black; border-radius: 10px; padding: 0 10px; margin: 10px 0;">
+                        <span>저는 이런사람이 좋아요</span><i id="icon" class="fa-solid fa-caret-down ml-1"></i>
                     </button>
                 </div>
                 <div class="mb-3" style="display:none;" id="all">
-                    <div class="ml-2" th:text="'나이 : ' + ${receivedSiteUser.desired_age}"></div>
+                    <div class="ml-2" th:text="'나이 : ' + ${receivedSiteUser.desired_age1}+'~'+${receivedSiteUser.desired_age2}"></div>
                     <div class="ml-2" th:text="'지역 : ' + ${receivedSiteUser.desired_living}"></div>
-                    <div class="ml-2" th:text="'키 : ' + ${receivedSiteUser.desired_tall}"></div>
+                    <div class="ml-2" th:text="'키 : ' + ${receivedSiteUser.desired_tall1}+'~'+${receivedSiteUser.desired_tall2}"></div>
                     <div class="ml-2" th:text="'체형 : ' + ${receivedSiteUser.desired_body_type}"></div>
                     <div class="ml-2" th:text="'흡연 : ' + ${receivedSiteUser.desired_smoking}"></div>
                     <div class="ml-2" th:text="'음주 : ' + ${receivedSiteUser.desired_drinking}"></div>
@@ -134,19 +162,23 @@
 
         <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
             <div class="modal-box">
-                <h3 class="modal-title">사이버머니 보내기</h3>
+                <p>받는사람:</p>
+                <div th:text="${receivedSiteUser.username}" id="recipientUsername" class="form-control"></div>
                 <div class="modal-body">
-                    <p>금액을 입력해주세요:</p>
-                    <input type="number" id="cyberMoneyAmount" class="form-control" required>
+                    <p class="badge badge-secondary badge-outline mb-5" style="display: inline-block; margin-right: 10px;">보유중인 하트개수 : <span th:text="${userCyberMoney}"></span>개</p>
 
-                    <p>받는사람:</p>
-                    <div th:text="${receivedSiteUser.username}" id="recipientUsername" class="form-control"></div>
+                    <p>
+                        대화신청을 하려면 하트 <span th:text="${receivedSiteUser.minHeart}" style="color: red;"></span>개가 필요해요.
+                    </p>
+                    <p> YES를 누르면 하트 <span th:text="${receivedSiteUser.minHeart}" style="color: red;"></span>개가 차감돼요.</p>
+                    <p style="color: red;">하트 페이지에서 상대방이 수락 하기전에 보낸하트를 취소할수 있어요.</p>
+
                 </div>
 
                 <div class="modal-action">
                     <form method="dialog">
-                        <button class="btn btn-secondary" data-dismiss="modal">닫기</button>
-                        <button class="btn btn-primary" id="sendCyberMoneyConfirmBtn">확인</button>
+                        <button class="btn btn-secondary" data-dismiss="modal">NO</button>
+                        <button class="btn btn-primary" id="sendCyberMoneyConfirmBtn">YES</button>
                     </form>
                 </div>
             </div>
@@ -181,67 +213,103 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script>
-    $(document).ready(function () {
-    var isSending = false;
-
     $('#sendCyberMoneyBtn').click(function () {
-        if (isSending) return;
-        isSending = true;
+    my_modal_5.showModal();
 
-        my_modal_5.showModal();
+    var siteUserUsernameElement = $("#recipientUsername");
+    var recipientUsername = siteUserUsernameElement.text();
 
-        var siteUserUsernameElement = $("#recipientUsername");
-        var recipientUsername = siteUserUsernameElement.text();
+    // 이벤트 핸들러 등록 전에 기존 핸들러 삭제
+    $('#sendCyberMoneyConfirmBtn').off('click');
 
-        // 이벤트 핸들러 등록 전에 기존 핸들러 삭제
-        $('#sendCyberMoneyConfirmBtn').off('click');
+    // 이벤트 핸들러 등록
+    $('#sendCyberMoneyConfirmBtn').click(function () {
+        var amount = parseInt([[${receivedSiteUser.minHeart}]]);
+        var minHeart = parseInt([[${receivedSiteUser.minHeart}]]);
+        var userCyberMoney = parseInt([[${userCyberMoney}]]);
 
-        // 이벤트 핸들러 등록
-        $('#sendCyberMoneyConfirmBtn').click(function () {
-            var amount = $('#cyberMoneyAmount').val();
-            var minHeart = parseInt([[${receivedSiteUser.minHeart}]]);
-            var userCyberMoney = parseInt([[${userCyberMoney}]]);
+        if (amount > userCyberMoney) {
+            alert("하트가 부족합니다.");
+            $('#cyberMoneyModal').modal('hide');
+            isSending = false;
+            return;
+        }
 
-            if (amount < minHeart) {
-                alert("최소하트보다 작습니다.");
+        var csrfToken = $("meta[name='_csrf']").attr("content");
+        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+
+        $.ajax({
+            type: 'POST',
+            url: '/user/cybermoney/send',
+            data: 'recipientUsername=' + recipientUsername + '&amount=' + amount,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(csrfHeader, csrfToken);
+            },
+            success: function () {
+                alert("이제 상대방이 수락을 하면 상대방과 채팅을 할 수 있습니다.");
+                location.reload();
                 $('#cyberMoneyModal').modal('hide');
+},
+            error: function (error) {
+                alert("Error: " + error.responseText);
+            },
+            complete: function () {
                 isSending = false;
-                return;
             }
-
-            if (amount > userCyberMoney) {
-                alert("하트가 부족합니다.");
-                $('#cyberMoneyModal').modal('hide');
-                isSending = false;
-                return;
-            }
-
-
-            var csrfToken = $("meta[name='_csrf']").attr("content");
-            var csrfHeader = $("meta[name='_csrf_header']").attr("content");
-
-            $.ajax({
-                type: 'POST',
-                url: '/user/cybermoney/send',
-                data: 'recipientUsername=' + recipientUsername + '&amount=' + amount,
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader(csrfHeader, csrfToken);
-                },
-                success: function () {
-                alert("사이버 머니가 성공적으로 전송 되었습니다.");
-                    location.reload();
-                    $('#cyberMoneyModal').modal('hide');
-
-                },
-                error: function (error) {
-                    alert("Error: " + error.responseText);
-                },
-                complete: function () {
-                    isSending = false;
-                }
-            });
         });
     });
 });
+
+</script>
+
+<script>
+    $('#justsendCyberMoneyBtn').click(function () {
+     my_modal_6.showModal();
+
+
+     var siteUserUsernameElement = $("#recipientUsername");
+        var recipientUsername = siteUserUsernameElement.text();
+
+     // 이벤트 핸들러 등록 전에 기존 핸들러 삭제
+     $('#justsendCyberMoneyConfirmBtn').off('click');
+
+     // 이벤트 핸들러 등록
+     $('#justsendCyberMoneyConfirmBtn').click(function () {
+         var amount = $('#justcyberMoneyAmount').val();
+         var userCyberMoney = parseInt([[${userCyberMoney}]]);
+
+         if (amount > userCyberMoney) {
+             alert("하트가 부족합니다.");
+             $('#justcyberMoneyModal').modal('hide');
+             isSending = false;
+             return;
+         }
+
+         var csrfToken = $("meta[name='_csrf']").attr("content");
+         var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+
+
+
+         $.ajax({
+             type: 'POST',
+             url: '/user/cybermoney/JustSend',
+             data: 'recipientUsername=' + recipientUsername + '&amount=' + amount,
+             beforeSend: function (xhr) {
+                 xhr.setRequestHeader(csrfHeader, csrfToken);
+             },
+             success: function () {
+                 alert("하트가 성공적으로 전송 되었습니다.");
+                 location.reload();
+                 $('#justcyberMoneyModal').modal('hide');
+             },
+             error: function (error) {
+                 alert("Error: " + error.responseText);
+             },
+             complete: function () {
+                 isSending = false;
+             }
+         });
+     });
+ });
 
 </script>

@@ -6,6 +6,8 @@ import com.sbs.apple.user.SiteUser;
 import com.sbs.apple.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -107,13 +109,24 @@ public class ChatController {
         System.out.println("원래 있던 채팅방에 접속");
         SiteUser user =userService.getUserbyName(principal.getName());
         ChatRoom room = chatRoomService.findRoomByUserIdAndUserId2(user.getId(),userId2);
-        
+
         //혹시 중간에 상대방이 채팅방을 나가서 채팅방 사라지거나 그러면 채팅방 목록으로 가기
         if(room ==null){
             return "redirect:/chat/allRoom";
             
         }
         
+        System.out.println("채팅방에 들어갈 방번호 "+room.getId());
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        SiteUser users = userService.getUserbyName(username);
+        int userCyberMoney = users.getCyberMoney();
+        model.addAttribute("userCyberMoney", userCyberMoney);
+
+
+
+
         model.addAttribute("roomId",room.getId() );
         model.addAttribute("user",user);
 
@@ -139,6 +152,13 @@ public class ChatController {
 
 
         System.out.println("채팅방에 들어갈 방번호 "+room.getId());
+
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String username = authentication.getName();
+            SiteUser users = userService.getUserbyName(username);
+            int userCyberMoney = users.getCyberMoney();
+            model.addAttribute("userCyberMoney", userCyberMoney);
+
 
         model.addAttribute("roomId",room.getId() );
         model.addAttribute("user",user);

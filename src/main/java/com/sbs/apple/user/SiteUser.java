@@ -48,7 +48,7 @@ public class SiteUser {
     private String gender; //성별
     //기본 프로필 기입
     private int age;//나이
-
+    private String email;
     private String living;//사는 지역
 
     private List<String> hobbyList;
@@ -69,10 +69,13 @@ public class SiteUser {
     private String job; //직장
     private String About_Me; //자기소개
 
-    private String desired_age; //원하는 나이 어떻게 구현할지 다시 고민
+    private String desired_age;
+    private int desired_age1;
+    private int desired_age2;
     private String desired_hobby; // 여러개 고를 수 있게 하기
     private String desired_living; //원하는 지역
-    private String desired_tall; // 원하는 키 어떻게 범위 설정할지 다시 고민
+    private int desired_tall1;
+    private int desired_tall2;
     private String desired_body_type; //원하는 체형
     private String desired_smoking; // 원하는 흡연 유무
     private String desired_drinking; // 원하는 음주 유무
@@ -145,6 +148,10 @@ public class SiteUser {
     @Getter
     @OneToMany(mappedBy = "recipientUser", fetch = FetchType.LAZY)
     private List<CyberMoneyTransaction> receivedTransactions;
+
+    @OneToMany(mappedBy = "senderUser")
+    private List<CyberMoneyTransaction> sentTransactions;
+
 
     public List<CyberMoneyTransaction> getCompletedTransactions() {
         List<CyberMoneyTransaction> completedTransactions = new ArrayList<>();
