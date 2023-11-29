@@ -80,7 +80,7 @@
      .column {
         display:flex;
            border:1px solid black;
-           overflow: hidden;
+            overflow-x: auto;
         border-radius:10px;
               height:80px;
 
@@ -88,15 +88,10 @@
 
 
     .column::-webkit-scrollbar {
+     height:0;
+      width:0;
 }
 
-.column::-webkit-scrollbar-thumb {
-    border-radius: 5px; /* Rounded corners */
-}
-
-.column::-webkit-scrollbar-track {
-    border-radius: 8px; /* Rounded track */
-}
 
 
 
@@ -365,7 +360,8 @@ console.log(indexImg);
                       }) ;
                      previewImage.attr("src", e.target.result);
 
-                     var cancelBtn =$("<div>", {class:"cancelBtn fa-solid fa-xmark",currentIndex   ,onclick:"hideImagePreview(this)"} );
+                     var cancelBtn =$("<div>", {class:"cancelBtn  fa-regular fa-circle-xmark mt-1",
+                      style:"color: #f08dac;" , currentIndex   ,onclick:"hideImagePreview(this)"} );
 
                      currentIndex++;
 
@@ -464,13 +460,13 @@ console.log(indexImg);
     $(document).ready(function() {
         $('#scroll-left').on('click', function() {
             $('.column').animate({
-                scrollLeft: '-=100' // Adjust the scroll amount as needed
+                scrollLeft: '-=80' // Adjust the scroll amount as needed
             }, 'slow');
         });
 
         $('#scroll-right').on('click', function() {
             $('.column').animate({
-                scrollLeft: '+=100' // Adjust the scroll amount as needed
+                scrollLeft: '+=80' // Adjust the scroll amount as needed
             }, 'slow');
         });
     });

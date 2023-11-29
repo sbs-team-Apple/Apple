@@ -32,7 +32,7 @@
                     <div class="image-preview"  th:each="img, currentindex : ${@rq.getImgs(board)}">
 
                             <img class="ex-img" th:currentindex="${currentindex.count}" onclick="changeCurrentImg(this)" th:src="${img.filepath}" alt="">
-                            <div class="cancelBtn fa-solid fa-xmark"  onclick="hideImagePreview(this)"></div>
+                            <div class="cancelBtn fa-regular fa-circle-xmark mt-1" style="color: #f08dac;"  onclick="hideImagePreview(this)"></div>
 
                     </div>
                 </div>
@@ -84,24 +84,18 @@
      .column {
          display:flex;
            border:1px solid black;
-           overflow: hidden;
-        border-radius:10px;
+            overflow-x: auto;
+          border-radius:10px;
               height:80px;
     }
 
 
     .column::-webkit-scrollbar {
-      height: 10px;
+      height:0;
+      width:0;
 
 }
 
-.column::-webkit-scrollbar-thumb {
-    border-radius: 5px; /* Rounded corners */
-}
-
-.column::-webkit-scrollbar-track {
-    border-radius: 8px; /* Rounded track */
-}
 
     .image-preview {
           position:relative;
@@ -341,8 +335,8 @@ console.log(indexImg);
                        }) ;
                       previewImage.attr("src", e.target.result);
 
-                      var cancelBtn =$("<div>", {class:"cancelBtn fa-solid fa-xmark",currentIndex   ,onclick:"hideImagePreview(this)"} );
-
+                      var cancelBtn =$("<div>", {class:"cancelBtn  fa-regular fa-circle-xmark mt-1",
+                      style:"color: #f08dac;" ,currentIndex   ,onclick:"hideImagePreview(this)"} );
                       currentIndex++;
 
                       var previewCurrentImage = $("<img>", {
@@ -435,13 +429,13 @@ console.log(indexImg);
     $(document).ready(function() {
         $('#scroll-left').on('click', function() {
             $('.column').animate({
-                scrollLeft: '-=100' // Adjust the scroll amount as needed
+                scrollLeft: '-=80' // Adjust the scroll amount as needed
             }, 'slow');
         });
 
         $('#scroll-right').on('click', function() {
             $('.column').animate({
-                scrollLeft: '+=100' // Adjust the scroll amount as needed
+                scrollLeft: '+=80' // Adjust the scroll amount as needed
             }, 'slow');
         });
     });
