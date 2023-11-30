@@ -28,9 +28,10 @@
                 <div class="option-btn mr-2">
                     <div class="dropdown dropdown-end  mt-5 mr-3 mb-2">
                         <label tabindex="0" style="font-size:25px;">...</label>
-                        <ul tabindex="0" class="option-btn-content dropdown-content z-[1] mt-2 menu p-2 shadow bg-base-100 rounded-box w-52">
+                        <ul th:if="${@rq.user.nickname==board.siteUser.nickname}"  tabindex="0" class="option-btn-content dropdown-content z-[1] mt-2 menu p-2 shadow bg-base-100 rounded-box w-52">
                             <li th:if="${@rq.user.nickname==board.siteUser.nickname}"> <a th:href="@{|/board/modify/${board.id}?key-kind=public|}">수정하기</a></li>
                             <li th:if="${@rq.user.nickname==board.siteUser.nickname}"><a th:href="@{|/board/delete/${board.id}?key-kind=public|}">삭제하기</a></li>
+                            <li> </li>
                         </ul>
                     </div>
 

@@ -21,6 +21,8 @@ public class ChatRoomService {
         chatRoom.setCreateDate(LocalDateTime.now());
         chatRoom.setSiteUser(user);
         chatRoom.setSiteUser2(user2);
+        chatRoom.setFromUserPass(true);
+        chatRoom.setToUserPass(true);
         chatRoomRepository.save(chatRoom);
         return chatRoom;
 
