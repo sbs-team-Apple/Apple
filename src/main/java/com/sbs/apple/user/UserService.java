@@ -185,7 +185,6 @@ public class UserService {
         user.setDesired_job(desiredJob);
         this.userRepository.save(user);
         user = userRepository.save(user);
-        sendJoinCompleteMail(user);
         return RsData.of("S-1", "회원가입이 완료되었습니다.", user);
     }
     private void sendJoinCompleteMail(SiteUser siteUser) {
