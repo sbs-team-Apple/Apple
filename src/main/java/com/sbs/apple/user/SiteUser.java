@@ -110,10 +110,10 @@ public class SiteUser {
     private List<Report> reportList;
 
 
-    private int cyberMoney = 5000; // 기본값 0으로 초기화
+    private int cyberMoney = 0; // 기본값 0으로 초기화
 
     @Column
-    private Integer receivedCyberMoney = 5000; // 다른 사용자로부터 받은 사이버머니 기본값 0으로 초기화
+    private Integer receivedCyberMoney = 0; // 다른 사용자로부터 받은 사이버머니 기본값 0으로 초기화
     public Integer getReceivedCyberMoney() {
         if (receivedCyberMoney == null) {
             return 0; // 또는 다른 기본값을 사용할 수 있습니다.
