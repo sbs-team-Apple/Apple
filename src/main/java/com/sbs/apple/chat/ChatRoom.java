@@ -30,9 +30,11 @@ public class ChatRoom {
     private LocalDateTime createDate;
 
 
-    //
+    //채팅 받은 사람의 입장권
     private Boolean  toUserPass;
 
+
+    //채팅 초대한 사람의 입장권
     private Boolean fromUserPass;
 
 
