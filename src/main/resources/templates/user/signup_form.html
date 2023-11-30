@@ -55,13 +55,14 @@
                     <span class="label-text" style="font-size: 18px; font-weight: bold;">이메일</span>
                 </label>
                 <div>
-                <input type="text" name="email" placeholder="이메일" class="input input-bordered input-secondary" maxlength="30"
+                <input type="text" name="email" placeholder="이메일" class="input input-bordered input-secondary" style="width:100px;" maxlength="30"
                        onchange="$(this).keyup();" onpaste="setTimeoutZero(() => $(this).keyup());"
                        onkeyup="checkEmailDupDebounce();" style="width:100px;">
                     <span>@</span>
                     <input name="domain" class="input input-bordered input-secondary" maxlength="30" style="width:100px;">
                     <select id="domain-select" class="input-field" style="padding: 10px; margin: 5px 0; width:110px;
                         border: 1px solid #ccc;border-radius: 3px;" onchange="updateDomain()" >
+
                         <option value="direct_input">직접 입력</option>
                         <option value="naver.com">naver.com</option>
                         <option value="gmail.com">gmail.com</option>
