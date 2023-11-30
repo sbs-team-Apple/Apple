@@ -240,22 +240,29 @@ public class ChatController {
         List<ChatRoom> chatRooms2 =new ArrayList<>();
         List<ChatRoom> chatRooms3=new ArrayList<>() ;
         for(int i=0; i<chatRooms.size(); i++){
-            if(chatRooms.get(i).getSiteUser()==null ){
-                chatRooms3.add(chatRooms.get(i));
 
-            }
-            else if(chatRooms.get(i).getSiteUser2()==null ){
-                chatRooms2.add(chatRooms.get(i));
 
-            }
-            else {
                 if(chatRooms.get(i).getSiteUser().getId() == siteUser.getId() ){
                     chatRooms2.add(chatRooms.get(i));
                 }else {
                     chatRooms3.add(chatRooms.get(i));
                 }
-            }
+
+
+                 //채팅방 나가기를 누른 유저들의 입장권 유무 검사
+                if(chatRooms.get(i).getFromUserPass()==false ) {
+
+                    chatRooms2.remove(chatRooms.get(i));
+
+                }else if (chatRooms.get(i).getToUserPass()==false ){
+
+                    chatRooms3.remove(chatRooms.get(i));
+
+                }
+
+
         }
+
 
 
         if( chatRooms2 !=null) {
@@ -282,11 +289,11 @@ public class ChatController {
 
         if(room.getSiteUser()==user){
             System.out.println("보낸 사람이 나가기 누른사람");
-            room.setSiteUser(null);
+            room.setFromUserPass(false);
             chatRoomRepository.save(room);
         }else if(room.getSiteUser2()==user){
             System.out.println("초대받은  사람이 나가기 누른사람");
-            room.setSiteUser2(null);
+            room.setToUserPass(false);
             chatRoomRepository.save(room);
         }
 
