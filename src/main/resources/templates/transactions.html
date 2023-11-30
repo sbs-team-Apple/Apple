@@ -74,7 +74,7 @@
                             <form th:action="@{/user/processTransaction}" method="post">
                                 <input type="hidden" name="transactionId" th:value="${transaction.id}" />
                                 <input type="hidden" name="action" value="reject" />
-                                <button class="btn-sm btn btn-outline btn-info" type="submit">거절</button>
+                                <button class="btn-sm btn btn-outline btn-info" type="submit">취소</button>
                             </form>
                         </div>
                     </div>
@@ -84,10 +84,11 @@
 
         <div id="receivedTab" class="tab-content">
             <ul>
-                <li class="Transactions_list " th:each="transaction : ${receivedTransactions}" style="border :1px solid #FABBEE; padding:5px; display: flex; justify-content: space-between;">
-                    <div class="flex">
+                <li class="Transactions_list " th:each="transaction : ${receivedTransactions}" style="border :1px solid #FABBEE; padding:5px; ">
+                    <div style="display: flex; justify-content: space-between;">
                         <div>
-                        <p th:text="${transaction.senderUser.username} +' 님에게 ♥ ' + ${transaction.amount} + '개를 받았습니다.'"></p>
+                        <p th:text="${transaction.senderUser.username} +' 님이 ♥ ' + ${transaction.amount} + '개를'"></p>
+                            <p>보내고 대화신청을 보냈어요.</p>
                             <p th:text="${#dates.format(transaction.transactionDate, 'yyyy-MM-dd')}"></p>
                         </div>
                         <!-- "수락" 버튼 -->
@@ -118,7 +119,8 @@
                 <li class="Transactions_list" th:each="transaction : ${completedTransactions}" th:if="${transaction.isAccepted()} or ${transaction.isRejected()}" style="display: flex; justify-content: space-between;"
                     th:unless="${transaction.senderUser.username eq user.username}" th:remove="tag">
                     <div style="border :1px solid #FABBEE; padding:5px; margin-bottom:10px;">
-                        <p th:text="${transaction.senderUser.username} +' 님에게 ♥ ' + ${transaction.amount} + '개를 받았습니다.'"></p>
+                        <p th:text="${transaction.senderUser.username} +' 님이 보낸 ♥ ' + ${transaction.amount} + '개를 받고'"></p>
+                        <p>대화신청을 승락했어요.</p>
                         <p th:text="${#dates.format(transaction.transactionDate, 'yyyy-MM-dd')}"></p>
                     </div>
 
