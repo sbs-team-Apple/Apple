@@ -69,6 +69,7 @@
                                         <div class="modal-action mt-2">
 
                                             <form th:action="@{|/chat/${roomId}/delete|}" method="get">
+                                                <input class="hidden" name="userId" th:value="${user.id}">
                                                 <button class="btn" type="submit" >예 </button>
 
 

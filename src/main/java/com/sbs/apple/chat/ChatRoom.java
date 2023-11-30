@@ -28,5 +28,11 @@ public class ChatRoom {
     private LocalDateTime createDate;
 
 
+    //
+    private Boolean  toUserPass;
+
+    private Boolean fromUserPass;
+
+
 
 }
