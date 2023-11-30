@@ -314,7 +314,7 @@ public class ChatController {
 
     @GetMapping("/allRoomForAdmin/{userId}")
     public String allRoomForAdmin(Model model,Principal principal,@PathVariable Integer userId){
-        SiteUser siteUser = userService.getUserbyName(principal.getName());
+        SiteUser siteUser = userService.getUser(userId);
         List<ChatRoom> chatRooms=chatRoomService.findByUser(siteUser);
         List<ChatRoom> chatRooms2 =new ArrayList<>();
         List<ChatRoom> chatRooms3=new ArrayList<>() ;
@@ -354,7 +354,7 @@ public class ChatController {
 
 
 
-        return "chat/allRoom";
+        return "chat/admin_allRoom";
     }
 
 
