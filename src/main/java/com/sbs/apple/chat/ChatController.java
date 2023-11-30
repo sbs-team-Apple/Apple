@@ -6,6 +6,7 @@ import com.sbs.apple.user.SiteUser;
 import com.sbs.apple.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.Banner;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -302,12 +303,40 @@ public class ChatController {
 //                notificationService.delete(notification);
 //        }
 
-
-
-
-
         return "redirect:/chat/allRoom";
 
 
     }
+
+
+    @GetMapping("/admin/allChatRooms")
+    public String adminAllChatRooms(Model model){
+
+        List<ChatRoom> rooms = chatRoomService.findAll();
+
+        model.addAttribute("rooms" ,rooms);
+
+
+        return "chat/admin_allChatRoom";
+
+    }
+
+    @GetMapping("/{roomId}/adminChatRoom/{toUserId}/and/{fromUserId}")
+    public String adminChatRoom(@PathVariable Integer roomId , @PathVariable Integer toUserId,
+                                @PathVariable Integer fromUserId,Model model){
+
+        ChatRoom room = chatRoomService.findById(roomId);
+        SiteUser fromUser = userService.getUser(fromUserId);
+        SiteUser toUser = userService.getUser(toUserId);
+
+        model.addAttribute("roomId",room.getId() );
+        model.addAttribute("user",fromUser);
+
+        //나랑 채팅하고 있는 사람
+        model.addAttribute("toUser",toUser);
+
+
+        return "chat/admin_chatRoom";
+    }
+
 }

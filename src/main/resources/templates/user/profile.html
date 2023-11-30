@@ -57,8 +57,8 @@
                         <div class="modal-body">
                             <p class="badge badge-secondary badge-outline" style="display: inline-block; margin-right: 10px;">보유중인 하트개수 : <span th:text="${userCyberMoney}"></span>개</p>
                             <div>호감이 있는만큼 하트를 보내세요.</div>
-                            <input type="number" id="justcyberMoneyAmount" class="input input-sm input-bordered input-warning" required>
-                            <p style="font-size: 16px; color: red;"><span style="font-size: 24px;">※</span> 여기서는 대화를 신청할 수 없습니다.</p>
+                            <input style="width:100px;" type="text" id="justcyberMoneyAmount" class="input input-sm input-bordered input-warning" required><span style="font-size: 21px;">&nbsp&nbsp개</span>
+                            <p style="font-size: 16px; color: red;"><span style="font-size: 24px;">※</span> 여기서 보내는 하트는 대화를 신청할 수 없어요.<i class="fa-solid fa-ban" style="color: #ff0000;"></i> 꼭 주의 하세요!</p>
                             <p style="font-size: 16px; color: red;">&nbsp&nbsp&nbsp&nbsp대화를 신청하려면 대화신청 버튼을 이용해주세요.</p>
 
                         </div>
@@ -168,9 +168,9 @@
                     <p class="badge badge-secondary badge-outline mb-5" style="display: inline-block; margin-right: 10px;">보유중인 하트개수 : <span th:text="${userCyberMoney}"></span>개</p>
 
                     <p>
-                        대화신청을 하려면 하트 <span th:text="${receivedSiteUser.minHeart}" style="color: red;"></span>개가 필요해요.
+                        상대방이 대화신청을 하려면 하트 <span th:text="${receivedSiteUser.minHeart}" style="color: red;"></span>개가 필요하다고 정해놨어요!.
                     </p>
-                    <p> YES를 누르면 하트 <span th:text="${receivedSiteUser.minHeart}" style="color: red;"></span>개가 차감돼요.</p>
+                    <p> YES를 누르면 하트 <span th:text="${receivedSiteUser.minHeart}" style="color: red;"></span>개가 차감되고 신청을 보내요.</p>
                     <p style="color: red;">하트 페이지에서 상대방이 수락 하기전에 보낸하트를 취소할수 있어요.</p>
 
                 </div>
@@ -312,4 +312,13 @@
      });
  });
 
+</script>
+
+<script>
+    const inputField = document.getElementById('justcyberMoneyAmount');
+
+inputField.addEventListener('input', function(event) {
+    // 숫자 이외의 문자를 입력한 경우 제거합니다.
+    this.value = this.value.replace(/[^0-9]/g, '');
+});
 </script>

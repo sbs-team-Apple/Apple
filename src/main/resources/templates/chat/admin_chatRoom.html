@@ -33,22 +33,19 @@
                                 <a class="flex justify-end"><button class="btn" id="sendCyberMoneyBtn" data-toggle="modal" data-target="#cyberMoneyModal">
                                     하트 보내기
                                 </button>
-                                <dialog id="my_modal_6" class="modal modal-bottom sm:modal-middle">
-                                <div class="modal-box">
+                                    <dialog id="my_modal_6" class="modal modal-bottom sm:modal-middle">
+                                        <div class="modal-box">
 
-                                    <div class="modal-body">
-                                        <p class="badge badge-secondary badge-outline" style="display: inline-block; margin-right: 10px;">보유중인 하트개수 : <span th:text="${userCyberMoney}"></span>개</p>
-                                        <div>호감이 있는만큼 하트를 보내세요.</div>
-                                        <input style="width:100px;" type="text" id="cyberMoneyAmount" class="input input-sm input-bordered input-warning" required><span style="font-size: 21px;">&nbsp&nbsp개</span>                                    </div>
 
-                                    <div class="modal-action">
-                                        <form method="dialog">
-                                            <button class="btn btn-sm btn-secondary" data-dismiss="modal">닫기</button>
-                                            <button class="btn btn-sm btn-primary" id="sendCyberMoneyConfirmBtn">확인</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </dialog>
+
+                                            <div class="modal-action">
+                                                <form method="dialog">
+                                                    <button class="btn btn-sm btn-secondary" data-dismiss="modal">닫기</button>
+                                                    <button class="btn btn-sm btn-primary" id="sendCyberMoneyConfirmBtn">확인</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </dialog>
                                 </a>
                             </li>
 
@@ -68,13 +65,12 @@
                                         <div class="modal-action mt-2">
 
                                             <form th:action="@{|/chat/${roomId}/delete|}" method="get">
-                                                <input class="hidden" name="userId" th:value="${user.id}">
                                                 <button class="btn" type="submit" >예 </button>
 
 
                                             </form>
                                             <form method="dialog">
-                                                <!-- if there is a button in form, it will close the modal -->
+                                                 if there is a button in form, it will close the modal
 
                                                 <button class="btn">아니오</button>
                                             </form>
@@ -94,63 +90,7 @@
 
                 </ul>
             </div>
-            <div class="chat-write-box">
-                <div class="chat-write-box-item  ">
-                    <form class="chat__write-message flex" onsubmit="Chat__writeMessage(this); return false;">
-                        <input type="hidden" name="roomId" th:value="${roomId}">
 
-                        <input  class ="hidden"  type="text" placeholder="작성자" th:value="${user.nickname}"  name="authorName" autocomplete="off">
-                        <div class="emo-button">🙂</div>
-                        <input class="w-11/12  h-10  mt-2 mb-2  chat-content" type="text" placeholder="내용을 입력해주세요."  name="content" autocomplete="off">
-                        <button class="w-20 chat-write-box-item-button" type="submit" value="작성">전송</button>
-                    </form>
-
-                    <div class="emo-box flex flex-wrap" style="display:none;">
-                        <div class="flex emo-kind justify-around">
-                            <div class="face">😀</div>
-                            <div class="symbol">👍</div>
-                            <div class="nature">⛅</div>
-                            <div class="food">🍖</div>
-
-                        </div>
-
-                        <div class="face-emo emo flex flex-wrap">
-                            <p>😀</p> <p>😁</p> <p>😃</p><p>😄</p>
-                            <p>😅</p> <p>😆</p> <p>😉</p> <p>😋</p><p>😊</p><p>😎</p>
-                            <p>😍</p> <p>😘</p><p>😗</p><p>😴</p><p>😛</p><p>😓</p>
-                            <p>😓</p><p>😓</p><p>😓</p><p>😓</p><p>😓</p><p>😓</p>
-                            <p>😓</p><p>😓</p><p>😓</p><p>😓</p><p>😓</p><p>&#128527;</p>
-
-                        </div>
-                        <div class="symbol-emo emo flex flex-wrap" style="display:none;">
-                            <p>👍</p> <p>👎</p> <p>💪</p><p>👉</p>
-                            <p>☝</p> <p>✌</p> <p>🤞</p> <p>🖐</p><p>✋</p><p>👌</p>
-                            <p>👊</p> <p>🤜</p><p>👏</p><p>👋</p><p>👂</p><p>👃</p>
-                            <p>💬</p><p>💢</p>
-
-                        </div>
-                        <div class="nature-emo emo flex flex-wrap" style="display:none;">
-                            <p>🌍</p> <p>🌐</p> <p>🌗</p><p>🌛</p>
-                            <p>☀</p> <p>🌞</p> <p>⭐</p> <p>☁</p><p>⛈</p><p>🌧</p>
-                            <p>🌩</p> <p>🌈</p><p>⚡</p><p>☔</p><p>❄</p><p>🔥</p>
-                            <p>🎄</p><p>🌊</p>
-
-                        </div>
-                        <div class="food-emo emo flex flex-wrap" style="display:none;">
-                            <p>🍇</p> <p>🍉</p> <p>🍌</p><p>🍎</p>
-                            <p>🍍</p> <p>🥝</p> <p>🥥</p> <p>🍖</p><p>🧀</p><p>🍕</p>
-                            <p>🍔</p> <p>🌭</p><p>🍨</p><p>🍛</p><p>🍜</p><p>🍮</p>
-                            <p>🍷</p><p>🍣</p>
-
-                        </div>
-
-
-
-
-                    </div>
-                </div>
-
-            </div>
 
         </div>
 
@@ -692,30 +632,24 @@ float:left;
          var recipientUsername = $(".toUser-username").text();
 
          $.ajax({
-    type: 'POST',
-    url: '/user/cybermoney/JustSend',
-    data: 'recipientUsername=' + recipientUsername + '&amount=' + amount,
-    beforeSend: function (xhr) {
-        xhr.setRequestHeader(csrfHeader, csrfToken);
-    },
-    success: function () {
-        alert("하트가 성공적으로 전송 되었습니다.");
-        // 여기에 채팅 메세지를 전송하는 코드 추가
-        var sentMessage = recipientUsername + " 님에게 하트 " +  amount + "개를 선물 했어요.";
-        fetchPost(`/chat/${roomId}/writeMessage`, {
-            authorName: userNickname,
-            content: sentMessage
-        });
-        location.reload();
-        $('#cyberMoneyModal').modal('hide');
-    },
-    error: function (error) {
-        alert("Error: " + error.responseText);
-    },
-    complete: function () {
-        isSending = false;
-    }
-});
+             type: 'POST',
+             url: '/user/cybermoney/JustSend',
+             data: 'recipientUsername=' + recipientUsername + '&amount=' + amount,
+             beforeSend: function (xhr) {
+                 xhr.setRequestHeader(csrfHeader, csrfToken);
+             },
+             success: function () {
+                 alert("하트가 성공적으로 전송 되었습니다.");
+                 location.reload();
+                 $('#cyberMoneyModal').modal('hide');
+             },
+             error: function (error) {
+                 alert("Error: " + error.responseText);
+             },
+             complete: function () {
+                 isSending = false;
+             }
+         });
      });
  });
 
