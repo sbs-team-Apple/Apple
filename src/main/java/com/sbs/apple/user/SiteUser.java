@@ -49,6 +49,7 @@ public class SiteUser {
     //기본 프로필 기입
     private int age;//나이
     private String email;
+    private String domain;
     private String living;//사는 지역
 
     private List<String> hobbyList;
@@ -67,15 +68,16 @@ public class SiteUser {
     private String mbti; //MBTI
     private String school; //학력
     private String job; //직장
-    private String About_Me; //자기소개
+    private String About_Me;
+    //자기소개
+    private int desired_age1; // 여기부터
+    private int desired_age2; // 여기까지
 
-    private String desired_age;
-    private int desired_age1;
-    private int desired_age2;
-    private String desired_hobby; // 여러개 고를 수 있게 하기
-    private String desired_living; //원하는 지역
+    private String desired_living;
+    //원하는 지역
     private int desired_tall1;
     private int desired_tall2;
+
     private String desired_body_type; //원하는 체형
     private String desired_smoking; // 원하는 흡연 유무
     private String desired_drinking; // 원하는 음주 유무

@@ -120,6 +120,9 @@
                             <a th:if="${notification.kind == 'money'}"  th:href="@{/user/transactions}" class="notification-text" th:text="${notification.siteUserFrom.nickname}+'님이 대화 신청을 요청 했습니다.'">
 
                             </a>
+                            <a th:if="${notification.kind == 'heart'}"  th:href="@{/user/transactions}" class="notification-text" th:text="${notification.siteUserFrom.nickname}+'님이 하트를 보냈습니다.'">
+
+                            </a>
                             <button class="notification-cancel-btn" th:data-notification-id="${notification.id}">&nbsp;X</button>
                         </div>
 
@@ -267,25 +270,29 @@
     console.log("알림 추가 기능 실행됨");
   var ul = $('.notification-box'); // 이 부분은 실제로 페이지의 요소에 맞게 수정해야 합니다.
 
-  data.forEach(function(notification) {
-    var notificationItem = $('<div/>' , { 'class': 'flex notification-item' });
-<!--    var li = $('<li>' + notification.userFrom.nickname + '님이 채팅방에 초대를 수락했습니다.</li>');-->
-    var li =$('<div/>', {'class' : 'notification-text',
-    text :  notification.userFrom.nickname+'님이 채팅방 초대를 수락했습니다.' });
-    var button = $('<button/>', {
-        'class': 'notification-cancel-btn',
-        'data-notification-id': notification.id,
-        text: 'X' // You can set the text content here if needed
-    });
-     <!-- ul.append(notificationItem); notificationItem.append(li); notificationItem.append(button); -->
+<!--  data.forEach(function(notification) {-->
+<!--    var notificationItem = $('<div/>' , { 'class': 'flex notification-item' });-->
+<!--&lt;!&ndash;    var li = $('<li>' + notification.userFrom.nickname + '님이 채팅방에 초대를 수락했습니다.</li>');&ndash;&gt;-->
+<!--    var li =$('<div/>', {'class' : 'notification-text',-->
+<!--    text :  notification.userFrom.nickname+'님이 채팅방 초대를 수락했습니다.' });-->
+<!--    var button = $('<button/>', {-->
+<!--        'class': 'notification-cancel-btn',-->
+<!--        'data-notification-id': notification.id,-->
+<!--        text: 'X' // You can set the text content here if needed-->
+<!--    });-->
+<!--     &lt;!&ndash; ul.append(notificationItem); notificationItem.append(li); notificationItem.append(button); &ndash;&gt;-->
 
-      if(notification.kind=="chatRoom"){
-     openModal(notification.userFrom.nickname + '님이 초대를 수락해 채팅방이 만들어졌습니다.');
-     }else {
-         openModal(notification.userFrom.nickname + '님이 대화 신청을 요청했습니다.');
+      if(data.kind=="chatRoom"){
+     openModal(data.userFrom.nickname + '님이 초대를 수락해 채팅방이 만들어졌습니다.');
+     }else if(data.kind=="money"){
+         openModal(data.userFrom.nickname + '님이 대화 신청을 요청했습니다.');
+     }else if(data.kind=="heart"){
+                 openModal(data.userFrom.nickname + '님이 하트를 보냈습니다.');
+
+
      }
-  });
-}
+  };
+
 
 
 

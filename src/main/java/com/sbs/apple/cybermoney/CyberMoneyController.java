@@ -28,6 +28,7 @@ public class CyberMoneyController {
     private final CyberMoneyTransactionRepository cyberMoneyTransactionRepository;
 
 
+
     @PostMapping("/JustSend")
     public ResponseEntity<String> JustsendCyberMoney(
             @RequestParam("recipientUsername") String recipientUsername,
@@ -50,6 +51,15 @@ public class CyberMoneyController {
             return ResponseEntity.badRequest().body("받는 사용자를 찾을 수 없습니다.");
         }
         SiteUser recipientUser = recipientUserOptional.get();
+
+
+        String groupKey = "userId_" + recipientUser.getId();
+        SseEmitter emitter = new SseEmitter();
+        sseEmitters.add(groupKey, emitter);
+        sseEmitters.noti(groupKey, "invite_chatRoom");
+        notificationService.create(recipientUser,senderUserOptional.get(), "heart");
+
+
 
 
         cyberMoneyServiceImpl.JustSendCyberMoney(senderUser, recipientUser, amount);
