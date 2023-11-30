@@ -353,14 +353,13 @@ public class ChatController {
     public String adminAllChatRooms(Model model , Principal principal){
         SiteUser currentUser =userService.getUserbyName(principal.getName());
 
-        System.out.println(currentUser.getAuthorities()+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
         //관리자가 아닌 사람이 접속 하려할때 메인페이지로 보내기
         if(!currentUser.getAuthorities().contains(UserRole.ADMIN)){
 
-            System.out.println("@@@@@@@@@@@@@@@@@@@@@@@");
 
-            return "redirect:/chat/allRoom";
+
+            return "redirect:/";
 
         }
 
@@ -379,7 +378,8 @@ public class ChatController {
         SiteUser currentUser =userService.getUserbyName(principal.getName());
 
         //관리자가 아닌 사람이 접속 하려할때 메인페이지로 보내기
-        if(!currentUser.getAuthorities().equals("[ADMIN]")){
+        if(!currentUser.getAuthorities().contains(UserRole.ADMIN)){
+
             return "redirect:/";
 
         }
