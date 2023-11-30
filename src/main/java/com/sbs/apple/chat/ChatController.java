@@ -27,6 +27,7 @@ public class ChatController {
     private final ChatMessages chatMessages;
     private final ChatRoomService chatRoomService;
     private final NotificationService notificationService;
+    private  final ChatRoomRepository chatRoomRepository;
 
 
 
@@ -238,10 +239,20 @@ public class ChatController {
         List<ChatRoom> chatRooms2 =new ArrayList<>();
         List<ChatRoom> chatRooms3=new ArrayList<>() ;
         for(int i=0; i<chatRooms.size(); i++){
-            if(chatRooms.get(i).getSiteUser().getId() == siteUser.getId()){
-                chatRooms2.add(chatRooms.get(i));
-            }else {
+            if(chatRooms.get(i).getSiteUser()==null ){
                 chatRooms3.add(chatRooms.get(i));
+
+            }
+            else if(chatRooms.get(i).getSiteUser2()==null ){
+                chatRooms2.add(chatRooms.get(i));
+
+            }
+            else {
+                if(chatRooms.get(i).getSiteUser().getId() == siteUser.getId() ){
+                    chatRooms2.add(chatRooms.get(i));
+                }else {
+                    chatRooms3.add(chatRooms.get(i));
+                }
             }
         }
 
@@ -261,10 +272,27 @@ public class ChatController {
 
 
     @GetMapping("/{roomId}/delete")
-    public String deleteRoom ( @PathVariable Integer roomId) {
+    public String deleteRoom ( @PathVariable Integer roomId,@RequestParam("userId") Integer userId ) {
         ChatRoom room=chatRoomService.findById(roomId);
 
-        chatRoomService.delete(room);
+        // 채팅방 나가기를 누른 유저
+        SiteUser user = userService.getUser(userId);
+        System.out.println(user.getId());
+
+        if(room.getSiteUser()==user){
+            System.out.println("보낸 사람이 나가기 누른사람");
+            room.setSiteUser(null);
+            chatRoomRepository.save(room);
+        }else if(room.getSiteUser2()==user){
+            System.out.println("초대받은  사람이 나가기 누른사람");
+            room.setSiteUser2(null);
+            chatRoomRepository.save(room);
+        }
+
+
+
+
+//        chatRoomService.delete(room);
 
 
 //        그 채팅룸의 유저 정보로 알람 기록을 찾아서 나갈때 그 알람 기록도 삭제해주기
