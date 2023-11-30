@@ -74,7 +74,6 @@ public class UserService {
         user.setJob("무직");
         user.setAbout_Me("반갑소");
         user.setDesired_living("서울");
-        user.setDesired_hobby("골프");
         user.setDesired_body_type("평범한");
         user.setDesired_smoking("비흡연");
         user.setDesired_drinking("가끔");
@@ -88,7 +87,7 @@ public class UserService {
     }
 
     //회원가입
-    public RsData<SiteUser>  create(boolean userStop, boolean userWarning, MultipartFile file, String username, String password, String email, String nickname, String gender)
+    public RsData<SiteUser>  create(boolean userStop, boolean userWarning, MultipartFile file, String username, String password, String email, String domain, String nickname, String gender)
             throws Exception {
         if (findByUsername(username).isPresent())
             return RsData.of("F-1", "%s(은)는 사용중인 아이디입니다.".formatted(username));
@@ -113,6 +112,7 @@ public class UserService {
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
         user.setEmail(email);
+        user.setDomain(domain);
         user.setNickname(nickname);
         user.setGender(gender);
 
@@ -185,15 +185,15 @@ public class UserService {
         user.setDesired_job(desiredJob);
         this.userRepository.save(user);
         user = userRepository.save(user);
-        sendJoinCompleteMail(user);
         return RsData.of("S-1", "회원가입이 완료되었습니다.", user);
     }
     private void sendJoinCompleteMail(SiteUser siteUser) {
-        emailService.send(siteUser.getEmail(), "회원가입이 완료되었습니다.", "회원가입이 완료되었습니다.");
+        String full_email = siteUser.getEmail() + "@" + siteUser.getDomain();
+        emailService.send(full_email, "회원가입이 완료되었습니다.", "회원가입이 완료되었습니다.");
     }
     //수정할 때
-    public RsData<SiteUser> add_desired2(SiteUser user, int desiredAge1,int desiredAge2, String desiredLiving,
-                                        int desiredTall1,int desiredTall2, String desiredBodyType, String desiredSmoking,
+    public RsData<SiteUser> add_desired2(SiteUser user,int desiredAge1,int desiredAge2, String desiredLiving,
+                                         int desiredTall1,int desiredTall2, String desiredBodyType, String desiredSmoking,
                                         String desiredDrinking, List<String> desiredStyleList, String desiredReligion,
                                         String desiredMbti, String desiredSchool, String desiredJob) {
 

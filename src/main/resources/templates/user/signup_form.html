@@ -24,11 +24,6 @@
             <div id="image-preview" style="margin: auto; border-radius:20px; border: 2px solid #f08dac;"></div>
         </div>
 
-
-
-
-
-
             <div class="form-control">
                 <label class="label" style="padding :0 4px 8px 4px;">
                     <span class="label-text" style="font-size: 18px; font-weight: bold;">아이디</span>
@@ -59,11 +54,42 @@
                 <label class="label">
                     <span class="label-text" style="font-size: 18px; font-weight: bold;">이메일</span>
                 </label>
-                <input type="email" name="email" placeholder="이메일" class="input input-bordered input-secondary" maxlength="30"
+                <div>
+                <input type="text" name="email" placeholder="이메일" class="input input-bordered input-secondary" style="width:100px;" maxlength="30"
                        onchange="$(this).keyup();" onpaste="setTimeoutZero(() => $(this).keyup());"
                        onkeyup="checkEmailDupDebounce();">
-                <div class="mt-2 text-sm"></div>
+                    <span>@</span>
+                    <input name="domain" class="input input-bordered input-secondary" maxlength="30" style="width:100px;">
+                    <select id="domain-select" class="input-field" style="padding: 10px; margin: 5px 0; width:110px;
+                        border: 1px solid #ccc;border-radius: 3px;" onchange="updateDomain()">
+                        <option value="direct_input">직접 입력</option>
+                        <option value="naver.com">naver.com</option>
+                        <option value="gmail.com">gmail.com</option>
+                        <option value="daum.net">daum.net</option>
+                        <option value="hanmail.net">hanmail.net</option>
+                        <option value="nate.com">nate.com</option>
+                    </select>
+                </div>
+                <div class="mt-2 text-sm" id="emailMessage"></div>
+                <script>
+                    function updateDomain() {
+                        var selectElement = document.getElementById("domain-select");
+                        var inputElement = document.querySelector('input[name="domain"]');
+                        var selectedValue = selectElement.value;
+
+                        if (selectedValue === "direct_input") {
+                            inputElement.disabled = false;
+                            inputElement.value = "";
+                            inputElement.focus();
+                        } else {
+                            inputElement.disabled = true;
+                            inputElement.value = selectedValue;
+                        }
+                        saveDomain(inputElement.value);
+                    }
+                </script>
             </div>
+
 
             <div class="form-control">
                 <label class="label" style="font-size: 18px; font-weight: bold;">
@@ -195,20 +221,24 @@
 
             const checkEmailDupDebounce = _.debounce(() => checkEmailDup(joinForm), 500);
 
-            function clearEmailInputMsg() {
-                $(joinForm.email).removeClass('input-accent input-error');
-                $(joinForm.email).next().removeClass('text-green-400 text-red-400');
-                $(joinForm.email).next().empty();
-            }
+         function clearEmailInputMsg() {
+        $(joinForm.email).removeClass('input-accent input-error');
+        $(joinForm.email).next().removeClass('text-green-400 text-red-400');
+        $('#emailMessage').empty(); // 이메일 메시지가 표시되는 부분을 비워줍니다.
+    }
 
-            function setEmailInputMsg(isSuccess, msg) {
-                if ( isSuccess ) $(joinForm.email).addClass('input-accent');
-                if ( !isSuccess ) $(joinForm.email).addClass('input-error');
+    function setEmailInputMsg(isSuccess, msg) {
+    $(joinForm.email).removeClass('input-accent input-error'); // 초기화
+    $(joinForm.email).next().removeClass('text-green-400 text-red-400');
+    $('#emailMessage').removeClass('text-green-400 text-red-400'); // 이메일 메시지 관련 클래스 초기화
 
-                $(joinForm.email).next().addClass(isSuccess ? 'text-green-400' : 'text-red-400');
-
-                $(joinForm.email).next().text(msg);
-            }
+    if (isSuccess) {
+        $('#emailMessage').addClass('text-green-400').text(msg); // 성공인 경우 초록색으로 텍스트 설정
+    } else {
+        $('#emailMessage').addClass('text-red-400').text(msg); // 실패인 경우 빨간색으로 텍스트 설정
+        $(joinForm.email).addClass('input-error'); // 실패인 경우 이메일 입력창에 에러 스타일 적용
+    }
+}
 
             let validEmail = '';
             let lastCheckedEmail = '';
