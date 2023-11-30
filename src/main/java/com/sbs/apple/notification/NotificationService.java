@@ -26,6 +26,8 @@ public class NotificationService {
         notification.setSiteUser(siteUserTo);
         notification.setSiteUserFrom(siteUserFrom);
         notification.setKind(chatRoom);
+
+
         notificationRepository.save(notification);
             return notification;
 
