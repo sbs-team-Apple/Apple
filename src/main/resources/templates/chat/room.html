@@ -334,6 +334,9 @@ background-color: #f0bddb; /* 원하는 배경색으로 변경 */
 
 }
 
+
+
+
 /* 상대방의 메시지 */
 .chat__message.left {
 text-align: left;
@@ -559,6 +562,8 @@ float:left;
     var toUserImgSrc=$(".toUser-img-src").text();
     var toUserDetail=$(".toUser-id").text();
     var toUserNickname=$(".toUser-nickname").text();
+
+
     console.log("asda"+toUserImgSrc);
 
     function Chat__writeMessage(form) {
@@ -633,6 +638,7 @@ float:left;
     '</a>' +
     '</div>' +
     '</div>');
+
 
       const toUserName = $('<div class="left-div-name"></div>').text(toUserNickname);
 
