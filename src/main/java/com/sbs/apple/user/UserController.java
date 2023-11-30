@@ -71,7 +71,7 @@ public class UserController {
                           RedirectAttributes redirectAttributes, Model model, MultipartFile file)
             throws Exception {
         RsData<SiteUser> joinRs = userService.create(false, false, userCreateForm.getFile(), userCreateForm.getUsername(), userCreateForm.getPassword1()
-                ,userCreateForm.getEmail(),userCreateForm.getNickname(), userCreateForm.getGender());
+                ,userCreateForm.getEmail(),userCreateForm.getDomain(),userCreateForm.getNickname(), userCreateForm.getGender());
         if (joinRs.getResultCode().equals("F-1")) {
             return rq.historyBack(joinRs.getMsg());
         }
