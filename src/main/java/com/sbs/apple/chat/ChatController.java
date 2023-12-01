@@ -312,6 +312,53 @@ public class ChatController {
     }
 
 
+    @GetMapping("/allRoomForAdmin/{userId}")
+    public String allRoomForAdmin(Model model,Principal principal,@PathVariable Integer userId){
+        SiteUser siteUser = userService.getUser(userId);
+        List<ChatRoom> chatRooms=chatRoomService.findByUser(siteUser);
+        List<ChatRoom> chatRooms2 =new ArrayList<>();
+        List<ChatRoom> chatRooms3=new ArrayList<>() ;
+        for(int i=0; i<chatRooms.size(); i++){
+
+
+            if(chatRooms.get(i).getSiteUser().getId() == siteUser.getId() ){
+                chatRooms2.add(chatRooms.get(i));
+            }else {
+                chatRooms3.add(chatRooms.get(i));
+            }
+
+
+            //채팅방 나가기를 누른 유저들의 입장권 유무 검사
+            if(chatRooms.get(i).getFromUserPass()==false ) {
+
+                chatRooms2.remove(chatRooms.get(i));
+
+            }else if (chatRooms.get(i).getToUserPass()==false ){
+
+                chatRooms3.remove(chatRooms.get(i));
+
+            }
+
+
+        }
+
+
+
+        if( chatRooms2 !=null) {
+            model.addAttribute("chatRoom2",chatRooms2); //내가 초대 한  채팅방
+        }
+        if( chatRooms3 !=null) {
+            model.addAttribute("chatRoom3",chatRooms3);  //내가 초대 받은 채팅방
+        }
+
+
+
+
+        return "chat/admin_allRoom";
+    }
+
+
+
     @GetMapping("/{roomId}/delete")
     public String deleteRoom ( @PathVariable Integer roomId,@RequestParam("userId") Integer userId ) {
         ChatRoom room=chatRoomService.findById(roomId);
