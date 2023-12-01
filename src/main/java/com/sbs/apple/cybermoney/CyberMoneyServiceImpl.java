@@ -15,11 +15,18 @@ public class CyberMoneyServiceImpl implements CyberMoneyService {
         this.cyberMoneyTransactionRepository = cyberMoneyTransactionRepository;
 
     }
-    public void JustSendCyberMoney(SiteUser senderUser, SiteUser recipientUser, int amount) {
+    public void JustsendCyberMoney(SiteUser senderUser, SiteUser heartUser, int amount) {
+        CyberMoneyTransaction transaction = new CyberMoneyTransaction();
+        transaction.setSenderUser(senderUser);
+        transaction.setRecipientUser(heartUser);
+        transaction.setAmount(amount);
+        transaction.setTransactionDate(new Date());
+        cyberMoneyTransactionRepository.save(transaction);
+
         senderUser.setCyberMoney(senderUser.getCyberMoney() - amount);
-        recipientUser.setReceivedCyberMoney(recipientUser.getReceivedCyberMoney() + amount);
+        heartUser.setReceivedCyberMoney(heartUser.getReceivedCyberMoney() + amount);
         userRepository.save(senderUser);
-        userRepository.save(recipientUser);
+        userRepository.save(heartUser);
     }
 
     @Override

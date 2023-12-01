@@ -1,6 +1,5 @@
 package com.sbs.apple.cybermoney;
 
-import com.sbs.apple.chat.ChatRoom;
 import com.sbs.apple.user.SiteUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,6 +9,8 @@ import java.util.List;
 
 public interface CyberMoneyTransactionRepository extends JpaRepository<CyberMoneyTransaction, Long> {
     List<CyberMoneyTransaction> findByRecipientUser(SiteUser recipientUser);
+
+    List<CyberMoneyTransaction> findByHeartUser(SiteUser heartUser);
 
     List<CyberMoneyTransaction> findBySenderUser(SiteUser user);
 
