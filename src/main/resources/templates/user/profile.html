@@ -59,6 +59,7 @@
                         <div class="modal-body">
                             <p class="badge badge-secondary badge-outline" style="display: inline-block; margin-right: 10px;">보유중인 하트개수 : <span th:text="${userCyberMoney}"></span>개</p>
                             <div>호감이 있는만큼 하트를 보내세요.</div>
+                            <div th:text="${heartSiteUser.username}" id="heartUsername" class="form-control"></div>
                             <input style="width:100px;" type="text" id="justcyberMoneyAmount" class="input input-sm input-bordered input-warning" required><span style="font-size: 21px;">&nbsp&nbsp개</span>
                             <p style="font-size: 16px; color: red;"><span style="font-size: 24px;">※</span> 여기서 보내는 하트는 대화를 신청할 수 없어요.<i class="fa-solid fa-ban" style="color: #ff0000;"></i> 꼭 주의 하세요!</p>
                             <p style="font-size: 16px; color: red;">&nbsp&nbsp&nbsp&nbsp대화를 신청하려면 대화신청 버튼을 이용해주세요.</p>
@@ -269,8 +270,8 @@
      my_modal_6.showModal();
 
 
-     var siteUserUsernameElement = $("#recipientUsername");
-        var recipientUsername = siteUserUsernameElement.text();
+     var siteUserUsernameElement = $("#heartUsername");
+        var heartUsername = siteUserUsernameElement.text();
 
      // 이벤트 핸들러 등록 전에 기존 핸들러 삭제
      $('#justsendCyberMoneyConfirmBtn').off('click');
@@ -295,7 +296,7 @@
          $.ajax({
              type: 'POST',
              url: '/user/cybermoney/JustSend',
-             data: 'recipientUsername=' + recipientUsername + '&amount=' + amount,
+             data: 'heartUsername=' + heartUsername + '&amount=' + amount,
              beforeSend: function (xhr) {
                  xhr.setRequestHeader(csrfHeader, csrfToken);
              },

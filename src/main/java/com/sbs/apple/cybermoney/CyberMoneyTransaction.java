@@ -23,6 +23,10 @@ public class CyberMoneyTransaction {
     @JoinColumn(name = "recipient_user_id")
     private SiteUser recipientUser;
 
+    @ManyToOne
+    @JoinColumn(name = "heart_user_id")
+    private SiteUser heartUser;
+
     private int amount;
 
     @Temporal(TemporalType.TIMESTAMP)
