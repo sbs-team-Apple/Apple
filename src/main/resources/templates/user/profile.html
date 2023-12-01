@@ -17,9 +17,11 @@
         <div>
             <div>
                 <div class="photo" style="position: relative;">
-                    <div class="flex justify-center" style="border-bottom: 2px solid #ccc;">
+                    <div class="flex justify-center user-img" style="border-bottom: 2px solid #ccc; position:relative">
                         <img th:src="@{|${receivedSiteUser.filepath}|}" alt="User Image"
                              style="width: 270px; height: 270px; object-fit: cover;border-top-left-radius: 20px; border-top-right-radius: 20px;">
+                        <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}" class="user-chat " style="position:absolute; bottom:0; right:0;" th:href="@{|${'/chat/allRoomForAdmin/'+receivedSiteUser.id}|}" th:text="${receivedSiteUser.nickname+'님의 채팅방들'}"></a>
+
                     </div>
 
                     <div style="position: absolute; top: 10px; right: 10px;">
