@@ -6,11 +6,7 @@
 </head>
 <body>
 <div layout:fragment="content" class="flex-1 flex items-center justify-center">
-    <div class="max-w-2xl w-full px-4">
-        <h1 class="mb-4" style="font-size: 21px; font-weight: bold;">
-            <i class="fa-solid fa-user-plus"></i>
-            프로필 설정
-        </h1>
+    <div class="max-w-2xl w-full px-4 flex justify-center">
 
         <script>
             let submitJoinFormDone = false;
@@ -51,23 +47,26 @@
 
         <form th:action="@{/user/add/{id}(id=${id})}" th:object="${userAddForm}" method="post"
               onsubmit="submitJoinForm(this); return false;" class="flex flex-col gap-6" style="margin-bottom:40px;">
+            <h1 class="mb-4" style="font-size: 24px; font-weight: bold; color:#47066E;">
+                프로필 설정
+            </h1>
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 18px; font-weight: bold;">나이</span>
-                    <span>(숫자만 입력해주세요.)</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold;">나이</span>
+
                 </label>
-                <div style="position: relative;">
-                    <input type="number" name="age" class="input input-bordered input-secondary ml-3"
-                           pattern="^\d+$" min="20" max="99" maxlength="2">
-                    <span style="position: absolute; left: 50px; top: 12px;">살</span>
+                <div class="mb-1">
+                    <input type="number" name="age" pattern="^\d+$" min="20" max="99" maxlength="2"
+                           style="width:305px; height:43px; outline:1px solid #cccccc; border-radius:10px;">
                 </div>
+                <span style="font-size:12px; color:#EC1515;">숫자만 입력해주세요.</span>
             </div>
 
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 18px; font-weight: bold;">지역</span>
+                    <span class="label-text" style="font-size: 186x; font-weight: bold;">지역</span>
                 </label>
-                <select name="living" class="input input-bordered input-secondary">
+                <select name="living" style="width:305px; height:43px; outline:1px solid #cccccc; border-radius:10px;">
                     <option value="서울">서울</option>
                     <option value="인천">인천</option>
                     <option value="경기도">경기도</option>
@@ -91,10 +90,10 @@
 
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 18px; font-weight: bold;">취미</span>
-                    <span>최대 5개까지 선택가능합니다.</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold;">취미</span>
                 </label>
-                <div class="grid grid-cols-3 gap-4 border border-pink-600 rounded-lg justify-items-center">
+                <div class="grid grid-cols-3 gap-4 rounded-lg justify-items-center mb-1"
+                     style="width:305px; outline:1px solid #cccccc; border-radius:10px;">
                     <div class="col-span-1">
                         <input id="input_ch_1" type="checkbox" name="hobbyList" value="헬스" style="display: none;">
                         <label for="input_ch_1">헬스</label>
@@ -255,9 +254,9 @@
                         <label for="input_ch_36">봉사활동</label>
                     </div>
                     <div class="col-span-1">
-                        <input id="input_ch_37" type="checkbox" name="hobbyList" value="환경 보호 활동"
+                        <input id="input_ch_37" type="checkbox" name="hobbyList" value="환경 활동"
                                style="display: none;">
-                        <label for="input_ch_37">환경 보호 활동</label>
+                        <label for="input_ch_37">환경 활동</label>
                     </div>
                     <div class="col-span-1">
                         <input id="input_ch_38" type="checkbox" name="hobbyList" value="드라이브"
@@ -265,6 +264,7 @@
                         <label for="input_ch_38">드라이브</label>
                     </div>
                 </div>
+                <span style="font-size:12px; color:#EC1515;">최대 5개까지 선택가능합니다.</span>
             </div>
             <script>
                 const otherMaxSelections = 5;
@@ -280,22 +280,21 @@
             </script>
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 18px; font-weight: bold;">키</span>
-                    <span>(숫자만 입력해주세요.)</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold;">키</span>
                 </label>
-                <div style="position: relative;">
-                    <input type="number" name="tall" placeholder="키" class="input input-bordered input-secondary"
-                           pattern="^\d+$" min="140" max="210" maxlength="3">
-                    <span style="position: absolute; left: 45px; top: 13px;">cm</span>
+                <div class="mb-1">
+                    <input type="number" name="tall" style="width:305px; height:43px; outline:1px solid #cccccc; border-radius:10px;"
+                    pattern="^\d+$" min="140" max="210" maxlength="3">
                 </div>
-
+                <span style="font-size:12px; color:#EC1515;">숫자만 입력해주세요.</span>
             </div>
+
 
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 18px; font-weight: bold;">체형</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold;">체형</span>
                 </label>
-                <select name="body_type" class="input input-bordered input-secondary">
+                <select name="body_type" style="width:305px; height:43px; outline:1px solid #cccccc; border-radius:10px;">
                     <option value="마른">마른</option>
                     <option value="슬림한">슬림한</option>
                     <option value="평범한">평범한</option>
@@ -306,10 +305,10 @@
             </div>
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 18px; font-weight: bold;">스타일</span>
-                    <span>최대 5개까지 선택가능합니다.</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold;">스타일</span>
                 </label>
-                <div class="grid grid-cols-3 gap-4 border border-pink-600 rounded-lg justify-items-center">
+                <div class="grid grid-cols-3 gap-4 rounded-lg justify-items-center mb-1"
+                     style="width:305px; outline:1px solid #cccccc; border-radius:10px;">
                     <div class="col-span-1">
                         <input id="input_chd_1" type="checkbox" name="styleList" value="활발한" style="display: none;">
                         <label for="input_chd_1" class="checkbox-label">활발한</label>
@@ -417,6 +416,7 @@
                         <label for="input_chd_22" class="checkbox-label">쿨한</label>
                     </div>
                 </div>
+                <span style="font-size:12px; color:#EC1515;">최대 5개까지 선택가능합니다.</span>
             </div>
             <script>
                 const maxSelections = 5;
@@ -432,9 +432,9 @@
             </script>
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 18px; font-weight: bold;">흡연 스타일</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold;">흡연 스타일</span>
                 </label>
-                <select name="smoking" class="input input-bordered input-secondary">
+                <select name="smoking" style="width:305px; height:43px; outline:1px solid #cccccc; border-radius:10px;">
                     <option value="비흡연">비흡연</option>
                     <option value="술 마실 때만">술 마실 때만</option>
                     <option value="가끔">가끔</option>
@@ -445,9 +445,9 @@
             </div>
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 18px; font-weight: bold;">음주</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold;">음주</span>
                 </label>
-                <select name="drinking" class="input input-bordered input-secondary">
+                <select name="drinking" style="width:305px; height:43px; outline:1px solid #cccccc; border-radius:10px;">
                     <option value="전혀 안함">전혀 안함</option>
                     <option value="가끔">가끔</option>
                     <option value="자주">자주</option>
@@ -457,9 +457,9 @@
 
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 18px; font-weight: bold;">종교</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold;">종교</span>
                 </label>
-                <select name="religion" class="input input-bordered input-secondary">
+                <select name="religion" style="width:305px; height:43px; outline:1px solid #cccccc; border-radius:10px;">
                     <option value="무교">무교</option>
                     <option value="불교">불교</option>
                     <option value="천주교">천주교</option>
@@ -472,9 +472,9 @@
 
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 18px; font-weight: bold;">MBTI</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold;">MBTI</span>
                 </label>
-                <select name="mbti" class="input input-bordered input-secondary">
+                <select name="mbti" style="width:305px; height:43px; outline:1px solid #cccccc; border-radius:10px;">
                     <option value="선택안함">선택안함</option>
                     <option value="ISTJ">ISTJ</option>
                     <option value="ISFJ">ISFJ</option>
@@ -496,9 +496,9 @@
             </div>
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 18px; font-weight: bold;">최종 졸업 또는 재학 중인 학교</span>
+                    <span class="label-text" style="font-size: 16x; font-weight: bold;">최종 졸업 또는 재학 중인 학교</span>
                 </label>
-                <select name="school" class="input input-bordered input-secondary">
+                <select name="school" style="width:305px; height:43px; outline:1px solid #cccccc; border-radius:10px;">
                     <option value="선택안함">선택안함</option>
                     <option value="고교 졸업 이하">고교 졸업 이하</option>
                     <option value="고등학교 졸업">고등학교 졸업</option>
@@ -513,9 +513,9 @@
             </div>
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 18px; font-weight: bold;">직장</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold;">직장</span>
                 </label>
-                <select name="job" class="input input-bordered input-secondary">
+                <select name="job" style="width:305px; height:43px; outline:1px solid #cccccc; border-radius:10px;">
                     <option value="선택안함">선택안함</option>
                     <option value="공무원">공무원</option>
                     <option value="학생">학생</option>
@@ -537,10 +537,10 @@
 
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 18px; font-weight: bold;">자기소개</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold;">자기소개</span>
                 </label>
-                <textarea name="About_Me" placeholder="자기소개" class="input input-bordered input-secondary" maxlength="500"
-                          style="height: 200px;"></textarea>
+                <textarea name="About_Me" style="width:305px; height:200px; outline:1px solid #cccccc;
+                 border-radius:10px;" maxlength="500"></textarea>
             </div>
             <script>
                 const forbiddenWords = ['씨발', '씹', '창녀','존나','좆밥','지랄','찐따','병신','보지','자지' ];
@@ -559,9 +559,8 @@
             </script>
 
             <div>
-                <button class="btn" style="padding:0 145px; border-radius:10px; border :1px solid #f08dac; background-color :#f08dac">
-                    <i class="fa-solid fa-user-plus"></i>
-                    <span>다음</span>
+                <button style="width:305px; height:43px; outline:1px solid #A176BB; border-radius:10px; background-color:#B276EE; color:white;">
+                    <span style="font-size:16px;">다음</span>
                 </button>
             </div>
         </form>

@@ -1,10 +1,13 @@
 <div class="underBody flex flex-col items-center"
-     style="border: 1px solid rgb(198, 198, 198); padding: 20px 15px 15px 15px; border-radius: 15px; flex-direction: column; align-items: center;">
+     style=" padding: 20px 15px 15px 15px; border-radius: 15px; flex-direction: column; align-items: center;">
     <div>
-        <div>
-            <span style="width: 237px; height: 30px; left: 30px;
-                         font-family: 'SEBANG Gothic'; font-style: normal; font-weight: 700;
-                        font-size: 32px; line-height: 38px; color: #B674DF;">THE CUPID</span>
+        <div style="display: flex; justify-content: center;" class="mb-5">
+                <span class="mr-1" style="font-family: 'SEBANG Gothic'; font-style: normal; font-weight: 700;
+                 font-size: 32px; color: #B674DF;">THE</span>
+            <span class="ml-1" style="font-family: 'SEBANG Gothic'; font-style: normal; font-weight: 700;
+            font-size: 32px; color: #6C05AB;">
+                CUPID
+            </span>
         </div>
         <form th:action="@{/user/login}" method="post" onsubmit="submitLoginForm(this); return false;" class="login">
             <div style="width:300px; display:flex;">
@@ -41,15 +44,16 @@
             </div>
 
         </form>
-        <div class="mb-4" style="outline: 1px solid black; height:50px;">
+        <div class="mb-4" style="outline: 1px solid black; height:50px; display: flex; align-items: center;">
             <a href="/oauth2/authorization/google" class="social-google"
                style="display: inline-flex; align-items: center; text-decoration: none;">
-                <img src="/img/구글.png" style="width: 36px; height: 36px; object-fit: cover; margin :5px 20px;" alt="Google Logo">
+                <img src="/img/구글.png" style="width: 36px; height: 36px; object-fit: cover; margin :5px 20px;"
+                     alt="Google Logo">
                 <span style="margin-left:35px;">구글로 로그인</span>
             </a>
         </div>
 
-        <div class="mb-4" style=" height:50px; background-color:#00c73c;">
+        <div class="mb-4" style=" height:50px; background-color:#00c73c; display: flex; align-items: center;">
             <a href="/oauth2/authorization/naver" class="social-naver"
                style="display: inline-flex; align-items: center; text-decoration: none; color: white;">
                 <img src="/img/네이버2.png" style="width: 36px; height: 36px; object-fit: cover; margin :5px 20px;" alt="">
@@ -57,11 +61,11 @@
             </a>
         </div>
 
-        <div class="mb-4" style="height:50px; background-color:#f9e000;">
+        <div class="mb-4" style="height: 50px; background-color: #f9e000; display: flex; align-items: center;">
             <a href="/oauth2/authorization/kakao" class="social-kakao"
                style="display: inline-flex; align-items: center; text-decoration: none;">
-                <img src="/img/카카오3.png" style="width: 36px; height: 36px; object-fit: cover; margin :5px 20px;" alt="">
-                <span style="margin-left:25px;" >카카오로 로그인</span>
+                <img src="/img/카카오3.png" style="width: 36px; height: 36px; object-fit: cover; margin: 5px 20px;" alt="">
+                <span style="margin-left: 25px;">카카오로 로그인</span>
             </a>
         </div>
 
