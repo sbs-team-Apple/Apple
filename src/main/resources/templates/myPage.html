@@ -17,7 +17,7 @@
 
             </div>
             <div style="width:315px; height:87px; position: relative;">
-                <div>
+                <div class="pt-2 pl-4">
                     <div th:text="${user.nickname}" style="font-size:20px;"></div>
                     <div th:text="${user.age}+'세'+'/'+${user.living}"
                          style="font-size:12px;"></div>
@@ -30,9 +30,9 @@
                         <label tabindex="0">
                             <img src="/img/control.png" style="width:22px; height:22px;">
                         </label>
-                        <ul tabindex="0"
-                            class="menu menu-sm dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-                            <li><a th:href="@{|/user/photoModify/${user.id}|}">사진 변경</a></li>
+                        <ul tabindex="0" class="menu menu-sm dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-52" style="position: absolute; right: 0;">
+
+                        <li><a th:href="@{|/user/photoModify/${user.id}|}">사진 변경</a></li>
                             <li><a href="/user/profile_modify">프로필 변경</a></li>
                             <li><a href="/user/desired_modify">이상형 변경</a></li>
                             <li><a href="/user/passwordChange">비밀번호 변경</a></li>
