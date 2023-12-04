@@ -14,6 +14,10 @@ public interface CyberMoneyTransactionRepository extends JpaRepository<CyberMone
 
     List<CyberMoneyTransaction> findBySenderUser(SiteUser user);
 
+    List<CyberMoneyTransaction> findBySenderUserAndHeartUserIsNotNull(SiteUser user);
+
+    List<CyberMoneyTransaction> findBySenderUserAndRecipientUserIsNotNull(SiteUser user);
+
 
     @Query("SELECT cr FROM CyberMoneyTransaction cr WHERE ((cr.senderUser.id = :userId AND cr.recipientUser.id = :userId2) OR (cr.senderUser.id = :userId2 AND cr.recipientUser.id = :userId)) AND cr.rejected = false AND cr.accepted = false")
 

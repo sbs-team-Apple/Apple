@@ -423,7 +423,8 @@ public class UserController {
         List<CyberMoneyTransaction> heartTransactions = cyberMoneyTransactionRepository.findByHeartUser(user);
         List<CyberMoneyTransaction> receivedTransactions = cyberMoneyTransactionRepository.findByRecipientUser(user);
         List<CyberMoneyTransaction> sentTransactions = cyberMoneyTransactionRepository.findBySenderUser(user);
-
+        List<CyberMoneyTransaction> sent2Transactions = cyberMoneyTransactionRepository.findBySenderUserAndHeartUserIsNotNull(user);
+        List<CyberMoneyTransaction> sent3Transactions = cyberMoneyTransactionRepository.findBySenderUserAndRecipientUserIsNotNull(user);
 
 
         // 완료된 거래 목록을 생성
@@ -447,11 +448,14 @@ public class UserController {
         }
 
         int minHeart = user.getMinHeart();
+
         model.addAttribute("minHeart", minHeart);
         model.addAttribute("heartTransactions", heartTransactions); // heartTransactions 리스트를 모델에 추가
         model.addAttribute("user", user);
         model.addAttribute("receivedTransactions", receivedTransactions); // 받은 거래 정보
         model.addAttribute("sentTransactions", sentTransactions); // 보낸 거래 정보
+        model.addAttribute("sent2Transactions", sent2Transactions); // 보낸 거래 정보
+        model.addAttribute("sent3Transactions", sent3Transactions); // 보낸 거래 정보
         model.addAttribute("userCyberMoney", userCyberMoney);
         model.addAttribute("receivedCyberMoney", receivedCyberMoney); // 다른 사용자로부터 받은 사이버머니
         model.addAttribute("completedTransactions", completedTransactions); // 완료된 거래 정보
