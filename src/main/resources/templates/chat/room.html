@@ -19,7 +19,7 @@
                         </a>
                     </div>
                     <div th:text="${toUser.nickname}" class="justify-start"> </div>
-                    <div class="dropdown dropdown-bottom dropdown-end chat-option-icon text-right  ">
+                    <div class="dropdown dropdown-bottom dropdown-end chat-option-icon text-right ">
                         <label tabindex="0" class=" m-1 bg-white"><i class="fa-solid fa-gear fa-lg option-icon-img"></i></label>
                         <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-40">
 
@@ -30,21 +30,23 @@
 
 
                             <li>
-                                <a class="flex justify-end"><button class="btn" id="sendCyberMoneyBtn" data-toggle="modal" data-target="#cyberMoneyModal">
-                                    하트 보내기
+                                <a class="flex  justify-end"><button class="btn" id="justsendCyberMoneyBtn" data-toggle="modal" data-target="#cyberMoneyModal">
+                                    &nbsp&nbsp&nbsp하트 선물&nbsp&nbsp&nbsp&nbsp
                                 </button>
                                 <dialog id="my_modal_6" class="modal modal-bottom sm:modal-middle">
                                 <div class="modal-box">
 
                                     <div class="modal-body">
-                                        <p class="badge badge-secondary badge-outline" style="display: inline-block; margin-right: 10px;">보유중인 하트개수 : <span th:text="${userCyberMoney}"></span>개</p>
-                                        <div>호감이 있는만큼 하트를 보내세요.</div>
-                                        <input style="width:100px;" type="text" id="cyberMoneyAmount" class="input input-sm input-bordered input-warning" required><span style="font-size: 21px;">&nbsp&nbsp개</span>                                    </div>
+                                        <p class="badge badge-secondary badge-outline mt-3 mb-3" style=" font-size: 1em; color: black; display: inline-block; margin-right: 10px; background-color: #EFE1F8; border-color: #EFE1F8;">
+                                            보유중인 하트개수 : <span th:text="${userCyberMoney}" style="font-size: 1em; color: black;"></span>개
+                                        </p>                            <div>호감이 있는만큼 하트를 보내세요.</div>
+                                        <input style="width:100px; border-color: #B276EE;" type="text" id="justcyberMoneyAmount" class="mb-3 mt-3 input input-sm" required><span>&nbsp&nbsp개</span>
+                                    </div>
 
-                                    <div class="modal-action">
-                                        <form method="dialog">
-                                            <button class="btn btn-sm btn-secondary" data-dismiss="modal">닫기</button>
-                                            <button class="btn btn-sm btn-primary" id="sendCyberMoneyConfirmBtn">확인</button>
+                                    <div class="modal-action" style="display: flex; justify-content: space-between;">
+                                        <form method="dialog" style="width: 100%;">
+                                            <button style="width: 48%; background-color: #B276EE; color: white;" class="btn btn-sm" id="justsendCyberMoneyConfirmBtn">확인</button>
+                                            <button style="width: 48%; border-color: #B276EE; color: #989898;" class="btn btn-sm btn-outline" data-dismiss="modal">닫기</button>
                                         </form>
                                     </div>
                                 </div>
@@ -672,21 +674,21 @@ float:left;
 </script>
 
 <script>
-    $('#sendCyberMoneyBtn').click(function () {
+    $('#justsendCyberMoneyBtn').click(function () {
      my_modal_6.showModal();
      console.log('Button clicked');
 
      // 이벤트 핸들러 등록 전에 기존 핸들러 삭제
-     $('#sendCyberMoneyConfirmBtn').off('click');
+     $('#justsendCyberMoneyConfirmBtn').off('click');
 
      // 이벤트 핸들러 등록
-     $('#sendCyberMoneyConfirmBtn').click(function () {
-         var amount = $('#cyberMoneyAmount').val();
+     $('#justsendCyberMoneyConfirmBtn').click(function () {
+         var amount = $('#justcyberMoneyAmount').val();
          var userCyberMoney = parseInt([[${userCyberMoney}]]);
 
          if (amount > userCyberMoney) {
              alert("하트가 부족합니다.");
-             $('#cyberMoneyModal').modal('hide');
+             $('#justcyberMoneyModal').modal('hide');
              isSending = false;
              return;
          }
@@ -695,19 +697,20 @@ float:left;
          var csrfHeader = $("meta[name='_csrf_header']").attr("content");
 
 
-         var recipientUsername = $(".toUser-username").text();
+         var heartUsername = $('.toUser-nickname').text(); // 변경된 부분
+
 
          $.ajax({
     type: 'POST',
     url: '/user/cybermoney/JustSend',
-    data: 'recipientUsername=' + recipientUsername + '&amount=' + amount,
+    data: 'heartUsername=' + heartUsername + '&amount=' + amount,
     beforeSend: function (xhr) {
         xhr.setRequestHeader(csrfHeader, csrfToken);
     },
     success: function () {
         alert("하트가 성공적으로 전송 되었습니다.");
         // 여기에 채팅 메세지를 전송하는 코드 추가
-        var sentMessage = recipientUsername + " 님에게 하트 " +  amount + "개를 선물 했어요.";
+        var sentMessage = heartUsername + " 님에게 하트 " +  amount + "개를 선물 했어요.";
         fetchPost(`/chat/${roomId}/writeMessage`, {
             authorName: userNickname,
             content: sentMessage
