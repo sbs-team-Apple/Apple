@@ -151,6 +151,9 @@ public class SiteUser {
     @OneToMany(mappedBy = "recipientUser", fetch = FetchType.LAZY)
     private List<CyberMoneyTransaction> receivedTransactions;
 
+    @OneToMany(mappedBy = "heartUser", fetch = FetchType.LAZY)
+    private List<CyberMoneyTransaction> heartTransactions;
+
     @OneToMany(mappedBy = "senderUser")
     private List<CyberMoneyTransaction> sentTransactions;
 

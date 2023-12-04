@@ -6,11 +6,7 @@
 </head>
 <body>
 <div layout:fragment="content" class="flex-1 flex items-center justify-center">
-    <div class="max-w-2xl w-full px-4">
-        <h1 class="mb-4" style="font-size: 21px; font-weight: bold;">
-            <i class="fa-solid fa-user-plus"></i>
-            이상형 설정
-        </h1>
+    <div class="max-w-2xl w-full px-4 flex justify-center">
 
         <script>
             let submitJoinFormDone = false;
@@ -59,31 +55,32 @@
         <form th:action="@{'/user/desired/' + ${userId}}" th:object="${userDesiredForm}"
               method="post" onsubmit="submitJoinForm(this); return false;" class="flex flex-col gap-6"
               style="margin-bottom:40px;">
+            <h1 style="font-size: 24px; font-weight: bold; color:#47066E;">
+                이상형 설정
+            </h1>
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 18px; font-weight: bold;">나이 설정</span>
-                    <span>(숫자만 입력해주세요.)</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold;">나이 설정</span>
                 </label>
-                <div>
-                    <span style="position: relative;">
-                    <input type="number" name="desired_age1" class="input input-bordered input-secondary ml-3"
+                <div class="mb-1">
+                    <span>
+                    <input type="number" name="desired_age1" style="width:144px; height:43px; outline:1px solid #cccccc; border-radius:10px;"
                            pattern="^\d+$" min="20" max="99" maxlength="2">
-                    <span style="position: absolute; left: 50px; top:0px;">살</span>
-                </span>
+                    </span>
                     <span>-</span>
-                    <span style="position: relative;">
-                    <input type="number" name="desired_age2" class="input input-bordered input-secondary ml-3"
+                    <span>
+                    <input type="number" name="desired_age2" style="width:144px; height:43px; outline:1px solid #cccccc; border-radius:10px;"
                            pattern="^\d+$" min="20" max="99" maxlength="2">
-                    <span style="position: absolute; left: 50px; top:0px;">살</span>
-                        </span>
+                    </span>
                 </div>
+                <span style="font-size:12px; color:#EC1515;">숫자만 입력해주세요.</span>
             </div>
 
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 18px; font-weight: bold;">원하는 지역</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold;">원하는 지역</span>
                 </label>
-                <select name="desired_living" class="input input-bordered input-secondary">
+                <select name="desired_living" style="width:305px; height:43px; outline:1px solid #cccccc; border-radius:10px;">
                     <option value="상관없음" selected>상관없음</option>
                     <option value="서울">서울</option>
                     <option value="인천">인천</option>
@@ -108,29 +105,27 @@
 
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 18px; font-weight: bold;">키 설정</span>
-                    <span>(숫자만 입력해주세요.)</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold;">키 설정</span>
                 </label>
-                <div>
+                <div class="mb-1">
                     <span>
-                        <input type="text" name="desired_tall1" placeholder="최소"
-                               class="input input-bordered input-secondary" maxlength="30"
+                        <input type="text" name="desired_tall1" style="width:144px; height:43px; outline:1px solid #cccccc; border-radius:10px;"
                                pattern="[0-9]*">
                     </span>
                     <span>-</span>
                     <span>
-                        <input type="text" name="desired_tall2" placeholder="최대"
-                               class="input input-bordered input-secondary" maxlength="30"
+                        <input type="text" name="desired_tall2" style="width:144px; height:43px; outline:1px solid #cccccc; border-radius:10px;"
                                pattern="[0-9]*">
                     </span>
                 </div>
+                <span style="font-size:12px; color:#EC1515;">숫자만 입력해주세요.</span>
             </div>
 
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 18px; font-weight: bold;">이상형 체형</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold;">이상형 체형</span>
                 </label>
-                <select name="desired_body_type" class="input input-bordered input-secondary">
+                <select name="desired_body_type" style="width:305px; height:43px; outline:1px solid #cccccc; border-radius:10px;">
                     <option value="상관없음" selected>상관없음</option>
                     <option value="마른">마른</option>
                     <option value="슬림한">슬림한</option>
@@ -143,9 +138,9 @@
 
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 18px; font-weight: bold;">이상형 흡연유무</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold;">이상형 흡연유무</span>
                 </label>
-                <select name="desired_smoking" class="input input-bordered input-secondary">
+                <select name="desired_smoking" style="width:305px; height:43px; outline:1px solid #cccccc; border-radius:10px;">
                     <option value="상관없음" selected>상관없음</option>
                     <option value="비흡연">비흡연</option>
                     <option value="가끔">가끔</option>
@@ -156,9 +151,9 @@
 
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 18px; font-weight: bold;">이상형 음주</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold;">이상형 음주</span>
                 </label>
-                <select name="desired_drinking" class="input input-bordered input-secondary">
+                <select name="desired_drinking" style="width:305px; height:43px; outline:1px solid #cccccc; border-radius:10px;">
                     <option value="상관없음" selected>상관없음</option>
                     <option value="전혀 안함">전혀 안함</option>
                     <option value="가끔">가끔</option>
@@ -169,9 +164,9 @@
             <div class="form-control">
                 <label class="label">
                     <span class="label-text" style="font-size: 18px; font-weight: bold;">이상형 스타일</span>
-                    <span>최대 5개까지 선택가능합니다.</span>
                 </label>
-                <div class="grid grid-cols-3 gap-4 border border-pink-600 rounded-lg justify-items-center">
+                <div class="grid grid-cols-3 gap-4 justify-items-center mb-1"
+                     style="width:305px; outline:1px solid #cccccc; border-radius:10px;">
                     <div class="col-span-1">
                         <input id="input_chw_1" type="checkbox" name="desired_styleList" value="예쁘고 잘생긴"
                                style="display: none;">
@@ -353,6 +348,7 @@
                         <label for="input_chw_36" class="checkbox-label">쿨한</label>
                     </div>
                 </div>
+                <span style="font-size:12px; color:#EC1515;">최대 5개까지 선택가능합니다.</span>
             </div>
             <script>
                 const maxSelections = 5;
@@ -374,9 +370,9 @@
             </style>
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 18px; font-weight: bold;">이상형 종교</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold;">이상형 종교</span>
                 </label>
-                <select name="desired_religion" class="input input-bordered input-secondary">
+                <select name="desired_religion" style="width:305px; height:43px; outline:1px solid #cccccc; border-radius:10px;">
                     <option value="상관없음" selected>상관없음</option>
                     <option value="무교">무교</option>
                     <option value="불교">불교</option>
@@ -390,9 +386,9 @@
 
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 18px; font-weight: bold;">MBTI</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold;">MBTI</span>
                 </label>
-                <select name="desired_mbti" class="input input-bordered input-secondary">
+                <select name="desired_mbti" style="width:305px; height:43px; outline:1px solid #cccccc; border-radius:10px;">
                     <option value="상관없음" selected>상관없음</option>
                     <option value="ISTJ">ISTJ</option>
                     <option value="ISFJ">ISFJ</option>
@@ -415,9 +411,9 @@
 
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 18px; font-weight: bold;">최종 졸업 또는 재학 중인 학교</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold;">최종 졸업 또는 재학 중인 학교</span>
                 </label>
-                <select name="desired_school" class="input input-bordered input-secondary">
+                <select name="desired_school" style="width:305px; height:43px; outline:1px solid #cccccc; border-radius:10px;">
                     <option value="상관없음" selected>상관없음</option>
                     <option value="고교 졸업 이하">고교 졸업 이하</option>
                     <option value="고등학교 졸업">고등학교 졸업</option>
@@ -433,9 +429,9 @@
 
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 18px; font-weight: bold;">직장</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold;">직장</span>
                 </label>
-                <select name="desired_job" class="input input-bordered input-secondary">
+                <select name="desired_job" style="width:305px; height:43px; outline:1px solid #cccccc; border-radius:10px;">
                     <option value="상관없음" selected>상관없음</option>
                     <option value="공무원">공무원</option>
                     <option value="학생">학생</option>
@@ -454,14 +450,9 @@
                     <option value="기타">기타</option>
                 </select>
             </div>
-
             <div>
-                <button class="btn"
-                        style="padding:0 145px; border-radius:10px; border :1px solid #f08dac; background-color :#f08dac">
-                   <span>
-                       <i class="fa-solid fa-user-plus"></i>
-                    <span> 회원가입 완료</span>
-                   </span>
+                <button style="width:305px; height:43px; outline:1px solid #A176BB; border-radius:10px; background-color:#B276EE; color:white;">
+                    <span style="font-size:16px;">회원가입 완료</span>
                 </button>
             </div>
         </form>
