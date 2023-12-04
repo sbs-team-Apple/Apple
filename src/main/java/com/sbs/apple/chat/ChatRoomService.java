@@ -21,6 +21,8 @@ public class ChatRoomService {
         chatRoom.setCreateDate(LocalDateTime.now());
         chatRoom.setSiteUser(user);
         chatRoom.setSiteUser2(user2);
+        chatRoom.setFromUserPass(true);
+        chatRoom.setToUserPass(true);
         chatRoomRepository.save(chatRoom);
         return chatRoom;
 
@@ -48,6 +50,8 @@ public class ChatRoomService {
     public List<ChatRoom> findByUser(SiteUser user){
        return chatRoomRepository.findChatRoomsByUserId(user);
     }
+
+
 
 
     public ChatRoom findRoomByUserIdAndUserId2(Integer userId, Integer userId2) {

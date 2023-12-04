@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html layout:decorate="~{common/layout}" lang="en">
+<meta charset="UTF-8">
+<title>Title</title>
+</head>
+<body>
+
+<div layout:fragment="content" class="container my-3 ml-auto mr-auto ">
+
+
+    <div  class="room-container mr-auto ml-auto mt-20 ">
+        <div th:each="room : ${rooms}">
+            <a th:href="@{|${'/chat/'+room.id+'/adminChatRoom/'+room.siteUser2.id+'/and/'+room.siteUser.id}|}"
+               th:text="${room.siteUser.nickname+'님이 ' +room.siteUser2.nickname + '님을 초대한 채팅방'}"></a>
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+
+
+<div th:include="common/menu.html" class="tap_bar"></div>
+<style>
+    .tap_bar {
+            position: fixed;
+            width: 100%;
+            bottom : 0;
+            left:50%;
+            transform:translate(-50%,0);
+        }
+</style>
+
+</html>
+
+<style>
+    .room-container {
+        width:700px;
+        font-size:30px;
+
+
+    }
+    @media screen and (max-width: 700px){
+        .room-container{
+        width:350px;
+                font-size:20px;
+
+
+        }
+
+
+    }
+
+    .room-container>div{
+        text-align:center;
+        margin-bottom:30px;
+    }
+
+
+</style>

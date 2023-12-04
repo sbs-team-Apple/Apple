@@ -18,18 +18,19 @@
     <meta charset="UTF-8">
 </head>
 <body>
-<div layout:fragment="content" class="container m-auto flex justify-center flex-col items-center -mt-16">
+<div layout:fragment="content" class="pl-3 pr-3">
     <div class="mt-16">
-        <div class="tab-buttons border-b-2 border-solid border-black" style="display: flex; justify-content: center;">
-            <div class="p-10" style="text-align: center; flex: 1;">
-                <button type="submit" class="btn"
-                        style="border-radius:10px; border :1px solid #f08dac; background-color :#f08dac"
+        <div class="tab-buttons" style="display: flex; justify-content: center; gap: 10px;">
+            <div style="text-align: center; flex: 1;">
+                <button type="submit" class="w-full p-3"
+                        style="border-radius:10px; border:1px solid #B276EE; background-color:#B276EE; color: white;"
                         onclick="showTab('sendTab')">보낸관심
                 </button>
+
             </div>
-            <div class="p-10" style="text-align: center; flex: 1;">
-                <button type="submit" class="btn"
-                        style="border-radius:10px; border :1px solid #f08dac; background-color :#f08dac"
+            <div style="text-align: center; flex: 1;">
+                <button type="submit" class="w-full p-3"
+                        style="border-radius:10px; border :1px solid #B276EE;"
                         onclick="showTab('receivedTab')">받은관심
                 </button>
             </div>
@@ -51,25 +52,27 @@
                          style="margin-bottom:  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.3);">
                         <a th:href="@{|/user/detail/${siteUserList.receivedSiteUser.id}|}">
                             <div id="myImage">
-                                <img style="20px; border-radius-top:20px; border: 2px solid pink; width: 270px; height: 270px; object-fit: cover; border-top-left-radius: 20px; border-top-right-radius: 20px;"
+                                <img style="20px; border-radius-top:10px; border: 1px solid #D4D2D2; width: 315px; height: 285px; object-fit: cover; border-top-left-radius: 10px; border-top-right-radius: 10px;"
                                      th:src="@{|${siteUserList.receivedSiteUser.filepath}|}" alt="User Image">
                             </div>
-                            <div style="background-color: #f08dac; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;">
-                                <div class="text-center">
-                                    <span th:text="${siteUserList.receivedSiteUser.nickname}"></span>
-                                    <span> | </span>
-                                    <span th:text="${siteUserList.receivedSiteUser.living}"></span>
-                                    <span> | </span>
-                                    <span th:text="${siteUserList.receivedSiteUser.age}"></span>
+                            <div style="border: 1px solid #D4D2D2; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+                                <div class="pt-2 pl-5">
+                                    <span th:text="${siteUserList.receivedSiteUser.nickname}"
+                                          style="font-size: 20px; font-weight: bold; font-family: 'SUITE', sans-serif;"></span>
+
                                 </div>
-                                <div class="text-center" th:text="${siteUserList.receivedSiteUser.About_Me}"></div>
+                                <div class="pl-5 pb-2">
+                                <span th:text="${siteUserList.receivedSiteUser.age} + '세'">span</span>
+                                    <span>/</span>
+                                <span th:text="${siteUserList.receivedSiteUser.living}"></span>
+                                </div>
                             </div>
                         </a>
                     </div>
                 </table>
             </div>
         </div>
-
+<div class="mb-20"></div>
 
         <div id="receivedTab" class="tab-content" style="display: none;">
             <div class="overflow-x-auto flex">
@@ -90,14 +93,16 @@
                                      alt="User Image">
                             </div>
                             <div style="background-color: #f08dac; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;">
-                                <div class="text-center">
-                                    <span th:text="${receivedSiteUserList.SiteUser.nickname}"></span>
-                                    <span> | </span>
-                                    <span th:text="${receivedSiteUserList.SiteUser.living}"></span>
-                                    <span> | </span>
-                                    <span th:text="${receivedSiteUserList.SiteUser.age}"></span>
+                                <div class="pt-2 pl-5">
+                                    <span th:text="${siteUserList.receivedSiteUser.nickname}"
+                                          style="font-size: 20px; font-weight: bold; font-family: 'SUITE', sans-serif;"></span>
+
                                 </div>
-                                <div th:text="${receivedSiteUserList.SiteUser.About_Me}"></div>
+                                <div class="pl-5 pb-2">
+                                <span th:text="${receivedSiteUserList.SiteUser.age} + '세'"></span>
+                                    <span>/</span>
+                                 <span th:text="${receivedSiteUserList.SiteUser.living}"></span>
+                                </div>
                             </div>
                         </a>
                     </div>
@@ -114,6 +119,14 @@
             document.getElementById(tabName).style.display = 'block';
         }
     </script>
+    <div th:include="common/menu.html" class="tap_bar"></div>
+    <style>
+        .tap_bar {
+                position: fixed;
+                width: 100%;
+                bottom : 0;
+            }
+    </style>
 </div>
 </body>
 </html>

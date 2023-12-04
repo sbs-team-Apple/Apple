@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
 import java.util.List;
@@ -83,7 +84,46 @@ public class MainController {
             userService.resetUserWarning(siteUser);
         }
 
-        List<Notification> notificationsList = notificationService.getByUserTo(loginUser);
+        List<Notification> notificationsList = notificationService.getsByUserTo(loginUser);
         return "main";
+    }
+
+    @RequestMapping("/jsp")
+    public String jsp(){
+
+
+        return "jsp/close";
+    }
+
+    @GetMapping("/jsp2")
+    public String jsp2(){
+
+
+        return "jsp/WelStdPayRequest";
+    }
+
+
+    @GetMapping("jsp/WelStdPayReturn")
+    public String jsp3(){
+
+        System.out.println("asdasd!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        System.out.println("asdasd!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        System.out.println("asdasd!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        System.out.println("asdasd!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        return "jsp/WelStdPayReturn";
+    }
+
+    @GetMapping("/jsp/WelStdPayResult")
+    public String jsp4(){
+
+
+        return "jsp/WelStdPayResult";
+    }
+
+    @GetMapping("/jsp4")
+    public String jsp5(){
+
+
+        return "jsp/WelStdPayReturn";
     }
 }

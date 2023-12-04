@@ -5,21 +5,21 @@
     <title>Title</title>
 </head>
 <body>
-<div layout:fragment="content" class="container my-3">
+<div layout:fragment="content" class="container my-3 ml-auto mr-auto">
     <div class="ml-auto mr-auto w-60 ">
             <form  class="imgForm ml-auto mr-auto" enctype="multipart/form-data" th:action="@{/board/create}"  object="${boardForm}" method="post" >
-                <button type="button" class="add-file-input mb-2 mt-2"><i class="fa-solid fa-file-circle-plus fa-2xl"></i></button>
-                <div class="current-img"></div>
+                <button type="button" class="add-file-input mb-2 mt-2">
+                        <i class="fa-solid fa-file-circle-plus fa-2xl"></i>
+                </button>
+                <div >
+                    <div class="current-img" >
 
+                    </div>
+                </div>
 
+                    <div id="file-input-container">
 
-
-
-                <div id="file-input-container">
-
-
-
-                    <!--            <input type="file" name="file" accept="image/*" class="image-file-input">-->
+<!--                                <input id="lab1" type="file" name="file" accept="image/*" class="image-file-input hidden">-->
 
                 </div>
 
@@ -34,9 +34,9 @@
                 </div>
 
 
-                <textarea type="text" name="content" class="textarea textarea-secondary" placeholder="내용을 입력하세요"></textarea>
+                <textarea style="   resize: none; " type="text" name="content" class="textarea textarea-secondary" placeholder="내용을 입력하세요"></textarea>
 
-                <button type="submit" class="btn end-function"  onclick="onSubmitClick()"
+                <button type="button" class="btn end-function"  onclick="onSubmitClick()"
                         style="display: block; margin-left:auto;  border-radius:10px; border :1px solid #f08dac; background-color :#f08dac">
                     <span>작성</span>
                 </button>
@@ -47,7 +47,16 @@
             </form>
     </div>
 
-
+    <div th:include="common/menu.html" class="tap_bar"></div>
+    <style>
+        .tap_bar {
+                position: fixed;
+                width: 100%;
+                bottom : 0;
+                left:50%;
+                transform:translate(-50%,0);
+            }
+    </style>
 <!--    <button onclick="SubmitClick()">dd</button>-->
 
 </div>
@@ -58,6 +67,7 @@
     .ex-current-img {
         width:240px;
         height:300px;
+       object-fit: contain;
 
     }
 
@@ -79,28 +89,18 @@
      .column {
         display:flex;
            border:1px solid black;
-           overflow-x: auto;
+            overflow-x: auto;
         border-radius:10px;
-            scrollbar-width: auto;
-              height:100px;
+              height:80px;
 
     }
 
 
     .column::-webkit-scrollbar {
-    width: 2px; /* Adjust scrollbar width */
-      height: 10px;
+     height:0;
+      width:0;
 }
 
-.column::-webkit-scrollbar-thumb {
-    background-color: #888; /* Scrollbar thumb color */
-    border-radius: 5px; /* Rounded corners */
-}
-
-.column::-webkit-scrollbar-track {
-    background-color: #f1f1f1; /* Scrollbar track color */
-    border-radius: 8px; /* Rounded track */
-}
 
 
 
@@ -216,6 +216,28 @@ span.plus {
 </style>
 
 <script>
+<!--파일 선택시 아무것도 안누르고 취소 하면 생기는 빈 input 태그 지우는 함수-->
+    function removeEmptyFileInput() {
+    var fileInputs = $('.image-file-input'); // Get all file input elements
+
+    if (fileInputs.length > 0) {
+        var lastFileInput = fileInputs[fileInputs.length - 1]; // Get the last file input
+
+        if (lastFileInput.files.length === 0 || lastFileInput.files[0].name === '') {
+            lastFileInput.parentNode.removeChild(lastFileInput); // Remove the input if no file selected
+            console.log('Removed empty file input.');
+        } else {
+            console.log('File found in the most recent input.');
+        }
+    } else {
+        console.log('No file inputs found.');
+    }
+}
+
+
+</script>
+
+<script>
     function SubmitClick(){
         indexExImgs();
 
@@ -278,15 +300,25 @@ console.log(indexImg);
 
         reorderInputsByIndex();
 
+        removeEmptyFileInput();
+        shouldSubmit=true;
 
+    var exImgValue = $('.ex-img'); // Replace 'ex-img' with your actual field ID or class
 
+    if (exImgValue.length==0)   {
+                shouldSubmit = false;
+                alert('사진이 1장 이상은 꼭 있어야 합니다!');
+                                 event.preventDefault();
 
+                }
 
-     // 폼을 서버로 제출
-    $('end-function').submit();
-   }
+            if(shouldSubmit){
+                console.log("서버로 전송");
 
+                $('.imgForm').submit();
+            }
 
+ }
 </script>
 
 
@@ -300,20 +332,33 @@ console.log(indexImg);
 
      // "파일 추가" 버튼 클릭 이벤트
      $(".add-file-input").click(function() {
-           $(".add-file-input").addClass("hidden");
+<!--           $(".add-file-input").addClass("hidden");-->
+
+        removeEmptyFileInput();
 
          var fileInputContainer = $(this).prev(".image-file-input");
          var newFileInput = $("<input>", {
              type: "file",
              name: "file",
              accept: "image/**",
-             class:  "image-file-input",
+             class:  "image-file-input hidden",
+
              currentIndex
          });
+
+
+
          var newImagePreview = $("<div>", { class: "image-preview" });
+          newFileInput.click();
 
          newFileInput.change(function() {
              var file = newFileInput[0].files[0];
+
+                // Set the scroll position to the maximum right
+                $('.column').animate({
+                                scrollLeft: '+=300' // Adjust the scroll amount as needed
+                            }, 'slow');
+
 
              if (file) {
                  var reader = new FileReader();
@@ -324,7 +369,8 @@ console.log(indexImg);
                       }) ;
                      previewImage.attr("src", e.target.result);
 
-                     var cancelBtn =$("<div>", {class:"cancelBtn fa-solid fa-xmark",currentIndex   ,onclick:"hideImagePreview(this)"} );
+                     var cancelBtn =$("<div>", {class:"cancelBtn  fa-regular fa-circle-xmark mt-1",
+                      style:"color: #f08dac;" , currentIndex   ,onclick:"hideImagePreview(this)"} );
 
                      currentIndex++;
 
@@ -332,24 +378,29 @@ console.log(indexImg);
                        class:"ex-current-img"
                       }) ;
                      previewCurrentImage.attr("src", e.target.result);
-                     newImagePreview.empty().append(previewImage);
+                     newImagePreview.append(previewImage);
                      newImagePreview.append(cancelBtn);
                      currentImg.empty().append(previewCurrentImage);
                      exImgs = $(".ex-img");
                      console.log(exImgs);
+
                  };
 
                  reader.readAsDataURL(file);
                   $(" .image-file-input").addClass("hidden");
                      $(".add-file-input").removeClass("hidden");
+
+
              } else {
+
                  newImagePreview.empty();
+                 newFileInput.remove();
 
              }
          });
+                   newFileInput.insertBefore($(this));
+                 preImgContainer.append(newImagePreview);
 
-         newFileInput.insertBefore($(this));
-         preImgContainer.append(newImagePreview);
 
 
      });
@@ -418,13 +469,13 @@ console.log(indexImg);
     $(document).ready(function() {
         $('#scroll-left').on('click', function() {
             $('.column').animate({
-                scrollLeft: '-=100' // Adjust the scroll amount as needed
+                scrollLeft: '-=80' // Adjust the scroll amount as needed
             }, 'slow');
         });
 
         $('#scroll-right').on('click', function() {
             $('.column').animate({
-                scrollLeft: '+=100' // Adjust the scroll amount as needed
+                scrollLeft: '+=80' // Adjust the scroll amount as needed
             }, 'slow');
         });
     });

@@ -11,180 +11,201 @@
 
 
 <div layout:fragment="content" class="container m-auto flex justify-center flex-col items-center">
-    <div class="mb-5 mt-5"
-         style="width: 270px; border-radius: 20px; margin-bottom:80px;
-          box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.3);">
-        <div>
-            <div>
-                <div class="photo" style="position: relative;">
-                    <div class="flex justify-center" style="border-bottom: 2px solid #ccc;">
-                        <img th:src="@{|${receivedSiteUser.filepath}|}" alt="User Image"
-                             style="width: 270px; height: 270px; object-fit: cover;border-top-left-radius: 20px; border-top-right-radius: 20px;">
-                    </div>
+    <div class="mb-5 mt-5" style="width: 315px; border-radius: 10px; margin-bottom:80px;">
+        <!--        프로필사진이랑 간단 프로필-->
+        <div class="photoNickname mb-5" style="outline:1px solid #D4D2D2; width: 315px; border-radius: 10px;">
+            <div class="photo" style="position: relative;">
+                <div class="flex justify-center user-img" style="border-bottom: 1px solid #D4D2D2;">
+                    <img th:src="@{|${receivedSiteUser.filepath}|}" alt="User Image"
+                         style="width: 315px; height: 290px; object-fit: cover;border-top-left-radius: 10px; border-top-right-radius: 10px;">
+                    <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}" class="user-chat "
+                       style="position:absolute; bottom:0; right:0;"
+                       th:href="@{|${'/chat/allRoomForAdmin/'+receivedSiteUser.id}|}"
+                       th:text="${receivedSiteUser.nickname+'님의 채팅방들'}"></a>
+                </div>
 
-                    <div style="position: absolute; top: 10px; right: 10px;">
-                        <a th:href="@{'/user/add_interest/' + ${receivedSiteUser.id}}">
-                            <div class="bg-white p-4 px-4 rounded-full absolute -left-6 -top-6 shadow-md">
-                            <span th:if="${isInterested}">
-                                                         <span style="position: relative;">
-                    <i class="fa-solid fa-star fa-xl" style="color: yellow;"></i>
-                                </span>
-                                 </span>
-                                <span th:unless="${isInterested}">
-                                <span style="position: relative;">
-                                <i class="fa-regular fa-star fa-xl"></i>
-                                </span>
-                                 </span>
+            </div>
+            <div style="width:315px; height:87px; position: relative;">
+                <div>
+                    <div th:text="${receivedSiteUser.nickname}" style="font-size:20px;"></div>
+                    <div th:text="${receivedSiteUser.age}+'세'+'/'+${receivedSiteUser.living}"
+                         style="font-size:12px;"></div>
+                    <div th:text="${receivedSiteUser.About_Me}" style="font-size:14px;"></div>
+                </div>
+
+                <div style="position: absolute; top: 18px; right: 20px;">
+                    <div>
+                        <a th:href="@{'/user/report/' + ${receivedSiteUser.id}}" style="display: inline-block;">
+                            <span><img src="/img/siren.png" style="width:30px; height:30px; margin-right:8px;"></span>
+                        </a>
+                        <a th:href="@{'/user/add_interest/' + ${receivedSiteUser.id}}" style="display: inline-block;">
+                            <div>
+                                <span th:if="${isInterested}"><img src="/img/fullStar.png"
+                                                                   style="width:30px; height:30px;"></span>
+                                <span th:unless="${isInterested}"><img src="/img/nullStar.png"
+                                                                       style="width:30px; height:30px;"></span>
                             </div>
                         </a>
                     </div>
                 </div>
-                <div style="display: flex; flex-direction: column; gap: 10px; padding: 5px;">
-                    <button th:if="${chatRoom == null && log == null}" id="sendCyberMoneyBtn"
-                            style="padding:5px 15px; border-radius:10px; border:3px solid purple;"
-                            data-toggle="modal" data-target="#cyberMoneyModal">
-                        <i class="fa-solid fa-comment mr-1"></i>1:1 대화신청
-                    </button>
-                </div>
+            </div>
+        </div>
 
-                <div style="display: flex; padding: 5px;">
-                <button style="padding:5px 15px; border-radius:10px; border:3px solid purple;" id="justsendCyberMoneyBtn" data-toggle="modal" data-target="#justcyberMoneyModal">
-                    <i class="fa-solid fa-heart"></i> 하트 보내기
+        <!--     채팅방 만들기   -->
+        <div style="width: 315px; height: 46px; border-radius: 10px; background-color: #B276EE; margin-bottom:20px;
+        outline: 1px solid #B276EE; color: white; display: flex; align-items: center; justify-content: center;">
+            <button th:if="${chatRoom == null && log == null}" id="sendCyberMoneyBtn" data-toggle="modal"
+                    data-target="#cyberMoneyModal" style="background: none; border: none; color: white;">채팅방 만들기
+            </button>
+        </div>
+
+        <!--프로필 정보들-->
+        <div style="margin-bottom:30px;">
+            <div style="margin-bottom: 10px; text-align: center;">
+                <span th:text="${receivedSiteUser.mbti}"
+                      style="font-size: 14px; background-color: #f3f3f3; padding: 5px 10px; border-radius: 15px; margin: 0 5px;"></span>
+                <span th:text="${receivedSiteUser.job}"
+                      style="font-size: 14px; background-color: #f3f3f3; padding: 5px 10px; border-radius: 15px; margin: 0 5px;"></span>
+                <span th:text="${receivedSiteUser.tall}+'cm'"
+                      style="font-size: 14px; background-color: #f3f3f3; padding: 5px 10px; border-radius: 15px; margin: 0 5px;"></span>
+                <span th:text="${receivedSiteUser.body_type}"
+                      style="font-size: 14px; background-color: #f3f3f3; padding: 5px 10px; border-radius: 15px; margin: 0 5px;"></span>
+            </div>
+            <div style="margin-bottom:10px; text-align: center;">
+                <span th:text="${receivedSiteUser.drinking}"
+                      style="font-size:14px; background-color:#f3f3f3; padding: 5px 10px;border-radius:15px; margin: 0 5px;"></span>
+                <span th:text="${receivedSiteUser.smoking}"
+                      style="font-size:14px; background-color:#f3f3f3; padding: 5px 10px;border-radius:15px; margin: 0 5px;"></span>
+                <span th:text="${receivedSiteUser.school}"
+                      style="font-size:14px; background-color:#f3f3f3; padding: 5px 10px;border-radius:15px; margin: 0 5px;"></span>
+                <span th:text="${receivedSiteUser.religion}"
+                      style="font-size:14px; background-color:#f3f3f3; padding: 5px 10px;border-radius:15px; margin: 0 5px;"></span>
+            </div>
+
+            <div class="ml-2" th:text="'성격 : ' + ${receivedSiteUser.styleList}"></div>
+            <div class="ml-2" th:text="'취미 : ' + ${receivedSiteUser.hobbyList}"></div>
+        </div>
+
+        <!--이상형 -->
+        <div>
+            <div class="flex justify-center" style="margin-bottom:15px;">
+                <button onclick="show_desired()" id="up_down"
+                        style="border-top: 1px solid #DBDADA;border-bottom: 1px solid #DBDADA; width:315px; height:42px;">
+                    <span>이상형</span><i id="icon" class="fa-solid fa-caret-down"></i>
                 </button>
-                <dialog id="my_modal_6" class="modal modal-bottom sm:modal-middle">
-                    <div class="modal-box">
-
-                        <div class="modal-body">
-                            <p class="badge badge-secondary badge-outline" style="display: inline-block; margin-right: 10px;">보유중인 하트개수 : <span th:text="${userCyberMoney}"></span>개</p>
-                            <div>호감이 있는만큼 하트를 보내세요.</div>
-                            <input type="number" id="justcyberMoneyAmount" class="input input-sm input-bordered input-warning" required>
-                            <p style="font-size: 16px; color: red;"><span style="font-size: 24px;">※</span> 여기서는 대화를 신청할 수 없습니다.</p>
-                            <p style="font-size: 16px; color: red;">&nbsp&nbsp&nbsp&nbsp대화를 신청하려면 대화신청 버튼을 이용해주세요.</p>
-
-                        </div>
-
-                        <div class="modal-action">
-                            <form method="dialog">
-                                <button class="btn btn-sm btn-secondary" data-dismiss="modal">닫기</button>
-                                <button class="btn btn-sm btn-primary" id="justsendCyberMoneyConfirmBtn">확인</button>
-                            </form>
-                        </div>
-                    </div>
-                </dialog>
-                    <a style="display:flex; padding:5px 15px; border-radius:10px; border:3px solid red; margin-left: 5px;"
-                            th:href="@{'/user/report/' + ${receivedSiteUser.id}}">&nbsp
-                        <?xml version="1.0" encoding="UTF-8"?>
-                        <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="19" height="19"><path d="m21,18.126v-5.126c0-4.963-4.037-9-9-9S3,8.037,3,13v5.126c-1.724.445-3,2.013-3,3.874,0,1.103.897,2,2,2h20c1.103,0,2-.897,2-2,0-1.861-1.276-3.429-3-3.874ZM12,6c3.859,0,7,3.141,7,7v5H5v-5c0-3.859,3.141-7,7-7ZM2,22c0-1.103.897-2,2-2h16c1.103,0,2,.897,2,2H2ZM20.797,6.211c-.393-.389-.396-1.021-.008-1.414l1.5-1.517c.388-.393,1.021-.396,1.414-.008.393.389.396,1.021.008,1.414l-1.5,1.517c-.195.198-.453.297-.711.297-.254,0-.508-.097-.703-.289Zm-4.185-4.171l.777-1.5c.254-.492.859-.682,1.348-.428.49.254.682.857.428,1.348l-.777,1.5c-.178.344-.527.54-.889.54-.155,0-.312-.036-.459-.112-.49-.254-.682-.857-.428-1.348ZM.289,4.687c-.389-.393-.385-1.025.008-1.414.392-.389,1.027-.385,1.414.008l1.5,1.517c.389.393.385,1.025-.008,1.414-.194.192-.449.289-.703.289-.258,0-.516-.099-.711-.297l-1.5-1.517ZM4.835,1.46c-.254-.49-.062-1.094.428-1.348.487-.254,1.093-.064,1.348.428l.777,1.5c.254.49.062,1.094-.428,1.348-.146.076-.304.112-.459.112-.361,0-.711-.196-.889-.54l-.777-1.5Zm3.165,11.54c0-2.206,1.794-4,4-4,.553,0,1,.447,1,1s-.447,1-1,1c-1.103,0-2,.897-2,2,0,.553-.447,1-1,1s-1-.447-1-1Z"/></svg>
-                        <span>&nbsp신고하기&nbsp&nbsp</span></a>
             </div>
-
-
-                <div class="flex">
-                    <div th:text="${receivedSiteUser.nickname + ', ' + receivedSiteUser.age}+', '+${receivedSiteUser.mbti}"
-                         class="ml-2 mr-2"
-                         style="font-size: 25px; font-weight: bold; position: relative;">
-                    </div>
-
+            <div style="display:none;" id="all">
+                <div style="margin-bottom: 10px; text-align: center;">
+                <span th:text="${receivedSiteUser.desired_age1}+'~'+${receivedSiteUser.desired_age2}+'살'"
+                      style="font-size: 14px; background-color: #f3f3f3; padding: 5px 10px; border-radius: 15px; margin: 0 5px;"></span>
+                    <span th:text="${receivedSiteUser.desired_living}"
+                          style="font-size: 14px; background-color: #f3f3f3; padding: 5px 10px; border-radius: 15px; margin: 0 5px;"></span>
+                    <span th:text="${receivedSiteUser.desired_tall1}+'~'+${receivedSiteUser.desired_tall2}+'cm'"
+                          style="font-size: 14px; background-color: #f3f3f3; padding: 5px 10px; border-radius: 15px; margin: 0 5px;"></span>
+                    <span th:text="${receivedSiteUser.desired_body_type}"
+                          style="font-size: 14px; background-color: #f3f3f3; padding: 5px 10px; border-radius: 15px; margin: 0 5px;"></span>
                 </div>
-
-                <div class="ml-2 mr-2 mb-2" th:text="${receivedSiteUser.About_Me}"
-                     style="max-width: 250px; word-wrap: break-word;"></div>
-
-                <div class="ml-2 mr-2 info_wrap">
-                    <span><i class="fa-solid fa-location-dot"></i><span
-                            th:text="${receivedSiteUser.living}"></span></span>
-                    <span><i class="fa-solid fa-briefcase"></i><span th:text="${receivedSiteUser.job}"></span></span>
+                <div style="margin-bottom: 10px; text-align: center;">
+                <span th:text="${receivedSiteUser.desired_smoking}"
+                      style="font-size: 14px; background-color: #f3f3f3; padding: 5px 10px; border-radius: 15px; margin: 0 5px;"></span>
+                    <span th:text="${receivedSiteUser.desired_drinking}"
+                          style="font-size: 14px; background-color: #f3f3f3; padding: 5px 10px; border-radius: 15px; margin: 0 5px;"></span>
+                    <span th:text="${receivedSiteUser.desired_religion}"
+                          style="font-size: 14px; background-color: #f3f3f3; padding: 5px 10px; border-radius: 15px; margin: 0 5px;"></span>
+                    <span th:text="${receivedSiteUser.desired_mbti}"
+                          style="font-size: 14px; background-color: #f3f3f3; padding: 5px 10px; border-radius: 15px; margin: 0 5px;"></span>
                 </div>
-                <div class="ml-2 mr-2 info_wrap">
-                    <span><i class="fa-solid fa-tape"></i><span th:text="${receivedSiteUser.tall}+'cm'"></span></span>
-                    <span><i class="fa-solid fa-person"></i><span th:text="${receivedSiteUser.body_type}"></span></span>
-                </div>
-                <div class="ml-2 mr-2 info_wrap">
-                    <span><i class="fa-solid fa-beer-mug-empty"></i><span th:text="${receivedSiteUser.drinking}"></span></span>
-                    <span><i class="fa-solid fa-smoking"></i><span th:text="${receivedSiteUser.smoking}"></span></span>
-                </div>
-
-                <div class="ml-2 mr-2 mb-2 info_wrap">
-                    <span><i class="fa-solid fa-school"></i><span th:text="${receivedSiteUser.school}"></span></span>
-                    <span><span th:text="'종교:  ' + ${receivedSiteUser.religion}"></span></span>
-                </div>
-                <div class="ml-2" th:text="'성격 : ' + ${receivedSiteUser.styleList}"></div>
-                <div class="ml-2" th:text="'취미 : ' + ${receivedSiteUser.hobbyList}"></div>
+                <span th:text="${receivedSiteUser.desired_styleList}"
+                      style="font-size: 14px; background-color: #f3f3f3; padding: 5px 10px; border-radius: 15px; margin: 0 5px;"></span>
             </div>
-
-            <div>
-                <div class="text-xl flex justify-center">
-                    <button onclick="show_desired()" id="up_down"
-                            style="border: 1px solid black; border-radius: 10px; padding: 0 10px; margin: 10px 0;">
-                        <span>저는 이런사람이 좋아요</span><i id="icon" class="fa-solid fa-caret-down ml-1"></i>
-                    </button>
-                </div>
-                <div class="mb-3" style="display:none;" id="all">
-                    <div class="ml-2" th:text="'나이 : ' + ${receivedSiteUser.desired_age1}+'~'+${receivedSiteUser.desired_age2}"></div>
-                    <div class="ml-2" th:text="'지역 : ' + ${receivedSiteUser.desired_living}"></div>
-                    <div class="ml-2" th:text="'키 : ' + ${receivedSiteUser.desired_tall1}+'~'+${receivedSiteUser.desired_tall2}"></div>
-                    <div class="ml-2" th:text="'체형 : ' + ${receivedSiteUser.desired_body_type}"></div>
-                    <div class="ml-2" th:text="'흡연 : ' + ${receivedSiteUser.desired_smoking}"></div>
-                    <div class="ml-2" th:text="'음주 : ' + ${receivedSiteUser.desired_drinking}"></div>
-                    <div class="ml-2" th:text="'성격 : ' + ${receivedSiteUser.desired_styleList}"></div>
-                    <div class="ml-2" th:text="'종교 : ' + ${receivedSiteUser.desired_religion}"></div>
-                    <div class="ml-2" th:text="'MBTI : ' + ${receivedSiteUser.desired_mbti}"></div>
-                </div>
-            </div>
-            <script>
-                var isUp = false;
-                function show_desired(){
-                var iconElement = document.getElementById("icon");
-                var contentElement = document.getElementById("all");
-                if (isUp) {
-                iconElement.classList.remove("fa-caret-up");
-                iconElement.classList.add("fa-caret-down");
-                contentElement.style.display = "none"; // 숨김
-                } else {
-                iconElement.classList.remove("fa-caret-down");
-                iconElement.classList.add("fa-caret-up");
-                contentElement.style.display = "block"; // 보임
-                    }
-                isUp = !isUp;
+        </div>
+        <script>
+            var isUp = false;
+            function show_desired(){
+            var iconElement = document.getElementById("icon");
+            var contentElement = document.getElementById("all");
+            if (isUp) {
+            iconElement.classList.remove("fa-caret-up");
+            iconElement.classList.add("fa-caret-down");
+            contentElement.style.display = "none"; // 숨김
+            } else {
+            iconElement.classList.remove("fa-caret-down");
+            iconElement.classList.add("fa-caret-up");
+            contentElement.style.display = "block"; // 보임
                 }
-            </script>
-        </div>
+            isUp = !isUp;
+            }
+        </script>
 
-        <div style="display: none;">
-            <p class="badge badge-secondary" style="display: inline-block; margin-right: 10px;">사용 가능한 하트: <span
-                    th:text="${userCyberMoney}"></span>개</p>
-            <p class="badge badge-secondary" style="display: inline-block;">선물 받은 하트: <span
-                    th:text="${receivedCyberMoney}"></span>개</p>
-        </div>
+        <!--하트 보내기 버튼 아직 위치 못정함-->
+        <div style="display: flex; padding: 5px; margin-bottom:40px;">
+            <button style="padding:5px 15px; border-radius:10px; border:3px solid purple;"
+                    id="justsendCyberMoneyBtn" data-toggle="modal" data-target="#justcyberMoneyModal">
+                하트 보내기
+            </button>
+            <dialog  style="font-family: 'SUITE', sans-serif;" id="my_modal_6" class="modal modal-bottom sm:modal-middle">
+                <div class="modal-box">
 
-        <a class="nav-link" th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
-           th:href="@{'/admin/punish/' + ${receivedSiteUser.id}}">제재하기</a>
+                    <div class="modal-body">
+                        <div style="display:none" th:text="${heartSiteUser.nickname}" id="heartUsername" class="text-xl form-control"></div>
+                        <p class="badge badge-secondary badge-outline mt-3 mb-3" style=" font-size: 1em; color: black; display: inline-block; margin-right: 10px; background-color: #EFE1F8; border-color: #EFE1F8;">
+                            보유중인 하트개수 : <span th:text="${userCyberMoney}" style="font-size: 1em; color: black;"></span>개
+                        </p>                            <div>호감이 있는만큼 하트를 보내세요.</div>
+                        <input style="width:100px; border-color: #B276EE;" type="text" id="justcyberMoneyAmount" class="mb-3 mt-3 input input-sm" required><span>&nbsp&nbsp개</span>
+                        <p style="font-size: 12px; color: red; "><span style="font-size: 16px;">※</span> 여기서 보내는 하트는 대화를 신청할 수 없어요.<i class="fa-solid fa-ban" style="color: #ff0000;"></i> 꼭 주의 하세요!</p>
+                        <p style="font-size: 12px; color: red;"><span style="font-size: 16px;">※</span> 대화를 신청하려면 대화신청 버튼을 이용해주세요.</p>
 
+                    </div>
 
-        <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
-            <div class="modal-box">
-                <p>받는사람:</p>
-                <div th:text="${receivedSiteUser.username}" id="recipientUsername" class="form-control"></div>
-                <div class="modal-body">
-                    <p class="badge badge-secondary badge-outline mb-5" style="display: inline-block; margin-right: 10px;">보유중인 하트개수 : <span th:text="${userCyberMoney}"></span>개</p>
-
-                    <p>
-                        대화신청을 하려면 하트 <span th:text="${receivedSiteUser.minHeart}" style="color: red;"></span>개가 필요해요.
-                    </p>
-                    <p> YES를 누르면 하트 <span th:text="${receivedSiteUser.minHeart}" style="color: red;"></span>개가 차감돼요.</p>
-                    <p style="color: red;">하트 페이지에서 상대방이 수락 하기전에 보낸하트를 취소할수 있어요.</p>
-
+                    <div class="modal-action" style="display: flex; justify-content: space-between;">
+                        <form method="dialog" style="width: 100%;">
+                            <button style="width: 48%; background-color: #B276EE; color: white;" class="btn btn-sm" id="justsendCyberMoneyConfirmBtn">확인</button>
+                            <button style="width: 48%; border-color: #B276EE; color: #989898;" class="btn btn-sm btn-outline" data-dismiss="modal">닫기</button>
+                        </form>
+                    </div>
                 </div>
-
-                <div class="modal-action">
-                    <form method="dialog">
-                        <button class="btn btn-secondary" data-dismiss="modal">NO</button>
-                        <button class="btn btn-primary" id="sendCyberMoneyConfirmBtn">YES</button>
-                    </form>
-                </div>
-            </div>
-        </dialog>
+            </dialog>
+        </div>
     </div>
+    <div style="display: none;">
+        <p class="badge badge-secondary" style="display: inline-block; margin-right: 10px;">사용 가능한 하트: <span
+                th:text="${userCyberMoney}"></span>개</p>
+        <p class="badge badge-secondary" style="display: inline-block;">선물 받은 하트: <span
+                th:text="${receivedCyberMoney}"></span>개</p>
+    </div>
+
+    <a class="nav-link" th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
+       th:href="@{'/admin/punish/' + ${receivedSiteUser.id}}">제재하기</a>
+
+
+    <dialog style="font-family: 'SUITE', sans-serif;" id="my_modal_5" class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box">
+            <p class="text-sm font-bold">받는사람</p>
+
+            <div th:text="${receivedSiteUser.nickname}" id="recipientUsername" class="text-xl form-control"></div>
+            <div class="modal-body">
+                <p class="badge badge-secondary badge-outline mt-3 mb-3" style=" font-size: 1em; color: black; display: inline-block; margin-right: 10px; background-color: #EFE1F8; border-color: #EFE1F8;">
+                    보유중인 하트개수 : <span th:text="${userCyberMoney}" style="font-size: 1em; color: black;"></span>개
+                </p>
+
+                <p style="font-size: 12px;">
+                    상대방이 대화신청을 하려면 하트 <span th:text="${receivedSiteUser.minHeart}" style="color: red;"></span>개가 필요하다고 정해놨어요!
+                </p>
+                <p style="font-size: 12px;"> 수락을 누르면 하트 <span th:text="${receivedSiteUser.minHeart}" style="color: red;"></span>개가 차감되고 대화신청을 보내요.</p>
+                <p style="font-size: 12px; color: red;">하트 페이지에서 상대방이 수락 하기전에 보낸하트를 취소할수 있어요.</p>
+
+            </div>
+
+            <div class="modal-action" style="display: flex; justify-content: space-between;">
+                <form method="dialog" style="width: 100%;">
+                    <button class="btn" id="sendCyberMoneyConfirmBtn" style="width: 48%; background-color: #B276EE; color: white;">수락</button>
+                    <button class="btn btn-outline" data-dismiss="modal" style="width: 48%; border-color: #B276EE; color: #989898;">거절</button>
+                </form>
+            </div>
+
+        </div>
+    </dialog>
+
 
     <div th:include="common/menu.html" class="tap_bar"></div>
     <style>
@@ -268,8 +289,8 @@
      my_modal_6.showModal();
 
 
-     var siteUserUsernameElement = $("#recipientUsername");
-        var recipientUsername = siteUserUsernameElement.text();
+     var siteUserUsernameElement = $("#heartUsername");
+        var heartUsername = siteUserUsernameElement.text();
 
      // 이벤트 핸들러 등록 전에 기존 핸들러 삭제
      $('#justsendCyberMoneyConfirmBtn').off('click');
@@ -294,7 +315,7 @@
          $.ajax({
              type: 'POST',
              url: '/user/cybermoney/JustSend',
-             data: 'recipientUsername=' + recipientUsername + '&amount=' + amount,
+             data: 'heartUsername=' + heartUsername + '&amount=' + amount,
              beforeSend: function (xhr) {
                  xhr.setRequestHeader(csrfHeader, csrfToken);
              },
@@ -313,4 +334,13 @@
      });
  });
 
+</script>
+
+<script>
+    const inputField = document.getElementById('justcyberMoneyAmount');
+
+inputField.addEventListener('input', function(event) {
+    // 숫자 이외의 문자를 입력한 경우 제거합니다.
+    this.value = this.value.replace(/[^0-9]/g, '');
+});
 </script>

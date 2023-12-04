@@ -3,9 +3,12 @@ package com.sbs.apple.chat;
 import com.sbs.apple.notification.Notification;
 import com.sbs.apple.notification.NotificationService;
 import com.sbs.apple.user.SiteUser;
+import com.sbs.apple.user.UserRole;
 import com.sbs.apple.user.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.Banner;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -27,6 +30,7 @@ public class ChatController {
     private final ChatMessages chatMessages;
     private final ChatRoomService chatRoomService;
     private final NotificationService notificationService;
+    private  final ChatRoomRepository chatRoomRepository;
 
 
 
@@ -82,6 +86,8 @@ public class ChatController {
         ChatRoom room= chatRoomService.create(user, user2);
 
 
+
+
         String groupKey = "userId_" + userId2;
         System.out.println(groupKey);
         SseEmitter emitter = new SseEmitter();
@@ -104,9 +110,32 @@ public class ChatController {
     //   내가 초대했던 원래 있던 채팅방 들어가기
     @GetMapping("/{roomId}/room3")
     public String showRoom2(  @RequestParam("userId2") Integer userId2 ,Model model, Principal principal) {
-        System.out.println("원래 있던 채팅방에 접속");
         SiteUser user =userService.getUserbyName(principal.getName());
         ChatRoom room = chatRoomService.findRoomByUserIdAndUserId2(user.getId(),userId2);
+
+
+        //채팅방 사용자가 아닌 사람이 주소창으로 억지로 채팅방에 들어올려고 할 경우 막기
+
+        if(room ==null){
+
+            return "redirect:/";
+        }
+
+        //채팅방 사용자가 아닌 사람이 주소창으로 억지로 채팅방에 들어올려고 할 경우 막기
+        if(user.getId()!=room.getSiteUser().getId() && !user.getAuthorities().equals("[ADMIN]")){
+            return "redirect:/";
+
+        }
+
+        System.out.println("원래 있던 채팅방에 접속");
+
+
+        //혹시 중간에 상대방이 채팅방을 나가서 채팅방 사라지거나 그러면 채팅방 목록으로 가기
+        if(room ==null){
+            return "redirect:/chat/allRoom";
+            
+        }
+        
         System.out.println("채팅방에 들어갈 방번호 "+room.getId());
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -132,9 +161,29 @@ public class ChatController {
 // 내가 초대 받은 채팅방 들어가기
     @GetMapping("/{roomId}/room2")
     public String showRoom3(  @RequestParam("userId") Integer userId ,Model model, Principal principal) {
-        System.out.println("원래 있던 채팅방에 접속");
+
         SiteUser user =userService.getUserbyName(principal.getName());
         ChatRoom room = chatRoomService.findRoomByUserIdAndUserId2(userId,user.getId());
+
+        //채팅방 사용자가 아닌 사람이 주소창으로 억지로 채팅방에 들어올려고 할 경우 막기
+        if(room ==null){
+
+            return "redirect:/";
+        }
+
+        //채팅방 사용자가 아닌 사람이 주소창으로 억지로 채팅방에 들어올려고 할 경우 막기
+        if(user.getId() != room.getSiteUser2().getId() && !user.getAuthorities().equals("[ADMIN]")){
+            return "redirect:/";
+
+        }
+
+        System.out.println("원래 있던 채팅방에 접속");
+
+
+        if(room ==null){
+            return "redirect:/chat/allRoom";
+
+        }
 
 
 
@@ -219,18 +268,36 @@ public class ChatController {
 
 
     @GetMapping("/allRoom")
-    public String allRoom(Model model,Principal principal){
+    public String allRoom(Model model,Principal principal, HttpServletResponse response){
+
         SiteUser siteUser = userService.getUserbyName(principal.getName());
         List<ChatRoom> chatRooms=chatRoomService.findByUser(siteUser);
         List<ChatRoom> chatRooms2 =new ArrayList<>();
         List<ChatRoom> chatRooms3=new ArrayList<>() ;
         for(int i=0; i<chatRooms.size(); i++){
-            if(chatRooms.get(i).getSiteUser().getId() == siteUser.getId()){
-                chatRooms2.add(chatRooms.get(i));
-            }else {
-                chatRooms3.add(chatRooms.get(i));
-            }
+
+
+                if(chatRooms.get(i).getSiteUser().getId() == siteUser.getId() ){
+                    chatRooms2.add(chatRooms.get(i));
+                }else {
+                    chatRooms3.add(chatRooms.get(i));
+                }
+
+
+                 //채팅방 나가기를 누른 유저들의 입장권 유무 검사
+                if(chatRooms.get(i).getFromUserPass()==false ) {
+
+                    chatRooms2.remove(chatRooms.get(i));
+
+                }else if (chatRooms.get(i).getToUserPass()==false ){
+
+                    chatRooms3.remove(chatRooms.get(i));
+
+                }
+
+
         }
+
 
 
         if( chatRooms2 !=null) {
@@ -247,26 +314,137 @@ public class ChatController {
     }
 
 
+    @GetMapping("/allRoomForAdmin/{userId}")
+    public String allRoomForAdmin(Model model,Principal principal,@PathVariable Integer userId){
+        SiteUser siteUser = userService.getUser(userId);
+        List<ChatRoom> chatRooms=chatRoomService.findByUser(siteUser);
+        List<ChatRoom> chatRooms2 =new ArrayList<>();
+        List<ChatRoom> chatRooms3=new ArrayList<>() ;
+        for(int i=0; i<chatRooms.size(); i++){
+
+
+            if(chatRooms.get(i).getSiteUser().getId() == siteUser.getId() ){
+                chatRooms2.add(chatRooms.get(i));
+            }else {
+                chatRooms3.add(chatRooms.get(i));
+            }
+
+
+            //채팅방 나가기를 누른 유저들의 입장권 유무 검사
+            if(chatRooms.get(i).getFromUserPass()==false ) {
+
+                chatRooms2.remove(chatRooms.get(i));
+
+            }else if (chatRooms.get(i).getToUserPass()==false ){
+
+                chatRooms3.remove(chatRooms.get(i));
+
+            }
+
+
+        }
+
+
+
+        if( chatRooms2 !=null) {
+            model.addAttribute("chatRoom2",chatRooms2); //내가 초대 한  채팅방
+        }
+        if( chatRooms3 !=null) {
+            model.addAttribute("chatRoom3",chatRooms3);  //내가 초대 받은 채팅방
+        }
+
+
+
+
+        return "chat/admin_allRoom";
+    }
+
+
+
     @GetMapping("/{roomId}/delete")
-    public String deleteRoom ( @PathVariable Integer roomId) {
+    public String deleteRoom ( @PathVariable Integer roomId,@RequestParam("userId") Integer userId ) {
         ChatRoom room=chatRoomService.findById(roomId);
 
-        chatRoomService.delete(room);
+        // 채팅방 나가기를 누른 유저
+        SiteUser user = userService.getUser(userId);
+        System.out.println(user.getId());
+
+        if(room.getSiteUser()==user){
+            System.out.println("보낸 사람이 나가기 누른사람");
+            room.setFromUserPass(false);
+            chatRoomRepository.save(room);
+        }else if(room.getSiteUser2()==user){
+            System.out.println("초대받은  사람이 나가기 누른사람");
+            room.setToUserPass(false);
+            chatRoomRepository.save(room);
+        }
 
 
-        //그 채팅룸의 유저 정보로 알람 기록을 찾아서 나갈때 그 알람 기록도 삭제해주기
+
+
+//        chatRoomService.delete(room);
+
+
+//        그 채팅룸의 유저 정보로 알람 기록을 찾아서 나갈때 그 알람 기록도 삭제해주기
 //        Notification notification=notificationService.findByUsers(room.getSiteUser(),room.getSiteUser2());
 //
 //        if(notification !=null){
 //                notificationService.delete(notification);
 //        }
 
-
-
-
-
         return "redirect:/chat/allRoom";
 
 
     }
+
+
+    @GetMapping("/admin/allChatRooms")
+    public String adminAllChatRooms(Model model , Principal principal){
+        SiteUser currentUser =userService.getUserbyName(principal.getName());
+
+
+        //관리자가 아닌 사람이 접속 하려할때 메인페이지로 보내기
+        if(!currentUser.getAuthorities().contains(UserRole.ADMIN)){
+
+
+
+            return "redirect:/";
+
+        }
+
+        List<ChatRoom> rooms = chatRoomService.findAll();
+
+        model.addAttribute("rooms" ,rooms);
+
+
+        return "chat/admin_allChatRoom";
+
+    }
+
+    @GetMapping("/{roomId}/adminChatRoom/{toUserId}/and/{fromUserId}")
+    public String adminChatRoom(@PathVariable Integer roomId , @PathVariable Integer toUserId,
+                                @PathVariable Integer fromUserId,Model model,Principal principal){
+        SiteUser currentUser =userService.getUserbyName(principal.getName());
+
+        //관리자가 아닌 사람이 접속 하려할때 메인페이지로 보내기
+        if(!currentUser.getAuthorities().contains(UserRole.ADMIN)){
+
+            return "redirect:/";
+
+        }
+
+        ChatRoom room = chatRoomService.findById(roomId);
+        SiteUser fromUser = userService.getUser(fromUserId);
+        SiteUser toUser = userService.getUser(toUserId);
+
+        model.addAttribute("roomId",room.getId() );
+        model.addAttribute("user",fromUser);
+
+        //나랑 채팅하고 있는 사람
+        model.addAttribute("toUser",toUser);
+
+
+        return "chat/admin_chatRoom";
+    }
+
 }

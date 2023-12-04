@@ -7,41 +7,27 @@
 </head>
 <body>
 <div layout:fragment="content" class="flex-1 flex items-center justify-center">
-    <div class="max-w-2xl w-full px-4">
-        <h1 class="mb-4"  style="font-size: 21px; font-weight: bold;">
-            <i class="fa-solid fa-user-plus"></i>
-            회원가입
-        </h1>
+    <div class="max-w-2xl w-full px-4 flex justify-center">
 
-        <button class="btn" onclick="cropImage()" style="padding:0 145px; border-radius:10px; border :1px solid #f08dac; background-color :#f08dac">
-            <i class="fa-solid fa-save"></i>
-            <span>저장하기</span>
-        </button>
         <form enctype="multipart/form-data" th:action name="join-form" method="post" th:object="${userCreateForm}"
-               onsubmit="submitJoinForm(this); return false;" class="flex flex-col gap-6" style="margin-bottom:40px;">
-
-
-
-            <div class="form-control" style="text-align: center;">
-                <label class="label">
-                    <span class="label-text" style="font-size: 18px; font-weight: bold;">프로필 이미지</span>
-                </label>
-                <input type="file" name="file" id="image" class="file-input file-input-bordered file-input-secondary"
-                       accept="image/**" onchange="previewImage(this)" style="margin-bottom :15px; padding: 0; ">
-                <div id="image-preview" style="margin: auto; border-radius:20px; border: 2px solid #f08dac;"></div>
-            </div>
-
-
-
-
-
-
+              onsubmit="submitJoinForm(this); return false;" class="flex flex-col gap-6" style="margin-bottom:40px;">
+            <h1 class="mb-4"  style="font-size: 24px; font-weight: bold; color:#47066E;">
+                회원가입
+            </h1>
+        <div class="form-control" style="text-align: center;">
+            <label class="label">
+                <span class="label-text" style="font-size: 16px; font-weight: bold;">프로필 이미지</span>
+            </label>
+            <input type="file" name="file" id="image"
+                   accept="image/**" onchange="previewImage(this)" style="width:305px; height:43px; outline:1px solid #cccccc; border-radius:10px;">
+            <div id="image-preview" style="margin: auto; border-radius:20px; border: 2px solid #f08dac;"></div>
+        </div>
 
             <div class="form-control">
                 <label class="label" style="padding :0 4px 8px 4px;">
-                    <span class="label-text" style="font-size: 18px; font-weight: bold;">아이디</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold;">아이디</span>
                 </label>
-                <input type="text" name="username" placeholder="아이디" class="input input-bordered input-secondary" autofocus
+                <input type="text" name="username" autofocus style="width:305px; height:43px; outline:1px solid #cccccc; border-radius:10px;"
                        maxlength="30" onchange="$(this).keyup();" onpaste="setTimeoutZero(() => $(this).keyup());"
                        onkeyup="checkUsernameDupDebounce();"  oninput="this.value = this.value.replace(/[^a-zA-Z0-9]/g, '');">
                 <div class="mt-2 text-sm"></div>
@@ -49,35 +35,68 @@
 
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 18px; font-weight: bold;">비밀번호</span>
-                    <span>비밀번호는 8~20자 이내로 입력하셔야 합니다.</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold;">비밀번호</span>
                 </label>
-                <input type="password" name="password1" placeholder="비밀번호" class="input input-bordered input-secondary" maxlength="30">
+                <input type="password" name="password1" maxlength="30" style="width:305px; height:43px; outline:1px solid #cccccc; border-radius:10px;">
+                <span style="font-size: 12px; color:#EC1515;">비밀번호는 8~20자 이내로 입력하셔야 합니다.</span>
             </div>
 
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 18px; font-weight: bold;">비밀번호 확인</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold;">비밀번호 확인</span>
                 </label>
-                <input type="password" name="password2" placeholder="비밀번호 확인" class="input input-bordered input-secondary"
+                <input type="password" name="password2" style="width:305px; height:43px; outline:1px solid #cccccc; border-radius:10px;"
                        maxlength="30">
             </div>
 
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 18px; font-weight: bold;">이메일</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold;">이메일</span>
                 </label>
-                <input type="email" name="email" placeholder="이메일" class="input input-bordered input-secondary" maxlength="30"
+                <div>
+                <input type="text" name="email" style="width:100px; height:43px; outline:1px solid #cccccc; border-radius:10px;" maxlength="30"
                        onchange="$(this).keyup();" onpaste="setTimeoutZero(() => $(this).keyup());"
                        onkeyup="checkEmailDupDebounce();">
-                <div class="mt-2 text-sm"></div>
+                    <span>@</span>
+                    <input name="domain"  maxlength="30" style="width:100px; height:43px; outline:1px solid #cccccc; border-radius:10px;">
+                    <select id="domain-select" class="input-field" style=" padding: 10px; margin: 5px 0; width:110px;
+                        border: 1px solid #ccc;border-radius: 3px;" onchange="updateDomain()" >
+
+                        <option value="direct_input">직접 입력</option>
+                        <option value="naver.com">naver.com</option>
+                        <option value="gmail.com">gmail.com</option>
+                        <option value="daum.net">daum.net</option>
+                        <option value="hanmail.net">hanmail.net</option>
+                        <option value="nate.com">nate.com</option>
+                    </select>
+                </div>
+                <div class="mt-2 text-sm" id="emailMessage"></div>
+                <script>
+                    function updateDomain() {
+                        var selectElement = document.getElementById("domain-select");
+                        var inputElement = document.querySelector('input[name="domain"]');
+                        var selectedValue = selectElement.value;
+
+                        if (selectedValue === "direct_input") {
+                            inputElement.disabled = false;
+                            inputElement.value = "";
+                            inputElement.focus();
+                        } else {
+                            inputElement.disabled = true;
+                            inputElement.value = selectedValue;
+                        }
+                        saveDomain(inputElement.value);
+                    }
+                </script>
             </div>
 
+
             <div class="form-control">
-                <label class="label" style="font-size: 18px; font-weight: bold;">
+                <label class="label" style="font-size: 16px; font-weight: bold;">
                     <span class="label-text">닉네임</span>
                 </label>
-                <input type="text" name="nickname" placeholder="닉네임" class="input input-bordered input-secondary"
+                <input type="text" name="nickname"
+                       style="width:305px; height:43px; outline:1px solid #cccccc; border-radius:10px;"
                        maxlength="30" onchange="$(this).keyup();" onpaste="setTimeoutZero(() => $(this).keyup());"
                        onkeyup="checkNicknameDupDebounce(); checkNicknameForBannedWords(this);">
                 <div class="mt-2 text-sm"></div>
@@ -97,21 +116,19 @@
             </script>
 
             <div class="form-control">
-                <label class="label" style="font-size: 18px; font-weight: bold;">
+                <label class="label" style="font-size: 16px; font-weight: bold;">
                     <span class="label-text">성별</span>
                 </label>
-                <select name="gender" class="input input-bordered input-secondary">
+                <select name="gender" style="width:305px; height:43px; outline:1px solid #cccccc; border-radius:10px;">
                     <option value="남">남</option>
                     <option value="여">여</option>
                 </select>
             </div>
 
             <div>
-                <button class="btn" style="padding:0 145px; border-radius:10px; border :1px solid #f08dac; background-color :#f08dac">
-                    <i class="fa-solid fa-user-plus"></i>
-                    <span>다음</span>
+                <button style="width:305px; height:43px; outline:1px solid #A176BB; border-radius:10px; background-color:#B276EE; color:white;">
+                    <span style="font-size:16px;">다음</span>
                 </button>
-
             </div>
         </form>
         <script>
@@ -203,20 +220,24 @@
 
             const checkEmailDupDebounce = _.debounce(() => checkEmailDup(joinForm), 500);
 
-            function clearEmailInputMsg() {
-                $(joinForm.email).removeClass('input-accent input-error');
-                $(joinForm.email).next().removeClass('text-green-400 text-red-400');
-                $(joinForm.email).next().empty();
-            }
+         function clearEmailInputMsg() {
+        $(joinForm.email).removeClass('input-accent input-error');
+        $(joinForm.email).next().removeClass('text-green-400 text-red-400');
+        $('#emailMessage').empty(); // 이메일 메시지가 표시되는 부분을 비워줍니다.
+    }
 
-            function setEmailInputMsg(isSuccess, msg) {
-                if ( isSuccess ) $(joinForm.email).addClass('input-accent');
-                if ( !isSuccess ) $(joinForm.email).addClass('input-error');
+    function setEmailInputMsg(isSuccess, msg) {
+    $(joinForm.email).removeClass('input-accent input-error'); // 초기화
+    $(joinForm.email).next().removeClass('text-green-400 text-red-400');
+    $('#emailMessage').removeClass('text-green-400 text-red-400'); // 이메일 메시지 관련 클래스 초기화
 
-                $(joinForm.email).next().addClass(isSuccess ? 'text-green-400' : 'text-red-400');
-
-                $(joinForm.email).next().text(msg);
-            }
+    if (isSuccess) {
+        $('#emailMessage').addClass('text-green-400').text(msg); // 성공인 경우 초록색으로 텍스트 설정
+    } else {
+        $('#emailMessage').addClass('text-red-400').text(msg); // 실패인 경우 빨간색으로 텍스트 설정
+        $(joinForm.email).addClass('input-error'); // 실패인 경우 이메일 입력창에 에러 스타일 적용
+    }
+}
 
             let validEmail = '';
             let lastCheckedEmail = '';
@@ -377,58 +398,35 @@
         </script>
 
     </div>
-    <style>
-        #image-preview {
-            max-width: 300px;
-            max-height: 300px;
-            margin-top: 10px;
-        }
-    </style>
-    <!-- Croppie 라이브러리 추가 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
-
-    <script>
-        let croppie = null;
-
-        function previewImage(input) {
-            const preview = document.getElementById('image-preview');
+        <style>
+            #image-preview {
+                max-width: 300px;
+                max-height: 300px;
+                margin-top: 10px;
+            }
+        </style>
+        <script>
+            function previewImage(input) {
+            var preview = document.getElementById('image-preview');
             preview.innerHTML = '';
 
             if (input.files && input.files[0]) {
-                const reader = new FileReader();
+            var reader = new FileReader();
 
-                reader.onload = function (e) {
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.style.width = '270px';
-                    img.style.height = '270px';
-                    img.style.objectFit = 'cover';
-                    img.style.borderRadius = '20px';
-                    preview.appendChild(img);
+            reader.onload = function (e) {
+            var img = document.createElement('img');
+            img.src = e.target.result;
+            img.style.width = '270px';
+            img.style.height = '270px';
+            img.style.objectFit = 'cover';
+            img.style.borderRadius = '20px';
+            preview.appendChild(img);
+            };
 
-                    // Croppie 인스턴스 초기화
-                    croppie = new Croppie(img, {
-                        viewport: { width: 200, height: 200, type: 'square' },
-                        boundary: { width: 300, height: 300 },
-                        enableOrientation: true
-                    });
-                };
-
-                reader.readAsDataURL(input.files[0]);
+            reader.readAsDataURL(input.files[0]);
             }
-        }
-
-        function cropImage() {
-            if (croppie) {
-                croppie.result('base64').then(function (result) {
-                    // 크롭된 이미지 데이터(result)를 사용할 수 있습니다.
-                    console.log('크롭된 이미지:', result);
-                    // 여기에 원하는 작업을 수행할 수 있습니다.
-                });
             }
-        }
-    </script>
+        </script>
 
 </div>
 </body>

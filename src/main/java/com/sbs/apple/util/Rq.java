@@ -4,6 +4,8 @@ package com.sbs.apple.util;
 import com.sbs.apple.Ut;
 import com.sbs.apple.board.Board;
 import com.sbs.apple.board.BoardService;
+import com.sbs.apple.chat.ChatRoom;
+import com.sbs.apple.chat.ChatRoomService;
 import com.sbs.apple.imgs.Imgs;
 import com.sbs.apple.imgs.ImgsService;
 import com.sbs.apple.notification.Notification;
@@ -48,9 +50,10 @@ public class Rq {
     private final NotificationService notificationService;
     private final ImgsService imgsService;
     private final BoardService boardService;
+    private final ChatRoomService chatRoomService;
 
 
-    public Rq(UserService userService ,NotificationService notificationService,ImgsService imgsService,BoardService boardService) {
+    public Rq(UserService userService ,NotificationService notificationService,ImgsService imgsService,BoardService boardService,ChatRoomService chatRoomService) {
         ServletRequestAttributes sessionAttributes = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes()));
         HttpServletRequest request = sessionAttributes.getRequest();
         HttpServletResponse response = sessionAttributes.getResponse();
@@ -61,6 +64,7 @@ public class Rq {
         this.notificationService=notificationService;
         this.imgsService=imgsService;
         this.boardService=boardService;
+        this.chatRoomService=chatRoomService;
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -170,7 +174,7 @@ public class Rq {
 
             loginUser = userService.getUserbyName(getLoginedMemberUsername());
 
-            notificationList=notificationService.getByUserTo(loginUser);
+            notificationList=notificationService.getsByUserTo(loginUser);
 
 
         return notificationList;
@@ -199,6 +203,18 @@ public class Rq {
             return false;
         }
     }
+
+    public Integer findChatRoomByNoti(Notification notification){
+        SiteUser fromUser=notification.getSiteUserFrom();
+        SiteUser toUser=notification.getSiteUser();
+        ChatRoom room =chatRoomService.findRoomByUserIdAndUserId2(fromUser.getId(),toUser.getId());
+        if(room ==null){
+            return null;
+        }
+        return room.getId();
+
+    }
+
     public String redirect(String url, String msg) {
         return "redirect:" + Ut.url.modifyQueryParam(url, "msg", Ut.url.encodeWithTtl(msg));
     }

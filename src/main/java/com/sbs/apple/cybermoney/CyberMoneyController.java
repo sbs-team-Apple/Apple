@@ -28,9 +28,10 @@ public class CyberMoneyController {
     private final CyberMoneyTransactionRepository cyberMoneyTransactionRepository;
 
 
+
     @PostMapping("/JustSend")
     public ResponseEntity<String> JustsendCyberMoney(
-            @RequestParam("recipientUsername") String recipientUsername,
+            @RequestParam("heartUsername") String heartUsername,
             @RequestParam("amount") int amount) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
@@ -41,18 +42,24 @@ public class CyberMoneyController {
         }
         SiteUser senderUser = senderUserOptional.get();
 
-        if (senderUser.getUsername().equals(recipientUsername)) {
+        if (senderUser.getUsername().equals(heartUsername)) {
             return ResponseEntity.badRequest().body("자기 자신에게 사이버 머니를 보낼 수 없습니다.");
         }
 
-        Optional<SiteUser> recipientUserOptional = userRepository.findByUsername(recipientUsername);
-        if (!recipientUserOptional.isPresent()) {
+        Optional<SiteUser> heartUserOptional = userRepository.findByNickname(heartUsername);
+        if (!heartUserOptional.isPresent()) {
             return ResponseEntity.badRequest().body("받는 사용자를 찾을 수 없습니다.");
         }
-        SiteUser recipientUser = recipientUserOptional.get();
+        SiteUser heartUser = heartUserOptional.get();
 
 
-        cyberMoneyServiceImpl.JustSendCyberMoney(senderUser, recipientUser, amount);
+        String groupKey = "userId_" + heartUser.getId();
+        SseEmitter emitter = new SseEmitter();
+        sseEmitters.add(groupKey, emitter);
+        sseEmitters.noti(groupKey, "invite_chatRoom");
+        notificationService.create(heartUser,senderUserOptional.get(), "heart");
+
+        cyberMoneyService.JustsendCyberMoney(senderUser, heartUser, amount);
         return ResponseEntity.ok("사이버 머니 전송이 성공했습니다.");
     }
 
@@ -78,7 +85,7 @@ public class CyberMoneyController {
         }
 
         // 받는 사용자를 찾습니다.
-        Optional<SiteUser> recipientUserOptional = userRepository.findByUsername(recipientUsername);
+        Optional<SiteUser> recipientUserOptional = userRepository.findByNickname(recipientUsername);
         if (!recipientUserOptional.isPresent()) {
             return ResponseEntity.badRequest().body("받는 사용자를 찾을 수 없습니다.");
         }

@@ -71,7 +71,7 @@ public class UserController {
                           RedirectAttributes redirectAttributes, Model model, MultipartFile file)
             throws Exception {
         RsData<SiteUser> joinRs = userService.create(false, false, userCreateForm.getFile(), userCreateForm.getUsername(), userCreateForm.getPassword1()
-                ,userCreateForm.getEmail(),userCreateForm.getNickname(), userCreateForm.getGender());
+                ,userCreateForm.getEmail(),userCreateForm.getDomain(),userCreateForm.getNickname(), userCreateForm.getGender());
         if (joinRs.getResultCode().equals("F-1")) {
             return rq.historyBack(joinRs.getMsg());
         }
@@ -297,7 +297,7 @@ public class UserController {
     @PostMapping("/desired_modify")
     public String desired_modify(UserDesiredForm userDesiredForm, Principal principal) {
         SiteUser user = this.userService.getUserbyName(principal.getName());
-        userService.add_desired(user, userDesiredForm.getDesired_age1(),userDesiredForm.getDesired_age2(), userDesiredForm.getDesired_living(),
+        userService.add_desired2(user, userDesiredForm.getDesired_age1(),userDesiredForm.getDesired_age2(), userDesiredForm.getDesired_living(),
                 userDesiredForm.getDesired_tall1(),userDesiredForm.getDesired_tall2(),
                 userDesiredForm.getDesired_body_type(), userDesiredForm.getDesired_smoking(),
                 userDesiredForm.getDesired_drinking(), userDesiredForm.getDesired_styleList(),
@@ -312,8 +312,10 @@ public class UserController {
     public String paymentPage(Principal principal, Model model, @PathVariable("id") Integer id) {
         SiteUser siteUser = this.userService.getUserbyName(principal.getName());
         SiteUser receivedSiteUser = this.userService.getUser(id);
+        SiteUser heartSiteUser = this.userService.getUser(id);
         model.addAttribute("siteUser", siteUser);
         model.addAttribute("receivedSiteUser", receivedSiteUser);
+        model.addAttribute("heartSiteUser", heartSiteUser);
         String interest_user = principal.getName();
 
 
@@ -418,8 +420,12 @@ public class UserController {
         int userCyberMoney = user.getCyberMoney();
         int receivedCyberMoney = user.getReceivedCyberMoney(); // 다른 사용자로부터 받은 사이버머니
 
+        List<CyberMoneyTransaction> heartTransactions = cyberMoneyTransactionRepository.findByHeartUser(user);
         List<CyberMoneyTransaction> receivedTransactions = cyberMoneyTransactionRepository.findByRecipientUser(user);
         List<CyberMoneyTransaction> sentTransactions = cyberMoneyTransactionRepository.findBySenderUser(user);
+        List<CyberMoneyTransaction> sent2Transactions = cyberMoneyTransactionRepository.findBySenderUserAndHeartUserIsNotNull(user);
+        List<CyberMoneyTransaction> sent3Transactions = cyberMoneyTransactionRepository.findBySenderUserAndRecipientUserIsNotNull(user);
+
 
         // 완료된 거래 목록을 생성
         List<CyberMoneyTransaction> completedTransactions = new ArrayList<>();
@@ -427,6 +433,7 @@ public class UserController {
             if (transaction.isAccepted() || transaction.isRejected()) {
                 completedTransactions.add(transaction);
             }
+
         }
 
         // receivedTransactions에서 완료된 거래를 제거하고 completedTransactions에 추가
@@ -441,16 +448,17 @@ public class UserController {
         }
 
         int minHeart = user.getMinHeart();
-        model.addAttribute("minHeart", minHeart);
 
-        // 모델에 데이터를 추가하여 뷰로 전달
+        model.addAttribute("minHeart", minHeart);
+        model.addAttribute("heartTransactions", heartTransactions); // heartTransactions 리스트를 모델에 추가
         model.addAttribute("user", user);
         model.addAttribute("receivedTransactions", receivedTransactions); // 받은 거래 정보
         model.addAttribute("sentTransactions", sentTransactions); // 보낸 거래 정보
+        model.addAttribute("sent2Transactions", sent2Transactions); // 보낸 거래 정보
+        model.addAttribute("sent3Transactions", sent3Transactions); // 보낸 거래 정보
         model.addAttribute("userCyberMoney", userCyberMoney);
         model.addAttribute("receivedCyberMoney", receivedCyberMoney); // 다른 사용자로부터 받은 사이버머니
         model.addAttribute("completedTransactions", completedTransactions); // 완료된 거래 정보
-
         return "transactions"; // 템플릿 이름 (예: transaction-history.html)
     }
 
@@ -542,14 +550,6 @@ public class UserController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/interest")
     public String interest_all(Principal principal, Model model) {
-        SiteUser siteUser = this.userService.getUserbyName(principal.getName());
-        model.addAttribute("siteUser", siteUser);
-        return "user/interest_all";
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/heart")
-    public String heart(Principal principal, Model model) {
         SiteUser siteUser = this.userService.getUserbyName(principal.getName());
         model.addAttribute("siteUser", siteUser);
         return "user/interest_all";

@@ -5,7 +5,7 @@
 </head>
 <body>
 
-<div layout:fragment="content" class="container my-3">
+<div layout:fragment="content" class="container my-3 ml-auto mr-auto">
 
 
         <div class="all-room-section mt-7 ">
@@ -68,6 +68,16 @@
 
 
         </div>
+    <div th:include="common/menu.html" class="tap_bar"></div>
+    <style>
+        .tap_bar {
+                position: fixed;
+                width: 100%;
+                bottom : 0;
+                left:50%;
+                transform:translate(-50%,0);
+            }
+    </style>
 </div>
 </body>
 </html>
@@ -89,6 +99,21 @@
     }
     .all-room-container {
         margin-bottom:20px;
+
+    }
+
+    @media screen and (min-width :800px) {
+        .all-room-container  {
+
+            width:7 00px;
+            margin-left:auto;
+        margin-right:auto;
+
+
+        }
+
+
+
     }
 
 
