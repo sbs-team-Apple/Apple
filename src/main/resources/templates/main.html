@@ -101,6 +101,18 @@
         var img = document.getElementById('myImage');
         img.classList.add('object-cover');
     </script>
+
+
+    <script>
+        // Check if the URL contains a specific parameter indicating a redirect due to login requirement
+        const urlParams = new URLSearchParams(window.location.search);
+        const loginRequired = urlParams.get('loginRequired');
+
+        if (loginRequired) {
+            // If login is required, show an alert
+            alert('You need to be logged in to access this page.');
+        }
+    </script>
 </div>
 </body>
 </html>

@@ -5,6 +5,7 @@ import com.sbs.apple.notification.NotificationService;
 import com.sbs.apple.user.SiteUser;
 import com.sbs.apple.user.UserRole;
 import com.sbs.apple.user.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.Banner;
@@ -267,7 +268,8 @@ public class ChatController {
 
 
     @GetMapping("/allRoom")
-    public String allRoom(Model model,Principal principal){
+    public String allRoom(Model model,Principal principal, HttpServletResponse response){
+
         SiteUser siteUser = userService.getUserbyName(principal.getName());
         List<ChatRoom> chatRooms=chatRoomService.findByUser(siteUser);
         List<ChatRoom> chatRooms2 =new ArrayList<>();
