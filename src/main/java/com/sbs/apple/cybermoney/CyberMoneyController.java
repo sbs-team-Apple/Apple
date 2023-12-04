@@ -46,7 +46,7 @@ public class CyberMoneyController {
             return ResponseEntity.badRequest().body("자기 자신에게 사이버 머니를 보낼 수 없습니다.");
         }
 
-        Optional<SiteUser> heartUserOptional = userRepository.findByUsername(heartUsername);
+        Optional<SiteUser> heartUserOptional = userRepository.findByNickname(heartUsername);
         if (!heartUserOptional.isPresent()) {
             return ResponseEntity.badRequest().body("받는 사용자를 찾을 수 없습니다.");
         }
@@ -85,7 +85,7 @@ public class CyberMoneyController {
         }
 
         // 받는 사용자를 찾습니다.
-        Optional<SiteUser> recipientUserOptional = userRepository.findByUsername(recipientUsername);
+        Optional<SiteUser> recipientUserOptional = userRepository.findByNickname(recipientUsername);
         if (!recipientUserOptional.isPresent()) {
             return ResponseEntity.badRequest().body("받는 사용자를 찾을 수 없습니다.");
         }
