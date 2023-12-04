@@ -312,8 +312,10 @@ public class UserController {
     public String paymentPage(Principal principal, Model model, @PathVariable("id") Integer id) {
         SiteUser siteUser = this.userService.getUserbyName(principal.getName());
         SiteUser receivedSiteUser = this.userService.getUser(id);
+        SiteUser heartSiteUser = this.userService.getUser(id);
         model.addAttribute("siteUser", siteUser);
         model.addAttribute("receivedSiteUser", receivedSiteUser);
+        model.addAttribute("heartSiteUser", heartSiteUser);
         String interest_user = principal.getName();
 
 
@@ -418,8 +420,11 @@ public class UserController {
         int userCyberMoney = user.getCyberMoney();
         int receivedCyberMoney = user.getReceivedCyberMoney(); // 다른 사용자로부터 받은 사이버머니
 
+        List<CyberMoneyTransaction> heartTransactions = cyberMoneyTransactionRepository.findByHeartUser(user);
         List<CyberMoneyTransaction> receivedTransactions = cyberMoneyTransactionRepository.findByRecipientUser(user);
         List<CyberMoneyTransaction> sentTransactions = cyberMoneyTransactionRepository.findBySenderUser(user);
+
+
 
         // 완료된 거래 목록을 생성
         List<CyberMoneyTransaction> completedTransactions = new ArrayList<>();
@@ -427,6 +432,7 @@ public class UserController {
             if (transaction.isAccepted() || transaction.isRejected()) {
                 completedTransactions.add(transaction);
             }
+
         }
 
         // receivedTransactions에서 완료된 거래를 제거하고 completedTransactions에 추가
@@ -442,15 +448,13 @@ public class UserController {
 
         int minHeart = user.getMinHeart();
         model.addAttribute("minHeart", minHeart);
-
-        // 모델에 데이터를 추가하여 뷰로 전달
+        model.addAttribute("heartTransactions", heartTransactions); // heartTransactions 리스트를 모델에 추가
         model.addAttribute("user", user);
         model.addAttribute("receivedTransactions", receivedTransactions); // 받은 거래 정보
         model.addAttribute("sentTransactions", sentTransactions); // 보낸 거래 정보
         model.addAttribute("userCyberMoney", userCyberMoney);
         model.addAttribute("receivedCyberMoney", receivedCyberMoney); // 다른 사용자로부터 받은 사이버머니
         model.addAttribute("completedTransactions", completedTransactions); // 완료된 거래 정보
-
         return "transactions"; // 템플릿 이름 (예: transaction-history.html)
     }
 
