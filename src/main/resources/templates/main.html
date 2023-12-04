@@ -52,7 +52,7 @@
             </div>
 
         </div>
-        <div th:include="common/menu.html" class="tap_bar"></div>
+        <div sec:authorize="isAuthenticated()" th:include="common/menu.html" class="tap_bar"></div>
     </div>
 <div style="height:1000px;"></div>
     <div th:include="common/footer.html"></div>
