@@ -15,7 +15,7 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: GMAIL_ACCOUNT
+    username: seonghungim34@gmail.com
     password: NEED_TO_INPUT_ON_SECRET
     properties:
       mail:

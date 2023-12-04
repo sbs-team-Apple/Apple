@@ -4,6 +4,7 @@ import com.sbs.apple.DataNotFoundException;
 import com.sbs.apple.RsData;
 import com.sbs.apple.chat.ChatRoom;
 import com.sbs.apple.chat.ChatRoomService;
+import com.sbs.apple.email.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,6 +23,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final ChatRoomService chatRoomService;
     private String uploadDir;
+    private final EmailService emailService;
 
     Random random = new Random();
 
@@ -61,7 +63,7 @@ public class UserService {
         user.setAge(random.nextInt(30));
         user.setLiving("서울");
         user.setHobbyList(hobbyList);
-        user.setTall(random.nextInt(170));
+        user.setTall(random.nextFloat(170));
         user.setBody_type("평범한");
         user.setSmoking("비흡연");
         user.setDrinking("가끔");
@@ -71,10 +73,8 @@ public class UserService {
         user.setSchool("4년제 졸업");
         user.setJob("무직");
         user.setAbout_Me("반갑소");
-        user.setDesired_age("상관없음");
         user.setDesired_living("서울");
         user.setDesired_hobby("골프");
-        user.setDesired_tall("상관없음");
         user.setDesired_body_type("평범한");
         user.setDesired_smoking("비흡연");
         user.setDesired_drinking("가끔");
@@ -144,7 +144,7 @@ public class UserService {
     }
 
     //프로필 설정
-    public SiteUser add_profile(SiteUser user, int age, String living, List<String> hobbyList, int tall, String bodyType,
+    public SiteUser add_profile(SiteUser user, int age, String living, List<String> hobbyList, float tall, String bodyType,
                                 String smoking, String drinking, List<String> styleList, String religion,
                                 String mbti, String school, String job, String About_Me) {
         user.setAge(age);
@@ -165,14 +165,16 @@ public class UserService {
     }
 
     //이상형 설정
-    public RsData<SiteUser> add_desired(SiteUser user, String desiredAge, String desiredLiving,
-                                        String desiredTall, String desiredBodyType, String desiredSmoking,
+    public RsData<SiteUser> add_desired(SiteUser user, int desiredAge1,int desiredAge2, String desiredLiving,
+                                        int desiredTall1,int desiredTall2, String desiredBodyType, String desiredSmoking,
                                         String desiredDrinking, List<String> desiredStyleList, String desiredReligion,
                                         String desiredMbti, String desiredSchool, String desiredJob) {
 
-        user.setDesired_age(desiredAge);
+        user.setDesired_age1(desiredAge1);
+        user.setDesired_age2(desiredAge2);
         user.setDesired_living(desiredLiving);
-        user.setDesired_tall(desiredTall);
+        user.setDesired_tall1(desiredTall1);
+        user.setDesired_tall2(desiredTall2);
         user.setDesired_body_type(desiredBodyType);
         user.setDesired_smoking(desiredSmoking);
         user.setDesired_drinking(desiredDrinking);
@@ -183,9 +185,12 @@ public class UserService {
         user.setDesired_job(desiredJob);
         this.userRepository.save(user);
         user = userRepository.save(user);
+        sendJoinCompleteMail(user);
         return RsData.of("S-1", "회원가입이 완료되었습니다.", user);
     }
-
+    private void sendJoinCompleteMail(SiteUser siteUser) {
+        emailService.send(siteUser.getEmail(), "회원가입이 완료되었습니다.", "회원가입이 완료되었습니다.");
+    }
 
     public boolean isCorrectPassword(String username, String password) {
         SiteUser user = getUserbyName(username);

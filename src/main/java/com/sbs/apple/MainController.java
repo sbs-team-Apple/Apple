@@ -40,11 +40,11 @@ public class MainController {
         System.out.println("메인페이지 실행1");
 
         // ************ TEST DATA CREATE ***************
-        if (!isTestDataCreated && ddlAutoValue.equals("create") && userRepository.count() == 0) {
-            dataCreator.createTestData();
-            isTestDataCreated = true;
-
-        }// *********************************************
+//        if (!isTestDataCreated && ddlAutoValue.equals("create") && userRepository.count() == 0) {
+//            dataCreator.createTestData();
+//            isTestDataCreated = true;
+//
+//        }// *********************************************
 
         ChatRoom chatRoom= chatRoomService.findLastRoom();
 

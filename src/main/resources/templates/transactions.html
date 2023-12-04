@@ -5,8 +5,7 @@
     <style>
         .Transactions_list {
             margin-bottom: 10px;
-            border: 1px solid #000;
-            padding: 10px;
+
         }
         .tab-button {
             cursor: pointer;
@@ -63,17 +62,20 @@
 
         <div id="sentTab" class="tab-content " style="display: none;">
             <ul>
-                <li class="Transactions_list" th:each="transaction : ${sentTransactions}" style="display: flex; justify-content: space-between;">
-                    <div>
+                <li th:if="${not transaction.isAccepted() and not transaction.isRejected()}"
+                    class="Transactions_list" th:each="transaction : ${sentTransactions}" >
+                    <!-- 거절 버튼 -->
+                    <div style="border :1px solid #FABBEE; padding:5px;">
                         <p th:text="${transaction.recipientUser.username} +' 님에게 ♥ ' + ${transaction.amount} + '개를 보냈습니다.'"></p>
                         <p th:text="${#dates.format(transaction.transactionDate, 'yyyy-MM-dd')}"></p>
+                        <div style="display: flex; align-items: center;">
+                            <form th:action="@{/user/processTransaction}" method="post">
+                                <input type="hidden" name="transactionId" th:value="${transaction.id}" />
+                                <input type="hidden" name="action" value="reject" />
+                                <button class="btn-sm btn btn-outline btn-info" type="submit">거절</button>
+                            </form>
+                        </div>
                     </div>
-                    <form th:action="@{/user/processTransaction}" method="post">
-                        <input type="hidden" name="transactionId" th:value="${transaction.id}" />
-                        <input type="hidden" name="action" value="reject" /> <!-- 거절 작업 설정 -->
-                        <button class="btn-sm btn btn-outline btn-info" type="submit"
-                                th:disabled="${transaction.isAccepted() or transaction.isRejected()}">취소</button>
-                    </form>
                 </li>
             </ul>
         </div>
@@ -81,26 +83,27 @@
         <div id="receivedTab" class="tab-content">
             <ul>
                 <li class="Transactions_list" th:each="transaction : ${receivedTransactions}" style="display: flex; justify-content: space-between;">
-                    <div>
+                    <div style="border :1px solid #FABBEE; padding:5px;">
                         <p th:text="${transaction.senderUser.username} +' 님이 ♥ ' + ${transaction.amount} + '개를 보냈습니다'"></p>
                         <p th:text="${transaction.transactionDate}"></p>
-                    </div>
-                    <!-- "수락" 버튼 -->
-                    <div style="display: flex; align-items: center;">
-                        <form th:action="@{/user/processTransaction}" method="post">
-                            <input type="hidden" name="transactionId" th:value="${transaction.id}" />
-                            <input type="hidden" name="action" value="accept" /> <!-- 수락 작업 설정 -->
-                            <button class="btn-sm btn btn-outline btn-info" type="submit"
-                                    th:disabled="${transaction.isAccepted() or transaction.isRejected()}">수락</button>
-                        </form>
-                        <div style="width: 10px;"></div> <!-- 10px 여백 추가 -->
-                        <!-- "거절" 버튼 -->
-                        <form th:action="@{/user/processTransaction}" method="post">
-                            <input type="hidden" name="transactionId" th:value="${transaction.id}" />
-                            <input type="hidden" name="action" value="reject" /> <!-- 거절 작업 설정 -->
-                            <button class="btn-sm btn btn-outline btn-info" type="submit"
-                                    th:disabled="${transaction.isAccepted() or transaction.isRejected()}">거절</button>
-                        </form>
+
+                        <!-- "수락" 버튼 -->
+                        <div style="display: flex; align-items: center;">
+                            <form th:action="@{/user/processTransaction}" method="post">
+                                <input type="hidden" name="transactionId" th:value="${transaction.id}" />
+                                <input type="hidden" name="action" value="accept" /> <!-- 수락 작업 설정 -->
+                                <button class="btn-sm btn btn-outline btn-info" type="submit"
+                                        th:disabled="${transaction.isAccepted() or transaction.isRejected()}">수락</button>
+                            </form>
+                            <div style="width: 10px;"></div> <!-- 10px 여백 추가 -->
+                            <!-- "거절" 버튼 -->
+                            <form th:action="@{/user/processTransaction}" method="post">
+                                <input type="hidden" name="transactionId" th:value="${transaction.id}" />
+                                <input type="hidden" name="action" value="reject" /> <!-- 거절 작업 설정 -->
+                                <button class="btn-sm btn btn-outline btn-info" type="submit"
+                                        th:disabled="${transaction.isAccepted() or transaction.isRejected()}">거절</button>
+                            </form>
+                        </div>
                     </div>
                 </li>
             </ul>
@@ -111,20 +114,20 @@
             <ul>
                 <li class="Transactions_list" th:each="transaction : ${completedTransactions}" th:if="${transaction.isAccepted()} or ${transaction.isRejected()}" style="display: flex; justify-content: space-between;"
                     th:unless="${transaction.senderUser.username eq user.username}" th:remove="tag">
-                    <div style="border :1px solid #FABBEE; padding:5px;">
+                    <div style="border :1px solid #FABBEE; padding:5px; margin-bottom:10px;">
                         <p th:text="${transaction.senderUser.username} +' 님이 ♥ ' + ${transaction.amount} + '개를 보냈습니다'"></p>
                         <p th:text="${#dates.format(transaction.transactionDate, 'yyyy-MM-dd')}"></p>
-
                     </div>
 
                 </li>
+                <li class="Transactions_list" th:each="transaction : ${sentTransactions}" th:if="${transaction.isAccepted()}">
+                    <div style="border :1px solid #FABBEE; padding:5px;">
+                        <p th:text="'회원님께서 ' + ${transaction.recipientUser.username} +' 님에게 ♥ ' + ${transaction.amount} + '개를 보냈습니다.'"></p>
+                        <p th:text="${#dates.format(transaction.transactionDate, 'yyyy-MM-dd')}"></p>
+                    </div>
+                </li>
             </ul>
         </div>
-
-
-
-
-
 
     </div>
     <div class="flex-grow"></div>
@@ -136,18 +139,7 @@
                 style="border-radius:10px; border :1px solid #3B84F7; background-color :#ffffff"><a href="/exchange/create"><i class="fa-solid fa-sack-dollar"></i> 환전하기</a></button>
     </div>
     <div style="height: 20px;"></div>
-    <div class="outer-box" >
-        <form action="/user/updateMinHeart" method="post">
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-
-            <div class="title text-lg border-b border-black">최소 하트값 설정<p style="display: inline-block; margin-right: 10px;">&nbsp(최소 하트: <span th:text="${minHeart}+'개)'"></span></p>
-            </div>
-            <label for="minHeartInput">최소 하트값:</label>
-            <input class="input input-sm input-secondary  max-w-xs" type="number" name="minHeart" id="minHeartInput" placeholder="최소 하트값 입력" />
-            <button type="submit" class="btn btn-sm"
-                    style="border-radius:10px; border :1px solid #f08dac; background-color :#F7A03B">확인</button>
-        </form>
-    </div>
+    <div class="outer-box"></div>
 
     <!--    <div class="outer-box">-->
     <!--        <div class="inner-box">-->
@@ -169,6 +161,8 @@
             document.getElementById(tabName).style.display = 'block';
         }
     </script>
+
+
 </div>
 </body>
 </html>
