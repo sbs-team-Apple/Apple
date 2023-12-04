@@ -459,7 +459,6 @@ public class UserController {
         model.addAttribute("userCyberMoney", userCyberMoney);
         model.addAttribute("receivedCyberMoney", receivedCyberMoney); // 다른 사용자로부터 받은 사이버머니
         model.addAttribute("completedTransactions", completedTransactions); // 완료된 거래 정보
-
         return "transactions"; // 템플릿 이름 (예: transaction-history.html)
     }
 
