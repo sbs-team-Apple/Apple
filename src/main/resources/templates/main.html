@@ -16,9 +16,7 @@
             <div class="profile_in m-auto flex justify-center flex-col items-center"
                  th:each="userList : ${userList}"
                  style="margin-top: 20px; margin-bottom: 10px; border-radius:10px;">
-                <label class="swap swap-flip">
-                    <input type="checkbox"/>
-                    <div class="swap-on" style="outline: 1px solid #D4D2D2; border-radius:10px;">
+                    <div style="outline: 1px solid #D4D2D2; border-radius:10px;">
                         <a th:href="@{|/user/detail/${userList.id}|}">
                             <div id="myImage">
                                 <img style="width: 315px; height: 290px; object-fit: cover; border-top-left-radius: 10px; border-top-right-radius: 10px;"
@@ -38,17 +36,6 @@
                             </div>
                         </a>
                     </div>
-                    <div class="swap-off" style="border-radius:10px; outline:1px solid pink;">
-                        <div style="height:33px;  background-color: #white;  border-top-left-radius: 10px; border-top-right-radius: 10px;">
-                        </div>
-                        <div>
-                            <img style="width: 315px; height: 290px; object-fit: cover;"
-                                 src="/img/white.png" alt="pink image"/>
-                        </div>
-                        <div style="height:33px;  background-color: #white; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
-                        </div>
-                    </div>
-                </label>
             </div>
 
         </div>
