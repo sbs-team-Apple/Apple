@@ -20,11 +20,11 @@ public class CustomWebMvcConfig implements WebMvcConfigurer {
         registry.jsp("/WEB-INF/views/", ".jsp");
     }
 
-//    @Override
-//    public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(new AuthenticationInterceptor())
-//                .addPathPatterns("/**") // Apply interceptor to all paths
-//                .excludePathPatterns("/", "/login", "/register"); // Exclude specific paths if needed
-//    }
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new AuthenticationInterceptor())
+                .addPathPatterns("/**") // Apply interceptor to all paths
+                .excludePathPatterns("/", "/login", "/register","/img/**"); // Exclude specific paths if needed
+    }
 }
 
