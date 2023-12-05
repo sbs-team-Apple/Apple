@@ -53,14 +53,14 @@
         </script>
 
         <form th:action="@{'/user/desired/' + ${userId}}" th:object="${userDesiredForm}"
-              method="post" onsubmit="submitJoinForm(this); return false;" class="flex flex-col gap-6"
+              method="post" onsubmit="submitJoinForm(this); return false;" class="flex flex-col gap-3"
               style="margin-bottom:40px;">
-            <h1 style="font-size: 24px; font-weight: bold; color:#47066E;">
+            <h1 class="signup" style="font-size: 24px; color:#47066E;">
                 이상형 설정
             </h1>
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 16px; font-weight: bold;">나이 설정</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold; font-family: 'SuitFont', sans-serif; font-weight: 600;">나이 설정</span>
                 </label>
                 <div class="mb-1">
                     <span>
@@ -73,12 +73,12 @@
                            pattern="^\d+$" min="20" max="99" maxlength="2">
                     </span>
                 </div>
-                <span style="font-size:12px; color:#EC1515;">숫자만 입력해주세요.</span>
+                <span style="font-size:12px; color:#EC1515; font-family: 'SuitFont', sans-serif; font-weight: 600;">숫자만 입력해주세요.</span>
             </div>
 
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 16px; font-weight: bold;">원하는 지역</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold; font-family: 'SuitFont', sans-serif; font-weight: 600;">원하는 지역</span>
                 </label>
                 <select name="desired_living" style="width:305px; height:43px; outline:1px solid #cccccc; border-radius:10px;">
                     <option value="상관없음" selected>상관없음</option>
@@ -105,7 +105,7 @@
 
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 16px; font-weight: bold;">키 설정</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold; font-family: 'SuitFont', sans-serif; font-weight: 600;">키 설정</span>
                 </label>
                 <div class="mb-1">
                     <span>
@@ -118,12 +118,12 @@
                                pattern="[0-9]*">
                     </span>
                 </div>
-                <span style="font-size:12px; color:#EC1515;">숫자만 입력해주세요.</span>
+                <span style="font-size:12px; color:#EC1515; font-family: 'SuitFont', sans-serif; font-weight: 600;">숫자만 입력해주세요.</span>
             </div>
 
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 16px; font-weight: bold;">이상형 체형</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold; font-family: 'SuitFont', sans-serif; font-weight: 600;">이상형 체형</span>
                 </label>
                 <select name="desired_body_type" style="width:305px; height:43px; outline:1px solid #cccccc; border-radius:10px;">
                     <option value="상관없음" selected>상관없음</option>
@@ -138,7 +138,7 @@
 
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 16px; font-weight: bold;">이상형 흡연유무</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold; font-family: 'SuitFont', sans-serif; font-weight: 600;">이상형 흡연유무</span>
                 </label>
                 <select name="desired_smoking" style="width:305px; height:43px; outline:1px solid #cccccc; border-radius:10px;">
                     <option value="상관없음" selected>상관없음</option>
@@ -151,7 +151,7 @@
 
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 16px; font-weight: bold;">이상형 음주</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold; font-family: 'SuitFont', sans-serif; font-weight: 600;">이상형 음주</span>
                 </label>
                 <select name="desired_drinking" style="width:305px; height:43px; outline:1px solid #cccccc; border-radius:10px;">
                     <option value="상관없음" selected>상관없음</option>
@@ -163,7 +163,7 @@
             </div>
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 18px; font-weight: bold;">이상형 스타일</span>
+                    <span class="label-text" style="font-size: 18px; font-weight: bold; font-family: 'SuitFont', sans-serif; font-weight: 600;">이상형 스타일</span>
                 </label>
                 <div class="grid grid-cols-3 gap-4 justify-items-center mb-1"
                      style="width:305px; outline:1px solid #cccccc; border-radius:10px;">
@@ -370,7 +370,7 @@
             </style>
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 16px; font-weight: bold;">이상형 종교</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold; font-family: 'SuitFont', sans-serif; font-weight: 600;">이상형 종교</span>
                 </label>
                 <select name="desired_religion" style="width:305px; height:43px; outline:1px solid #cccccc; border-radius:10px;">
                     <option value="상관없음" selected>상관없음</option>
@@ -386,7 +386,7 @@
 
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 16px; font-weight: bold;">MBTI</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold; font-family: 'SuitFont', sans-serif; font-weight: 600;">MBTI</span>
                 </label>
                 <select name="desired_mbti" style="width:305px; height:43px; outline:1px solid #cccccc; border-radius:10px;">
                     <option value="상관없음" selected>상관없음</option>
@@ -411,7 +411,7 @@
 
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 16px; font-weight: bold;">최종 졸업 또는 재학 중인 학교</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold; font-family: 'SuitFont', sans-serif; font-weight: 600;">최종 졸업 또는 재학 중인 학교</span>
                 </label>
                 <select name="desired_school" style="width:305px; height:43px; outline:1px solid #cccccc; border-radius:10px;">
                     <option value="상관없음" selected>상관없음</option>
@@ -429,7 +429,7 @@
 
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 16px; font-weight: bold;">직장</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold; font-family: 'SuitFont', sans-serif; font-weight: 600;">직장</span>
                 </label>
                 <select name="desired_job" style="width:305px; height:43px; outline:1px solid #cccccc; border-radius:10px;">
                     <option value="상관없음" selected>상관없음</option>
@@ -452,10 +452,21 @@
             </div>
             <div>
                 <button style="width:305px; height:43px; outline:1px solid #A176BB; border-radius:10px; background-color:#B276EE; color:white;">
-                    <span style="font-size:16px;">회원가입 완료</span>
+                    <span style="font-size:16px; font-family: 'SuitFont', sans-serif; font-weight: 600;">회원가입 완료</span>
                 </button>
             </div>
         </form>
+        <style>
+            @font-face {
+                        font-family: 'EliceDigitalBaeum-Bd';
+                        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_elice@1.0/EliceDigitalBaeum-Bd.woff2') format('woff2');
+                        font-weight: 700;
+                        font-style: normal;
+                    }
+            .signup {
+                font-family: 'EliceDigitalBaeum-Bd';
+            }
+        </style>
     </div>
 </div>
 </body>

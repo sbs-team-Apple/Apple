@@ -10,35 +10,35 @@
         <div style="vertical-align: middle;" class="container_2 text-center mb-5">
 
             <div  class="badge mr-2  badge-outline" style=" vertical-align display: inline-block;  height: 50px; width: 150px; border-radius: 30px; border: 1px solid #D1D1D1;">
-            <p>보유한 하트 <i class="fa-solid fa-heart" style="color: #ff0000;"></i><br/><span th:text="${userCyberMoney}"></span>개</p>
+                <p>보유한 하트 <i class="fa-solid fa-heart" style="color: #ff0000;"></i><br/><span th:text="${userCyberMoney}"></span>개</p>
             </div>
 
 
             <div class="badge ml-2 badge-outline" style=" vertical-align display: inline-block;  height: 50px; width: 150px; border-radius: 30px; border: 1px solid #D1D1D1;">
-            <p>받은 하트 <i class="fa-solid fa-heart" style="color: #ff0000;"></i><br/><span th:text="${receivedCyberMoney}"></span>개</p>
+                <p>받은 하트 <i class="fa-solid fa-heart" style="color: #ff0000;"></i><br/><span th:text="${receivedCyberMoney}"></span>개</p>
             </div>
         </div>
 
         <div style="border-top: 1px solid #D6D2D2; width: 100%; border-top: 1px solid #D6D2D2; width: 100%;"></div>
 
-        <div class="tab-buttons" style="display: flex; justify-content: center; gap: 10px;">
+        <div class="tab-buttons" style="display: flex;">
             <div style="text-align: center; flex: 1;">
                 <button type="submit" class="w-full p-5" onclick="showTab('sentTab')">SENT
-                <p>보낸하트</p></button>
+                    <p>보낸하트</p></button>
             </div>
             <div style="display: flex; justify-content: center;">
                 <div style="border-left: 1px solid #D6D2D2; height: 100%;"></div>
             </div>
             <div style="text-align: center; flex: 1;">
                 <button type="submit" class="w-full p-5" onclick="showTab('receivedTab')">RECEIVE
-                <p>받은하트</p></button>
+                    <p>받은하트</p></button>
             </div>
             <div style="display: flex; justify-content: center;">
                 <div style="border-left: 1px solid #D6D2D2; height: 100%;"></div>
             </div>
             <div style="text-align: center; flex: 1;">
                 <button type="submit" class="w-full p-5" onclick="showTab('completedTab')">COMPLETE
-                <p>하트내역</p></button>
+                    <p>하트내역</p></button>
             </div>
         </div>
         <div style="border-top: 1px solid #D6D2D2; width: 100%; border-top: 1px solid #D6D2D2; width: 100%;"></div>
@@ -50,10 +50,10 @@
                     <!-- 거절 버튼 -->
                     <div class="flex justify-between items-center">
                         <div class="ml-5 mt-2 mb-2">
-                        <p th:text="'회원님이 ♥ ' + ${transaction.amount} + ' 개로 ' +  ${transaction.recipientUser.nickname} + ' 님에게 '"></p>
+                            <p th:text="'회원님이 ♥ ' + ${transaction.amount} + ' 개로 ' +  ${transaction.recipientUser.nickname} + ' 님에게 '"></p>
                             <p>대화신청을 보냈어요!</p>
                             <p th:text="${#dates.format(transaction.transactionDate, 'yyyy-MM-dd')}" style="color: rgba(0, 0, 0, 0.42);"></p>
-                    </div>
+                        </div>
                         <div style=" align-items: center; margin-left:10px;">
                             <form th:action="@{/user/processTransaction}" method="post">
                                 <input type="hidden" name="transactionId" th:value="${transaction.id}" />
@@ -74,7 +74,7 @@
                 <li class="Transactions_list " th:each="transaction : ${receivedTransactions}">
                     <div style="display: flex; justify-content: space-between;">
                         <div class="ml-5 mt-2 mb-2">
-                        <p th:text="${transaction.senderUser.nickname} +' 님이 ♥ ' + ${transaction.amount} + '개를'"></p>
+                            <p th:text="${transaction.senderUser.nickname} +' 님이 ♥ ' + ${transaction.amount} + '개를'"></p>
                             <p>보내고 대화신청을 보냈어요.</p>
                             <p th:text="${#dates.format(transaction.transactionDate, 'yyyy-MM-dd')}" style="color: rgba(0, 0, 0, 0.42);"></p>
                         </div>
@@ -184,14 +184,14 @@
 
 
 
-<div th:include="common/menu.html" class="tap_bar"></div>
-<style>
-    .tap_bar {
-            position: fixed;
-            width: 100%;
-            bottom : 0;
-        }
-</style>
+    <div th:include="common/menu.html" class="tap_bar"></div>
+    <style>
+        .tap_bar {
+                position: fixed;
+                width: 100%;
+                bottom : 0;
+            }
+    </style>
 </div>
 </body>
 </html>
