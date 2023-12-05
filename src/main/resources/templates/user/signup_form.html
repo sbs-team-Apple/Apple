@@ -14,16 +14,16 @@
             <h1 class="mb-4 signup"  style="font-size: 24px; font-weight: bold; color:#47066E; font-weight: 700;">
                 회 원 가 입
             </h1>
-        <div class="form-control" style="text-align: center;">
-            <label class="label">
-                <span class="label-text" style="font-size: 16px; font-weight: bold; font-family: 'SuitFont', sans-serif; font-weight: 600;">프로필 이미지</span>
-            </label>
-            <input type="file" name="file" id="image"
-                   accept="image/**" onchange="previewImage(this)" style="width:305px; height:43px;
-                    outline:1px solid #cccccc; border-radius:10px; margin-bottom:20px;">
-            <div id="image-preview" style="margin: auto; border-radius:10px; border: 1px solid #CCCCCC;"></div>
-        </div>
-
+            <div class="form-control" style="text-align: center;">
+                <label class="label">
+                    <span class="label-text" style="font-size: 16px; font-weight: bold; font-family: 'SuitFont', sans-serif; font-weight: 600;">프로필 이미지</span>
+                </label>
+                <input type="file" name="file" id="image" class="file-input file-input-bordered"
+                       accept="image/**" onchange="previewImage(this)" style="width:305px; height:43px;
+                     border-radius:10px; margin-bottom:20px;">
+                <div id="image-preview" style="margin: auto; border-radius:10px; border: 1px solid #CCCCCC;"></div>
+            </div>
+            <!--    zdfsfgit-->
             <div class="form-control">
                 <label class="label" style="padding :0 4px 8px 4px;">
                     <span class="label-text" style="font-size: 16px; font-weight: bold; font-family: 'SuitFont', sans-serif; font-weight: 600;">아이디</span>
@@ -56,9 +56,9 @@
                     <span class="label-text" style="font-size: 16px; font-weight: bold; font-family: 'SuitFont', sans-serif; font-weight: 600;">이메일</span>
                 </label>
                 <div>
-                <input type="text" name="email" style="width:90px; height:43px; outline:1px solid #cccccc; border-radius:10px;" maxlength="30"
-                       onchange="$(this).keyup();" onpaste="setTimeoutZero(() => $(this).keyup());"
-                       onkeyup="checkEmailDupDebounce();">
+                    <input type="text" name="email" style="width:90px; height:43px; outline:1px solid #cccccc; border-radius:10px;" maxlength="30"
+                           onchange="$(this).keyup();" onpaste="setTimeoutZero(() => $(this).keyup());"
+                           onkeyup="checkEmailDupDebounce();">
                     <span>@</span>
                     <input name="domain"  maxlength="30" style="width:90px; height:43px; outline:1px solid #cccccc; border-radius:10px;">
                     <select id="domain-select" class="input-field" style=" padding: 10px; margin: 5px 0; width:100px;
@@ -366,9 +366,9 @@
                     toastWarning('닉네임을 입력해주세요.');
                     return;
                 }
-                if ( form.nickname.value.length < 4 ) {
+                if ( form.nickname.value.length < 2 ) {
                     form.nickname.focus();
-                    toastWarning('닉네임을 4자 이상 입력해주세요.');
+                    toastWarning('닉네임을 2자 이상 입력해주세요.');
                     return;
                 }
                  if ( validUsername != form.username.value ) {
@@ -400,46 +400,46 @@
         </script>
 
     </div>
-        <style>
-            #image-preview {
-                max-width: 315px;
-                max-height: 290px;
-                margin-top: 10px;
-            }
-        </style>
-        <style>
-            @font-face {
-                        font-family: 'EliceDigitalBaeum-Bd';
-                        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_elice@1.0/EliceDigitalBaeum-Bd.woff2') format('woff2');
-                        font-weight: 700;
-                        font-style: normal;
-                    }
-            .signup {
-                font-family: 'EliceDigitalBaeum-Bd';
-            }
-        </style>
-        <script>
-            function previewImage(input) {
-            var preview = document.getElementById('image-preview');
-            preview.innerHTML = '';
+    <style>
+        #image-preview {
+            max-width: 315px;
+            max-height: 290px;
+            margin-top: 10px;
+        }
+    </style>
+    <style>
+        @font-face {
+                    font-family: 'EliceDigitalBaeum-Bd';
+                    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_elice@1.0/EliceDigitalBaeum-Bd.woff2') format('woff2');
+                    font-weight: 700;
+                    font-style: normal;
+                }
+        .signup {
+            font-family: 'EliceDigitalBaeum-Bd';
+        }
+    </style>
+    <script>
+        function previewImage(input) {
+        var preview = document.getElementById('image-preview');
+        preview.innerHTML = '';
 
-            if (input.files && input.files[0]) {
-            var reader = new FileReader();
+        if (input.files && input.files[0]) {
+        var reader = new FileReader();
 
-            reader.onload = function (e) {
-            var img = document.createElement('img');
-            img.src = e.target.result;
-            img.style.width = '305px';
-            img.style.height = '290px';
-            img.style.objectFit = 'cover';
-            img.style.borderRadius = '10px';
-            preview.appendChild(img);
-            };
+        reader.onload = function (e) {
+        var img = document.createElement('img');
+        img.src = e.target.result;
+        img.style.width = '305px';
+        img.style.height = '290px';
+        img.style.objectFit = 'cover';
+        img.style.borderRadius = '10px';
+        preview.appendChild(img);
+        };
 
-            reader.readAsDataURL(input.files[0]);
-            }
-            }
-        </script>
+        reader.readAsDataURL(input.files[0]);
+        }
+        }
+    </script>
 
 </div>
 </body>

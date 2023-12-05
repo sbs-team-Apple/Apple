@@ -16,12 +16,12 @@
                 </div>
 
             </div>
-            <div style="width:315px; height:87px; position: relative;">
-                <div class="pt-2 pl-4">
-                    <div th:text="${user.nickname}" style="font-size:20px;"></div>
+            <div style="width:315px; position: relative;">
+                <div class="p-2">
+                    <div th:text="${user.nickname}" style="font-size:20px;" class="px-2"></div>
                     <div th:text="${user.age}+'세'+'/'+${user.living}"
-                         style="font-size:12px;"></div>
-                    <div th:text="${user.About_Me}" style="font-size:14px;"></div>
+                         style="font-size:12px;" class="px-2"></div>
+                    <div th:text="${user.About_Me}" style="font-size:14px;" class="px-2"></div>
                 </div>
 
 
@@ -32,7 +32,7 @@
                         </label>
                         <ul tabindex="0" class="menu menu-sm dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-52" style="position: absolute; right: 0;">
 
-                        <li><a th:href="@{|/user/photoModify/${user.id}|}">사진 변경</a></li>
+                            <li><a th:href="@{|/user/photoModify/${user.id}|}">사진 변경</a></li>
                             <li><a href="/user/profile_modify">프로필 변경</a></li>
                             <li><a href="/user/desired_modify">이상형 변경</a></li>
                             <li><a href="/user/passwordChange">비밀번호 변경</a></li>

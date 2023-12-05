@@ -21,12 +21,12 @@
                 </div>
 
             </div>
-            <div style="width:315px; height:87px; position: relative;">
-                <div>
-                    <div th:text="${receivedSiteUser.nickname}" style="font-size:20px;"></div>
+            <div style="width:315px; position: relative;">
+                <div class="p-2">
+                    <div th:text="${receivedSiteUser.nickname}" style="font-size:20px;" class="px-2"></div>
                     <div th:text="${receivedSiteUser.age}+'세'+'/'+${receivedSiteUser.living}"
-                         style="font-size:12px;"></div>
-                    <div th:text="${receivedSiteUser.About_Me}" style="font-size:14px;"></div>
+                         style="font-size:12px;" class="px-2"></div>
+                    <div th:text="${receivedSiteUser.About_Me}" style="font-size:14px;" class="px-2"></div>
                 </div>
 
                 <div style="position: absolute; top: 18px; right: 20px;">
@@ -48,13 +48,36 @@
         </div>
 
         <!--     채팅방 만들기   -->
-        <div style="width: 315px; height: 46px; border-radius: 10px; background-color: #B276EE; margin-bottom:20px;
-        outline: 1px solid #B276EE; color: white; display: flex; align-items: center; justify-content: center;">
-            <button th:if="${chatRoom == null && log == null}" id="sendCyberMoneyBtn" data-toggle="modal"
-                    data-target="#cyberMoneyModal" style="background: none; border: none; color: white;">채팅방 만들기
-            </button>
+        <div style="display: flex; align-items: center; justify-content: center;">
+            <div th:if="${chatRoom == null && log == null}" class="mr-1"
+                 style="width: 150px; height: 46px; border-radius: 10px; background-color: #B276EE; margin-bottom:20px;
+        outline: 1px solid #B276EE; color: white; align-items: center; justify-content: center; display: flex;">
+                <button  id="sendCyberMoneyBtn" data-toggle="modal"
+                         data-target="#cyberMoneyModal" style="background: none; border: none; color: white;">채팅방 만들기
+                </button>
+            </div>
+            <div class="ml-1" style="width: 150px; height: 46px; border-radius: 10px; background-color: #B276EE; margin-bottom:20px;
+        outline: 1px solid #B276EE; color: white; align-items: center; justify-content: center; display: flex;">
+                <button id="justsendCyberMoneyBtn" data-toggle="modal" data-target="#justcyberMoneyModal">하트 보내기
+                </button>
+            </div>
+
+
         </div>
 
+        <!--신고 보기 채팅방 보기  -->
+        <div style="display: flex; align-items: center; justify-content: center;"  th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+            <div class="mr-1" style="width: 150px; height: 46px; border-radius: 10px; background-color: #B276EE; margin-bottom:20px;
+                outline: 1px solid #B276EE; color: white; align-items: center; justify-content: center; display: flex;">
+                <a class="nav-link"
+                   th:href="@{'/admin/punish/' + ${receivedSiteUser.id}}">제재하기</a>
+            </div>
+            <div class="ml-1" style="width: 150px; height: 46px; border-radius: 10px; background-color: #B276EE; margin-bottom:20px;
+            outline: 1px solid #B276EE; color: white; align-items: center; justify-content: center; display: flex;">
+                <a  class="user-chat " th:href="@{|${'/chat/allRoomForAdmin/'+receivedSiteUser.id}|}"
+                    th:text="${receivedSiteUser.nickname+'님의 채팅방들'}"></a>
+            </div>
+        </div>
         <!--프로필 정보들-->
         <div style="margin-bottom:30px;">
             <div style="margin-bottom: 10px; text-align: center;">
@@ -136,20 +159,9 @@
             isUp = !isUp;
             }
         </script>
-        <!--신고 보기 채팅방 보기  -->
-        <div>
-            <a class="nav-link" th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
-               th:href="@{'/admin/punish/' + ${receivedSiteUser.id}}">제재하기/</a>
-            <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}" class="user-chat "
-               th:href="@{|${'/chat/allRoomForAdmin/'+receivedSiteUser.id}|}"
-               th:text="${receivedSiteUser.nickname+'님의 채팅방들'}"></a>
-        </div>
+
         <!--하트 보내기 버튼 아직 위치 못정함-->
         <div style="display: flex; padding: 5px; margin-bottom:40px;">
-            <button style="padding:5px 15px; border-radius:10px; border:3px solid purple;"
-                    id="justsendCyberMoneyBtn" data-toggle="modal" data-target="#justcyberMoneyModal">
-                하트 보내기
-            </button>
             <dialog style="font-family: 'SUITE', sans-serif;" id="my_modal_6"
                     class="modal modal-bottom sm:modal-middle">
                 <div class="modal-box">
@@ -191,8 +203,6 @@
         <p class="badge badge-secondary" style="display: inline-block;">선물 받은 하트: <span
                 th:text="${receivedCyberMoney}"></span>개</p>
     </div>
-
-
 
 
     <dialog style="font-family: 'SUITE', sans-serif;" id="my_modal_5" class="modal modal-bottom sm:modal-middle">

@@ -5,9 +5,10 @@
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title layout:title-pattern="$LAYOUT_TITLE" th:text="The_Cupid"></title>
-<!--드로그앤 드롭 -->
+    <!--드로그앤 드롭 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js" integrity="sha512-zYXldzJsDrNKV+odAwFYiDXV2Cy37cwizT+NkuiPGsa9X1dOz04eHvUWVuxaJ299GvcJT31ug2zO4itXBjFx4w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <!-- Google Font -->
@@ -69,18 +70,19 @@
                             <a th:href="@{/user/transactions}"><i class="fa-solid fa-heart"></i>하트</a>
                         </li>
 
-<!--                        <li class="nav-item" sec:authorize="isAuthenticated()">-->
-<!--                            <a th:href="@{/user/setting}">내 정보 수정</a>-->
-<!--                        </li>-->
+                        <!--                        <li class="nav-item" sec:authorize="isAuthenticated()">-->
+                        <!--                            <a th:href="@{/user/setting}">내 정보 수정</a>-->
+                        <!--                        </li>-->
+
                         <li class="nav-item" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
                             <a  class="nav-link" th:href="@{/admin/report_list}">신고 게시판</a>
                         </li>
                         <li class="nav-item" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
                             <a class="nav-link" th:href="@{/admin/exchange_list}">환전 게시판</a>
                         </li>
-<!--                        <li class="nav-item" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">-->
-<!--                            <a class="nav-link" th:href="@{/chat/admin/allChatRooms}">유저들 채팅방 목록</a>-->
-<!--                        </li>-->
+                        <!--                        <li class="nav-item" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">-->
+                        <!--                            <a class="nav-link" th:href="@{/chat/admin/allChatRooms}">유저들 채팅방 목록</a>-->
+                        <!--                        </li>-->
 
                         <!--                        <li th:if="${#authorization.expression('isAuthenticated()')}">-->
                         <!--                            <a href="/user/grantAuthorityToAdmin" class="nav-domain" hx-boost="true">관리자</a>-->
@@ -92,7 +94,8 @@
                 <a th:href="@{/}" class="btn btn-ghost normal-case text-xl">The Cupid</a>
             </div>
             <div  class="navbar-end">
-<!--                                <div  class="userIdDiv" th:if="${@rq.login}" th:text="${@rq.user.id}"></div>-->
+                <div  class="userIdDiv hidden" th:if="${@rq.login}" th:text="${@rq.user.id}"></div>
+
                 <button th:if="${@rq.login}" class="btn btn-ghost btn-circle btn-bell">
                     <div class="indicator">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
@@ -303,6 +306,7 @@ const sse2 = new EventSource(`/sse/connect/userId_${userId}`);
 
 // 서버로부터 "chat__messageAdded" 라는 명령이 내려오면 아래 함수를 실행
 sse2.addEventListener('invite_chatRoom', e => {
+        console.log("Asdasd");
 
 
 getNewNotifications()
@@ -335,48 +339,48 @@ getNewNotifications()
 </script>
 
 <script>
-<!-- 알림 x 버튼 누를시 서버로 정보 보내서 db 에서 알림기록 삭제해준느거-->
-    document.addEventListener('DOMContentLoaded', function() {
-     // Select all x buttons.
-     var cancelButtons = document.querySelectorAll('.notification-cancel-btn');
+    <!-- 알림 x 버튼 누를시 서버로 정보 보내서 db 에서 알림기록 삭제해준느거-->
+        document.addEventListener('DOMContentLoaded', function() {
+         // Select all x buttons.
+         var cancelButtons = document.querySelectorAll('.notification-cancel-btn');
 
-     // Add an event listener to each x button.
-     cancelButtons.forEach(function(button) {
-         button.addEventListener('click', function(event) {
-             // Find the parent element of the clicked x button.
-             noti();
-             var parentElement = event.target.parentElement;
+         // Add an event listener to each x button.
+         cancelButtons.forEach(function(button) {
+             button.addEventListener('click', function(event) {
+                 // Find the parent element of the clicked x button.
+                 noti();
+                 var parentElement = event.target.parentElement;
 
-             // Find the sibling element with the class '.notification-text'.
-                 var notificationId = event.target.dataset.notificationId;
-               console.log(notificationId+"asdsADASD" );
+                 // Find the sibling element with the class '.notification-text'.
+                     var notificationId = event.target.dataset.notificationId;
+                   console.log(notificationId+"asdsADASD" );
 
 
-               var csrfToken = document.querySelector("meta[name='_csrf']").getAttribute("content");
-             var csrfHeader = document.querySelector("meta[name='_csrf_header']").getAttribute("content");
+                   var csrfToken = document.querySelector("meta[name='_csrf']").getAttribute("content");
+                 var csrfHeader = document.querySelector("meta[name='_csrf_header']").getAttribute("content");
 
-             var headers = new Headers();
-             headers.append(csrfHeader, csrfToken);
-             headers.append('Content-Type', 'application/json');
+                 var headers = new Headers();
+                 headers.append(csrfHeader, csrfToken);
+                 headers.append('Content-Type', 'application/json');
 
-                 fetch('/delete/notification', {
-                method: 'POST',
-                headers: headers,
-                body: JSON.stringify({ 'notificationId': parseInt(notificationId, 10) })
-            })
-            .then(response => {
-                // Handle the response, if needed
-            })
-            .catch(error => {
-                // Handle errors, if any
-            });
+                     fetch('/delete/notification', {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify({ 'notificationId': parseInt(notificationId, 10) })
+                })
+                .then(response => {
+                    // Handle the response, if needed
+                })
+                .catch(error => {
+                    // Handle errors, if any
+                });
 
-             if (parentElement) {
-                 parentElement.remove(); // Delete that specific notification.
-             }
+                 if (parentElement) {
+                     parentElement.remove(); // Delete that specific notification.
+                 }
+             });
          });
      });
- });
 </script>
 
 
