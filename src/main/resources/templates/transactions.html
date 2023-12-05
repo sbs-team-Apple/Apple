@@ -1,103 +1,89 @@
 <!DOCTYPE html>
 <html layout:decorate="~{common/layout}" lang="en">
 <head>
-    <!-- 필요한 스타일시트, 스크립트 등을 포함합니다. -->
-    <style>
-        .Transactions_list {
-            margin-bottom: 10px;
-
-        }
-        .tab-button {
-            cursor: pointer;
-        }
-
-        .button-container {
-
-        text-align: center;
-        padding: 10px;
-        }
-        .spacer {
-        margin: 0 40px;
-        }
-
-        .title {
-        font-size: 20px;
-        border-bottom: 1px solid #d9d9d9;
-        margin-bottom: 10px;
-
-        }
-
-
-    </style>
 </head>
 <body>
 
-<div layout:fragment="content" class="container m-auto flex justify-center flex-col items-center -mt-16 min-h-screen">
+<div layout:fragment="content" class="container  m-auto flex justify-center flex-col  -mt-16 min-h-screen">
     <div class="mt-16">
         <div style="height: 50px;"></div>
-        <div class="container_2 my-3 text-center">
-            <p class="badge badge-secondary badge-outline" style="display: inline-block; margin-right: 10px;">보유한 <i class="fa-solid fa-heart" style="color: #ff0000;"></i> : <span th:text="${userCyberMoney}"></span>개</p>
-            <p class="badge badge-secondary badge-outline" style="display: inline-block; margin-right: 10px;">받은 <i class="fa-solid fa-heart" style="color: #ff0000;"></i> : <span th:text="${receivedCyberMoney}"></span>개</p>
-        </div>
+        <div style="vertical-align: middle;" class="container_2 text-center mb-5">
 
-
-
-
-        <div class="tab-buttons" style="display: flex; justify-content: center; gap: 10px;">
-            <div style="text-align: center; flex: 1;">
-                <button type="submit" class="btn w-full"
-                        style="border-radius: 10px; border: 1px solid #FABBEE; background-color: #BBCBFA" onclick="showTab('sentTab')">&nbsp&nbsp&nbsp&nbsp&nbspSent!&nbsp&nbsp&nbsp&nbsp&nbsp</button>
+            <div  class="badge mr-2  badge-outline" style=" vertical-align display: inline-block;  height: 50px; width: 150px; border-radius: 30px; border: 1px solid #D1D1D1;">
+            <p>보유한 하트 <i class="fa-solid fa-heart" style="color: #ff0000;"></i><br/><span th:text="${userCyberMoney}"></span>개</p>
             </div>
-            <div style="text-align: center; flex: 1;">
-                <button type="submit" class="btn w-full"
-                        style="border-radius: 10px; border: 1px solid #f08dac; background-color: #F48FB1" onclick="showTab('receivedTab')">&nbsp&nbsp&nbspReceive!&nbsp&nbsp&nbsp</button>
-            </div>
-            <div style="text-align: center; flex: 1;">
-                <button type="submit" class="btn w-full"
-                        style="border-radius: 10px; border: 1px solid #FABBEE; background-color: #BBCBFA" onclick="showTab('completedTab')">Complete!</button>
+
+
+            <div class="badge ml-2 badge-outline" style=" vertical-align display: inline-block;  height: 50px; width: 150px; border-radius: 30px; border: 1px solid #D1D1D1;">
+            <p>받은 하트 <i class="fa-solid fa-heart" style="color: #ff0000;"></i><br/><span th:text="${receivedCyberMoney}"></span>개</p>
             </div>
         </div>
 
-        <div class="title" style="height: 20px;"></div>
+        <div style="border-top: 1px solid #D6D2D2; width: 100%; border-top: 1px solid #D6D2D2; width: 100%;"></div>
+
+        <div class="tab-buttons" style="display: flex;">
+            <div style="text-align: center; flex: 1;">
+                <button type="submit" class="w-full p-5" onclick="showTab('sentTab')">SENT
+                <p>보낸하트</p></button>
+            </div>
+            <div style="display: flex; justify-content: center;">
+                <div style="border-left: 1px solid #D6D2D2; height: 100%;"></div>
+            </div>
+            <div style="text-align: center; flex: 1;">
+                <button type="submit" class="w-full p-5" onclick="showTab('receivedTab')">RECEIVE
+                <p>받은하트</p></button>
+            </div>
+            <div style="display: flex; justify-content: center;">
+                <div style="border-left: 1px solid #D6D2D2; height: 100%;"></div>
+            </div>
+            <div style="text-align: center; flex: 1;">
+                <button type="submit" class="w-full p-5" onclick="showTab('completedTab')">COMPLETE
+                <p>하트내역</p></button>
+            </div>
+        </div>
+        <div style="border-top: 1px solid #D6D2D2; width: 100%; border-top: 1px solid #D6D2D2; width: 100%;"></div>
 
         <div id="sentTab" class="tab-content " style="display: none;">
             <ul>
-                <li  style="border :1px solid #FABBEE; padding:5px;" th:if="${not transaction.isAccepted() and not transaction.isRejected()}"
-                    class="Transactions_list" th:each="transaction : ${sentTransactions}" >
+                <li th:if="${not transaction.isAccepted() and not transaction.isRejected()}"
+                    class="Transactions_list" th:each="transaction : ${sent3Transactions}" >
                     <!-- 거절 버튼 -->
-                    <div class="flex">
-                        <div>
-                        <p th:text="'회원님이 ♥ ' + ${transaction.amount} + ' 개로 ' +  ${transaction.recipientUser.username} + ' 님에게 '"></p>
+                    <div class="flex justify-between items-center">
+                        <div class="ml-5 mt-2 mb-2">
+                        <p th:text="'회원님이 ♥ ' + ${transaction.amount} + ' 개로 ' +  ${transaction.recipientUser.nickname} + ' 님에게 '"></p>
                             <p>대화신청을 보냈어요!</p>
-                        <p th:text="${#dates.format(transaction.transactionDate, 'yyyy-MM-dd')}"></p>
+                            <p th:text="${#dates.format(transaction.transactionDate, 'yyyy-MM-dd')}" style="color: rgba(0, 0, 0, 0.42);"></p>
                     </div>
-                        <div style="display:  flex; align-items: center; margin-left:10px;">
+                        <div style=" align-items: center; margin-left:10px;">
                             <form th:action="@{/user/processTransaction}" method="post">
                                 <input type="hidden" name="transactionId" th:value="${transaction.id}" />
                                 <input type="hidden" name="action" value="reject" />
-                                <button class="btn-sm btn btn-outline btn-info" type="submit">취소</button>
+                                <button style="border-color: #B276EE; color: #B276EE;" class="btn-sm btn btn-outline btn-info mr-3" type="submit">취소</button>
                             </form>
                         </div>
+
                     </div>
+                    <div style="border-top: 1px solid #D6D2D2; width: 100%; border-top: 1px solid #D6D2D2; width: 100%;"></div>
+
                 </li>
             </ul>
         </div>
 
-        <div id="tab-content">
+        <div id="receivedTab" class="tab-content "  style="display: none;">
             <ul>
-                <li class="Transactions_list " th:each="transaction : ${receivedTransactions}" style="border :1px solid #FABBEE; padding:5px; ">
+                <li class="Transactions_list " th:each="transaction : ${receivedTransactions}">
                     <div style="display: flex; justify-content: space-between;">
-                        <div>
-                        <p th:text="${transaction.senderUser.username} +' 님이 ♥ ' + ${transaction.amount} + '개를'"></p>
+                        <div class="ml-5 mt-2 mb-2">
+                        <p th:text="${transaction.senderUser.nickname} +' 님이 ♥ ' + ${transaction.amount} + '개를'"></p>
                             <p>보내고 대화신청을 보냈어요.</p>
-                            <p th:text="${#dates.format(transaction.transactionDate, 'yyyy-MM-dd')}"></p>
+                            <p th:text="${#dates.format(transaction.transactionDate, 'yyyy-MM-dd')}" style="color: rgba(0, 0, 0, 0.42);"></p>
                         </div>
                         <!-- "수락" 버튼 -->
-                        <div style="display:  flex; align-items: center; margin-left:10px;">
+                        <div class="mr-3" style="display:  flex; align-items: center; margin-left:10px;">
                             <form th:action="@{/user/processTransaction}" method="post">
                                 <input type="hidden" name="transactionId" th:value="${transaction.id}" />
                                 <input type="hidden" name="action" value="accept" /> <!-- 수락 작업 설정 -->
-                                <button class="btn-sm btn btn-outline btn-info" type="submit"
+                                <button class="btn-sm btn btn-outline btn-info" type="submit" style="background-color: #B276EE; color: white;"
                                         th:disabled="${transaction.isAccepted() or transaction.isRejected()}">수락</button>
                             </form>
                             <div style="width: 10px;"></div> <!-- 10px 여백 추가 -->
@@ -105,11 +91,13 @@
                             <form th:action="@{/user/processTransaction}" method="post">
                                 <input type="hidden" name="transactionId" th:value="${transaction.id}" />
                                 <input type="hidden" name="action" value="reject" /> <!-- 거절 작업 설정 -->
-                                <button class="btn-sm btn btn-outline btn-info" type="submit"
+                                <button class="btn-sm btn btn-outline btn-info" type="submit" style="border-color: #B276EE; color: #B276EE;"
                                         th:disabled="${transaction.isAccepted() or transaction.isRejected()}">거절</button>
                             </form>
                         </div>
                     </div>
+                    <div style="border-top: 1px solid #D6D2D2; width: 100%; border-top: 1px solid #D6D2D2; width: 100%;"></div>
+
                 </li>
             </ul>
         </div>
@@ -119,39 +107,57 @@
             <ul>
                 <li class="Transactions_list" th:each="transaction : ${completedTransactions}" th:if="${transaction.isAccepted()} or ${transaction.isRejected()}" style="display: flex; justify-content: space-between;"
                     th:unless="${transaction.senderUser.username eq user.username}" th:remove="tag">
-                    <div style="border :1px solid #FABBEE; padding:5px; margin-bottom:10px;">
-                        <p th:text="${transaction.senderUser.username} +' 님이 보낸 ♥ ' + ${transaction.amount} + '개를 받고'"></p>
+                    <div  class="pl-5 pt-2 pb-2">
+                        <p th:text="${transaction.senderUser.nickname} +' 님이 보낸 ♥ ' + ${transaction.amount} + '개를 받고'"></p>
                         <p>대화신청을 승락했어요.</p>
-                        <p th:text="${#dates.format(transaction.transactionDate, 'yyyy-MM-dd')}"></p>
+                        <p th:text="${#dates.format(transaction.transactionDate, 'yyyy-MM-dd')}" style="color: rgba(0, 0, 0, 0.42);"></p>
                     </div>
+                    <div  class="ml-3 mr-3" style="border-top: 1px solid #D6D2D2; width: 100%; border-top: 1px solid #D6D2D2; width: 100%;"></div>
+                </li>
+
+                <li class="Transactions_list" th:each="transaction : ${sent2Transactions}">
+                    <div  class="pl-5 pt-2 pb-2">
+                        <p th:text="${transaction.heartUser.nickname} + ' 님에게 ♥ ' + ${transaction.amount} + '개를 선물 보냈어요!'"></p>
+                        <p th:text="${#dates.format(transaction.transactionDate, 'yyyy-MM-dd')}" style="color: rgba(0, 0, 0, 0.42);"></p>
+                    </div>
+                    <div style="border-top: 1px solid #D6D2D2; width: 100%; border-top: 1px solid #D6D2D2; width: 100%;"></div>
+
+
                 </li>
 
                 <li class="Transactions_list" th:each="transaction : ${heartTransactions}">
-                    <div style="border: 1px solid #FABBEE; padding: 5px;">
-                        <p th:text="${transaction.senderUser.username} + ' 님에게 ♥ ' + ${transaction.amount} + '개를 선물 받았어요!'"></p>
-                        <p th:text="${#dates.format(transaction.transactionDate, 'yyyy-MM-dd')}"></p>
+                    <div  class="pl-5 pt-2 pb-2">
+                        <p th:text="${transaction.senderUser.nickname} + ' 님에게 ♥ ' + ${transaction.amount} + '개를 선물 받았어요!'"></p>
+                        <p th:text="${#dates.format(transaction.transactionDate, 'yyyy-MM-dd')}" style="color: rgba(0, 0, 0, 0.42);"></p>
                     </div>
+                    <div  class="ml-3 mr-3" style="border-top: 1px solid #D6D2D2; width: 100%; border-top: 1px solid #D6D2D2; width: 100%;"></div>
                 </li>
 
 
                 <li class="Transactions_list" th:each="transaction : ${sentTransactions}" th:if="${transaction.isAccepted()}">
-                    <div style="border :1px solid #FABBEE; padding:5px;">
-                        <p th:text="'회원님께서 ' + ${transaction.recipientUser.username} +' 님에게 ♥ ' + ${transaction.amount} + '개를 보냈습니다.'"></p>
-                        <p th:text="${#dates.format(transaction.transactionDate, 'yyyy-MM-dd')}"></p>
+                    <div  class="pl-5 pt-2 pb-2">
+                        <p th:text="'회원님께서 ' + ${transaction.recipientUser.nickname} +' 님에게 ♥ ' + ${transaction.amount} + '개를 보냈습니다.'"></p>
+                        <p th:text="${#dates.format(transaction.transactionDate, 'yyyy-MM-dd')}" style="color: rgba(0, 0, 0, 0.42);"></p>
                     </div>
+                    <div  class="ml-3 mr-3" style="border-top: 1px solid #D6D2D2; width: 100%; border-top: 1px solid #D6D2D2; width: 100%;"></div>
                 </li>
             </ul>
         </div>
 
     </div>
     <div class="flex-grow"></div>
-    <div class="button-container">
-        <button type="submit" class="btn btn-sm"
-                style="border-radius:10px; border :1px solid #3B84F7; background-color :#ffffff"><a href="/user/payment"><i class="fa-solid fa-won-sign"></i> 하트 충전</a></button>
-        <span class="spacer">|</span>
-        <button type="submit" class="btn btn-sm"
-                style="border-radius:10px; border :1px solid #3B84F7; background-color :#ffffff"><a href="/exchange/create"><i class="fa-solid fa-sack-dollar"></i> 환전 신청</a></button>
+    <div class="button-container p-5 flex justify-between mb-20" style="text-align: center;">
+        <button type="submit" class="btn"
+                style="width:45%; border-radius:10px; border:1px solid #B276EE; background-color:#ffffff">
+            <a href="/user/payment">하트 충전</a>
+        </button>
+        <button type="submit" class="btn"
+                style="width:45%; border-radius:10px; border:1px solid #B276EE; background-color:#ffffff">
+            <a href="/exchange/create">환전 신청</a>
+        </button>
     </div>
+
+
     <div style="height: 20px;"></div>
     <div class="outer-box"></div>
 
