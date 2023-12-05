@@ -330,16 +330,7 @@ public class ChatController {
             }
 
 
-            //채팅방 나가기를 누른 유저들의 입장권 유무 검사
-            if(chatRooms.get(i).getFromUserPass()==false ) {
 
-                chatRooms2.remove(chatRooms.get(i));
-
-            }else if (chatRooms.get(i).getToUserPass()==false ){
-
-                chatRooms3.remove(chatRooms.get(i));
-
-            }
 
 
         }
