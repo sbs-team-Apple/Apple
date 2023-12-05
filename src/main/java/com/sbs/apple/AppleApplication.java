@@ -12,8 +12,5 @@ public class AppleApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(AppleApplication.class, args);
 
-		// HttpClientExample를 사용하여 sendRequest() 메소드 호출
-		HttpClientExample httpClient = new HttpClientExample();
-		httpClient.sendRequest();
 	}
 }
