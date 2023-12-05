@@ -366,9 +366,9 @@
                     toastWarning('닉네임을 입력해주세요.');
                     return;
                 }
-                if ( form.nickname.value.length < 4 ) {
+                if ( form.nickname.value.length < 2 ) {
                     form.nickname.focus();
-                    toastWarning('닉네임을 4자 이상 입력해주세요.');
+                    toastWarning('닉네임을 2자 이상 입력해주세요.');
                     return;
                 }
                  if ( validUsername != form.username.value ) {
