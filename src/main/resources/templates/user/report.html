@@ -5,13 +5,14 @@
     <title>신고하기</title>
 </head>
 <body>
-<div layout:fragment="content" class="container m-auto flex justify-center flex-col items-center">
+<div layout:fragment="content" class=" flex justify-center">
 
     <form th:action="@{'/user/report/' + ${userId}}" th:object="${reportForm}" method="post">
-        <div>
-            <div class="mb-3 flex justify-center" style="font-size: 25px; font-weight: bold;">신고하기</div>
+        <div style="margin-top:30px;">
+            <div class="report mb-3" style="font-size: 20px;">신고하기</div>
             <div class="mb-5">
-                <select name="subject" id="subject" class="input input-bordered input-secondary w-full max-w-xs" placeholder="제목">
+                <span class="report" style=" font-size: 16px; margin-right:10px;">사유</span>
+                <select name="subject" style="width:180px; height:40px; outline:1px solid #B6B2B2; border-radius:10px;">
                     <option value="부적절한 콘텐츠">부적절한 콘텐츠</option>
                     <option value="가짜 프로필 또는 사기">가짜 프로필 또는 사기</option>
                     <option value="스팸 또는 광고성 콘텐츠">스팸 또는 광고성 콘텐츠</option>
@@ -21,11 +22,10 @@
                 </select>
             </div>
             <div class="mb-3">
-            <textarea name="content" id="content" placeholder="내용" class="textarea textarea-secondary w-full max-w-xs"
-                      rows="10" style="outline:3px solid pink;"></textarea>
+                <textarea name="content" rows="10" style="width:225px; height:265px; outline:1px solid #B6B2B2; border-radius:10px;"></textarea>
             </div>
             <div class="flex justify-center">
-                <input type="submit" value="제출하기" style="padding:5px 100px; border-radius:10px; border:5px solid red;
+                <input type="submit" value="신고하기" style="width:225px; height:45px; border-radius:10px; border:2px solid #B276EE;;
                     font-size: 15px; font-weight: bold;">
             </div>
         </div>
@@ -38,6 +38,21 @@
                 width: 100%;
                 bottom : 0;
             }
+    </style>
+    <style>
+        @font-face {
+  font-family: 'Interop';
+  src: url('https://raw.githubusercontent.com/payw-org/Interop/main/web/fonts/Interop-Regular.woff2')
+      format('woff2'),
+    url('https://raw.githubusercontent.com/payw-org/Interop/main/web/fonts/Interop-Regular.woff')
+      format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+        .report{
+        font-family: 'Interop';
+        }
     </style>
 </div>
 </body>

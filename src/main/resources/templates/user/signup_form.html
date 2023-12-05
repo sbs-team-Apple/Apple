@@ -10,22 +10,23 @@
     <div class="max-w-2xl w-full px-4 flex justify-center">
 
         <form enctype="multipart/form-data" th:action name="join-form" method="post" th:object="${userCreateForm}"
-              onsubmit="submitJoinForm(this); return false;" class="flex flex-col gap-6" style="margin-bottom:40px;">
-            <h1 class="mb-4"  style="font-size: 24px; font-weight: bold; color:#47066E;">
-                회원가입
+              onsubmit="submitJoinForm(this); return false;" class="flex flex-col gap-3" style="margin-bottom:40px;">
+            <h1 class="mb-4 signup"  style="font-size: 24px; font-weight: bold; color:#47066E; font-weight: 700;">
+                회 원 가 입
             </h1>
-        <div class="form-control" style="text-align: center;">
-            <label class="label">
-                <span class="label-text" style="font-size: 16px; font-weight: bold;">프로필 이미지</span>
-            </label>
-            <input type="file" name="file" id="image"
-                   accept="image/**" onchange="previewImage(this)" style="width:305px; height:43px; outline:1px solid #cccccc; border-radius:10px;">
-            <div id="image-preview" style="margin: auto; border-radius:20px; border: 2px solid #f08dac;"></div>
-        </div>
-
+            <div class="form-control" style="text-align: center;">
+                <label class="label">
+                    <span class="label-text" style="font-size: 16px; font-weight: bold; font-family: 'SuitFont', sans-serif; font-weight: 600;">프로필 이미지</span>
+                </label>
+                <input type="file" name="file" id="image" class="file-input file-input-bordered"
+                       accept="image/**" onchange="previewImage(this)" style="width:305px; height:43px;
+                     border-radius:10px; margin-bottom:20px;">
+                <div id="image-preview" style="margin: auto; border-radius:10px; border: 1px solid #CCCCCC;"></div>
+            </div>
+            <!--    zdfsfgit-->
             <div class="form-control">
                 <label class="label" style="padding :0 4px 8px 4px;">
-                    <span class="label-text" style="font-size: 16px; font-weight: bold;">아이디</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold; font-family: 'SuitFont', sans-serif; font-weight: 600;">아이디</span>
                 </label>
                 <input type="text" name="username" autofocus style="width:305px; height:43px; outline:1px solid #cccccc; border-radius:10px;"
                        maxlength="30" onchange="$(this).keyup();" onpaste="setTimeoutZero(() => $(this).keyup());"
@@ -35,15 +36,16 @@
 
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 16px; font-weight: bold;">비밀번호</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold; font-family: 'SuitFont', sans-serif; font-weight: 600;">비밀번호</span>
                 </label>
-                <input type="password" name="password1" maxlength="30" style="width:305px; height:43px; outline:1px solid #cccccc; border-radius:10px;">
-                <span style="font-size: 12px; color:#EC1515;">비밀번호는 8~20자 이내로 입력하셔야 합니다.</span>
+                <input type="password" name="password1" maxlength="30" style="width:305px; height:43px; outline:1px solid #cccccc;
+                margin-bottom:10px; border-radius:10px;">
+                <span style="font-size: 12px; color:#EC1515; font-family: 'SuitFont', sans-serif; font-weight: 600;">비밀번호는 8~20자 이내로 입력하셔야 합니다.</span>
             </div>
 
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 16px; font-weight: bold;">비밀번호 확인</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold; font-family: 'SuitFont', sans-serif; font-weight: 600;">비밀번호 확인</span>
                 </label>
                 <input type="password" name="password2" style="width:305px; height:43px; outline:1px solid #cccccc; border-radius:10px;"
                        maxlength="30">
@@ -51,15 +53,15 @@
 
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text" style="font-size: 16px; font-weight: bold;">이메일</span>
+                    <span class="label-text" style="font-size: 16px; font-weight: bold; font-family: 'SuitFont', sans-serif; font-weight: 600;">이메일</span>
                 </label>
                 <div>
-                <input type="text" name="email" style="width:100px; height:43px; outline:1px solid #cccccc; border-radius:10px;" maxlength="30"
-                       onchange="$(this).keyup();" onpaste="setTimeoutZero(() => $(this).keyup());"
-                       onkeyup="checkEmailDupDebounce();">
+                    <input type="text" name="email" style="width:90px; height:43px; outline:1px solid #cccccc; border-radius:10px;" maxlength="30"
+                           onchange="$(this).keyup();" onpaste="setTimeoutZero(() => $(this).keyup());"
+                           onkeyup="checkEmailDupDebounce();">
                     <span>@</span>
-                    <input name="domain"  maxlength="30" style="width:100px; height:43px; outline:1px solid #cccccc; border-radius:10px;">
-                    <select id="domain-select" class="input-field" style=" padding: 10px; margin: 5px 0; width:110px;
+                    <input name="domain"  maxlength="30" style="width:90px; height:43px; outline:1px solid #cccccc; border-radius:10px;">
+                    <select id="domain-select" class="input-field" style=" padding: 10px; margin: 5px 0; width:100px;
                         border: 1px solid #ccc;border-radius: 3px;" onchange="updateDomain()" >
 
                         <option value="direct_input">직접 입력</option>
@@ -92,8 +94,8 @@
 
 
             <div class="form-control">
-                <label class="label" style="font-size: 16px; font-weight: bold;">
-                    <span class="label-text">닉네임</span>
+                <label class="label">
+                    <span class="label-text" style="font-size: 16px; font-family: 'SuitFont', sans-serif; font-weight: 600;">닉네임</span>
                 </label>
                 <input type="text" name="nickname"
                        style="width:305px; height:43px; outline:1px solid #cccccc; border-radius:10px;"
@@ -116,8 +118,8 @@
             </script>
 
             <div class="form-control">
-                <label class="label" style="font-size: 16px; font-weight: bold;">
-                    <span class="label-text">성별</span>
+                <label class="label">
+                    <span class="label-text" style="font-size: 16px; font-family: 'SuitFont', sans-serif; font-weight: 600;">성별</span>
                 </label>
                 <select name="gender" style="width:305px; height:43px; outline:1px solid #cccccc; border-radius:10px;">
                     <option value="남">남</option>
@@ -127,7 +129,7 @@
 
             <div>
                 <button style="width:305px; height:43px; outline:1px solid #A176BB; border-radius:10px; background-color:#B276EE; color:white;">
-                    <span style="font-size:16px;">다음</span>
+                    <span style="font-size:16px; font-family: 'SuitFont', sans-serif; font-weight: 600;">다음</span>
                 </button>
             </div>
         </form>
@@ -364,9 +366,9 @@
                     toastWarning('닉네임을 입력해주세요.');
                     return;
                 }
-                if ( form.nickname.value.length < 4 ) {
+                if ( form.nickname.value.length < 2 ) {
                     form.nickname.focus();
-                    toastWarning('닉네임을 4자 이상 입력해주세요.');
+                    toastWarning('닉네임을 2자 이상 입력해주세요.');
                     return;
                 }
                  if ( validUsername != form.username.value ) {
@@ -398,35 +400,46 @@
         </script>
 
     </div>
-        <style>
-            #image-preview {
-                max-width: 300px;
-                max-height: 300px;
-                margin-top: 10px;
-            }
-        </style>
-        <script>
-            function previewImage(input) {
-            var preview = document.getElementById('image-preview');
-            preview.innerHTML = '';
+    <style>
+        #image-preview {
+            max-width: 315px;
+            max-height: 290px;
+            margin-top: 10px;
+        }
+    </style>
+    <style>
+        @font-face {
+                    font-family: 'EliceDigitalBaeum-Bd';
+                    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_elice@1.0/EliceDigitalBaeum-Bd.woff2') format('woff2');
+                    font-weight: 700;
+                    font-style: normal;
+                }
+        .signup {
+            font-family: 'EliceDigitalBaeum-Bd';
+        }
+    </style>
+    <script>
+        function previewImage(input) {
+        var preview = document.getElementById('image-preview');
+        preview.innerHTML = '';
 
-            if (input.files && input.files[0]) {
-            var reader = new FileReader();
+        if (input.files && input.files[0]) {
+        var reader = new FileReader();
 
-            reader.onload = function (e) {
-            var img = document.createElement('img');
-            img.src = e.target.result;
-            img.style.width = '270px';
-            img.style.height = '270px';
-            img.style.objectFit = 'cover';
-            img.style.borderRadius = '20px';
-            preview.appendChild(img);
-            };
+        reader.onload = function (e) {
+        var img = document.createElement('img');
+        img.src = e.target.result;
+        img.style.width = '305px';
+        img.style.height = '290px';
+        img.style.objectFit = 'cover';
+        img.style.borderRadius = '10px';
+        preview.appendChild(img);
+        };
 
-            reader.readAsDataURL(input.files[0]);
-            }
-            }
-        </script>
+        reader.readAsDataURL(input.files[0]);
+        }
+        }
+    </script>
 
 </div>
 </body>

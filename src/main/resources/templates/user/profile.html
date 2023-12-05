@@ -14,23 +14,19 @@
     <div class="mb-5 mt-5" style="width: 315px; border-radius: 10px; margin-bottom:80px;">
         <!--        프로필사진이랑 간단 프로필-->
         <div class="photoNickname mb-5" style="outline:1px solid #D4D2D2; width: 315px; border-radius: 10px;">
-            <div class="photo" style="position: relative;">
+            <div class="photo">
                 <div class="flex justify-center user-img" style="border-bottom: 1px solid #D4D2D2;">
                     <img th:src="@{|${receivedSiteUser.filepath}|}" alt="User Image"
                          style="width: 315px; height: 290px; object-fit: cover;border-top-left-radius: 10px; border-top-right-radius: 10px;">
-                    <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}" class="user-chat "
-                       style="position:absolute; bottom:0; right:0;"
-                       th:href="@{|${'/chat/allRoomForAdmin/'+receivedSiteUser.id}|}"
-                       th:text="${receivedSiteUser.nickname+'님의 채팅방들'}"></a>
                 </div>
 
             </div>
-            <div style="width:315px; height:87px; position: relative;">
-                <div>
-                    <div th:text="${receivedSiteUser.nickname}" style="font-size:20px;"></div>
+            <div style="width:315px; position: relative;">
+                <div class="p-2">
+                    <div th:text="${receivedSiteUser.nickname}" style="font-size:20px;" class="px-2"></div>
                     <div th:text="${receivedSiteUser.age}+'세'+'/'+${receivedSiteUser.living}"
-                         style="font-size:12px;"></div>
-                    <div th:text="${receivedSiteUser.About_Me}" style="font-size:14px;"></div>
+                         style="font-size:12px;" class="px-2"></div>
+                    <div th:text="${receivedSiteUser.About_Me}" style="font-size:14px;" class="px-2"></div>
                 </div>
 
                 <div style="position: absolute; top: 18px; right: 20px;">
@@ -52,13 +48,36 @@
         </div>
 
         <!--     채팅방 만들기   -->
-        <div style="width: 315px; height: 46px; border-radius: 10px; background-color: #B276EE; margin-bottom:20px;
-        outline: 1px solid #B276EE; color: white; display: flex; align-items: center; justify-content: center;">
-            <button th:if="${chatRoom == null && log == null}" id="sendCyberMoneyBtn" data-toggle="modal"
-                    data-target="#cyberMoneyModal" style="background: none; border: none; color: white;">채팅방 만들기
-            </button>
+        <div style="display: flex; align-items: center; justify-content: center;">
+            <div th:if="${chatRoom == null && log == null}" class="mr-1"
+                 style="width: 150px; height: 46px; border-radius: 10px; background-color: #B276EE; margin-bottom:20px;
+        outline: 1px solid #B276EE; color: white; align-items: center; justify-content: center; display: flex;">
+                <button  id="sendCyberMoneyBtn" data-toggle="modal"
+                         data-target="#cyberMoneyModal" style="background: none; border: none; color: white;">채팅방 만들기
+                </button>
+            </div>
+            <div class="ml-1" style="width: 150px; height: 46px; border-radius: 10px; background-color: #B276EE; margin-bottom:20px;
+        outline: 1px solid #B276EE; color: white; align-items: center; justify-content: center; display: flex;">
+                <button id="justsendCyberMoneyBtn" data-toggle="modal" data-target="#justcyberMoneyModal">하트 보내기
+                </button>
+            </div>
+
+
         </div>
 
+        <!--신고 보기 채팅방 보기  -->
+        <div style="display: flex; align-items: center; justify-content: center;"  th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+            <div class="mr-1" style="width: 150px; height: 46px; border-radius: 10px; background-color: #B276EE; margin-bottom:20px;
+                outline: 1px solid #B276EE; color: white; align-items: center; justify-content: center; display: flex;">
+                <a class="nav-link"
+                   th:href="@{'/admin/punish/' + ${receivedSiteUser.id}}">제재하기</a>
+            </div>
+            <div class="ml-1" style="width: 150px; height: 46px; border-radius: 10px; background-color: #B276EE; margin-bottom:20px;
+            outline: 1px solid #B276EE; color: white; align-items: center; justify-content: center; display: flex;">
+                <a  class="user-chat " th:href="@{|${'/chat/allRoomForAdmin/'+receivedSiteUser.id}|}"
+                    th:text="${receivedSiteUser.nickname+'님의 채팅방들'}"></a>
+            </div>
+        </div>
         <!--프로필 정보들-->
         <div style="margin-bottom:30px;">
             <div style="margin-bottom: 10px; text-align: center;">
@@ -81,9 +100,13 @@
                 <span th:text="${receivedSiteUser.religion}"
                       style="font-size:14px; background-color:#f3f3f3; padding: 5px 10px;border-radius:15px; margin: 0 5px;"></span>
             </div>
+            <div style="margin-bottom:10px;">
+                <span style="font-size:14px; background-color:#f3f3f3; padding: 5px 10px;border-radius:15px; margin: 0 5px;"
+                      th:text=" ${receivedSiteUser.styleList}"></span>
+                <span style="font-size:14px; background-color:#f3f3f3; padding: 5px 10px;border-radius:15px; margin: 0 5px;"
+                      th:text=" ${receivedSiteUser.hobbyList}"></span>
+            </div>
 
-            <div class="ml-2" th:text="'성격 : ' + ${receivedSiteUser.styleList}"></div>
-            <div class="ml-2" th:text="'취미 : ' + ${receivedSiteUser.hobbyList}"></div>
         </div>
 
         <!--이상형 -->
@@ -139,28 +162,35 @@
 
         <!--하트 보내기 버튼 아직 위치 못정함-->
         <div style="display: flex; padding: 5px; margin-bottom:40px;">
-            <button style="padding:5px 15px; border-radius:10px; border:3px solid purple;"
-                    id="justsendCyberMoneyBtn" data-toggle="modal" data-target="#justcyberMoneyModal">
-                하트 보내기
-            </button>
-            <dialog  style="font-family: 'SUITE', sans-serif;" id="my_modal_6" class="modal modal-bottom sm:modal-middle">
+            <dialog style="font-family: 'SUITE', sans-serif;" id="my_modal_6"
+                    class="modal modal-bottom sm:modal-middle">
                 <div class="modal-box">
 
                     <div class="modal-body">
-                        <div style="display:none" th:text="${heartSiteUser.nickname}" id="heartUsername" class="text-xl form-control"></div>
-                        <p class="badge badge-secondary badge-outline mt-3 mb-3" style=" font-size: 1em; color: black; display: inline-block; margin-right: 10px; background-color: #EFE1F8; border-color: #EFE1F8;">
+                        <div style="display:none" th:text="${heartSiteUser.nickname}" id="heartUsername"
+                             class="text-xl form-control"></div>
+                        <p class="badge badge-secondary badge-outline mt-3 mb-3"
+                           style=" font-size: 1em; color: black; display: inline-block; margin-right: 10px; background-color: #EFE1F8; border-color: #EFE1F8;">
                             보유중인 하트개수 : <span th:text="${userCyberMoney}" style="font-size: 1em; color: black;"></span>개
-                        </p>                            <div>호감이 있는만큼 하트를 보내세요.</div>
-                        <input style="width:100px; border-color: #B276EE;" type="text" id="justcyberMoneyAmount" class="mb-3 mt-3 input input-sm" required><span>&nbsp&nbsp개</span>
-                        <p style="font-size: 12px; color: red; "><span style="font-size: 16px;">※</span> 여기서 보내는 하트는 대화를 신청할 수 없어요.<i class="fa-solid fa-ban" style="color: #ff0000;"></i> 꼭 주의 하세요!</p>
-                        <p style="font-size: 12px; color: red;"><span style="font-size: 16px;">※</span> 대화를 신청하려면 대화신청 버튼을 이용해주세요.</p>
+                        </p>
+                        <div>호감이 있는만큼 하트를 보내세요.</div>
+                        <input style="width:100px; border-color: #B276EE;" type="text" id="justcyberMoneyAmount"
+                               class="mb-3 mt-3 input input-sm" required><span>&nbsp&nbsp개</span>
+                        <p style="font-size: 12px; color: red; "><span style="font-size: 16px;">※</span> 여기서 보내는 하트는 대화를
+                            신청할 수 없어요.<i class="fa-solid fa-ban" style="color: #ff0000;"></i> 꼭 주의 하세요!</p>
+                        <p style="font-size: 12px; color: red;"><span style="font-size: 16px;">※</span> 대화를 신청하려면 대화신청
+                            버튼을 이용해주세요.</p>
 
                     </div>
 
                     <div class="modal-action" style="display: flex; justify-content: space-between;">
                         <form method="dialog" style="width: 100%;">
-                            <button style="width: 48%; background-color: #B276EE; color: white;" class="btn btn-sm" id="justsendCyberMoneyConfirmBtn">확인</button>
-                            <button style="width: 48%; border-color: #B276EE; color: #989898;" class="btn btn-sm btn-outline" data-dismiss="modal">닫기</button>
+                            <button style="width: 48%; background-color: #B276EE; color: white;" class="btn btn-sm"
+                                    id="justsendCyberMoneyConfirmBtn">확인
+                            </button>
+                            <button style="width: 48%; border-color: #B276EE; color: #989898;"
+                                    class="btn btn-sm btn-outline" data-dismiss="modal">닫기
+                            </button>
                         </form>
                     </div>
                 </div>
@@ -174,9 +204,6 @@
                 th:text="${receivedCyberMoney}"></span>개</p>
     </div>
 
-    <a class="nav-link" th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
-       th:href="@{'/admin/punish/' + ${receivedSiteUser.id}}">제재하기</a>
-
 
     <dialog style="font-family: 'SUITE', sans-serif;" id="my_modal_5" class="modal modal-bottom sm:modal-middle">
         <div class="modal-box">
@@ -184,22 +211,29 @@
 
             <div th:text="${receivedSiteUser.nickname}" id="recipientUsername" class="text-xl form-control"></div>
             <div class="modal-body">
-                <p class="badge badge-secondary badge-outline mt-3 mb-3" style=" font-size: 1em; color: black; display: inline-block; margin-right: 10px; background-color: #EFE1F8; border-color: #EFE1F8;">
+                <p class="badge badge-secondary badge-outline mt-3 mb-3"
+                   style=" font-size: 1em; color: black; display: inline-block; margin-right: 10px; background-color: #EFE1F8; border-color: #EFE1F8;">
                     보유중인 하트개수 : <span th:text="${userCyberMoney}" style="font-size: 1em; color: black;"></span>개
                 </p>
 
                 <p style="font-size: 12px;">
-                    상대방이 대화신청을 하려면 하트 <span th:text="${receivedSiteUser.minHeart}" style="color: red;"></span>개가 필요하다고 정해놨어요!
+                    상대방이 대화신청을 하려면 하트 <span th:text="${receivedSiteUser.minHeart}" style="color: red;"></span>개가 필요하다고
+                    정해놨어요!
                 </p>
-                <p style="font-size: 12px;"> 수락을 누르면 하트 <span th:text="${receivedSiteUser.minHeart}" style="color: red;"></span>개가 차감되고 대화신청을 보내요.</p>
+                <p style="font-size: 12px;"> 수락을 누르면 하트 <span th:text="${receivedSiteUser.minHeart}"
+                                                              style="color: red;"></span>개가 차감되고 대화신청을 보내요.</p>
                 <p style="font-size: 12px; color: red;">하트 페이지에서 상대방이 수락 하기전에 보낸하트를 취소할수 있어요.</p>
 
             </div>
 
             <div class="modal-action" style="display: flex; justify-content: space-between;">
                 <form method="dialog" style="width: 100%;">
-                    <button class="btn" id="sendCyberMoneyConfirmBtn" style="width: 48%; background-color: #B276EE; color: white;">수락</button>
-                    <button class="btn btn-outline" data-dismiss="modal" style="width: 48%; border-color: #B276EE; color: #989898;">거절</button>
+                    <button class="btn" id="sendCyberMoneyConfirmBtn"
+                            style="width: 48%; background-color: #B276EE; color: white;">수락
+                    </button>
+                    <button class="btn btn-outline" data-dismiss="modal"
+                            style="width: 48%; border-color: #B276EE; color: #989898;">거절
+                    </button>
                 </form>
             </div>
 

@@ -5,23 +5,23 @@
     <title>관리자 권한 부여하기</title>
 </head>
 <body>
-<div layout:fragment="content" class="container my-3">
+<div layout:fragment="content" class=" flex justify-center">
 
     <div class="container w-96 mt-28">
-        <h1 class="text-3xl text-center">관리자 권한 부여</h1>
+        <h1 class="text-center mb-5" style="font-size:40px;">관리자 권한 부여</h1>
         <!-- 관리자 권한 부여 폼 -->
         <form th:action="@{/user/grantAuthorityToAdmin}" method="post">
-            <div class="form-control">
-                <label class="label">
-                    <span class="label-text">관리자 권한 보안 코드 :</span>
-                </label>
-                <input type="password" name="adminCode" class="input input-bordered" autofocus maxlength="30">
+            <div class="flex justify-center mb-5">
+                <span style="line-height: 40px; margin-right:5px;">보안 코드 :</span>
+                <input type="password" name="adminCode"
+                       style="width:220px; height:40px; outline:1px solid #B6B2B2; border-radius:10px;"
+                       autofocus maxlength="30">
             </div>
-
-            <button type="submit"
-                    class="border-2 border-gray-400 ml-24 mt-12 hover:bg-gray-400 p-2 rounded-lg hover:text-white">관리자
-                권한 부여
-            </button>
+            <div  class="flex justify-center">
+                <button type="submit" style="width:300px; height:40px; outline:1px solid #B6B2B2; border-radius:10px;">
+                    관리자 권한 부여
+                </button>
+            </div>
         </form>
     </div>
 </div>

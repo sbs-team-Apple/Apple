@@ -10,11 +10,16 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 //    @Override
 //    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 //        if (request.getUserPrincipal() == null) {
+//            response.sendRedirect("/showWarningPage");
 //            response.sendRedirect("/"); // Redirect to main page if user is not logged in
 //            return false; // Stop further processing
 //        }
 //        return true; // Continue with the request
 //    }
 
-    // Other overridden methods if needed
+//     Other overridden methods if needed
+
+
+
+
 }
