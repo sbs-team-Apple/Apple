@@ -127,9 +127,5 @@ public class MainController {
         return "jsp/WelStdPayReturn";
     }
 
-    @GetMapping("/showWarningPage")
-    public String showWarningPage() {
-        // Logic to display the warning page
-        return "warningPage"; // Assuming "warningPage" is the name of the view/template to display the warning
-    }
+
 }
