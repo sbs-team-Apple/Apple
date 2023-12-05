@@ -8,11 +8,13 @@ import java.util.List;
 @Getter
 @Setter
 public class UserDesiredForm {
-    private String desired_age; //원하는 나이 어떻게 구현할지 다시 고민
+    private int desired_age1; // 여기부터
+    private int desired_age2; // 여기까지
 
     private String desired_living; //원하는 지역
 
-    private String desired_tall; // 원하는 키 어떻게 범위 설정할지 다시 고민
+    private int desired_tall1;
+    private int desired_tall2;
 
     private String desired_body_type; //원하는 체형
 

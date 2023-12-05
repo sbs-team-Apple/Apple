@@ -5,13 +5,16 @@
     <title>Title</title>
 </head>
 <body>
-<div layout:fragment="content" class="container my-3">
+<div layout:fragment="content" class="container my-3 ml-auto mr-auto">
     <div class="ml-auto mr-auto w-60 ">
-        <form  class="imgForm" enctype="multipart/form-data" th:action="@{|/board/modify/${board.id}|}"  object="${boardForm}" method="post" >
-            <button type="button" class="add-file-input mb-2 mt-2"><i class="fa-solid fa-file-circle-plus fa-2xl"></i></button>
-
-            <div class="current-img">
-                <img  class="ex-current-img" th:src=" ${@rq.getImgs(board).get(0).filepath}" alt="">
+        <form  class="imgForm ml-auto mr-auto" enctype="multipart/form-data" th:action="@{|/board/modify/${board.id}|}"  object="${boardForm}" method="post" >
+            <button type="button" class="add-file-input mb-2 mt-2">
+                 <i class="fa-solid fa-file-circle-plus fa-2xl"></i>
+            </button>
+            <div style=" display:table; width: 100%; ">
+                <div class="current-img" style="display:table;">
+                    <img  class="ex-current-img" th:src=" ${@rq.getImgs(board).get(0).filepath}" alt="">
+                </div>
             </div>
             <div id="file-input-container">
 
@@ -29,27 +32,38 @@
                     <div class="image-preview"  th:each="img, currentindex : ${@rq.getImgs(board)}">
 
                             <img class="ex-img" th:currentindex="${currentindex.count}" onclick="changeCurrentImg(this)" th:src="${img.filepath}" alt="">
-                            <div class="cancelBtn fa-solid fa-xmark"  onclick="hideImagePreview(this)"></div>
+                            <div class="cancelBtn fa-regular fa-circle-xmark mt-1" style="color: #f08dac;"  onclick="hideImagePreview(this)"></div>
 
                     </div>
                 </div>
                 <div class="scroll-btn-left scroll-btn" id="scroll-left"><i class="fa-solid fa-angle-up fa-rotate-270 fa-2xl"></i></div>   <div  class="scroll-btn scroll-btn-right" id="scroll-right"><i class="fa-solid fa-angle-up fa-rotate-90 fa-2xl"></i></div>
 
             </div>
-            <textarea type="text" name="content" class="textarea textarea-secondary" placeholder="내용을 입력하세요" th:text="${board.content}"></textarea>
+            <textarea style="resize:none; " type="text" name="content" class="textarea textarea-secondary" placeholder="내용을 입력하세요" th:text="${board.content}"></textarea>
 
-            <button type="submit" class="btn end-function block ml-auto"  onclick="onSubmitClick()"
-                    style="margin-left:auto; border-radius:10px; border :1px solid #f08dac; background-color :#f08dac">
-                <span>작성</span>
+            <button type="submit" class="btn end-function block  "  onclick="onSubmitClick()"
+                    style="display: block; margin-left:auto;  border-radius:10px; border :1px solid #f08dac; background-color :#f08dac">
+                <span >수정</span>
             </button>
+
+            <input class="hidden " name="key-kind" th:value="${keyKind}" type="text">
 
         </form>
 
     </div>
 
 
-    <button onclick="SubmitClick()">dd</button>
-
+<!--    <button onclick="SubmitClick()">dd</button>-->
+    <div th:include="common/menu.html" class="tap_bar"></div>
+    <style>
+        .tap_bar {
+                position: fixed;
+                width: 100%;
+                bottom : 0;
+                left:50%;
+                transform:translate(-50%,0);
+            }
+    </style>
 </div>
 </body>
 </html>
@@ -58,7 +72,7 @@
     .ex-current-img {
         width:300px;
         height:300px;
-
+        object-fit: contain;
     }
 
 
@@ -77,31 +91,20 @@
     }
 
      .column {
-       display:flex;
-       border:1px solid black;
-        border-radius:10px;
-         overflow-x: auto;
-            height:100px;
-        padding-bottom:10px;
-            scrollbar-width: auto;
+         display:flex;
+           border:1px solid black;
+            overflow-x: auto;
+          border-radius:10px;
+              height:80px;
     }
 
 
     .column::-webkit-scrollbar {
-    width: 2px; /* Adjust scrollbar width */
-      height: 10px;
+      height:0;
+      width:0;
 
 }
 
-.column::-webkit-scrollbar-thumb {
-    background-color: #888; /* Scrollbar thumb color */
-    border-radius: 5px; /* Rounded corners */
-}
-
-.column::-webkit-scrollbar-track {
-    background-color: #f1f1f1; /* Scrollbar track color */
-    border-radius: 8px; /* Rounded track */
-}
 
     .image-preview {
           position:relative;
@@ -159,6 +162,31 @@
 
 
 </style>
+
+<script>
+    <!--파일 선택시 아무것도 안누르고 취소 하면 생기는 빈 input 태그 지우는 함수-->
+        function removeEmptyFileInput() {
+        var fileInputs = $('.image-file-input'); // Get all file input elements
+        var imgPreview =$(".image-preview");
+        var lastElement = imgPreview.last();
+        if (fileInputs.length > 0) {
+            var lastFileInput = fileInputs[fileInputs.length - 1]; // Get the last file input
+
+            if (lastFileInput.files.length === 0 || lastFileInput.files[0].name === '') {
+                lastFileInput.parentNode.removeChild(lastFileInput); // Remove the input if no file selected
+                lastElement.remove();
+                console.log('Removed empty file input.');
+            } else {
+                console.log('File found in the most recent input.');
+            }
+        } else {
+            console.log('No file inputs found.');
+        }
+    }
+
+
+</script>
+
 
 <script>
 <!--   테스트 용-->
@@ -238,6 +266,7 @@ console.log(indexImg);
 <script>
     function onSubmitClick() {
      // 여기에 전송 전에 실행하고자 하는 로직을 추가하세요
+
         indexExImgs();
 
         indexExaddImgs();
@@ -249,12 +278,23 @@ console.log(indexImg);
     document.getElementById('myArrayInput').value = jsonData;
      document.getElementById('myAddArrayInput').value = jsonData2;
 
+                removeEmptyFileInput();
+         var exImgValue = $('.ex-img'); // Replace 'ex-img' with your actual field ID or class
+
+            if (exImgValue.length==0) {
+               shouldSubmit = false;
+            alert('사진이 1장 이상은 꼭 있어야 합니다!');
+              event.preventDefault();
 
 
+                }
 
+            if(shouldSubmit){
+                console.log("서버로 전송");
 
-     // 폼을 서버로 제출
-    $('end-function').submit();
+                $('.imgForm').submit();
+                }
+
    }
 
 
@@ -271,20 +311,29 @@ console.log(indexImg);
 
       // "파일 추가" 버튼 클릭 이벤트
       $(".add-file-input").click(function() {
-            $(".add-file-input").addClass("hidden");
+<!--            $(".add-file-input").addClass("hidden");-->
+                            removeEmptyFileInput();
+
 
           var fileInputContainer = $(this).prev(".image-file-input");
           var newFileInput = $("<input>", {
               type: "file",
               name: "file",
               accept: "image/**",
-              class:  "image-file-input",
+              class:  "image-file-input hidden",
               currentIndex
           });
           var newImagePreview = $("<div>", { class: "image-preview" });
+          newFileInput.click();
 
           newFileInput.change(function() {
               var file = newFileInput[0].files[0];
+
+
+                                <!--     파일추가시 보이는 부분 오른쪽 으로 가게하기-->
+                 $('.column').animate({
+                                scrollLeft: '+=300' // Adjust the scroll amount as needed
+                            }, 'slow');
 
               if (file) {
                   var reader = new FileReader();
@@ -295,8 +344,8 @@ console.log(indexImg);
                        }) ;
                       previewImage.attr("src", e.target.result);
 
-                      var cancelBtn =$("<div>", {class:"cancelBtn fa-solid fa-xmark",currentIndex   ,onclick:"hideImagePreview(this)"} );
-
+                      var cancelBtn =$("<div>", {class:"cancelBtn  fa-regular fa-circle-xmark mt-1",
+                      style:"color: #f08dac;" ,currentIndex   ,onclick:"hideImagePreview(this)"} );
                       currentIndex++;
 
                       var previewCurrentImage = $("<img>", {
@@ -389,13 +438,13 @@ console.log(indexImg);
     $(document).ready(function() {
         $('#scroll-left').on('click', function() {
             $('.column').animate({
-                scrollLeft: '-=100' // Adjust the scroll amount as needed
+                scrollLeft: '-=80' // Adjust the scroll amount as needed
             }, 'slow');
         });
 
         $('#scroll-right').on('click', function() {
             $('.column').animate({
-                scrollLeft: '+=100' // Adjust the scroll amount as needed
+                scrollLeft: '+=80' // Adjust the scroll amount as needed
             }, 'slow');
         });
     });

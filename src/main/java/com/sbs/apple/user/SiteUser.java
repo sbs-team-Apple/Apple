@@ -48,7 +48,8 @@ public class SiteUser {
     private String gender; //성별
     //기본 프로필 기입
     private int age;//나이
-
+    private String email;
+    private String domain;
     private String living;//사는 지역
 
     private List<String> hobbyList;
@@ -67,12 +68,16 @@ public class SiteUser {
     private String mbti; //MBTI
     private String school; //학력
     private String job; //직장
-    private String About_Me; //자기소개
+    private String About_Me;
+    //자기소개
+    private int desired_age1; // 여기부터
+    private int desired_age2; // 여기까지
 
-    private String desired_age; //원하는 나이 어떻게 구현할지 다시 고민
-    private String desired_hobby; // 여러개 고를 수 있게 하기
-    private String desired_living; //원하는 지역
-    private String desired_tall; // 원하는 키 어떻게 범위 설정할지 다시 고민
+    private String desired_living;
+    //원하는 지역
+    private int desired_tall1;
+    private int desired_tall2;
+
     private String desired_body_type; //원하는 체형
     private String desired_smoking; // 원하는 흡연 유무
     private String desired_drinking; // 원하는 음주 유무
@@ -105,10 +110,10 @@ public class SiteUser {
     private List<Report> reportList;
 
 
-    private int cyberMoney = 5000; // 기본값 0으로 초기화
+    private int cyberMoney = 0; // 기본값 0으로 초기화
 
     @Column
-    private Integer receivedCyberMoney = 5000; // 다른 사용자로부터 받은 사이버머니 기본값 0으로 초기화
+    private Integer receivedCyberMoney = 0; // 다른 사용자로부터 받은 사이버머니 기본값 0으로 초기화
     public Integer getReceivedCyberMoney() {
         if (receivedCyberMoney == null) {
             return 0; // 또는 다른 기본값을 사용할 수 있습니다.
@@ -146,6 +151,13 @@ public class SiteUser {
     @OneToMany(mappedBy = "recipientUser", fetch = FetchType.LAZY)
     private List<CyberMoneyTransaction> receivedTransactions;
 
+    @OneToMany(mappedBy = "heartUser", fetch = FetchType.LAZY)
+    private List<CyberMoneyTransaction> heartTransactions;
+
+    @OneToMany(mappedBy = "senderUser")
+    private List<CyberMoneyTransaction> sentTransactions;
+
+
     public List<CyberMoneyTransaction> getCompletedTransactions() {
         List<CyberMoneyTransaction> completedTransactions = new ArrayList<>();
 
@@ -161,5 +173,6 @@ public class SiteUser {
 
     @Column
     private Integer minHeart = 200;
+
 
 }

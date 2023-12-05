@@ -18,14 +18,24 @@ public class ChatRoom {
     private Integer id;
     //회원가입 할 때 기본 정보
 
+
+    //채팅 초대한 사람
     @ManyToOne
     private SiteUser siteUser;
 
-
+    //채팅 초대 받은 사람
     @ManyToOne
     private SiteUser siteUser2;
 
     private LocalDateTime createDate;
+
+
+    //채팅 받은 사람의 입장권
+    private Boolean  toUserPass;
+
+
+    //채팅 초대한 사람의 입장권
+    private Boolean fromUserPass;
 
 
 

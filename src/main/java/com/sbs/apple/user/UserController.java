@@ -11,10 +11,10 @@ import com.sbs.apple.cybermoney.CyberMoneyTransactionRepository;
 import com.sbs.apple.exchange.ExchangeRepository;
 import com.sbs.apple.exchange.ExchangeService;
 import com.sbs.apple.interest.InterestService;
-import com.sbs.apple.notification.Notification;
 import com.sbs.apple.notification.NotificationService;
 import com.sbs.apple.report.ReportForm;
 import com.sbs.apple.report.ReportService;
+import com.sbs.apple.util.Rq;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -47,7 +47,7 @@ import java.util.Optional;
 @RequestMapping("/user")
 public class UserController {
 
-
+    private final Rq rq;
     private final UserService userService;
     private final ReportService reportService;
     private final UserRepository userRepository;
@@ -68,23 +68,39 @@ public class UserController {
 
     @PostMapping("/signup")
     public String signup2(@Valid UserCreateForm userCreateForm, BindingResult bindingResult,
-                          RedirectAttributes redirectAttributes, Model model, MultipartFile file, HttpServletRequest req)
+                          RedirectAttributes redirectAttributes, Model model, MultipartFile file)
             throws Exception {
-
-        RsData<SiteUser> joinRs = userService.create(false, false, userCreateForm.getFile(), userCreateForm.getUsername(), userCreateForm.getPassword1(),
-                userCreateForm.getNickname(), userCreateForm.getGender());
+        RsData<SiteUser> joinRs = userService.create(false, false, userCreateForm.getFile(), userCreateForm.getUsername(), userCreateForm.getPassword1()
+                ,userCreateForm.getEmail(),userCreateForm.getDomain(),userCreateForm.getNickname(), userCreateForm.getGender());
         if (joinRs.getResultCode().equals("F-1")) {
-            req.setAttribute("msg", joinRs.getMsg());
-            return "common/js";
+            return rq.historyBack(joinRs.getMsg());
         }
         if (joinRs.getResultCode().equals("F-2")) {
-            req.setAttribute("msg", joinRs.getMsg());
-            return "common/js";
+            return rq.historyBack(joinRs.getMsg());
+        }
+        if (joinRs.getResultCode().equals("F-3")) {
+            return rq.historyBack(joinRs.getMsg());
         }
         redirectAttributes.addAttribute("id", joinRs.getData().getId());
         return "redirect:/user/add/" + joinRs.getData().getId();
     }
+    @GetMapping("/checkUsernameDup")
+    @ResponseBody
+    public RsData<String> checkUsernameDup(String username) {
+        return userService.checkUsernameDup(username);
+    }
 
+    @GetMapping("/checkNicknameDup")
+    @ResponseBody
+    public RsData<String> checkNicknameDup(String nickname) {
+        return userService.checkNicknameDup(nickname);
+    }
+
+    @GetMapping("/checkEmailDup")
+    @ResponseBody
+    public RsData<String> checkEmailDup(String email) {
+        return userService.checkEmailDup(email);
+    }
 
     @GetMapping("/add/{id}")
     public String add1(UserAddForm userAddForm, @PathVariable("id") Integer id, Model model) {
@@ -116,8 +132,8 @@ public class UserController {
             return "user/desired_form";
         }
         SiteUser user = this.userService.getUser(id);
-        RsData<SiteUser> joinRs = userService.add_desired(user, userDesiredForm.getDesired_age(), userDesiredForm.getDesired_living(),
-                userDesiredForm.getDesired_tall(), userDesiredForm.getDesired_body_type(),
+        RsData<SiteUser> joinRs = userService.add_desired(user, userDesiredForm.getDesired_age1(),userDesiredForm.getDesired_age2(), userDesiredForm.getDesired_living(),
+                userDesiredForm.getDesired_tall1(),userDesiredForm.getDesired_tall2(), userDesiredForm.getDesired_body_type(),
                 userDesiredForm.getDesired_smoking(), userDesiredForm.getDesired_drinking(),
                 userDesiredForm.getDesired_styleList(), userDesiredForm.getDesired_religion(),
                 userDesiredForm.getDesired_mbti(), userDesiredForm.getDesired_school(),
@@ -137,6 +153,9 @@ public class UserController {
     public String userMyPage(Model model, Principal principal) {
         String username = principal.getName();
         SiteUser user = userService.getUserbyName(username);
+
+        int minHeart = user.getMinHeart();
+        model.addAttribute("minHeart", minHeart);
 
         int userCyberMoney = user.getCyberMoney();
         int receivedCyberMoney = user.getReceivedCyberMoney(); // 다른 사용자로부터 받은 사이버머니
@@ -258,9 +277,11 @@ public class UserController {
     @GetMapping("/desired_modify")
     public String desired_modify1(UserDesiredForm userDesiredForm, Principal principal, Model model) {
         SiteUser siteUser = this.userService.getUserbyName(principal.getName());
-        userDesiredForm.setDesired_age(siteUser.getDesired_age());
+        userDesiredForm.setDesired_age1(siteUser.getDesired_age1());
+        userDesiredForm.setDesired_age2(siteUser.getDesired_age2());
         userDesiredForm.setDesired_living(siteUser.getDesired_living());
-        userDesiredForm.setDesired_tall(siteUser.getDesired_tall());
+        userDesiredForm.setDesired_tall1(siteUser.getDesired_tall1());
+        userDesiredForm.setDesired_tall2(siteUser.getDesired_tall2());
         userDesiredForm.setDesired_body_type(siteUser.getDesired_body_type());
         userDesiredForm.setDesired_smoking(siteUser.getDesired_smoking());
         userDesiredForm.setDesired_drinking(siteUser.getDesired_drinking());
@@ -276,8 +297,8 @@ public class UserController {
     @PostMapping("/desired_modify")
     public String desired_modify(UserDesiredForm userDesiredForm, Principal principal) {
         SiteUser user = this.userService.getUserbyName(principal.getName());
-        userService.add_desired(user, userDesiredForm.getDesired_age(), userDesiredForm.getDesired_living(),
-                userDesiredForm.getDesired_tall(),
+        userService.add_desired2(user, userDesiredForm.getDesired_age1(),userDesiredForm.getDesired_age2(), userDesiredForm.getDesired_living(),
+                userDesiredForm.getDesired_tall1(),userDesiredForm.getDesired_tall2(),
                 userDesiredForm.getDesired_body_type(), userDesiredForm.getDesired_smoking(),
                 userDesiredForm.getDesired_drinking(), userDesiredForm.getDesired_styleList(),
                 userDesiredForm.getDesired_religion(), userDesiredForm.getDesired_mbti(),
@@ -291,8 +312,10 @@ public class UserController {
     public String paymentPage(Principal principal, Model model, @PathVariable("id") Integer id) {
         SiteUser siteUser = this.userService.getUserbyName(principal.getName());
         SiteUser receivedSiteUser = this.userService.getUser(id);
+        SiteUser heartSiteUser = this.userService.getUser(id);
         model.addAttribute("siteUser", siteUser);
         model.addAttribute("receivedSiteUser", receivedSiteUser);
+        model.addAttribute("heartSiteUser", heartSiteUser);
         String interest_user = principal.getName();
 
 
@@ -397,8 +420,12 @@ public class UserController {
         int userCyberMoney = user.getCyberMoney();
         int receivedCyberMoney = user.getReceivedCyberMoney(); // 다른 사용자로부터 받은 사이버머니
 
+        List<CyberMoneyTransaction> heartTransactions = cyberMoneyTransactionRepository.findByHeartUser(user);
         List<CyberMoneyTransaction> receivedTransactions = cyberMoneyTransactionRepository.findByRecipientUser(user);
         List<CyberMoneyTransaction> sentTransactions = cyberMoneyTransactionRepository.findBySenderUser(user);
+        List<CyberMoneyTransaction> sent2Transactions = cyberMoneyTransactionRepository.findBySenderUserAndHeartUserIsNotNull(user);
+        List<CyberMoneyTransaction> sent3Transactions = cyberMoneyTransactionRepository.findBySenderUserAndRecipientUserIsNotNull(user);
+
 
         // 완료된 거래 목록을 생성
         List<CyberMoneyTransaction> completedTransactions = new ArrayList<>();
@@ -406,6 +433,7 @@ public class UserController {
             if (transaction.isAccepted() || transaction.isRejected()) {
                 completedTransactions.add(transaction);
             }
+
         }
 
         // receivedTransactions에서 완료된 거래를 제거하고 completedTransactions에 추가
@@ -420,29 +448,28 @@ public class UserController {
         }
 
         int minHeart = user.getMinHeart();
-        model.addAttribute("minHeart", minHeart);
 
-        // 모델에 데이터를 추가하여 뷰로 전달
+        model.addAttribute("minHeart", minHeart);
+        model.addAttribute("heartTransactions", heartTransactions); // heartTransactions 리스트를 모델에 추가
         model.addAttribute("user", user);
         model.addAttribute("receivedTransactions", receivedTransactions); // 받은 거래 정보
         model.addAttribute("sentTransactions", sentTransactions); // 보낸 거래 정보
+        model.addAttribute("sent2Transactions", sent2Transactions); // 보낸 거래 정보
+        model.addAttribute("sent3Transactions", sent3Transactions); // 보낸 거래 정보
         model.addAttribute("userCyberMoney", userCyberMoney);
         model.addAttribute("receivedCyberMoney", receivedCyberMoney); // 다른 사용자로부터 받은 사이버머니
         model.addAttribute("completedTransactions", completedTransactions); // 완료된 거래 정보
-
         return "transactions"; // 템플릿 이름 (예: transaction-history.html)
     }
 
     @PostMapping("/updateMinHeart")
     public String updateMinHeart(@RequestParam("minHeart") Integer minHeart, Principal principal) {
-        try {
-            String username = principal.getName();
-            userService.updateMinHeart(username, minHeart);
-            return "redirect:/user/transactions"; // 최신 정보를 반영하도록 리다이렉트
-        } catch (Exception e) {
-            // 예외 처리 로직 추가
-            return "error"; // 예외 발생 시 에러 페이지로 이동하거나 다른 적절한 처리를 수행할 수 있습니다.
-        }
+
+        String username = principal.getName();
+        userService.updateMinHeart(username, minHeart);
+        return "redirect:/user/myPage"; // 최신 정보를 반영하도록 리다이렉트
+
+
     }
 
 
@@ -467,6 +494,7 @@ public class UserController {
         }
         CyberMoneyTransaction transaction = transactionOptional.get();
 
+
         if ("accept".equals(action) && !transaction.isAccepted() && !transaction.isRejected()) {
             // 거래가 아직 수락되지 않았을 경우에만 처리
             transaction.setAccepted(true);
@@ -476,10 +504,6 @@ public class UserController {
             userRepository.save(recipientUser);
             SiteUser senderUser = transaction.getSenderUser();
 
-            Notification notification=notificationService.findByUsers(senderUser,recipientUser);
-            if(notification != null ) {
-                notificationService.delete(notification);
-            }
         } else if ("reject".equals(action) && !transaction.isAccepted() && !transaction.isRejected()) {
             // 거래가 아직 수락되지 않았고 거부되지 않았을 경우에만 처리
             transaction.setRejected(true); // 거부 플래그 설정
@@ -488,13 +512,13 @@ public class UserController {
             SiteUser senderUser = transaction.getSenderUser();
             senderUser.setCyberMoney(senderUser.getCyberMoney() + transaction.getAmount());
             userRepository.save(senderUser);
-            Notification notification=notificationService.findByUsers(senderUser,recipientUser);
-            if(notification != null ) {
-                notificationService.delete(notification);
-            }
 
-
-
+            // 해당 거래를 sentTransactions에서 삭제하고 completedTransactions로 이동
+            recipientUser.getSentTransactions().remove(transaction);
+            // 이 부분을 추가하여 거래를 삭제합니다.
+            cyberMoneyTransactionRepository.delete(transaction);
+            // recipientUser.getCompletedTransactions().add(transaction); 이 부분은 삭제된 거래를 추가하는 것으로 보입니다.
+            userRepository.save(recipientUser);
 
             return "redirect:/user/transactions";
         } else {
@@ -531,13 +555,4 @@ public class UserController {
         return "user/interest_all";
     }
 
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/heart")
-    public String heart(Principal principal, Model model) {
-        SiteUser siteUser = this.userService.getUserbyName(principal.getName());
-        model.addAttribute("siteUser", siteUser);
-        return "user/interest_all";
-    }
-
 }
-

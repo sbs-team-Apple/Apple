@@ -15,45 +15,46 @@
              class="profile profile_wrap main-container h-screen">
             <div class="profile_in m-auto flex justify-center flex-col items-center"
                  th:each="userList : ${userList}"
-                 style="margin-top: 20px; margin-bottom: 20px; border-radius:20px; outline: 3px solid black; box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.3);">
+                 style="margin-top: 20px; margin-bottom: 10px; border-radius:10px;">
                 <label class="swap swap-flip">
-                    <input type="checkbox" />
-                    <div class="swap-on">
+                    <input type="checkbox"/>
+                    <div class="swap-on" style="outline: 1px solid #D4D2D2; border-radius:10px;">
                         <a th:href="@{|/user/detail/${userList.id}|}">
                             <div id="myImage">
-                                <img style="width: 270px; height: 270px; object-fit: cover; border-top-left-radius: 20px; border-top-right-radius: 20px;"
+                                <img style="width: 315px; height: 290px; object-fit: cover; border-top-left-radius: 10px; border-top-right-radius: 10px;"
                                      th:src="@{|${userList.filepath}|}" alt="User Image">
                             </div>
-                            <div style="background-color: #f08dac; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;">
-                                <div class="text-center">
-                                    <span th:text="${userList.nickname}"></span>
-                                    <span> | </span>
-                                    <span th:text="${userList.age}"></span>
-                                    <span> | </span>
-                                    <span th:text="${userList.living}"></span>
+                            <div style=" border-top: 1px solid #D4D2D2; height:66px; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+                                <div>
+                                    <div class="ml-3">
+                                        <span style="font-size:20px;" th:text="${userList.nickname}"></span>
+                                    </div>
+                                    <div class="ml-3">
+                                        <span style="font-size:12px;" th:text="${userList.age}+'세'"></span>
+                                        <span> / </span>
+                                        <span style="font-size:12px;" th:text="${userList.living}"></span>
+                                    </div>
                                 </div>
-                                <div class="text-left ml-7" th:text="${userList.About_Me}" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 220px;"></div>
                             </div>
                         </a>
                     </div>
-                    <div class="swap-off" style="outline:3px solid black; border-radius:20px;">
-                        <div style="height:24px;  background-color: #f08dac;  border-top-left-radius: 20px; border-top-right-radius: 20px;">
+                    <div class="swap-off" style="border-radius:10px; outline:1px solid pink;">
+                        <div style="height:33px;  background-color: #white;  border-top-left-radius: 10px; border-top-right-radius: 10px;">
                         </div>
                         <div>
-                            <img style="width: 270px; height: 270px; object-fit: cover;"
-                                 th:src="@{|${closeSiteUser.filepath}|}" alt="pink image" />
+                            <img style="width: 315px; height: 290px; object-fit: cover;"
+                                 src="/img/white.png" alt="pink image"/>
                         </div>
-
-                        <div style="height:24px;  background-color: #f08dac; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;">
+                        <div style="height:33px;  background-color: #white; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
                         </div>
                     </div>
                 </label>
             </div>
 
         </div>
-        <div th:include="common/menu.html" class="tap_bar"></div>
+        <div sec:authorize="isAuthenticated()" th:include="common/menu.html" class="tap_bar"></div>
     </div>
-
+<div style="height:1000px;"></div>
     <div th:include="common/footer.html"></div>
     <div>
         <div th:if="${#authorization.expression('isAuthenticated()') and userWarning}">
@@ -63,19 +64,18 @@
             <a th:href="@{/user/okay}">확인했습니다.</a>
         </div>
     </div>
-    <div th:if="${siteUsers != null}" th:each="user : ${siteUsers}">
-        <div class="flex  ">
-            <div><a th:value="${user.id}" name="userId" th:text="${user.nickname}"></a></div>
-            <div>
-                <form method="post"
-                      th:action="@{|/chat/${chatRoom != null ? chatRoom.id+1 : 1}/room/${user.id}|}">
-                    <input class="userId_value" type="hidden" name="userId" th:value="${user.id}">
-                    <button type="submit">님과 채팅방 만들기</button>
-                </form>
-            </div>
-        </div>
-
-    </div>
+<!--    <div th:if="${siteUsers != null}" th:each="user : ${siteUsers}">-->
+<!--        <div class="flex  ">-->
+<!--            <div><a th:value="${user.id}" name="userId" th:text="${user.nickname}"></a></div>-->
+<!--            <div>-->
+<!--                <form method="post"-->
+<!--                      th:action="@{|/chat/${chatRoom != null ? chatRoom.id+1 : 1}/room/${user.id}|}">-->
+<!--                    <input class="userId_value" type="hidden" name="userId" th:value="${user.id}">-->
+<!--                    <button type="submit">님과 채팅방 만들기</button>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
 
     <style>
         .tap_bar {
@@ -100,6 +100,18 @@
     <script>
         var img = document.getElementById('myImage');
         img.classList.add('object-cover');
+    </script>
+
+
+    <script>
+        // Check if the URL contains a specific parameter indicating a redirect due to login requirement
+        const urlParams = new URLSearchParams(window.location.search);
+        const loginRequired = urlParams.get('loginRequired');
+
+        if (loginRequired) {
+            // If login is required, show an alert
+            alert('You need to be logged in to access this page.');
+        }
     </script>
 </div>
 </body>

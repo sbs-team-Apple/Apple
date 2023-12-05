@@ -4,6 +4,8 @@ package com.sbs.apple.notification;
 import com.sbs.apple.chat.ChatRoom;
 import com.sbs.apple.user.SiteUser;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -24,6 +26,8 @@ public class NotificationService {
         notification.setSiteUser(siteUserTo);
         notification.setSiteUserFrom(siteUserFrom);
         notification.setKind(chatRoom);
+
+
         notificationRepository.save(notification);
             return notification;
 
@@ -34,7 +38,16 @@ public class NotificationService {
     }
 
 
-    public List<Notification> getByUserTo(SiteUser loginUser) {
+    public Notification getByUserTo(SiteUser loginUser) {
+        Pageable pageable = PageRequest.of(0, 1); // Fetch only the first result (i.e., the latest notification)
+        if(notificationRepository.findLatestNotificationByUser(loginUser)==null){
+            return null;
+        }
+        return notificationRepository.findLatestNotificationByUser(loginUser);
+    }
+
+
+    public List<Notification> getsByUserTo(SiteUser loginUser) {
         if(notificationRepository.findByUser(loginUser)==null){
             return null;
         }

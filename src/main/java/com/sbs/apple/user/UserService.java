@@ -4,6 +4,7 @@ import com.sbs.apple.DataNotFoundException;
 import com.sbs.apple.RsData;
 import com.sbs.apple.chat.ChatRoom;
 import com.sbs.apple.chat.ChatRoomService;
+import com.sbs.apple.email.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,6 +23,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final ChatRoomService chatRoomService;
     private String uploadDir;
+    private final EmailService emailService;
 
     Random random = new Random();
 
@@ -71,10 +73,7 @@ public class UserService {
         user.setSchool("4년제 졸업");
         user.setJob("무직");
         user.setAbout_Me("반갑소");
-        user.setDesired_age("상관없음");
         user.setDesired_living("서울");
-        user.setDesired_hobby("골프");
-        user.setDesired_tall("상관없음");
         user.setDesired_body_type("평범한");
         user.setDesired_smoking("비흡연");
         user.setDesired_drinking("가끔");
@@ -88,12 +87,15 @@ public class UserService {
     }
 
     //회원가입
-    public RsData<SiteUser>  create(boolean userStop, boolean userWarning, MultipartFile file, String username, String password, String nickname, String gender)
+    public RsData<SiteUser>  create(boolean userStop, boolean userWarning, MultipartFile file, String username, String password, String email, String domain, String nickname, String gender)
             throws Exception {
         if (findByUsername(username).isPresent())
             return RsData.of("F-1", "%s(은)는 사용중인 아이디입니다.".formatted(username));
+        if (findByEmail(email).isPresent())
+            return RsData.of("F-2", "%s(은)는 사용중인 이메일입니다.".formatted(email));
         if (findByNickname(nickname).isPresent())
-            return RsData.of("F-2", "%s(은)는 사용중인 닉네임입니다.".formatted(nickname));
+            return RsData.of("F-3", "%s(은)는 사용중인 닉네임입니다.".formatted(nickname));
+
         SiteUser user = new SiteUser();
         File directory = new File(uploadDir);
         if (!directory.exists()) {
@@ -109,6 +111,8 @@ public class UserService {
         user.setUserWarning(userWarning);
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
+        user.setEmail(email);
+        user.setDomain(domain);
         user.setNickname(nickname);
         user.setGender(gender);
 
@@ -124,13 +128,16 @@ public class UserService {
     public Optional<SiteUser> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
+    private Optional<SiteUser> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
 
     //회원가입
-    public SiteUser create(String username, String password, String nickname, String gender) {
+    public SiteUser create(String username, String password, String gender) {
         SiteUser user = new SiteUser();
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
-        user.setNickname(nickname);
         user.setGender(gender);
         this.userRepository.save(user);
         return user;
@@ -157,15 +164,17 @@ public class UserService {
         return user;
     }
 
-    //이상형 설정
-    public RsData<SiteUser> add_desired(SiteUser user, String desiredAge, String desiredLiving,
-                                        String desiredTall, String desiredBodyType, String desiredSmoking,
+    //이상형 설정 회원가입 할때
+    public RsData<SiteUser> add_desired(SiteUser user, int desiredAge1,int desiredAge2, String desiredLiving,
+                                        int desiredTall1,int desiredTall2, String desiredBodyType, String desiredSmoking,
                                         String desiredDrinking, List<String> desiredStyleList, String desiredReligion,
                                         String desiredMbti, String desiredSchool, String desiredJob) {
 
-        user.setDesired_age(desiredAge);
+        user.setDesired_age1(desiredAge1);
+        user.setDesired_age2(desiredAge2);
         user.setDesired_living(desiredLiving);
-        user.setDesired_tall(desiredTall);
+        user.setDesired_tall1(desiredTall1);
+        user.setDesired_tall2(desiredTall2);
         user.setDesired_body_type(desiredBodyType);
         user.setDesired_smoking(desiredSmoking);
         user.setDesired_drinking(desiredDrinking);
@@ -178,7 +187,33 @@ public class UserService {
         user = userRepository.save(user);
         return RsData.of("S-1", "회원가입이 완료되었습니다.", user);
     }
+    private void sendJoinCompleteMail(SiteUser siteUser) {
+        String full_email = siteUser.getEmail() + "@" + siteUser.getDomain();
+        emailService.send(full_email, "회원가입이 완료되었습니다.", "회원가입이 완료되었습니다.");
+    }
+    //수정할 때
+    public RsData<SiteUser> add_desired2(SiteUser user,int desiredAge1,int desiredAge2, String desiredLiving,
+                                         int desiredTall1,int desiredTall2, String desiredBodyType, String desiredSmoking,
+                                        String desiredDrinking, List<String> desiredStyleList, String desiredReligion,
+                                        String desiredMbti, String desiredSchool, String desiredJob) {
 
+        user.setDesired_age1(desiredAge1);
+        user.setDesired_age2(desiredAge2);
+        user.setDesired_living(desiredLiving);
+        user.setDesired_tall1(desiredTall1);
+        user.setDesired_tall2(desiredTall2);
+        user.setDesired_body_type(desiredBodyType);
+        user.setDesired_smoking(desiredSmoking);
+        user.setDesired_drinking(desiredDrinking);
+        user.setDesired_styleList(desiredStyleList);
+        user.setDesired_religion(desiredReligion);
+        user.setDesired_mbti(desiredMbti);
+        user.setDesired_school(desiredSchool);
+        user.setDesired_job(desiredJob);
+        this.userRepository.save(user);
+        user = userRepository.save(user);
+        return RsData.of("S-1", "회원가입이 완료되었습니다.", user);
+    }
 
     public boolean isCorrectPassword(String username, String password) {
         SiteUser user = getUserbyName(username);
@@ -201,12 +236,16 @@ public class UserService {
         this.userRepository.delete(siteUser);
     }
 
-    //소셜 로그인
     @Transactional
-    public SiteUser whenSocialLogin(String providerTypeCode, String username, String nickname) {
+    public SiteUser whenSocialLogin(String providerTypeCode, String username) {
+        Optional <SiteUser> siteUser = findByUsername(username);
+
+        if (siteUser.isPresent()) return siteUser.get();
+
         // 소셜 로그인를 통한 가입시 비번은 없다.
-        return create(username, "", nickname, ""); // 최초 로그인 시 딱 한번 실행
+        return create(username, "","남"); // 최초 로그인 시 딱 한번 실행
     }
+
 
 
     public List<SiteUser> getAllUser() {
@@ -371,6 +410,20 @@ public class UserService {
 
     public boolean isUsernameAlreadyExists(String username) {
         return userRepository.existsByUsername(username);
+    }
+
+    public RsData<String> checkUsernameDup(String username) {
+        if (findByUsername(username).isPresent()) return RsData.of("F-1", "%s(은)는 사용중인 아이디입니다.".formatted(username));
+        return RsData.of("S-1", "%s(은)는 사용 가능한 아이디입니다.".formatted(username),username);
+    }
+    public RsData<String> checkNicknameDup(String nickname) {
+        if (findByNickname(nickname).isPresent()) return RsData.of("F-1", "%s(은)는 사용중인 닉네임입니다.".formatted(nickname));
+        return RsData.of("S-1", "%s(은)는 사용 가능한 닉네임입니다.".formatted(nickname),nickname);
+    }
+
+    public RsData<String> checkEmailDup(String email) {
+        if (findByEmail(email).isPresent()) return RsData.of("F-1", "%s(은)는 사용중인 이메일입니다.".formatted(email));
+        return RsData.of("S-1", "%s(은)는 사용 가능한 이메일입니다.".formatted(email),email);
     }
 
 }

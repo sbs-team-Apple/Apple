@@ -1,46 +1,129 @@
 <div class="underBody flex flex-col items-center"
-     style="border: 1px solid rgb(198, 198, 198); padding: 20px 15px 15px 15px; border-radius: 15px; flex-direction: column; align-items: center;">
+     style=" padding: 20px 15px 15px 15px; border-radius: 15px; flex-direction: column; align-items: center;">
     <div>
-        <form th:action="@{/user/login}" method="post" class="login">
-            <div class="mb-2">
-                <input type="text" name="username" id="username"
-                       style="border-radius: 10px; width: 300px; height: 50px; outline:2px solid gray;"
-                       placeholder=" 아이디">
+        <div style="display: flex; justify-content: center;" class="mb-5 logo_">
+                <span class="mr-2" style="font-size: 32px; color: #B674DF;">THE</span>
+            <span class="ml-2" style="font-size: 32px; color: #6C05AB;">CUPID</span>
+        </div>
+        <form th:action="@{/user/login}" method="post" onsubmit="submitLoginForm(this); return false;" class="login">
+            <div style="width:300px; display:flex;">
+                <div class="flex flex-col mr-3" style="width:215px; height:47px;">
+                    <div class="mb-3">
+                        <input type="text" name="username" id="username"
+                               style="border-radius: 10px; width: 100%; height: 50px; outline:1px solid #d2d2d2;  font-family: 'SuitFont', sans-serif;"
+                               placeholder=" 아이디">
+                    </div>
+                    <div class="mb-4">
+                        <input type="password" name="password" id="password"
+                               style="border-radius: 10px;  width: 100%; height: 50px; outline:1px solid #d2d2d2;  font-family: 'SuitFont', sans-serif;"
+                               placeholder=" 비밀번호">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <input type="submit" value="로그인"
+                           style="border-radius: 10px; border :1px solid #d2d2d2; padding: 40px 10px; margin: 0; font-size:20px;">
+                </div>
             </div>
-            <div class="mb-8">
-                <input type="password" name="password" id="password"
-                       style="border-radius: 10px; width: 300px; height: 50px; outline:2px solid gray;"
-                       placeholder=" 비밀번호">
-            </div>
-            <div class="mb-3">
-                <input type="submit" value="로그인" class="btn" style="padding: 0 123px; margin: 0; color:white; font-size:20px;
-                border-radius:10px; border :1px solid #f08dac; background-color :#f08dac">
-            </div>
-            <div class="mb-4 text-center rounded-lg">
+
+            <div class="mb-4 text-center">
             <span>
-                <a href="/user/signup" class="social-kakao">회원가입</a>
+                <a href="/user/signup" class="social-kakao" style=" font-family: 'SuitFont', sans-serif;">회원가입</a>
             </span>
-                <span> | </span>
+                <span class="mr-1 ml-1">|</span>
+                <a href="#" style=" font-family: 'SuitFont', sans-serif;">비밀번호 찾기</a>
                 <span>
-                <a href="#">아이디 찾기</a>
             </span>
-                <span> | </span>
+                <span class="mr-1 ml-1">|</span>
                 <span>
-                <a href="#">비밀번호 찾기</a>
+                <a href="#" style=" font-family: 'SuitFont', sans-serif;">아이디 찾기</a>
             </span>
             </div>
 
         </form>
-        <div class="text-center mb-1" style="height:50px;">
-            <span class="mr-2" style="width:100px; outline:1px solid black; border-radius:5px; padding: 10px 20px;"><a href="/oauth2/authorization/kakao">카카오 로그인</a></span>
-            <span class="ml-2" style="width:100px; outline:1px solid black; border-radius:5px; padding: 10px 20px;"><a href="#">네이버 로그인</a></span>
+        <div class="mb-4" style="outline: 1px solid #706E6E; height:50px; display: flex; align-items: center;">
+            <a href="/oauth2/authorization/google" class="social-google"
+               style="display: inline-flex; align-items: center; text-decoration: none;">
+                <img src="/img/구글.png" style="width: 36px; height: 36px; object-fit: cover; margin :5px 20px;"
+                     alt="Google Logo">
+                <span style="margin-left:35px; font-family: 'SuitFont', sans-serif;">구글로 로그인</span>
+            </a>
         </div>
-        <div class="text-center" style="height:50px;">
-            <span class="mr-2" style="width:100px;outline:1px solid black; border-radius:5px; padding: 10px 20px;"><a href="#">구글 로그인</a></span>
-            <span class="ml-2" style="width:100px;outline:1px solid black; border-radius:5px; padding: 10px 20px;"><a href="#">페이스북 로그인</a></span>
+
+        <div class="mb-4" style=" height:50px; background-color:#00c73c; display: flex; align-items: center;">
+            <a href="/oauth2/authorization/naver" class="social-naver"
+               style="display: inline-flex; align-items: center; text-decoration: none; color: white;">
+                <img src="/img/네이버2.png" style="width: 36px; height: 36px; object-fit: cover; margin :5px 20px;" alt="">
+                <span style="margin-left:25px; font-family: 'SuitFont', sans-serif;">네이버로 로그인</span>
+            </a>
         </div>
-        <div>
-            <a href="board/"></a>
+
+        <div class="mb-4" style="height: 50px; background-color: #f9e000; display: flex; align-items: center;">
+            <a href="/oauth2/authorization/kakao" class="social-kakao"
+               style="display: inline-flex; align-items: center; text-decoration: none;">
+                <img src="/img/카카오3.png" style="width: 36px; height: 36px; object-fit: cover; margin: 5px 20px;" alt="">
+                <span style="margin-left: 25px; font-family: 'SuitFont', sans-serif;">카카오로 로그인</span>
+            </a>
         </div>
+
+        <style>
+            @font-face {
+                font-family: 'SEBANG_Gothic_Bold';
+                src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2104@1.0/SEBANG_Gothic_Bold.woff') format('woff');
+                font-weight: normal;
+                font-style: normal;
+            }
+
+            .logo_ {
+                font-family: 'SEBANG_Gothic_Bold';
+            }
+        </style>
+
+        <script>
+            let submitLoginFormDone = false;
+            function submitLoginForm(form) {
+                if ( submitLoginFormDone ) return;
+
+                form.username.value = form.username.value.trim();
+
+                if ( form.username.value.length == 0 ) {
+                    form.username.focus();
+                    toastWarning('아이디를 입력해주세요.');
+                    return;
+                }
+
+                if ( form.username.value.length < 4 ) {
+                    form.username.focus();
+                    toastWarning('아이디를 4자 이상 입력해주세요.');
+                    return;
+                }
+
+                form.password.value = form.password.value.trim();
+
+                if ( form.password.value.length == 0 ) {
+                    form.password.focus();
+                    toastWarning('비밀번호를 입력해주세요.');
+                    return;
+                }
+
+                if ( form.password.value.length < 4 ) {
+                    form.password.focus();
+                    toastWarning('비밀번호를 4자 이상 입력해주세요.');
+                    return;
+                }
+
+                form.passwordConfirm.value = form.passwordConfirm.value.trim();
+
+                if ( form.passwordConfirm.value.length == 0 ) {
+                    form.passwordConfirm.focus();
+                    toastWarning('비밀번호를 확인을 입력해주세요.');
+                    return;
+                }
+
+                form.submit();
+                submitLoginFormDone = true;
+            }
+        </script>
+
+
     </div>
 </div>

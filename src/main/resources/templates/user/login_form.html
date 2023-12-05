@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
-<body>
-<div layout:fragment="content" class="container flex justify-center">
-        <div th:include="user/login.html"></div>
+<div layout:fragment="content">
+    <div class="flex justify-center">
+        <div>
+            <div th:include="user/login.html"></div>
+        </div>
+    </div>
 </div>
-</body>
-
 </html>

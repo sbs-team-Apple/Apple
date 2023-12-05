@@ -4,8 +4,7 @@
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title layout:title-pattern="$LAYOUT_TITLE" th:text="The_Cupid"></title>
 <!--드로그앤 드롭 -->
@@ -69,17 +68,19 @@
                         <li class="nav-item" sec:authorize="isAuthenticated()">
                             <a th:href="@{/user/transactions}"><i class="fa-solid fa-heart"></i>하트</a>
                         </li>
+
 <!--                        <li class="nav-item" sec:authorize="isAuthenticated()">-->
 <!--                            <a th:href="@{/user/setting}">내 정보 수정</a>-->
 <!--                        </li>-->
-
-
                         <li class="nav-item" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
                             <a  class="nav-link" th:href="@{/admin/report_list}">신고 게시판</a>
                         </li>
                         <li class="nav-item" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
                             <a class="nav-link" th:href="@{/admin/exchange_list}">환전 게시판</a>
                         </li>
+<!--                        <li class="nav-item" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">-->
+<!--                            <a class="nav-link" th:href="@{/chat/admin/allChatRooms}">유저들 채팅방 목록</a>-->
+<!--                        </li>-->
 
                         <!--                        <li th:if="${#authorization.expression('isAuthenticated()')}">-->
                         <!--                            <a href="/user/grantAuthorityToAdmin" class="nav-domain" hx-boost="true">관리자</a>-->
@@ -91,7 +92,7 @@
                 <a th:href="@{/}" class="btn btn-ghost normal-case text-xl">The Cupid</a>
             </div>
             <div  class="navbar-end">
-                                <div  class="userIdDiv" th:if="${@rq.login}" th:text="${@rq.user.id}"></div>
+<!--                                <div  class="userIdDiv" th:if="${@rq.login}" th:text="${@rq.user.id}"></div>-->
                 <button th:if="${@rq.login}" class="btn btn-ghost btn-circle btn-bell">
                     <div class="indicator">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
@@ -111,8 +112,17 @@
                             <div class="  content-end" style="text-align: right;"> 알림 없음 </div>
                         </div>
                         <div class="flex notification-item" th:each="notification : ${@rq.notification}">
-                            <div th:if="${notification.kind == 'chatRoom'}" class="notification-text" th:text="${notification.siteUserFrom.nickname}+'님이 초대를 수락해 채팅방이 만들어졌습니다.'"></div>
-                            <div th:if="${notification.kind == 'money'}" class="notification-text" th:text="${notification.siteUserFrom.nickname}+'님이 하트를 보냈습니다.'"></div>
+                            <a th:if="${notification.kind == 'chatRoom'}" th:href="@{|${'/chat/'+@rq.findChatRoomByNoti(notification) + '/room2?userId='+notification.siteUserFrom}|}"
+
+                               class="notification-text" th:text="${notification.siteUserFrom.nickname}+'님이 초대를 수락해 채팅방이 만들어졌습니다.'">
+
+                            </a>
+                            <a th:if="${notification.kind == 'money'}"  th:href="@{/user/transactions}" class="notification-text" th:text="${notification.siteUserFrom.nickname}+'님이 대화 신청을 요청 했습니다.'">
+
+                            </a>
+                            <a th:if="${notification.kind == 'heart'}"  th:href="@{/user/transactions}" class="notification-text" th:text="${notification.siteUserFrom.nickname}+'님이 하트를 보냈습니다.'">
+
+                            </a>
                             <button class="notification-cancel-btn" th:data-notification-id="${notification.id}">&nbsp;X</button>
                         </div>
 
@@ -214,11 +224,11 @@
        return url.searchParams.get('failMsg');
    }
 
-   const message = getMsgFromURL();
+    const msg = getMsgFromURL();
 
    // msg 파라미터의 값이 있으면 toastr로 알림을 표시
-   if (message) {
-       toastNotice(decodeURIComponent(message));
+    if (msg) {
+        toastNotice(decodeURIComponent(msg));
    }
 
    const failMsg = getFailMsgFromURL();
@@ -227,6 +237,20 @@
    if (failMsg) {
        toastWarning(decodeURIComponent(failMsg));
    }
+     // history.back 에 의해서 돌아온 경우에 실행됨
+    $(window).bind("pageshow", function (event) {
+        let localStorageKeyAboutHistoryBackFailMsg = "historyBackFailMsg___" + location.href;
+
+        if (!localStorage.getItem(localStorageKeyAboutHistoryBackFailMsg)) {
+            localStorageKeyAboutHistoryBackFailMsg = "historyBackFailMsg___null";
+        }
+
+        const historyBackFailMsg = localStorage.getItem(localStorageKeyAboutHistoryBackFailMsg);
+        if (historyBackFailMsg) {
+            toastWarning(historyBackFailMsg);
+            localStorage.removeItem(localStorageKeyAboutHistoryBackFailMsg);
+        }
+    });
 </script>
 
 <script>
@@ -246,25 +270,29 @@
     console.log("알림 추가 기능 실행됨");
   var ul = $('.notification-box'); // 이 부분은 실제로 페이지의 요소에 맞게 수정해야 합니다.
 
-  data.forEach(function(notification) {
-    var notificationItem = $('<div/>' , { 'class': 'flex notification-item' });
-<!--    var li = $('<li>' + notification.userFrom.nickname + '님이 채팅방에 초대를 수락했습니다.</li>');-->
-    var li =$('<div/>', {'class' : 'notification-text',
-    text :  notification.userFrom.nickname+'님이 채팅방 초대를 수락했습니다.' });
-    var button = $('<button/>', {
-        'class': 'notification-cancel-btn',
-        'data-notification-id': notification.id,
-        text: 'X' // You can set the text content here if needed
-    });
-     <!-- ul.append(notificationItem); notificationItem.append(li); notificationItem.append(button); -->
+<!--  data.forEach(function(notification) {-->
+<!--    var notificationItem = $('<div/>' , { 'class': 'flex notification-item' });-->
+<!--&lt;!&ndash;    var li = $('<li>' + notification.userFrom.nickname + '님이 채팅방에 초대를 수락했습니다.</li>');&ndash;&gt;-->
+<!--    var li =$('<div/>', {'class' : 'notification-text',-->
+<!--    text :  notification.userFrom.nickname+'님이 채팅방 초대를 수락했습니다.' });-->
+<!--    var button = $('<button/>', {-->
+<!--        'class': 'notification-cancel-btn',-->
+<!--        'data-notification-id': notification.id,-->
+<!--        text: 'X' // You can set the text content here if needed-->
+<!--    });-->
+<!--     &lt;!&ndash; ul.append(notificationItem); notificationItem.append(li); notificationItem.append(button); &ndash;&gt;-->
 
-      if(notification.kind=="chatRoom"){
-     openModal(notification.userFrom.nickname + '님이 초대를 수락해 채팅방이 만들어졌습니다.');
-     }else {
-         openModal(notification.userFrom.nickname + '님이 하트를 보내서 1대1 채팅에 초대했습니다.');
+      if(data.kind=="chatRoom"){
+     openModal(data.userFrom.nickname + '님이 초대를 수락해 채팅방이 만들어졌습니다.');
+     }else if(data.kind=="money"){
+         openModal(data.userFrom.nickname + '님이 대화 신청을 요청했습니다.');
+     }else if(data.kind=="heart"){
+                 openModal(data.userFrom.nickname + '님이 하트를 보냈습니다.');
+
+
      }
-  });
-}
+  };
+
 
 
 

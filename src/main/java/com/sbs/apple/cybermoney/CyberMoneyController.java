@@ -15,22 +15,24 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.Optional;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/user/cybermoney")
 public class CyberMoneyController {
     private final CyberMoneyService cyberMoneyService;
+    private final CyberMoneyServiceImpl cyberMoneyServiceImpl;
     private final UserRepository userRepository;
     private final SseEmitters sseEmitters;
     private final NotificationService notificationService;
     private final CyberMoneyTransactionRepository cyberMoneyTransactionRepository;
 
 
+
     @PostMapping("/JustSend")
     public ResponseEntity<String> JustsendCyberMoney(
-            @RequestParam("recipientUsername") String recipientUsername,
-            @RequestParam("amount") int amount
-    ) {
+            @RequestParam("heartUsername") String heartUsername,
+            @RequestParam("amount") int amount) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
 
@@ -40,24 +42,26 @@ public class CyberMoneyController {
         }
         SiteUser senderUser = senderUserOptional.get();
 
-        if (senderUser.getUsername().equals(recipientUsername)) {
+        if (senderUser.getUsername().equals(heartUsername)) {
             return ResponseEntity.badRequest().body("자기 자신에게 사이버 머니를 보낼 수 없습니다.");
         }
 
-        Optional<SiteUser> recipientUserOptional = userRepository.findByUsername(recipientUsername);
-        if (!recipientUserOptional.isPresent()) {
+        Optional<SiteUser> heartUserOptional = userRepository.findByNickname(heartUsername);
+        if (!heartUserOptional.isPresent()) {
             return ResponseEntity.badRequest().body("받는 사용자를 찾을 수 없습니다.");
         }
-        SiteUser recipientUser = recipientUserOptional.get();
+        SiteUser heartUser = heartUserOptional.get();
 
-        try {
-            cyberMoneyService.sendCyberMoney(senderUser, recipientUser, amount);
-            return ResponseEntity.ok("사이버 머니 전송이 성공했습니다.");
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+
+        String groupKey = "userId_" + heartUser.getId();
+        SseEmitter emitter = new SseEmitter();
+        sseEmitters.add(groupKey, emitter);
+        sseEmitters.noti(groupKey, "invite_chatRoom");
+        notificationService.create(heartUser,senderUserOptional.get(), "heart");
+
+        cyberMoneyService.JustsendCyberMoney(senderUser, heartUser, amount);
+        return ResponseEntity.ok("사이버 머니 전송이 성공했습니다.");
     }
-
 
 
     @PostMapping("/send")
@@ -81,7 +85,7 @@ public class CyberMoneyController {
         }
 
         // 받는 사용자를 찾습니다.
-        Optional<SiteUser> recipientUserOptional = userRepository.findByUsername(recipientUsername);
+        Optional<SiteUser> recipientUserOptional = userRepository.findByNickname(recipientUsername);
         if (!recipientUserOptional.isPresent()) {
             return ResponseEntity.badRequest().body("받는 사용자를 찾을 수 없습니다.");
         }
@@ -96,7 +100,7 @@ public class CyberMoneyController {
             SseEmitter emitter = new SseEmitter();
             sseEmitters.add(groupKey, emitter);
             sseEmitters.noti(groupKey, "give_money");
-            notificationService.create(recipientUser,senderUser,"money" );
+            notificationService.create(recipientUser, senderUser, "money");
             return ResponseEntity.ok("사이버 머니 전송이 성공했습니다.");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
