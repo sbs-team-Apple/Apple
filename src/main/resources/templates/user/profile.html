@@ -78,33 +78,87 @@
                     th:text="${receivedSiteUser.nickname+'님의 채팅방들'}"></a>
             </div>
         </div>
-        <!--프로필 정보들-->
-        <div style="margin-bottom:30px;">
-            <div style="margin-bottom: 10px; text-align: center;">
-                <span th:text="${receivedSiteUser.mbti}"
-                      style="font-size: 14px; background-color: #f3f3f3; padding: 5px 10px; border-radius: 15px; margin: 0 5px;"></span>
-                <span th:text="${receivedSiteUser.job}"
-                      style="font-size: 14px; background-color: #f3f3f3; padding: 5px 10px; border-radius: 15px; margin: 0 5px;"></span>
-                <span th:text="${receivedSiteUser.tall}+'cm'"
-                      style="font-size: 14px; background-color: #f3f3f3; padding: 5px 10px; border-radius: 15px; margin: 0 5px;"></span>
-                <span th:text="${receivedSiteUser.body_type}"
-                      style="font-size: 14px; background-color: #f3f3f3; padding: 5px 10px; border-radius: 15px; margin: 0 5px;"></span>
+        <!--프로필-->
+        <div class="pb-3" style="margin-bottom:30px; overflow: hidden; text-align: center;">
+            <div class="op1 pr-5" style="text-align: left; display: inline-block;">
+                <div style="margin-bottom: 10px; text-align: left;">
+                    <span>MBTI :</span><span th:text="${receivedSiteUser.mbti}"
+                                             style="font-size: 14px; background-color: #f3f3f3; padding: 5px 10px; border-radius: 15px; margin: 0 5px;"></span>
+                </div>
+                <div style="margin-bottom: 10px; text-align: left;">
+                    <span>직업 :</span><span th:text="${receivedSiteUser.job}"
+                                           style="font-size: 14px; background-color: #f3f3f3; padding: 5px 10px; border-radius: 15px; margin: 0 5px;"></span>
+                </div>
+                <div style="margin-bottom: 10px; text-align: left;">
+                    <span>신장 :</span><span th:text="${receivedSiteUser.tall}+'cm'"
+                                           style="font-size: 14px; background-color: #f3f3f3; padding: 5px 10px; border-radius: 15px; margin: 0 5px;"></span>
+                </div>
+                <div style="margin-bottom: 10px; text-align: left;">
+                    <span>체형 :</span><span th:text="${receivedSiteUser.body_type}"
+                                           style="font-size: 14px; background-color: #f3f3f3; padding: 5px 10px; border-radius: 15px; margin: 0 5px;"></span>
+                </div>
             </div>
-            <div style="margin-bottom:10px; text-align: center;">
-                <span th:text="${receivedSiteUser.drinking}"
-                      style="font-size:14px; background-color:#f3f3f3; padding: 5px 10px;border-radius:15px; margin: 0 5px;"></span>
-                <span th:text="${receivedSiteUser.smoking}"
-                      style="font-size:14px; background-color:#f3f3f3; padding: 5px 10px;border-radius:15px; margin: 0 5px;"></span>
-                <span th:text="${receivedSiteUser.school}"
-                      style="font-size:14px; background-color:#f3f3f3; padding: 5px 10px;border-radius:15px; margin: 0 5px;"></span>
-                <span th:text="${receivedSiteUser.religion}"
-                      style="font-size:14px; background-color:#f3f3f3; padding: 5px 10px;border-radius:15px; margin: 0 5px;"></span>
+            <div class="op2 pl-8" style="text-align: left; display: inline-block;">
+                <div style="margin-bottom:10px; text-align: left;">
+                    <span>음주 :</span><span th:text="${receivedSiteUser.drinking}"
+                                           style="font-size:14px; background-color:#f3f3f3; padding: 5px 10px;border-radius:15px; margin: 0 5px;"></span>
+                </div>
+                <div style="margin-bottom:10px; text-align: left;">
+                    <sapn>흡연 :</sapn>
+                    <span th:text="${receivedSiteUser.smoking}"
+                          style="font-size:14px; background-color:#f3f3f3; padding: 5px 10px;border-radius:15px; margin: 0 5px;"></span>
+                </div>
+                <div style="margin-bottom:10px; text-align: left;">
+                    <span>학력 :</span><span th:text="${receivedSiteUser.school}"
+                                           style="font-size:14px; background-color:#f3f3f3; padding: 5px 10px;border-radius:15px; margin: 0 5px;"></span>
+                </div>
+                <div style="margin-bottom:10px; text-align: left;">
+                    <span>종교 :</span><span th:text="${receivedSiteUser.religion}"
+                                           style="font-size:14px; background-color:#f3f3f3; padding: 5px 10px;border-radius:15px; margin: 0 5px;"></span>
+                </div>
             </div>
-            <div style="margin-bottom:10px;">
-                <span style="font-size:14px; background-color:#f3f3f3; padding: 5px 10px;border-radius:15px; margin: 0 5px;"
-                      th:text=" ${receivedSiteUser.styleList}"></span>
-                <span style="font-size:14px; background-color:#f3f3f3; padding: 5px 10px;border-radius:15px; margin: 0 5px;"
-                      th:text=" ${receivedSiteUser.hobbyList}"></span>
+
+            <div class="pt-3" style="margin-bottom:10px;">
+
+                <div class="op1" style="text-align: left;">
+                    <span style="padding-left:12px;">취미 :</span>
+                    <span th:if="${receivedSiteUser.hobbyList.size() < 2}">
+                        <span th:if="${receivedSiteUser.hobbyList.size() > 0}" style=" font-size:14px; background-color:#f3f3f3; padding: 5px 10px; border-radius:15px; margin: 0 0; margin-bottom: 10px;" th:text="${receivedSiteUser.hobbyList[0]}"></span>
+                    </span>
+                    <span  th:if="${receivedSiteUser.hobbyList.size() > 1}" style="font-size:14px; background-color:#f3f3f3; padding: 5px 10px; border-radius:15px; margin: 0 0; margin-bottom: 10px;" th:text="${receivedSiteUser.hobbyList[0]} + ', ' + ${receivedSiteUser.hobbyList[1]}"></span>
+                </div>
+
+
+                <div class="op1 pt-2" style="text-align: left;">
+                    <span th:if="${receivedSiteUser.hobbyList.size() < 4}">
+                        <span th:if="${receivedSiteUser.hobbyList.size() > 2}" style="font-size:14px; background-color:#f3f3f3; padding: 5px 10px; border-radius:15px; margin: 0 0; margin-bottom: 10px;" th:text="${receivedSiteUser.hobbyList[2]}"></span>
+                    </span>
+                    <span th:if="${receivedSiteUser.hobbyList.size() < 5}">
+                        <span th:if="${receivedSiteUser.hobbyList.size() > 3}" style="font-size:14px; background-color:#f3f3f3; padding: 5px 10px; border-radius:15px; margin: 0 0; margin-bottom: 10px;" th:text="${receivedSiteUser.hobbyList[2]} + ', ' + ${receivedSiteUser.hobbyList[3]}"></span>
+                    </span>
+                    <span th:if="${receivedSiteUser.hobbyList.size() > 4}" style="font-size:14px; background-color:#f3f3f3; padding: 5px 10px; border-radius:15px; margin: 0 0; margin-bottom: 10px;" th:text="${receivedSiteUser.hobbyList[2]} + ', ' + ${receivedSiteUser.hobbyList[3]} + ', ' + ${receivedSiteUser.hobbyList[4]}"></span>
+                </div>
+            </div>
+
+            <div  style="margin-bottom:10px; ">
+                <div class="op1" style="text-align: left;">
+                    <span style="padding-left:12px;">스타일 :</span>
+                    <span th:if="${receivedSiteUser.styleList.size() < 2}">
+                        <span th:if="${receivedSiteUser.styleList.size() > 0}" style=" font-size:14px; background-color:#f3f3f3; padding: 5px 10px; border-radius:15px; margin: 0 0; margin-bottom: 10px;" th:text="${receivedSiteUser.styleList[0]}"></span>
+                    </span>
+                    <span  th:if="${receivedSiteUser.styleList.size() > 1}" style="font-size:14px; background-color:#f3f3f3; padding: 5px 10px; border-radius:15px; margin: 0 0; margin-bottom: 10px;" th:text="${receivedSiteUser.styleList[0]} + ', ' + ${receivedSiteUser.styleList[1]}"></span>
+                </div>
+
+
+                <div class="op1 pt-2" style="text-align: left;">
+                    <span th:if="${receivedSiteUser.hobbyList.size() < 4}">
+                        <span th:if="${receivedSiteUser.styleList.size() > 2}" style="font-size:14px; background-color:#f3f3f3; padding: 5px 10px; border-radius:15px; margin: 0 0; margin-bottom: 10px;" th:text="${receivedSiteUser.styleList[2]}"></span>
+                    </span>
+                    <span th:if="${receivedSiteUser.styleList.size() < 5}">
+                        <span th:if="${receivedSiteUser.styleList.size() > 3}" style="font-size:14px; background-color:#f3f3f3; padding: 5px 10px; border-radius:15px; margin: 0 0; margin-bottom: 10px;" th:text="${receivedSiteUser.styleList[2]} + ', ' + ${receivedSiteUser.styleList[3]}"></span>
+                    </span>
+                    <span th:if="${receivedSiteUser.styleList.size() > 4}" style="font-size:14px; background-color:#f3f3f3; padding: 5px 10px; border-radius:15px; margin: 0 0; margin-bottom: 10px;" th:text="${receivedSiteUser.styleList[2]} + ', ' + ${receivedSiteUser.styleList[3]} + ', ' + ${receivedSiteUser.styleList[4]}"></span>
+                </div>
             </div>
 
         </div>
@@ -118,28 +172,66 @@
                 </button>
             </div>
             <div style="display:none;" id="all">
-                <div style="margin-bottom: 10px; text-align: center;">
-                <span th:text="${receivedSiteUser.desired_age1}+'~'+${receivedSiteUser.desired_age2}+'살'"
-                      style="font-size: 14px; background-color: #f3f3f3; padding: 5px 10px; border-radius: 15px; margin: 0 5px;"></span>
-                    <span th:text="${receivedSiteUser.desired_living}"
-                          style="font-size: 14px; background-color: #f3f3f3; padding: 5px 10px; border-radius: 15px; margin: 0 5px;"></span>
-                    <span th:text="${receivedSiteUser.desired_tall1}+'~'+${receivedSiteUser.desired_tall2}+'cm'"
-                          style="font-size: 14px; background-color: #f3f3f3; padding: 5px 10px; border-radius: 15px; margin: 0 5px;"></span>
-                    <span th:text="${receivedSiteUser.desired_body_type}"
-                          style="font-size: 14px; background-color: #f3f3f3; padding: 5px 10px; border-radius: 15px; margin: 0 5px;"></span>
+                <div style="margin-bottom:30px; overflow: hidden; text-align: center;">
+                    <div class="op1 pr-5" style="text-align: left; display: inline-block;">
+
+                        <div style="margin-bottom: 10px; text-align: left;">
+                            <span>나이 :</span><span th:text="${receivedSiteUser.desired_age1}+'~'+${receivedSiteUser.desired_age2}+'살'"
+                                                   style="font-size: 14px; background-color: #f3f3f3; padding: 5px 10px; border-radius: 15px; margin: 0 5px;"></span>
+                        </div>
+                        <div style="margin-bottom: 10px; text-align: left;">
+                            <span>지역 :</span><span th:text="${receivedSiteUser.desired_living}"
+                                                   style="font-size: 14px; background-color: #f3f3f3; padding: 5px 10px; border-radius: 15px; margin: 0 5px;"></span>
+                        </div>
+                        <div style="margin-bottom: 10px; text-align: left;">
+                            <span>신장 :</span><span th:text="${receivedSiteUser.desired_tall1}+'~'+${receivedSiteUser.desired_tall2}+'cm'"
+                                                   style="font-size: 14px; background-color: #f3f3f3; padding: 5px 10px; border-radius: 15px; margin: 0 5px;"></span>
+                        </div>
+                        <div style="margin-bottom: 10px; text-align: left;">
+                            <span>체형 :</span><span th:text="${receivedSiteUser.desired_body_type}"
+                                                   style="font-size: 14px; background-color: #f3f3f3; padding: 5px 10px; border-radius: 15px; margin: 0 5px;"></span>
+                        </div>
+                    </div>
+                    <div style="text-align: left; display: inline-block;">
+                        <div style="margin-bottom: 10px; text-align: left;">
+                            <span>흡연 :</span><span th:text="${receivedSiteUser.desired_smoking}"
+                                                   style="font-size: 14px; background-color: #f3f3f3; padding: 5px 10px; border-radius: 15px; margin: 0 5px;"></span>
+                        </div>
+                        <div style="margin-bottom: 10px; text-align: left;">
+                            <span>음주 :</span><span th:text="${receivedSiteUser.desired_drinking}"
+                                                   style="font-size: 14px; background-color: #f3f3f3; padding: 5px 10px; border-radius: 15px; margin: 0 5px;"></span>
+                        </div>
+                        <div style="margin-bottom: 10px; text-align: left;">
+                            <span>종교 :</span><span th:text="${receivedSiteUser.desired_religion}"
+                                                   style="font-size: 14px; background-color: #f3f3f3; padding: 5px 10px; border-radius: 15px; margin: 0 5px;"></span>
+                        </div>
+                        <div style="margin-bottom: 10px; text-align: left;">
+                            <span>MBTI :</span><span th:text="${receivedSiteUser.desired_mbti}"
+                                                     style="font-size: 14px; background-color: #f3f3f3; padding: 5px 10px; border-radius: 15px; margin: 0 5px;"></span>
+                        </div>
+                    </div>
                 </div>
-                <div style="margin-bottom: 10px; text-align: center;">
-                <span th:text="${receivedSiteUser.desired_smoking}"
-                      style="font-size: 14px; background-color: #f3f3f3; padding: 5px 10px; border-radius: 15px; margin: 0 5px;"></span>
-                    <span th:text="${receivedSiteUser.desired_drinking}"
-                          style="font-size: 14px; background-color: #f3f3f3; padding: 5px 10px; border-radius: 15px; margin: 0 5px;"></span>
-                    <span th:text="${receivedSiteUser.desired_religion}"
-                          style="font-size: 14px; background-color: #f3f3f3; padding: 5px 10px; border-radius: 15px; margin: 0 5px;"></span>
-                    <span th:text="${receivedSiteUser.desired_mbti}"
-                          style="font-size: 14px; background-color: #f3f3f3; padding: 5px 10px; border-radius: 15px; margin: 0 5px;"></span>
+
+                <div  style="margin-bottom:10px; ">
+                    <div class="op1" style="text-align: left;">
+                        <span style="padding-left:12px;">스타일 :</span>
+                        <span th:if="${receivedSiteUser.desired_styleList.size() < 2}">
+                        <span th:if="${receivedSiteUser.desired_styleList.size() > 0}" style=" font-size:14px; background-color:#f3f3f3; padding: 5px 10px; border-radius:15px; margin: 0 0; margin-bottom: 10px;" th:text="${receivedSiteUser.desired_styleList[0]}"></span>
+                    </span>
+                        <span  th:if="${receivedSiteUser.desired_styleList.size() > 1}" style="font-size:14px; background-color:#f3f3f3; padding: 5px 10px; border-radius:15px; margin: 0 0; margin-bottom: 10px;" th:text="${receivedSiteUser.desired_styleList[0]} + ', ' + ${receivedSiteUser.styleList[1]}"></span>
+                    </div>
+
+
+                    <div class="op1 pt-2" style="text-align: left;">
+                    <span th:if="${receivedSiteUser.desired_styleList.size() < 4}">
+                        <span th:if="${receivedSiteUser.desired_styleList.size() > 2}" style="font-size:14px; background-color:#f3f3f3; padding: 5px 10px; border-radius:15px; margin: 0 0; margin-bottom: 10px;" th:text="${receivedSiteUser.desired_styleList[2]}"></span>
+                    </span>
+                        <span th:if="${receivedSiteUser.desired_styleList.size() < 5}">
+                        <span th:if="${receivedSiteUser.desired_styleList.size() > 3}" style="font-size:14px; background-color:#f3f3f3; padding: 5px 10px; border-radius:15px; margin: 0 0; margin-bottom: 10px;" th:text="${receivedSiteUser.desired_styleList[2]} + ', ' + ${receivedSiteUser.desired_styleList[3]}"></span>
+                    </span>
+                        <span th:if="${receivedSiteUser.desired_styleList.size() > 4}" style="font-size:14px; background-color:#f3f3f3; padding: 5px 10px; border-radius:15px; margin: 0 0; margin-bottom: 10px;" th:text="${receivedSiteUser.desired_styleList[2]} + ', ' + ${receivedSiteUser.desired_styleList[3]} + ', ' + ${receivedSiteUser.desired_styleList[4]}"></span>
+                    </div>
                 </div>
-                <span th:text="${receivedSiteUser.desired_styleList}"
-                      style="font-size: 14px; background-color: #f3f3f3; padding: 5px 10px; border-radius: 15px; margin: 0 5px;"></span>
             </div>
         </div>
         <script>
