@@ -3,6 +3,10 @@ server:
 file:
   upload-dir: /tmp/uploads/
 spring:
+  servlet:
+    multipart:
+      maxFileSize: 10MB
+      maxRequestSize: 100MB
   data:
     redis:
       host: 172.17.0.1
@@ -61,5 +65,5 @@ custom:
     name: The Cupid
     baseUrl: "http://118.67.142.168"
 
-    genFile:
-      dirPath: /tmp/uploads/
+  genFile:
+    dirPath: /tmp/uploads/
