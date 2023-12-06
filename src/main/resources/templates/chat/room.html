@@ -71,6 +71,7 @@
 
                                             <form th:action="@{|/chat/${roomId}/delete|}" method="get">
                                                 <input class="hidden" name="userId" th:value="${user.id}">
+                                                <input class="hidden" name="toUserId" th:value="${toUser.id}">
                                                 <button class="btn" type="submit" >예 </button>
 
 

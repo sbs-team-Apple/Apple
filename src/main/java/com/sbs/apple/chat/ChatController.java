@@ -353,24 +353,45 @@ public class ChatController {
 
 
     @GetMapping("/{roomId}/delete")
-    public String deleteRoom ( @PathVariable Integer roomId,@RequestParam("userId") Integer userId ) {
+    public String deleteRoom ( @PathVariable Integer roomId,@RequestParam("userId") Integer userId, @RequestParam("toUserId") Integer toUserId ) {
         ChatRoom room=chatRoomService.findById(roomId);
+
 
         // 채팅방 나가기를 누른 유저
         SiteUser user = userService.getUser(userId);
+
+
+        //나랑 채팅하고 있는 사람
+        SiteUser toUser = userService.getUser(toUserId);
+
         System.out.println(user.getId());
 
         if(room.getSiteUser()==user){
             System.out.println("보낸 사람이 나가기 누른사람");
             room.setFromUserPass(false);
             chatRoomRepository.save(room);
+
+
+
+
+
         }else if(room.getSiteUser2()==user){
             System.out.println("초대받은  사람이 나가기 누른사람");
             room.setToUserPass(false);
             chatRoomRepository.save(room);
+
+
+
         }
 
+        String groupKey = "userId_" + toUser.getId();
+        System.out.println(groupKey);
+        SseEmitter emitter = new SseEmitter();
+        sseEmitters.add(groupKey, emitter);
+        sseEmitters.noti(groupKey, "invite_chatRoom");
 
+        // 채팅방 만들었다는 알림 기록 남기기
+        notificationService.create(toUser,user,"chatOut");
 
 
 //        chatRoomService.delete(room);

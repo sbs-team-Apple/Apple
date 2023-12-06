@@ -126,6 +126,9 @@
                             <a th:if="${notification.kind == 'heart'}"  th:href="@{/user/transactions}" class="notification-text" th:text="${notification.siteUserFrom.nickname}+'님이 하트를 보냈습니다.'">
 
                             </a>
+                            <a th:if="${notification.kind == 'chatOut'}"  th:href="@{/chat/allRoom}" class="notification-text" th:text="${notification.siteUserFrom.nickname}+'님이 채팅방을 나갔습니다.'">
+
+                            </a>
                             <button class="notification-cancel-btn" th:data-notification-id="${notification.id}">&nbsp;X</button>
                         </div>
 
@@ -293,6 +296,10 @@
                  openModal(data.userFrom.nickname + '님이 하트를 보냈습니다.');
 
 
+     }else if (data.kind=="chatOut"){
+
+                      openModal(data.userFrom.nickname + '님이 채팅방을 나갔습니다.');
+
      }
   };
 
@@ -438,7 +445,7 @@ getNewNotifications()
   transform: translate(-50%, -50%);
         color:black;
         text-align:center;
-        width:70%;
+        width:80%;
     }
 
 
