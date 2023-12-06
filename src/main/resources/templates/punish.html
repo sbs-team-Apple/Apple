@@ -7,14 +7,17 @@
 <body>
 <div layout:fragment="content" class="container my-3">
 
-    <div>
-        <a th:href="@{|/admin/warning/${id}|}">경고</a>
+    <div style="text-align:center" class="pt-20 pb-5"> <button type="submit" class="btn "
+                  style="width:45%; border-radius:10px; border:1px solid #B276EE; background-color:#ffffff">
+        <a th:href="@{|/admin/warning/${id}|}">경고</a></button>
     </div>
-    <div>
-        <a th:href="@{|/admin/Day3_stop/${id}|}">3일 정지</a>
-    </div>
-    <div>
-        <a th:href="@{|/admin/Permanent_stop/${id}|}">영구 정지</a>
+    <div style="text-align:center" class="pb-5"><button type="submit" class="btn"
+                 style="width:45%; border-radius:10px; border:1px solid #B276EE; background-color:#ffffff">
+        <a th:href="@{|/admin/Day3_stop/${id}|}">3일 정지</a></button>
+    </div >
+    <div style="text-align:center" class="pb-5"><button type="submit" class="btn"
+                 style="width:45%; border-radius:10px; border:1px solid #B276EE; background-color:#ffffff">
+        <a th:href="@{|/admin/Permanent_stop/${id}|}">영구 정지</a></button>
         </a>
     </div>
     <div th:include="common/menu.html" class="tap_bar"></div>
